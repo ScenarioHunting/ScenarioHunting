@@ -19,7 +19,7 @@ function GivenStep(props: TestStepProps) {
 	var Step = testStep({
 		board: globalBoard,
 		stepNavigator: new ImmediateQueuingMachine<TestStepTurn>(),
-		stepTitle: TestStepTurn.Given,
+		stepType: TestStepTurn.Given,
 		selectionWaitingMessage: 'Select minimum required steps for the when to end up then.',
 		turn: TestStepTurn.Given,
 	});
@@ -28,23 +28,27 @@ function GivenStep(props: TestStepProps) {
 export const Givens = GivenSteps({
 	board: globalBoard,
 	stepNavigator: globalStepNavigator,
-	stepTitle: TestStepTurn.Given,
+	stepType: TestStepTurn.Given,
 	selectionWaitingMessage: 'Select minimum required steps for the when to end up then.',
 	turn: TestStepTurn.Given,
-	// onWidgetSelection: transit(TestStepTurn.Given + index, TestStepTurn.Given + index + 1)
 })
-type IndexedStepResult = {
+export type IndexedStepResult = {
 	index: number
 	stepResult: StepResult
+}
+export type GivenStepsProps = {
+	onChange: (stepResults: IndexedStepResult[]) => void
+	data?: IndexedStepResult[]
 }
 function GivenSteps(options: TestStepOptions) {
 	type State = {
 		isActive: boolean
 		data: IndexedStepResult[]
 	}
-	return class GivenSteps extends React.Component<TestStepProps, State> {
 
-		constructor(props: TestStepProps) {
+	return class GivenSteps extends React.Component<GivenStepsProps, State> {
+
+		constructor(props) {
 			super(props)
 			this.nextId = 1
 			this.add = this.add.bind(this)
@@ -57,6 +61,8 @@ function GivenSteps(options: TestStepOptions) {
 		componentDidMount() {
 			globalStepNavigator.onTurn(TestStepTurn.Given, () => {
 				this.setState({ isActive: true })
+				if (this.props.data)
+					this.setState({ data: this.props.data })
 			})
 		}
 		nextId: number
@@ -64,9 +70,7 @@ function GivenSteps(options: TestStepOptions) {
 			const data = this.state.data;
 			data.unshift({ index: this.nextId } as IndexedStepResult)
 			this.nextId++;
-			// const {extraProp, ...passThroughProps } =this.props
 			this.setState({ data: data })
-			// this.setState({ preconditions: this.state.preconditions.concat({ id: this.state.preconditions.length, value: null }) })
 		}
 		onChange = (updated: StepResult) => {
 			const data = this.state.data.map(
@@ -74,6 +78,7 @@ function GivenSteps(options: TestStepOptions) {
 					? { stepResult: updated, index: theOld.index } as IndexedStepResult
 					: theOld)
 			this.setState({ data: data })
+			this.props.onChange(data)
 			console.log("onChange:", data)
 		}
 		render = () => {
@@ -97,14 +102,10 @@ function GivenSteps(options: TestStepOptions) {
 								data={data.stepResult}
 								key={data.index}
 							/>)
-						// this.preconditions.map((_, i) => GivenStep(i))
-						// 	.map(X => <X {...this.props} />)
 					}
 				</div>
 			)
 		}
-
 	}
-	// return <GivenSteps />;
 }
 

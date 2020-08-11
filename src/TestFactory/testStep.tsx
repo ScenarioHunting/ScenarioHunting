@@ -8,13 +8,17 @@ export enum TestStepTurn {
 }
 
 export class TestStepOptions {
-    stepTitle: string
+    stepType: string
     selectionWaitingMessage: string
     turn: TestStepTurn
     board: Board
     stepNavigator: IQueuingMachine<TestStepTurn>
 }
+export type StepMetadata = {
+    stepType: string
+}
 export type StepResult = {
+    metadata: StepMetadata
     widget: Widget
 }
 export class TestStepProps {
@@ -23,7 +27,7 @@ export class TestStepProps {
     data?: StepResult
 }
 
-export function testStep({ stepTitle, selectionWaitingMessage, turn, board, stepNavigator }: TestStepOptions) {
+export function testStep({ stepType, selectionWaitingMessage, turn, board, stepNavigator }: TestStepOptions) {
     return class TestStepContainer extends React.Component<TestStepProps, StepResult> {
         constructor(props: TestStepProps) {
             super(props);
@@ -31,7 +35,7 @@ export function testStep({ stepTitle, selectionWaitingMessage, turn, board, step
         updateWidget(widget: Widget) {
             // this.setState({ widget: widget } as StepResult);
             // console.log('state set:', this.state)
-            this.props.onChange({ widget: widget } as StepResult);
+            this.props.onChange({ widget: widget, metadata: { stepType: stepType } } as StepResult);
         }
         async componentDidMount() {
             board.unselectAll();
@@ -39,7 +43,7 @@ export function testStep({ stepTitle, selectionWaitingMessage, turn, board, step
                 board.showNotification(selectionWaitingMessage);
                 console.log('Waiting...')
                 board.onNextSingleSelection(widget => {
-                    console.log('Done...')
+                    console.log(turn, 'Done...')
                     this.updateWidget(widget);
                     stepNavigator.nextTurn();
                 });
@@ -47,7 +51,7 @@ export function testStep({ stepTitle, selectionWaitingMessage, turn, board, step
         }
         render() {
             return (<div>
-                <h1>{stepTitle} </h1>
+                <h1>{stepType} </h1>
                 {/* <h3>{this.state?.widget?.text ?? '?'}</h3> */}
                 <span>{this.props.data?.widget?.text}</span>
             </div>);

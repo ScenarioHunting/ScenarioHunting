@@ -1,83 +1,59 @@
 import * as React from 'react';
-import { globalBoard, globalStepNavigator, Givens } from './Given';
+import { globalBoard, globalStepNavigator, Givens, IndexedStepResult } from './Given';
 import * as ReactDOM from 'react-dom';
-import { WhenStep } from './When';
-import { ThenStep } from './Then';
-class Root extends React.Component {
-	constructor(props) {
-		super(props);
-		this.updateWhen = this.updateWhen.bind(this);
-		this.updateThen = this.updateThen.bind(this);
-	}
-	async componentDidMount() {
-		await globalBoard.unselectAll();
-		globalStepNavigator.start();
-	}
+import { WhenStep as When } from './When';
+import { ThenStep as Then } from './Then';
+import { StepResult } from './testStep';
+function compositionRoot(){
 
-	state = {
-		boardTitle: '',
-		given: {},
-		when: {
-			widget: null,
-			step: '?'
-		},
-	};
+}
+function TestBuilder(props) {
+
+	React.useEffect(() => {
+		globalBoard.unselectAll()
+		.then(globalStepNavigator.start)
+	}, [])
 
 
-	async getBoardTitle() {
+	async function getBoardTitle() {
 		let boardInfo = await miro.board.info.get();
-		this.setState({ boardTitle: boardInfo.title });
+		// this.setState({ boardTitle: boardInfo.title });
 	}
-	test = {
-		givenCollection: [],
-		when: {
-			title: null,
-			example: null
-		},
-		then: {
-			title: null,
-			example: null
-		},
-	};
 
-	onGivenCollectionChanged(collection) {
-		this.test.givenCollection = collection;
-	}
-	updateWhen(when) {
-		this.test.when.title = when.title;
-		console.log('when changed: new title:' + when.title + '\n'
-			+ 'new example:' + when.example);
-	}
-	updateThen(when) {
-		this.test.when.title = when.title;
-		console.log(when.title);
-	}
-	updateGiven(when) {
-		this.test.when.title = when.title;
-		console.log(when.title);
-	}
-	render() {
-		// className="container"
-		return (
-			<div>
+	const [whenResult, setWhenResult] = React.useState<StepResult>()
+	const [thenResult, setThenResult] = React.useState<StepResult>()
+	const [givenResult, setGivenResult] = React.useState<IndexedStepResult[]>()
 
-				<Givens onChange={this.onGivenCollectionChanged}
-						/>
+	const updateGivens = (givenResults: IndexedStepResult[]) => {
+		console.log(givenResults, 'givenResults')
+		setGivenResult(givenResults)
+	}
+	const updateWhen = (when: StepResult) => {
+		setWhenResult(when)
+	}
+	const updateThen = (when: StepResult) => {
+		setThenResult(when)
+	}
+
+	return (
+		<div>
+
+			<Givens onChange={updateGivens} data={givenResult}
+			/>
 
 
-				<WhenStep onChange={this.updateWhen}
-					// canEdit={s => this.test?.when?.title != null} 
-					/>
+			<When onChange={updateWhen} data={whenResult}
+			// canEdit={s => this.test?.when?.title != null} 
+			/>
 
-				<ThenStep onChange={this.updateThen}
-					// canEdit={s => this.test?.then?.title != null
-					// 	&& this.test?.when?.example != null} 
-						/>
-			</div>
-		);
-	}
+			<Then onChange={updateThen} data={thenResult}
+			// canEdit={s => this.test?.then?.title != null
+			// 	&& this.test?.when?.example != null} 
+			/>
+		</div>
+	);
 }
 ReactDOM.render(
-	<Root />,
+	<TestBuilder />,
 	document.getElementById('react-app')
 )

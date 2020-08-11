@@ -112,68 +112,38 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 
 
 
-class Root extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
-    constructor(props) {
-        super(props);
-        this.state = {
-            boardTitle: '',
-            given: {},
-            when: {
-                widget: null,
-                step: '?'
-            },
-        };
-        this.test = {
-            givenCollection: [],
-            when: {
-                title: null,
-                example: null
-            },
-            then: {
-                title: null,
-                example: null
-            },
-        };
-        this.updateWhen = this.updateWhen.bind(this);
-        this.updateThen = this.updateThen.bind(this);
-    }
-    componentDidMount() {
-        return __awaiter(this, void 0, void 0, function* () {
-            yield _Given__WEBPACK_IMPORTED_MODULE_1__["globalBoard"].unselectAll();
-            _Given__WEBPACK_IMPORTED_MODULE_1__["globalStepNavigator"].start();
-        });
-    }
-    getBoardTitle() {
+function compositionRoot() {
+}
+function TestBuilder(props) {
+    react__WEBPACK_IMPORTED_MODULE_0__["useEffect"](() => {
+        _Given__WEBPACK_IMPORTED_MODULE_1__["globalBoard"].unselectAll()
+            .then(_Given__WEBPACK_IMPORTED_MODULE_1__["globalStepNavigator"].start);
+    }, []);
+    function getBoardTitle() {
         return __awaiter(this, void 0, void 0, function* () {
             let boardInfo = yield miro.board.info.get();
-            this.setState({ boardTitle: boardInfo.title });
+            // this.setState({ boardTitle: boardInfo.title });
         });
     }
-    onGivenCollectionChanged(collection) {
-        this.test.givenCollection = collection;
-    }
-    updateWhen(when) {
-        this.test.when.title = when.title;
-        console.log('when changed: new title:' + when.title + '\n'
-            + 'new example:' + when.example);
-    }
-    updateThen(when) {
-        this.test.when.title = when.title;
-        console.log(when.title);
-    }
-    updateGiven(when) {
-        this.test.when.title = when.title;
-        console.log(when.title);
-    }
-    render() {
-        // className="container"
-        return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null,
-            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_Given__WEBPACK_IMPORTED_MODULE_1__["Givens"], { onChange: this.onGivenCollectionChanged }),
-            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_When__WEBPACK_IMPORTED_MODULE_3__["WhenStep"], { onChange: this.updateWhen }),
-            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_Then__WEBPACK_IMPORTED_MODULE_4__["ThenStep"], { onChange: this.updateThen })));
-    }
+    const [whenResult, setWhenResult] = react__WEBPACK_IMPORTED_MODULE_0__["useState"]();
+    const [thenResult, setThenResult] = react__WEBPACK_IMPORTED_MODULE_0__["useState"]();
+    const [givenResult, setGivenResult] = react__WEBPACK_IMPORTED_MODULE_0__["useState"]();
+    const updateGivens = (givenResults) => {
+        console.log(givenResults, 'givenResults');
+        setGivenResult(givenResults);
+    };
+    const updateWhen = (when) => {
+        setWhenResult(when);
+    };
+    const updateThen = (when) => {
+        setThenResult(when);
+    };
+    return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null,
+        react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_Given__WEBPACK_IMPORTED_MODULE_1__["Givens"], { onChange: updateGivens, data: givenResult }),
+        react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_When__WEBPACK_IMPORTED_MODULE_3__["WhenStep"], { onChange: updateWhen, data: whenResult }),
+        react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_Then__WEBPACK_IMPORTED_MODULE_4__["ThenStep"], { onChange: updateThen, data: thenResult })));
 }
-react_dom__WEBPACK_IMPORTED_MODULE_2__["render"](react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Root, null), document.getElementById('react-app'));
+react_dom__WEBPACK_IMPORTED_MODULE_2__["render"](react__WEBPACK_IMPORTED_MODULE_0__["createElement"](TestBuilder, null), document.getElementById('react-app'));
 
 
 /***/ }),
@@ -2364,7 +2334,7 @@ function GivenStep(props) {
     var Step = Object(_testStep__WEBPACK_IMPORTED_MODULE_3__["testStep"])({
         board: globalBoard,
         stepNavigator: new ImmediateQueuingMachine(),
-        stepTitle: _testStep__WEBPACK_IMPORTED_MODULE_3__["TestStepTurn"].Given,
+        stepType: _testStep__WEBPACK_IMPORTED_MODULE_3__["TestStepTurn"].Given,
         selectionWaitingMessage: 'Select minimum required steps for the when to end up then.',
         turn: _testStep__WEBPACK_IMPORTED_MODULE_3__["TestStepTurn"].Given,
     });
@@ -2373,7 +2343,7 @@ function GivenStep(props) {
 const Givens = GivenSteps({
     board: globalBoard,
     stepNavigator: globalStepNavigator,
-    stepTitle: _testStep__WEBPACK_IMPORTED_MODULE_3__["TestStepTurn"].Given,
+    stepType: _testStep__WEBPACK_IMPORTED_MODULE_3__["TestStepTurn"].Given,
     selectionWaitingMessage: 'Select minimum required steps for the when to end up then.',
     turn: _testStep__WEBPACK_IMPORTED_MODULE_3__["TestStepTurn"].Given,
 });
@@ -2386,6 +2356,7 @@ function GivenSteps(options) {
                     ? { stepResult: updated, index: theOld.index }
                     : theOld);
                 this.setState({ data: data });
+                this.props.onChange(data);
                 console.log("onChange:", data);
             };
             this.render = () => {
@@ -2395,10 +2366,7 @@ function GivenSteps(options) {
                         react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null,
                             react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("h3", null, options.selectionWaitingMessage),
                             react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("button", { className: "build-button", onClick: this.add.bind(this) }, "+")),
-                    this.state.data.map(data => react__WEBPACK_IMPORTED_MODULE_0__["createElement"](GivenStep, { onChange: this.onChange, data: data.stepResult, key: data.index }))
-                // this.preconditions.map((_, i) => GivenStep(i))
-                // 	.map(X => <X {...this.props} />)
-                ));
+                    this.state.data.map(data => react__WEBPACK_IMPORTED_MODULE_0__["createElement"](GivenStep, { onChange: this.onChange, data: data.stepResult, key: data.index }))));
             };
             this.nextId = 1;
             this.add = this.add.bind(this);
@@ -2410,18 +2378,17 @@ function GivenSteps(options) {
         componentDidMount() {
             globalStepNavigator.onTurn(_testStep__WEBPACK_IMPORTED_MODULE_3__["TestStepTurn"].Given, () => {
                 this.setState({ isActive: true });
+                if (this.props.data)
+                    this.setState({ data: this.props.data });
             });
         }
         add(event) {
             const data = this.state.data;
             data.unshift({ index: this.nextId });
             this.nextId++;
-            // const {extraProp, ...passThroughProps } =this.props
             this.setState({ data: data });
-            // this.setState({ preconditions: this.state.preconditions.concat({ id: this.state.preconditions.length, value: null }) })
         }
     };
-    // return <GivenSteps />;
 }
 
 
@@ -2927,8 +2894,18 @@ __webpack_require__.r(__webpack_exports__);
 class QueuingMachine {
     constructor(sortedTokens) {
         this.sortedTokens = sortedTokens;
-        this.onTurn = (token, whatToDo) => this.tasks[this.sortedTokens.indexOf(token)] = whatToDo;
-        this.nextTurn = () => this.tasks.shift()();
+        this.onTurn = (token, whatToDo) => {
+            console.log(token, 'registered, func:', whatToDo);
+            this.tasks[this.sortedTokens.indexOf(token)] = whatToDo;
+            // if(this.tasks.length == this.sortedTokens.length){
+            //     this.start()
+            // }
+        };
+        this.nextTurn = () => {
+            console.log('Remaining tasks:', this.tasks);
+            console.log('Shifting.');
+            this.tasks.shift()();
+        };
         this.start = () => this.nextTurn();
         this.tasks = [];
     }
@@ -2967,7 +2944,7 @@ class TestStepOptions {
 }
 class TestStepProps {
 }
-function testStep({ stepTitle, selectionWaitingMessage, turn, board, stepNavigator }) {
+function testStep({ stepType, selectionWaitingMessage, turn, board, stepNavigator }) {
     return class TestStepContainer extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
         constructor(props) {
             super(props);
@@ -2975,7 +2952,7 @@ function testStep({ stepTitle, selectionWaitingMessage, turn, board, stepNavigat
         updateWidget(widget) {
             // this.setState({ widget: widget } as StepResult);
             // console.log('state set:', this.state)
-            this.props.onChange({ widget: widget });
+            this.props.onChange({ widget: widget, metadata: { stepType: stepType } });
         }
         componentDidMount() {
             return __awaiter(this, void 0, void 0, function* () {
@@ -2984,7 +2961,7 @@ function testStep({ stepTitle, selectionWaitingMessage, turn, board, stepNavigat
                     board.showNotification(selectionWaitingMessage);
                     console.log('Waiting...');
                     board.onNextSingleSelection(widget => {
-                        console.log('Done...');
+                        console.log(turn, 'Done...');
                         this.updateWidget(widget);
                         stepNavigator.nextTurn();
                     });
@@ -2995,7 +2972,7 @@ function testStep({ stepTitle, selectionWaitingMessage, turn, board, stepNavigat
             var _a, _b;
             return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null,
                 react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("h1", null,
-                    stepTitle,
+                    stepType,
                     " "),
                 react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", null, (_b = (_a = this.props.data) === null || _a === void 0 ? void 0 : _a.widget) === null || _b === void 0 ? void 0 : _b.text)));
         }
@@ -29321,7 +29298,7 @@ __webpack_require__.r(__webpack_exports__);
 const WhenStep = Object(_testStep__WEBPACK_IMPORTED_MODULE_0__["testStep"])({
     board: _Given__WEBPACK_IMPORTED_MODULE_1__["globalBoard"],
     stepNavigator: _Given__WEBPACK_IMPORTED_MODULE_1__["globalStepNavigator"],
-    stepTitle: _testStep__WEBPACK_IMPORTED_MODULE_0__["TestStepTurn"].When,
+    stepType: _testStep__WEBPACK_IMPORTED_MODULE_0__["TestStepTurn"].When,
     selectionWaitingMessage: 'Select the exercise you want to test.',
     turn: _testStep__WEBPACK_IMPORTED_MODULE_0__["TestStepTurn"].When,
 });
@@ -29341,7 +29318,7 @@ __webpack_require__.r(__webpack_exports__);
 const ThenStep = Object(_testStep__WEBPACK_IMPORTED_MODULE_0__["testStep"])({
     board: _Given__WEBPACK_IMPORTED_MODULE_1__["globalBoard"],
     stepNavigator: _Given__WEBPACK_IMPORTED_MODULE_1__["globalStepNavigator"],
-    stepTitle: _testStep__WEBPACK_IMPORTED_MODULE_0__["TestStepTurn"].Then,
+    stepType: _testStep__WEBPACK_IMPORTED_MODULE_0__["TestStepTurn"].Then,
     selectionWaitingMessage: 'What should happen then?',
     turn: _testStep__WEBPACK_IMPORTED_MODULE_0__["TestStepTurn"].Then,
 });
