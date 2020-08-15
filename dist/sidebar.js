@@ -2981,9 +2981,7 @@ function testStep({ stepType, selectionWaitingMessage, turn, board, stepNavigato
                 react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("h1", null,
                     stepType,
                     " "),
-                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", null, (_b = (_a = this.props.data) === null || _a === void 0 ? void 0 : _a.widget) === null || _b === void 0 ? void 0 : _b.text),
-                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("br", null),
-                this.props.data && react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("button", { onClick: this.makeExample.bind(this) }, "Make an Example")));
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", null, (_b = (_a = this.props.data) === null || _a === void 0 ? void 0 : _a.widget) === null || _b === void 0 ? void 0 : _b.text)));
         }
     };
 }
