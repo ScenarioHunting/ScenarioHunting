@@ -56,10 +56,10 @@ export function testStep({ stepType, selectionWaitingMessage, turn, board, stepN
             return (<div>
                 <h1>{stepType} </h1>
                 <span>{this.props.data?.widget?.text}</span>
-                <br />
+                {/* <br />
                 {this.props.data && <button
                     onClick={this.makeExample.bind(this)}>Make an Example</button>
-                }
+                } */}
             </div>);
         }
     };
