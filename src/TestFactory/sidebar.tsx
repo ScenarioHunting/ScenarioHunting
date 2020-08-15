@@ -3,8 +3,10 @@ import { globalBoard, globalStepNavigator, Givens, IndexedStepResult } from './G
 import * as ReactDOM from 'react-dom';
 import { WhenStep as When } from './When';
 import { ThenStep as Then } from './Then';
-import { StepResult } from './testStep';
-function compositionRoot(){
+import { StepResult, TestStepTurn } from './testStep';
+import { Board } from 'Board';
+import { IQueuingMachine } from './QueuingMachine';
+function compositionRoot(globalBoard : Board, globalStepNavigator : IQueuingMachine<TestStepTurn>){
 
 }
 function TestBuilder(props) {
@@ -25,7 +27,6 @@ function TestBuilder(props) {
 	const [givenResult, setGivenResult] = React.useState<IndexedStepResult[]>()
 
 	const updateGivens = (givenResults: IndexedStepResult[]) => {
-		console.log(givenResults, 'givenResults')
 		setGivenResult(givenResults)
 	}
 	const updateWhen = (when: StepResult) => {
@@ -50,6 +51,9 @@ function TestBuilder(props) {
 			// canEdit={s => this.test?.then?.title != null
 			// 	&& this.test?.when?.example != null} 
 			/>
+
+			<button>Save</button>
+			
 		</div>
 	);
 }

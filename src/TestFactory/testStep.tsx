@@ -49,11 +49,17 @@ export function testStep({ stepType, selectionWaitingMessage, turn, board, stepN
                 });
             });
         }
+        makeExample() {
+            board.openModal('../modal.html')
+        }
         render() {
             return (<div>
                 <h1>{stepType} </h1>
-                {/* <h3>{this.state?.widget?.text ?? '?'}</h3> */}
                 <span>{this.props.data?.widget?.text}</span>
+                <br />
+                {this.props.data && <button
+                    onClick={this.makeExample.bind(this)}>Make an Example</button>
+                }
             </div>);
         }
     };

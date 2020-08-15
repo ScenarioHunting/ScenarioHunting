@@ -112,7 +112,7 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 
 
 
-function compositionRoot() {
+function compositionRoot(globalBoard, globalStepNavigator) {
 }
 function TestBuilder(props) {
     react__WEBPACK_IMPORTED_MODULE_0__["useEffect"](() => {
@@ -129,7 +129,6 @@ function TestBuilder(props) {
     const [thenResult, setThenResult] = react__WEBPACK_IMPORTED_MODULE_0__["useState"]();
     const [givenResult, setGivenResult] = react__WEBPACK_IMPORTED_MODULE_0__["useState"]();
     const updateGivens = (givenResults) => {
-        console.log(givenResults, 'givenResults');
         setGivenResult(givenResults);
     };
     const updateWhen = (when) => {
@@ -141,7 +140,8 @@ function TestBuilder(props) {
     return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null,
         react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_Given__WEBPACK_IMPORTED_MODULE_1__["Givens"], { onChange: updateGivens, data: givenResult }),
         react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_When__WEBPACK_IMPORTED_MODULE_3__["WhenStep"], { onChange: updateWhen, data: whenResult }),
-        react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_Then__WEBPACK_IMPORTED_MODULE_4__["ThenStep"], { onChange: updateThen, data: thenResult })));
+        react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_Then__WEBPACK_IMPORTED_MODULE_4__["ThenStep"], { onChange: updateThen, data: thenResult }),
+        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("button", null, "Save")));
 }
 react_dom__WEBPACK_IMPORTED_MODULE_2__["render"](react__WEBPACK_IMPORTED_MODULE_0__["createElement"](TestBuilder, null), document.getElementById('react-app'));
 
@@ -2829,6 +2829,10 @@ class Board {
         this.unselectAll = () => miro.board.selection.clear();
         this.showNotification = (message) => miro.showNotification(message);
     }
+    openModal(modalAddress) {
+        miro.board.ui.openModal(modalAddress, { width: 50, height: 50 });
+        throw new Error("Method not implemented.");
+    }
     onNextSingleSelection(succeed) {
         console.log("Waiting for the next single selection!");
         const select = (selections) => __awaiter(this, void 0, void 0, function* () {
@@ -2968,13 +2972,18 @@ function testStep({ stepType, selectionWaitingMessage, turn, board, stepNavigato
                 });
             });
         }
+        makeExample() {
+            board.openModal('../modal.html');
+        }
         render() {
             var _a, _b;
             return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null,
                 react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("h1", null,
                     stepType,
                     " "),
-                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", null, (_b = (_a = this.props.data) === null || _a === void 0 ? void 0 : _a.widget) === null || _b === void 0 ? void 0 : _b.text)));
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", null, (_b = (_a = this.props.data) === null || _a === void 0 ? void 0 : _a.widget) === null || _b === void 0 ? void 0 : _b.text),
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("br", null),
+                this.props.data && react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("button", { onClick: this.makeExample.bind(this) }, "Make an Example")));
         }
     };
 }

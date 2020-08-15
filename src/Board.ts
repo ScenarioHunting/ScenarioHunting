@@ -1,7 +1,11 @@
 
 export class Board {
+    openModal(modalAddress: string) {
+        miro.board.ui.openModal(modalAddress, { width: 50, height: 50 })
+        throw new Error("Method not implemented.");
+    }
 
-    onNextSingleSelection(succeed: (selected:Widget) => void) {
+    onNextSingleSelection(succeed: (selected: Widget) => void) {
         console.log("Waiting for the next single selection!")
         const select = async (selections) => {
             var widgets = selections.data;
@@ -15,7 +19,7 @@ export class Board {
                 console.log(`${widgets.length} items are selected. Only a single one can be selected.`)
                 return
             }
-            
+
             console.log("Getting the widget.")
             var widget = (await miro.board.widgets.get({ id: widgets[0].id }))[0];
             console.log("Converting the widget")
