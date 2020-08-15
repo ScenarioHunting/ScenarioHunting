@@ -9,7 +9,12 @@
     "target": "es6",
     "moduleResolution": "node",
     "jsx": "react",
-    "allowJs": true
+    "allowJs": true,
+    "lib": [
+      "es2019",
+      "dom",
+      "esnext"
+    ]
   },
   "include": [
     "src/**/*",

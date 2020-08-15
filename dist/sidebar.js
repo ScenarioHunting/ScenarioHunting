@@ -2352,7 +2352,7 @@ function GivenSteps(options) {
         constructor(props) {
             super(props);
             this.onChange = (updated) => {
-                const data = this.state.data.map(theOld => theOld.stepResult == undefined || theOld.stepResult.widget.id === updated.widget.id
+                const data = this.state.data.map(theOld => theOld.stepResult == undefined || theOld.stepResult.metadata.widget.id === updated.metadata.widget.id
                     ? { stepResult: updated, index: theOld.index }
                     : theOld);
                 this.setState({ data: data });
@@ -2876,14 +2876,21 @@ function convertToDto(widget) {
     }
     else
         return 'The widget ' + JSON.stringify(widget) + ' is does not have x, and y.';
-    if ("plainText" in widget)
-        dto.text = widget["plainText"];
-    else if ("text" in widget)
+    // if ("plainText" in widget)
+    //     dto.text = widget["plainText"]
+    // else 
+    if ("text" in widget)
         dto.text = widget["text"];
     else if ("captions" in widget)
         dto.text = widget["captions"][0]["text"];
     else
         return 'The widget ' + JSON.stringify(widget) + ' is does not have any text.';
+    dto.text = dto.text
+        .split('</p><p>').join('\n')
+        .replace('<p>', '')
+        .replace('</p>', '')
+        .replace('&#43;', '+');
+    console.log('Widget text converted by board.:', dto.text);
     return dto;
 }
 
@@ -2956,7 +2963,21 @@ function testStep({ stepType, selectionWaitingMessage, turn, board, stepNavigato
         updateWidget(widget) {
             // this.setState({ widget: widget } as StepResult);
             // console.log('state set:', this.state)
-            this.props.onChange({ widget: widget, metadata: { stepType: stepType } });
+            this.toStepData(widget, data => this.props.onChange({ title: data.title, example: data.example, metadata: { widget: widget, stepType: stepType } }), err => {
+                board.showNotification(err);
+            });
+        }
+        toStepData(widget, succeed, fail) {
+            const chunks = widget.text.split('\n');
+            const title = chunks.shift();
+            if (!title) {
+                fail("Unknown text format.");
+            }
+            const value = chunks
+                .map(p => p.split(":"))
+                .map(p => [p[0], p[1]]);
+            const example = Object.fromEntries(value);
+            succeed({ title, example });
         }
         componentDidMount() {
             return __awaiter(this, void 0, void 0, function* () {
@@ -2981,7 +3002,8 @@ function testStep({ stepType, selectionWaitingMessage, turn, board, stepNavigato
                 react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("h1", null,
                     stepType,
                     " "),
-                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", null, (_b = (_a = this.props.data) === null || _a === void 0 ? void 0 : _a.widget) === null || _b === void 0 ? void 0 : _b.text)));
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", null, (_a = this.props.data) === null || _a === void 0 ? void 0 : _a.title),
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", null, JSON.stringify((_b = this.props.data) === null || _b === void 0 ? void 0 : _b.example))));
         }
     };
 }

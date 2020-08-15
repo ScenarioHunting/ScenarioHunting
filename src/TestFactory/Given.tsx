@@ -74,7 +74,7 @@ function GivenSteps(options: TestStepOptions) {
 		}
 		onChange = (updated: StepResult) => {
 			const data = this.state.data.map(
-				theOld => theOld.stepResult == undefined || theOld.stepResult.widget.id === updated.widget.id
+				theOld => theOld.stepResult == undefined || theOld.stepResult.metadata.widget.id === updated.metadata.widget.id
 					? { stepResult: updated, index: theOld.index } as IndexedStepResult
 					: theOld)
 			this.setState({ data: data })

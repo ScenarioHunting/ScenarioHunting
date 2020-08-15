@@ -66,12 +66,19 @@ function convertToDto(widget: SDK.IWidget): Widget | string {
     else
         return 'The widget ' + JSON.stringify(widget) + ' is does not have x, and y.'
 
-    if ("plainText" in widget)
-        dto.text = widget["plainText"]
-    else if ("text" in widget) dto.text = widget["text"];
+    // if ("plainText" in widget)
+    //     dto.text = widget["plainText"]
+    // else 
+    if ("text" in widget) dto.text = widget["text"];
     else if ("captions" in widget)
         dto.text = widget["captions"][0]["text"]
     else
         return 'The widget ' + JSON.stringify(widget) + ' is does not have any text.'
+    dto.text = dto.text
+        .split('</p><p>').join('\n')
+        .replace('<p>', '')
+        .replace('</p>', '')
+        .replace('&#43;', '+')
+    console.log('Widget text converted by board.:', dto.text)
     return dto
 }

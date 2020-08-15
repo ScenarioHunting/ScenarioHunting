@@ -1,6 +1,9 @@
 import * as React from 'react';
 import { Board, Widget } from 'Board';
 import { IQueuingMachine } from './QueuingMachine';
+import { stringify } from 'querystring';
+import { title } from 'process';
+import { fail } from 'assert';
 export enum TestStepTurn {
     Then = 'Then',
     When = 'When',
@@ -16,10 +19,12 @@ export class TestStepOptions {
 }
 export type StepMetadata = {
     stepType: string
+    widget: Widget
 }
 export type StepResult = {
     metadata: StepMetadata
-    widget: Widget
+    title: string
+    example: any
 }
 export class TestStepProps {
     // canEdit: (any) => boolean
@@ -35,7 +40,25 @@ export function testStep({ stepType, selectionWaitingMessage, turn, board, stepN
         updateWidget(widget: Widget) {
             // this.setState({ widget: widget } as StepResult);
             // console.log('state set:', this.state)
-            this.props.onChange({ widget: widget, metadata: { stepType: stepType } } as StepResult);
+            this.toStepData(widget,
+                data =>
+                    this.props.onChange({ title: data.title, example: data.example, metadata: { widget: widget, stepType: stepType } } as StepResult)
+                ,
+                err => {
+                    board.showNotification(err)
+                })
+        }
+        toStepData(widget: Widget, succeed: ({ title: string, example: any }) => void, fail: (string) => void) {
+            const chunks = widget.text.split('\n')
+            const title = chunks.shift();
+            if (!title) {
+                fail("Unknown text format.")
+            }
+            const value = chunks
+                .map(p => p.split(":"))
+                .map(p => [p[0], p[1]]);
+            const example = Object.fromEntries(value)
+            succeed({ title, example })
         }
         async componentDidMount() {
             board.unselectAll();
@@ -55,7 +78,8 @@ export function testStep({ stepType, selectionWaitingMessage, turn, board, stepN
         render() {
             return (<div>
                 <h1>{stepType} </h1>
-                <span>{this.props.data?.widget?.text}</span>
+                <span>{this.props.data?.title}</span>
+                <span>{JSON.stringify(this.props.data?.example)}</span>
                 {/* <br />
                 {this.props.data && <button
                     onClick={this.makeExample.bind(this)}>Make an Example</button>
