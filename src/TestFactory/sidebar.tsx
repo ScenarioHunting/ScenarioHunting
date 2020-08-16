@@ -6,14 +6,14 @@ import { ThenStep as Then } from './Then';
 import { StepResult, TestStepTurn } from './testStep';
 import { Board } from 'Board';
 import { IQueuingMachine } from './QueuingMachine';
-function compositionRoot(globalBoard : Board, globalStepNavigator : IQueuingMachine<TestStepTurn>){
+function compose(globalBoard: Board, globalStepNavigator: IQueuingMachine<TestStepTurn>) {
 
 }
 function TestBuilder(props) {
 
 	React.useEffect(() => {
 		globalBoard.unselectAll()
-		.then(globalStepNavigator.start)
+			.then(globalStepNavigator.start)
 	}, [])
 
 
@@ -22,9 +22,9 @@ function TestBuilder(props) {
 		// this.setState({ boardTitle: boardInfo.title });
 	}
 
+	const [givenResult, setGivenResult] = React.useState<IndexedStepResult[]>()
 	const [whenResult, setWhenResult] = React.useState<StepResult>()
 	const [thenResult, setThenResult] = React.useState<StepResult>()
-	const [givenResult, setGivenResult] = React.useState<IndexedStepResult[]>()
 
 	const updateGivens = (givenResults: IndexedStepResult[]) => {
 		setGivenResult(givenResults)
@@ -35,7 +35,11 @@ function TestBuilder(props) {
 	const updateThen = (when: StepResult) => {
 		setThenResult(when)
 	}
-
+	const save = () => {
+		alert('Given:\n' + JSON.stringify(givenResult) + '\n'
+			+ 'When:\n' + JSON.stringify(whenResult) + '\n'
+			+ 'Then:\n' + JSON.stringify(thenResult) + '\n')
+	}
 	return (
 		<div>
 
@@ -52,8 +56,8 @@ function TestBuilder(props) {
 			// 	&& this.test?.when?.example != null} 
 			/>
 
-			<button>Save</button>
-			
+			<button className='build-button' onClick={save}>Save</button>
+
 		</div>
 	);
 }

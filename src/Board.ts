@@ -1,3 +1,4 @@
+import { ReactText, CSSProperties } from "react";
 
 export class Board {
     openModal(modalAddress: string) {
@@ -50,6 +51,7 @@ export type Widget = {
     text: string
     x: number
     y: number
+    style: CSSProperties
 }
 function convertToDto(widget: SDK.IWidget): Widget | string {
     var dto = {
@@ -65,7 +67,16 @@ function convertToDto(widget: SDK.IWidget): Widget | string {
     }
     else
         return 'The widget ' + JSON.stringify(widget) + ' is does not have x, and y.'
+        
+    dto.style = {} as CSSProperties
+    if (widget["style"] && widget["style"]["backgroundColor"]) {
+        console.log('Setting style:',widget["style"]["backgroundColor"])
+        dto.style.backgroundColor = widget["style"]["backgroundColor"]
+    } else if (widget["style"] && widget["style"]["stickerBackgroundColor"]) {
+        console.log('Setting style:',widget["style"]["stickerBackgroundColor"])
+        dto.style.backgroundColor = widget["style"]["stickerBackgroundColor"]
 
+    }
     // if ("plainText" in widget)
     //     dto.text = widget["plainText"]
     // else 

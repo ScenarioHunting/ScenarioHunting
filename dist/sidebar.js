@@ -112,7 +112,7 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 
 
 
-function compositionRoot(globalBoard, globalStepNavigator) {
+function compose(globalBoard, globalStepNavigator) {
 }
 function TestBuilder(props) {
     react__WEBPACK_IMPORTED_MODULE_0__["useEffect"](() => {
@@ -125,9 +125,9 @@ function TestBuilder(props) {
             // this.setState({ boardTitle: boardInfo.title });
         });
     }
+    const [givenResult, setGivenResult] = react__WEBPACK_IMPORTED_MODULE_0__["useState"]();
     const [whenResult, setWhenResult] = react__WEBPACK_IMPORTED_MODULE_0__["useState"]();
     const [thenResult, setThenResult] = react__WEBPACK_IMPORTED_MODULE_0__["useState"]();
-    const [givenResult, setGivenResult] = react__WEBPACK_IMPORTED_MODULE_0__["useState"]();
     const updateGivens = (givenResults) => {
         setGivenResult(givenResults);
     };
@@ -137,11 +137,16 @@ function TestBuilder(props) {
     const updateThen = (when) => {
         setThenResult(when);
     };
+    const save = () => {
+        alert('Given:\n' + JSON.stringify(givenResult) + '\n'
+            + 'When:\n' + JSON.stringify(whenResult) + '\n'
+            + 'Then:\n' + JSON.stringify(thenResult) + '\n');
+    };
     return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null,
         react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_Given__WEBPACK_IMPORTED_MODULE_1__["Givens"], { onChange: updateGivens, data: givenResult }),
         react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_When__WEBPACK_IMPORTED_MODULE_3__["WhenStep"], { onChange: updateWhen, data: whenResult }),
         react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_Then__WEBPACK_IMPORTED_MODULE_4__["ThenStep"], { onChange: updateThen, data: thenResult }),
-        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("button", null, "Save")));
+        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("button", { className: 'build-button', onClick: save }, "Save")));
 }
 react_dom__WEBPACK_IMPORTED_MODULE_2__["render"](react__WEBPACK_IMPORTED_MODULE_0__["createElement"](TestBuilder, null), document.getElementById('react-app'));
 
@@ -2334,7 +2339,7 @@ function GivenStep(props) {
     var Step = Object(_testStep__WEBPACK_IMPORTED_MODULE_3__["testStep"])({
         board: globalBoard,
         stepNavigator: new ImmediateQueuingMachine(),
-        stepType: _testStep__WEBPACK_IMPORTED_MODULE_3__["TestStepTurn"].Given,
+        stepDisplayTitle: '',
         selectionWaitingMessage: 'Select minimum required steps for the when to end up then.',
         turn: _testStep__WEBPACK_IMPORTED_MODULE_3__["TestStepTurn"].Given,
     });
@@ -2343,7 +2348,7 @@ function GivenStep(props) {
 const Givens = GivenSteps({
     board: globalBoard,
     stepNavigator: globalStepNavigator,
-    stepType: _testStep__WEBPACK_IMPORTED_MODULE_3__["TestStepTurn"].Given,
+    stepDisplayTitle: _testStep__WEBPACK_IMPORTED_MODULE_3__["TestStepTurn"].Given,
     selectionWaitingMessage: 'Select minimum required steps for the when to end up then.',
     turn: _testStep__WEBPACK_IMPORTED_MODULE_3__["TestStepTurn"].Given,
 });
@@ -2361,12 +2366,11 @@ function GivenSteps(options) {
             };
             this.render = () => {
                 return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null,
-                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("h1", null, "GivenCollection"),
+                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("h1", null, "Given"),
+                    this.state.data.map(data => react__WEBPACK_IMPORTED_MODULE_0__["createElement"](GivenStep, { onChange: this.onChange, data: data.stepResult, key: data.index })),
                     this.state.isActive &&
                         react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null,
-                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("h3", null, options.selectionWaitingMessage),
-                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("button", { className: "build-button", onClick: this.add.bind(this) }, "+")),
-                    this.state.data.map(data => react__WEBPACK_IMPORTED_MODULE_0__["createElement"](GivenStep, { onChange: this.onChange, data: data.stepResult, key: data.index }))));
+                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("button", { className: "add-row-button", onClick: this.add.bind(this) }, "+ Given"))));
             };
             this.nextId = 1;
             this.add = this.add.bind(this);
@@ -2876,6 +2880,15 @@ function convertToDto(widget) {
     }
     else
         return 'The widget ' + JSON.stringify(widget) + ' is does not have x, and y.';
+    dto.style = {};
+    if (widget["style"] && widget["style"]["backgroundColor"]) {
+        console.log('Setting style:', widget["style"]["backgroundColor"]);
+        dto.style.backgroundColor = widget["style"]["backgroundColor"];
+    }
+    else if (widget["style"] && widget["style"]["stickerBackgroundColor"]) {
+        console.log('Setting style:', widget["style"]["stickerBackgroundColor"]);
+        dto.style.backgroundColor = widget["style"]["stickerBackgroundColor"];
+    }
     // if ("plainText" in widget)
     //     dto.text = widget["plainText"]
     // else 
@@ -2955,8 +2968,8 @@ class TestStepOptions {
 }
 class TestStepProps {
 }
-function testStep({ stepType, selectionWaitingMessage, turn, board, stepNavigator }) {
-    return class TestStepContainer extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
+function testStep({ stepDisplayTitle: stepType, selectionWaitingMessage, turn, board, stepNavigator }) {
+    return class TestStep extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
         constructor(props) {
             super(props);
         }
@@ -2997,13 +3010,14 @@ function testStep({ stepType, selectionWaitingMessage, turn, board, stepNavigato
             board.openModal('../modal.html');
         }
         render() {
-            var _a, _b;
+            var _a, _b, _c;
             return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null,
                 react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("h1", null,
                     stepType,
                     " "),
-                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", null, (_a = this.props.data) === null || _a === void 0 ? void 0 : _a.title),
-                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", null, JSON.stringify((_b = this.props.data) === null || _b === void 0 ? void 0 : _b.example))));
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { style: (_a = this.props.data) === null || _a === void 0 ? void 0 : _a.metadata.widget.style },
+                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", null, (_b = this.props.data) === null || _b === void 0 ? void 0 : _b.title),
+                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", null, JSON.stringify((_c = this.props.data) === null || _c === void 0 ? void 0 : _c.example)))));
         }
     };
 }
@@ -29327,7 +29341,7 @@ __webpack_require__.r(__webpack_exports__);
 const WhenStep = Object(_testStep__WEBPACK_IMPORTED_MODULE_0__["testStep"])({
     board: _Given__WEBPACK_IMPORTED_MODULE_1__["globalBoard"],
     stepNavigator: _Given__WEBPACK_IMPORTED_MODULE_1__["globalStepNavigator"],
-    stepType: _testStep__WEBPACK_IMPORTED_MODULE_0__["TestStepTurn"].When,
+    stepDisplayTitle: _testStep__WEBPACK_IMPORTED_MODULE_0__["TestStepTurn"].When,
     selectionWaitingMessage: 'Select the exercise you want to test.',
     turn: _testStep__WEBPACK_IMPORTED_MODULE_0__["TestStepTurn"].When,
 });
@@ -29347,7 +29361,7 @@ __webpack_require__.r(__webpack_exports__);
 const ThenStep = Object(_testStep__WEBPACK_IMPORTED_MODULE_0__["testStep"])({
     board: _Given__WEBPACK_IMPORTED_MODULE_1__["globalBoard"],
     stepNavigator: _Given__WEBPACK_IMPORTED_MODULE_1__["globalStepNavigator"],
-    stepType: _testStep__WEBPACK_IMPORTED_MODULE_0__["TestStepTurn"].Then,
+    stepDisplayTitle: _testStep__WEBPACK_IMPORTED_MODULE_0__["TestStepTurn"].Then,
     selectionWaitingMessage: 'What should happen then?',
     turn: _testStep__WEBPACK_IMPORTED_MODULE_0__["TestStepTurn"].Then,
 });

@@ -11,7 +11,7 @@ export enum TestStepTurn {
 }
 
 export class TestStepOptions {
-    stepType: string
+    stepDisplayTitle: string
     selectionWaitingMessage: string
     turn: TestStepTurn
     board: Board
@@ -32,8 +32,8 @@ export class TestStepProps {
     data?: StepResult
 }
 
-export function testStep({ stepType, selectionWaitingMessage, turn, board, stepNavigator }: TestStepOptions) {
-    return class TestStepContainer extends React.Component<TestStepProps, StepResult> {
+export function testStep({ stepDisplayTitle: stepType, selectionWaitingMessage, turn, board, stepNavigator }: TestStepOptions) {
+    return class TestStep extends React.Component<TestStepProps, StepResult> {
         constructor(props: TestStepProps) {
             super(props);
         }
@@ -76,14 +76,16 @@ export function testStep({ stepType, selectionWaitingMessage, turn, board, stepN
             board.openModal('../modal.html')
         }
         render() {
-            return (<div>
+            return (<div >
                 <h1>{stepType} </h1>
-                <span>{this.props.data?.title}</span>
-                <span>{JSON.stringify(this.props.data?.example)}</span>
-                {/* <br />
+                <div style={this.props.data?.metadata.widget.style}>
+                    <span>{this.props.data?.title}</span>
+                    <span>{JSON.stringify(this.props.data?.example)}</span>
+                    {/* <br />
                 {this.props.data && <button
                     onClick={this.makeExample.bind(this)}>Make an Example</button>
                 } */}
+                </div>
             </div>);
         }
     };

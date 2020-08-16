@@ -19,7 +19,7 @@ function GivenStep(props: TestStepProps) {
 	var Step = testStep({
 		board: globalBoard,
 		stepNavigator: new ImmediateQueuingMachine<TestStepTurn>(),
-		stepType: TestStepTurn.Given,
+		stepDisplayTitle: '',
 		selectionWaitingMessage: 'Select minimum required steps for the when to end up then.',
 		turn: TestStepTurn.Given,
 	});
@@ -28,7 +28,7 @@ function GivenStep(props: TestStepProps) {
 export const Givens = GivenSteps({
 	board: globalBoard,
 	stepNavigator: globalStepNavigator,
-	stepType: TestStepTurn.Given,
+	stepDisplayTitle: TestStepTurn.Given,
 	selectionWaitingMessage: 'Select minimum required steps for the when to end up then.',
 	turn: TestStepTurn.Given,
 })
@@ -84,17 +84,9 @@ function GivenSteps(options: TestStepOptions) {
 		render = () => {
 			return (
 				<div>
-					<h1>GivenCollection</h1>
+					<h1>Given</h1>
 
-					{this.state.isActive &&
-						<>
-							<h3>{options.selectionWaitingMessage}</h3>
-							<button className="build-button"
-								onClick={this.add.bind(this)}>
-								+
-							</button>
-						</>
-					}
+
 					{
 						this.state.data.map(data =>
 							<GivenStep
@@ -102,6 +94,15 @@ function GivenSteps(options: TestStepOptions) {
 								data={data.stepResult}
 								key={data.index}
 							/>)
+					}
+					{this.state.isActive &&
+						<>
+							{/* <h3>{options.selectionWaitingMessage}</h3> */}
+							<button className="add-row-button"
+								onClick={this.add.bind(this)}>
+								+ Given
+							</button>
+						</>
 					}
 				</div>
 			)
