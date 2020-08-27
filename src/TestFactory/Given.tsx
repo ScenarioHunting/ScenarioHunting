@@ -2,7 +2,8 @@ require('./styles.less')
 import * as React from 'react'
 import { Board } from '../Board';
 import { QueuingMachine } from './QueuingMachine';
-import { testStep, TestStepTurn, TestStepProps, TestStepOptions, StepResult } from './testStep';
+import { testStepRecorder, TestStepTurn, TestStepProps, TestStepOptions } from './testStepRecorder';
+import { Step } from "./Step";
 
 
 class ImmediateQueuingMachine<T>{
@@ -16,7 +17,7 @@ export const globalStepNavigator = new QueuingMachine([TestStepTurn.When, TestSt
 
 function GivenStep(props: TestStepProps) {
 
-	var Step = testStep({
+	var Step = testStepRecorder({
 		board: globalBoard,
 		stepNavigator: new ImmediateQueuingMachine<TestStepTurn>(),
 		stepDisplayTitle: '',
@@ -32,18 +33,18 @@ export const Givens = GivenSteps({
 	selectionWaitingMessage: 'Select minimum required steps for the when to end up then.',
 	turn: TestStepTurn.Given,
 })
-export type IndexedStepResult = {
+export type IndexedStep = {
 	index: number
-	stepResult: StepResult
+	step: Step
 }
 export type GivenStepsProps = {
-	onChange: (stepResults: IndexedStepResult[]) => void
-	data?: IndexedStepResult[]
+	onStepSelectionChange: (stepResults: IndexedStep[]) => void
+	steps?: IndexedStep[]
 }
 function GivenSteps(options: TestStepOptions) {
 	type State = {
 		isActive: boolean
-		data: IndexedStepResult[]
+		indexedSteps: IndexedStep[]
 	}
 
 	return class GivenSteps extends React.Component<GivenStepsProps, State> {
@@ -54,55 +55,65 @@ function GivenSteps(options: TestStepOptions) {
 			this.add = this.add.bind(this)
 			this.state = {
 				isActive: false,
-				data: []
+				indexedSteps: []
 			}
 		}
 
 		componentDidMount() {
 			globalStepNavigator.onTurn(TestStepTurn.Given, () => {
 				this.setState({ isActive: true })
-				if (this.props.data)
-					this.setState({ data: this.props.data })
+				if (this.props.steps)
+					this.setState({ indexedSteps: this.props.steps })
 			})
 		}
 		nextId: number
 		add(event) {
-			const data = this.state.data;
-			data.unshift({ index: this.nextId } as IndexedStepResult)
+			const data = this.state.indexedSteps;
+			data.unshift({ index: this.nextId } as IndexedStep)
 			this.nextId++;
-			this.setState({ data: data })
+			this.setState({ indexedSteps: data })
 		}
-		onChange = (updated: StepResult) => {
-			const data = this.state.data.map(
-				theOld => theOld.stepResult == undefined || theOld.stepResult.metadata.widget.id === updated.metadata.widget.id
-					? { stepResult: updated, index: theOld.index } as IndexedStepResult
-					: theOld)
-			this.setState({ data: data })
-			this.props.onChange(data)
-			console.log("onChange:", data)
+		onStepSelection = (updatedStep: Step) => {
+			// function replace<T>(arr: Array<T>, newItem: T, predicate: (old: T) => Boolean) {
+			// }
+			const replaceOldIfEqual = (oldStep: IndexedStep, updatedStep: Step) => {
+
+				const oldEqualsNew: boolean = oldStep.step == undefined
+					|| oldStep.step.metadata.widget.id === updatedStep.metadata.widget.id
+
+				return oldEqualsNew
+					? { step: updatedStep, index: oldStep.index } as IndexedStep
+					: oldStep
+			}
+
+			const indexedStep = this.state.indexedSteps.map(oldStep => replaceOldIfEqual(oldStep, updatedStep))
+
+			this.setState({ indexedSteps: indexedStep })
+
+			this.props.onStepSelectionChange(indexedStep)
+			console.log("onChange:", indexedStep)
 		}
 		render = () => {
 			return (
 				<div>
 					<h1>Given</h1>
-
-
-					{
-						this.state.data.map(data =>
-							<GivenStep
-								onChange={this.onChange}
-								data={data.stepResult}
-								key={data.index}
-							/>)
-					}
+					
 					{this.state.isActive &&
 						<>
 							{/* <h3>{options.selectionWaitingMessage}</h3> */}
-							<button className="add-row-button"
+							<button className="add-step-button"
 								onClick={this.add.bind(this)}>
 								+ Given
 							</button>
 						</>
+					}
+					{
+						this.state.indexedSteps.map(data =>
+							<GivenStep
+								onStepSelection={this.onStepSelection}
+								step={data.step}
+								key={data.index}
+							/>)
 					}
 				</div>
 			)

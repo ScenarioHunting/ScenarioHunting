@@ -81,168 +81,12 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 23);
+/******/ 	return __webpack_require__(__webpack_require__.s = 40);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 11:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/*
-  MIT License http://www.opensource.org/licenses/mit-license.php
-  Author Tobias Koppers @sokra
-*/
-// css base code, injected by the css-loader
-// eslint-disable-next-line func-names
-module.exports = function (useSourceMap) {
-  var list = []; // return the list of modules as css string
-
-  list.toString = function toString() {
-    return this.map(function (item) {
-      var content = cssWithMappingToString(item, useSourceMap);
-
-      if (item[2]) {
-        return "@media ".concat(item[2], " {").concat(content, "}");
-      }
-
-      return content;
-    }).join('');
-  }; // import a list of modules into the list
-  // eslint-disable-next-line func-names
-
-
-  list.i = function (modules, mediaQuery, dedupe) {
-    if (typeof modules === 'string') {
-      // eslint-disable-next-line no-param-reassign
-      modules = [[null, modules, '']];
-    }
-
-    var alreadyImportedModules = {};
-
-    if (dedupe) {
-      for (var i = 0; i < this.length; i++) {
-        // eslint-disable-next-line prefer-destructuring
-        var id = this[i][0];
-
-        if (id != null) {
-          alreadyImportedModules[id] = true;
-        }
-      }
-    }
-
-    for (var _i = 0; _i < modules.length; _i++) {
-      var item = [].concat(modules[_i]);
-
-      if (dedupe && alreadyImportedModules[item[0]]) {
-        // eslint-disable-next-line no-continue
-        continue;
-      }
-
-      if (mediaQuery) {
-        if (!item[2]) {
-          item[2] = mediaQuery;
-        } else {
-          item[2] = "".concat(mediaQuery, " and ").concat(item[2]);
-        }
-      }
-
-      list.push(item);
-    }
-  };
-
-  return list;
-};
-
-function cssWithMappingToString(item, useSourceMap) {
-  var content = item[1] || ''; // eslint-disable-next-line prefer-destructuring
-
-  var cssMapping = item[3];
-
-  if (!cssMapping) {
-    return content;
-  }
-
-  if (useSourceMap && typeof btoa === 'function') {
-    var sourceMapping = toComment(cssMapping);
-    var sourceURLs = cssMapping.sources.map(function (source) {
-      return "/*# sourceURL=".concat(cssMapping.sourceRoot || '').concat(source, " */");
-    });
-    return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
-  }
-
-  return [content].join('\n');
-} // Adapted from convert-source-map (MIT)
-
-
-function toComment(sourceMap) {
-  // eslint-disable-next-line no-undef
-  var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
-  var data = "sourceMappingURL=data:application/json;charset=utf-8;base64,".concat(base64);
-  return "/*# ".concat(data, " */");
-}
-
-/***/ }),
-
-/***/ 23:
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(24);
-let closeButton = document.querySelector('.close-button');
-closeButton.addEventListener('click', () => {
-    miro.board.ui.closeModal();
-});
-
-
-/***/ }),
-
-/***/ 24:
-/***/ (function(module, exports, __webpack_require__) {
-
-var api = __webpack_require__(9);
-            var content = __webpack_require__(25);
-
-            content = content.__esModule ? content.default : content;
-
-            if (typeof content === 'string') {
-              content = [[module.i, content, '']];
-            }
-
-var options = {};
-
-options.insert = "head";
-options.singleton = false;
-
-var update = api(content, options);
-
-
-
-module.exports = content.locals || {};
-
-/***/ }),
-
-/***/ 25:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(11);
-/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
-// Imports
-
-var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(false);
-// Module
-___CSS_LOADER_EXPORT___.push([module.i, "html {\n  height: 100%;\n}\nbody {\n  height: 100%;\n  font-family: helvetica, arial, sans-serif;\n  margin: 2em;\n}\n.centered-for-demo {\n  height: 100%;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  flex-direction: column;\n}\n.i-am-red {\n  background-color: red;\n}\n.i-am-blue {\n  background-color: #88c1ff;\n}\n.i-am-yellow {\n  background-color: yellow;\n}\n.cats-container {\n  max-height: 100%;\n  overflow: auto;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\nh1 {\n  font-style: italic;\n  color: #373fff;\n}\nhtml,\nbody {\n  height: 100%;\n  margin: 0;\n  padding: 0;\n}\n.scrollable-container {\n  height: 100%;\n  overflow-y: auto;\n  padding-top: 30px;\n  padding-left: 23px;\n  padding-bottom: 20px;\n  box-sizing: border-box;\n}\n.scrollable-content {\n  height: 2000px;\n  background-color: #2a79ff;\n}\n.add-row-button {\n  display: block;\n  background: none;\n  border: 1px solid #4262FF;\n  color: #4262FF;\n  height: 30px;\n  box-sizing: border-box;\n  border-radius: 4px;\n  text-align: center;\n  font-size: 14px;\n  cursor: pointer;\n  margin-bottom: 20px;\n}\n.build-button {\n  display: block;\n  background-color: #4262FF;\n  border: none;\n  color: #FFF;\n  height: 50px;\n  box-sizing: border-box;\n  border-radius: 4px;\n  text-align: center;\n  font-size: 22px;\n  cursor: pointer;\n  width: 274px;\n}\n.row-input {\n  display: inline-block;\n  vertical-align: top;\n  width: 107px;\n  height: 30px;\n  border: 1px solid #CCC;\n  border-radius: 4px;\n  padding: 4px 4px 4px 6px;\n  box-sizing: border-box;\n}\n.delete-button {\n  display: inline-block;\n  vertical-align: top;\n  height: 30px;\n  background: none;\n  border: 1px solid #CCC;\n  box-sizing: border-box;\n  border-radius: 4px;\n  margin-left: 8px;\n  cursor: pointer;\n}\n.row-input:hover,\n.row-input:active,\n.delete-button:hover,\n.delete-button:active {\n  border: 1px solid #666;\n}\n.row {\n  margin-bottom: 20px;\n}\n", ""]);
-// Exports
-/* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
-
-
-/***/ }),
-
-/***/ 9:
+/***/ 16:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -515,6 +359,162 @@ module.exports = function (list, options) {
     lastIdentifiers = newLastIdentifiers;
   };
 };
+
+/***/ }),
+
+/***/ 18:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/*
+  MIT License http://www.opensource.org/licenses/mit-license.php
+  Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+// eslint-disable-next-line func-names
+module.exports = function (useSourceMap) {
+  var list = []; // return the list of modules as css string
+
+  list.toString = function toString() {
+    return this.map(function (item) {
+      var content = cssWithMappingToString(item, useSourceMap);
+
+      if (item[2]) {
+        return "@media ".concat(item[2], " {").concat(content, "}");
+      }
+
+      return content;
+    }).join('');
+  }; // import a list of modules into the list
+  // eslint-disable-next-line func-names
+
+
+  list.i = function (modules, mediaQuery, dedupe) {
+    if (typeof modules === 'string') {
+      // eslint-disable-next-line no-param-reassign
+      modules = [[null, modules, '']];
+    }
+
+    var alreadyImportedModules = {};
+
+    if (dedupe) {
+      for (var i = 0; i < this.length; i++) {
+        // eslint-disable-next-line prefer-destructuring
+        var id = this[i][0];
+
+        if (id != null) {
+          alreadyImportedModules[id] = true;
+        }
+      }
+    }
+
+    for (var _i = 0; _i < modules.length; _i++) {
+      var item = [].concat(modules[_i]);
+
+      if (dedupe && alreadyImportedModules[item[0]]) {
+        // eslint-disable-next-line no-continue
+        continue;
+      }
+
+      if (mediaQuery) {
+        if (!item[2]) {
+          item[2] = mediaQuery;
+        } else {
+          item[2] = "".concat(mediaQuery, " and ").concat(item[2]);
+        }
+      }
+
+      list.push(item);
+    }
+  };
+
+  return list;
+};
+
+function cssWithMappingToString(item, useSourceMap) {
+  var content = item[1] || ''; // eslint-disable-next-line prefer-destructuring
+
+  var cssMapping = item[3];
+
+  if (!cssMapping) {
+    return content;
+  }
+
+  if (useSourceMap && typeof btoa === 'function') {
+    var sourceMapping = toComment(cssMapping);
+    var sourceURLs = cssMapping.sources.map(function (source) {
+      return "/*# sourceURL=".concat(cssMapping.sourceRoot || '').concat(source, " */");
+    });
+    return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
+  }
+
+  return [content].join('\n');
+} // Adapted from convert-source-map (MIT)
+
+
+function toComment(sourceMap) {
+  // eslint-disable-next-line no-undef
+  var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
+  var data = "sourceMappingURL=data:application/json;charset=utf-8;base64,".concat(base64);
+  return "/*# ".concat(data, " */");
+}
+
+/***/ }),
+
+/***/ 40:
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(41);
+let closeButton = document.querySelector('.close-button');
+closeButton.addEventListener('click', () => {
+    miro.board.ui.closeModal();
+});
+
+
+/***/ }),
+
+/***/ 41:
+/***/ (function(module, exports, __webpack_require__) {
+
+var api = __webpack_require__(16);
+            var content = __webpack_require__(42);
+
+            content = content.__esModule ? content.default : content;
+
+            if (typeof content === 'string') {
+              content = [[module.i, content, '']];
+            }
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = api(content, options);
+
+
+
+module.exports = content.locals || {};
+
+/***/ }),
+
+/***/ 42:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(18);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
+// Imports
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(false);
+// Module
+___CSS_LOADER_EXPORT___.push([module.i, ".test-step-view-model-item {\n  width: 100px;\n  height: 100px;\n  display: inline-block;\n  margin: 5px;\n  padding: 5px;\n  overflow-wrap: break-word;\n}\n.test-steps-view-model-item {\n  display: flex;\n}\nhtml {\n  height: 100%;\n}\nbody {\n  height: 100%;\n  font-family: helvetica, arial, sans-serif;\n  margin: 2em;\n}\n.centered-for-demo {\n  height: 100%;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  flex-direction: column;\n}\n.i-am-red {\n  background-color: red;\n}\n.i-am-blue {\n  background-color: #88c1ff;\n}\n.i-am-yellow {\n  background-color: yellow;\n}\n.cats-container {\n  max-height: 100%;\n  overflow: auto;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\nh1 {\n  font-style: italic;\n  color: #373fff;\n}\nhtml,\nbody {\n  height: 100%;\n  margin: 0;\n  padding: 0;\n}\n.scrollable-container {\n  height: 100%;\n  overflow-y: auto;\n  padding-top: 30px;\n  padding-left: 23px;\n  padding-bottom: 20px;\n  box-sizing: border-box;\n}\n.scrollable-content {\n  height: 2000px;\n  background-color: #2a79ff;\n}\n.add-row-button {\n  display: block;\n  background: none;\n  border: 1px solid #4262FF;\n  color: #4262FF;\n  height: 30px;\n  box-sizing: border-box;\n  border-radius: 4px;\n  text-align: center;\n  font-size: 14px;\n  cursor: pointer;\n  margin-bottom: 20px;\n}\n.build-button {\n  display: block;\n  background-color: #4262FF;\n  border: none;\n  color: #FFF;\n  height: 50px;\n  box-sizing: border-box;\n  border-radius: 4px;\n  text-align: center;\n  font-size: 22px;\n  cursor: pointer;\n  width: 274px;\n}\n.row-input {\n  display: inline-block;\n  vertical-align: top;\n  width: 107px;\n  height: 30px;\n  border: 1px solid #CCC;\n  border-radius: 4px;\n  padding: 4px 4px 4px 6px;\n  box-sizing: border-box;\n}\n.delete-button {\n  display: inline-block;\n  vertical-align: top;\n  height: 30px;\n  background: none;\n  border: 1px solid #CCC;\n  box-sizing: border-box;\n  border-radius: 4px;\n  margin-left: 8px;\n  cursor: pointer;\n}\n.row-input:hover,\n.row-input:active,\n.delete-button:hover,\n.delete-button:active {\n  border: 1px solid #666;\n}\n.row {\n  margin-bottom: 20px;\n}\n", ""]);
+// Exports
+/* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
+
 
 /***/ })
 

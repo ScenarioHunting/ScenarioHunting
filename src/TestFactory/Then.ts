@@ -1,7 +1,7 @@
-import { testStep, TestStepTurn } from "./testStep";
+import { testStepRecorder, TestStepTurn } from "./testStepRecorder";
 import { globalBoard, globalStepNavigator } from "./Given";
 
-export const ThenStep = testStep({
+export const ThenStep = testStepRecorder({
 	board: globalBoard,
 	stepNavigator: globalStepNavigator,
 	stepDisplayTitle: TestStepTurn.Then,

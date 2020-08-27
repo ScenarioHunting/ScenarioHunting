@@ -43,25 +43,18 @@ body {
   align-items: center;
 }
 
+
+
 //----------------------------------------------------------------
 
-h1 {
-  font-style: italic;
-  color: #373fff;
-}
 
-html,
-body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-}
 
 .scrollable-container {
     height: 100%;
     overflow-y: auto;
     padding-top: 30px;
-    padding-left: 23px;
+    padding-left: 10px;
+    padding-right: 10px;
     padding-bottom: 20px;
     box-sizing: border-box;
 }
@@ -71,44 +64,10 @@ body {
     background-color: #2a79ff;
 }
 
-.add-row-button {
-    display: block;
-    background: none;
-    border: 1px solid #4262FF;
-    color: #4262FF;
-    height: 30px;
-    box-sizing: border-box;
-    border-radius: 4px;
-    text-align: center;
-    font-size: 14px;
-    cursor: pointer;
-    margin-bottom: 20px;
-}
 
-.build-button {
-    display: block;
-    background-color: #4262FF;
-    border: none;
-    color: #FFF;
-    height: 50px;
-    box-sizing: border-box;
-    border-radius: 4px;
-    text-align: center;
-    font-size: 22px;
-    cursor: pointer;
-    width: 274px;
-}
 
-.row-input {
-    display: inline-block;
-    vertical-align: top;
-    width: 107px;
-    height: 30px;
-    border: 1px solid #CCC;
-    border-radius: 4px;
-    padding: 4px 4px 4px 6px;
-    box-sizing: border-box;
-}
+
+
 
 .delete-button {
     display: inline-block;
@@ -129,4 +88,162 @@ body {
 
 .row {
     margin-bottom: 20px;
+}
+//---------------------------------------------------------------------
+.old-test-recorder{
+  display: grid;
+  grid-template-columns:  1fr 1fr;
+  grid-template-rows: auto auto auto auto auto auto auto;
+  grid-template-areas: 
+    "given given"
+    "when when"
+    "then then"
+    "test-name-label test-name-input"
+    "test-context-label test-context-input"
+    "sut-label sut-input"
+    "save-button save-button";
+}
+.test-recorder{
+  // display: grid;
+  // grid-template-columns:  1fr;
+  // grid-template-rows: 
+  //   auto 
+  //   auto 
+  //   auto 
+  //   auto;
+  // grid-template-areas: 
+  //   "given"
+  //   "when"
+  //   "then"
+  //   "test-form-details";
+
+}
+.test-form-details{
+  display: grid;
+  grid-template-columns:  1fr 1fr;
+  grid-template-rows: auto auto auto auto;
+  grid-template-areas: 
+    "test-name-label test-name-input"
+    "test-context-label test-context-input"
+    "sut-label sut-input"
+    "save-button save-button";
+  padding: 10px 4px 4px 6px;
+}
+.given{
+  grid-area: given;
+}
+.when{
+  grid-area: when;
+}
+.then{
+  grid-area: then;
+}
+
+.test-name-label {
+  grid-area: test-name-label;
+}
+.test-context-label {
+  grid-area: test-context-label;
+}
+.test-name-input {
+  .input;
+  grid-area: test-name-input;
+}
+.test-context-input {
+  .input;
+  grid-area: test-context-input;
+}
+.sut-input {
+  .input;
+  grid-area: sut-input;
+}
+.sut-input {
+  .input;
+  grid-area: sut-input;
+}
+.save-button{
+  grid-area: save-button;
+  display: block;
+    background-color: #4262FF;
+    border: none;
+    color: #FFF;
+    height: 50px;
+    box-sizing: border-box;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+
+.input {
+  display: inline-block;
+  vertical-align: top;
+  border: 1px solid #CCC;
+  border-radius: 4px;
+  padding: 4px 4px 4px 6px;
+  box-sizing: content-box;
+}
+
+.step-content{
+  // display: grid;
+  // grid-template-columns: 302px;
+  // grid-template-rows: fr1;
+}
+.step-title{
+  display: flex; 
+  justify-content: center;
+  padding: 10px 0px 0px 0px;
+  font-weight: 550;
+}
+.step-data{
+  padding: 20px;
+}
+.step-date-property{
+  // word-wrap: break-word;
+  display:grid;
+  grid-template-columns:  1fr 1fr;
+}
+.property-label{
+  font-size: 15px;
+  padding: 4px 4px 4px 6px;
+  // float: left;
+}
+.property-input{
+  .input;
+  height: 15px;
+  width: 100%;
+  // float: right;
+}
+
+h1 {
+  font-style: italic;
+  color: #090909;
+  // color: #373fff;
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+.add-step-button {
+  display: block;
+  background: none;
+  border: 1px solid #090909;
+  color: #090909;
+  height: 30px;
+  box-sizing: border-box;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 14px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.waiting-for-step{
+  text-align:center;
+  // border-radius: 20px;
+  border-style: solid;
 }

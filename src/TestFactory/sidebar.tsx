@@ -1,67 +1,32 @@
 import * as React from 'react';
-import { globalBoard, globalStepNavigator, Givens, IndexedStepResult } from './Given';
 import * as ReactDOM from 'react-dom';
-import { WhenStep as When } from './When';
-import { ThenStep as Then } from './Then';
-import { StepResult, TestStepTurn } from './testStep';
+import { TestStepTurn } from './testStepRecorder';
 import { Board } from 'Board';
 import { IQueuingMachine } from './QueuingMachine';
-function compose(globalBoard: Board, globalStepNavigator: IQueuingMachine<TestStepTurn>) {
+import { TestRecorder, ViewModel } from './TestRecorder';
+import { Router, Link } from "@reach/router"
+import { TestExplorer } from "../TestExplorer/TestExplorer"
+import "./styles.less"
+function createTestRecorder(globalBoard: Board, globalStepNavigator: IQueuingMachine<TestStepTurn>) {
 
 }
-function TestBuilder(props) {
+// const style: React.CSSProperties = {
+// 	// backgroundColor: "DodgerBlue",
+// 	width: "100%",
+// 	height: "100%"
+// }
 
-	React.useEffect(() => {
-		globalBoard.unselectAll()
-			.then(globalStepNavigator.start)
-	}, [])
-
-
-	async function getBoardTitle() {
-		let boardInfo = await miro.board.info.get();
-		// this.setState({ boardTitle: boardInfo.title });
-	}
-
-	const [givenResult, setGivenResult] = React.useState<IndexedStepResult[]>()
-	const [whenResult, setWhenResult] = React.useState<StepResult>()
-	const [thenResult, setThenResult] = React.useState<StepResult>()
-
-	const updateGivens = (givenResults: IndexedStepResult[]) => {
-		setGivenResult(givenResults)
-	}
-	const updateWhen = (when: StepResult) => {
-		setWhenResult(when)
-	}
-	const updateThen = (when: StepResult) => {
-		setThenResult(when)
-	}
-	const save = () => {
-		alert('Given:\n' + JSON.stringify(givenResult) + '\n'
-			+ 'When:\n' + JSON.stringify(whenResult) + '\n'
-			+ 'Then:\n' + JSON.stringify(thenResult) + '\n')
-	}
-	return (
-		<div>
-
-			<Givens onChange={updateGivens} data={givenResult}
-			/>
-
-
-			<When onChange={updateWhen} data={whenResult}
-			// canEdit={s => this.test?.when?.title != null} 
-			/>
-
-			<Then onChange={updateThen} data={thenResult}
-			// canEdit={s => this.test?.then?.title != null
-			// 	&& this.test?.when?.example != null} 
-			/>
-
-			<button className='build-button' onClick={save}>Save</button>
-
-		</div>
-	);
-}
 ReactDOM.render(
-	<TestBuilder />,
-	document.getElementById('react-app')
+	<>
+		<nav>
+			<Link to="/">New Test</Link> |{" "}
+			<Link to="/test-explorer">Test Explorer</Link> |{" "}
+		</nav>
+		<Router>
+			<TestRecorder path="/" />
+			<TestExplorer path="test-explorer" />
+		</Router>
+
+	</>
+	, document.getElementById('react-app')
 )
