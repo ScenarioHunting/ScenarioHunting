@@ -95,10 +95,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(7);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _TestRecorder__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(13);
+/* harmony import */ var _TestFactory_test_recorder__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(13);
 /* harmony import */ var _reach_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(25);
-/* harmony import */ var _TestExplorer_TestExplorer__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(39);
-/* harmony import */ var _styles_less__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(15);
+/* harmony import */ var _TestExplorer_test_explorer__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(39);
+/* harmony import */ var _styles_less__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(40);
 /* harmony import */ var _styles_less__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_styles_less__WEBPACK_IMPORTED_MODULE_5__);
 
 
@@ -108,11 +108,6 @@ __webpack_require__.r(__webpack_exports__);
 
 function createTestRecorder(globalBoard, globalStepNavigator) {
 }
-// const style: React.CSSProperties = {
-// 	// backgroundColor: "DodgerBlue",
-// 	width: "100%",
-// 	height: "100%"
-// }
 react_dom__WEBPACK_IMPORTED_MODULE_1__["render"](react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null,
     react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("nav", null,
         react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_reach_router__WEBPACK_IMPORTED_MODULE_3__["Link"], { to: "/" }, "New Test"),
@@ -122,8 +117,8 @@ react_dom__WEBPACK_IMPORTED_MODULE_1__["render"](react__WEBPACK_IMPORTED_MODULE_
         " |",
         " "),
     react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_reach_router__WEBPACK_IMPORTED_MODULE_3__["Router"], null,
-        react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_TestRecorder__WEBPACK_IMPORTED_MODULE_2__["TestRecorder"], { path: "/" }),
-        react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_TestExplorer_TestExplorer__WEBPACK_IMPORTED_MODULE_4__["TestExplorer"], { path: "test-explorer" }))), document.getElementById('react-app'));
+        react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_TestFactory_test_recorder__WEBPACK_IMPORTED_MODULE_2__["TestRecorder"], { path: "/" }),
+        react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_TestExplorer_test_explorer__WEBPACK_IMPORTED_MODULE_4__["TestExplorer"], { path: "test-explorer" }))), document.getElementById('react-app'));
 
 
 /***/ }),
@@ -28595,7 +28590,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TestRecorder", function() { return TestRecorder; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _Given__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(14);
+/* harmony import */ var _given__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(14);
 /* harmony import */ var _When__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(23);
 /* harmony import */ var _Then__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(24);
 /* harmony import */ var _reach_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(25);
@@ -28615,8 +28610,8 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 
 function TestRecorder(props) {
     react__WEBPACK_IMPORTED_MODULE_0__["useEffect"](() => {
-        _Given__WEBPACK_IMPORTED_MODULE_1__["globalBoard"].unselectAll()
-            .then(_Given__WEBPACK_IMPORTED_MODULE_1__["globalStepNavigator"].start);
+        _given__WEBPACK_IMPORTED_MODULE_1__["globalBoard"].unselectAll()
+            .then(_given__WEBPACK_IMPORTED_MODULE_1__["globalStepNavigator"].start);
     }, []);
     function getBoardTitle() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -28640,7 +28635,7 @@ function TestRecorder(props) {
         recordThen(when);
     };
     const showValidationError = (errorText) => {
-        _Given__WEBPACK_IMPORTED_MODULE_1__["globalBoard"].showNotification(errorText);
+        _given__WEBPACK_IMPORTED_MODULE_1__["globalBoard"].showNotification(errorText);
     };
     const toDto = (given, when, then) => {
         return {
@@ -28678,16 +28673,17 @@ function TestRecorder(props) {
             showValidationError('No then selections. Please save the test after selecting the then step.');
             return;
         }
-        const dto = toDto(givens, when, then);
-        var requestBody = JSON.stringify(dto);
-        console.log(requestBody);
-        const response = yield fetch('https://localhost:6001/Tests', {
-            headers: { 'Content-Type': 'application/json' },
-            method: 'POST',
-            body: requestBody
-        });
-        if (response.ok)
-            _Given__WEBPACK_IMPORTED_MODULE_1__["globalBoard"].showNotification('Test created successfully.');
+        // const dto = toDto(givens, when, then)
+        // var requestBody = JSON.stringify(dto);
+        // console.log(requestBody);
+        // const response = await fetch('https://localhost:6001/Tests',
+        //     {
+        //         headers: { 'Content-Type': 'application/json' },
+        //         method: 'POST',
+        //         body: requestBody
+        //     });
+        // if (response.ok)
+        //     globalBoard.showNotification('Test created successfully.');
         var viewModel = {
             testContext,
             sutName,
@@ -28695,11 +28691,11 @@ function TestRecorder(props) {
             givens, when, then,
         };
         yield Object(_reach_router__WEBPACK_IMPORTED_MODULE_4__["navigate"])('/test-explorer', { state: { newTest: viewModel } });
-        console.log(response);
+        // console.log(response);
     });
     return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "test-recorder" },
         react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "given" },
-            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_Given__WEBPACK_IMPORTED_MODULE_1__["Givens"], { onStepSelectionChange: updateGivens, steps: givens })),
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_given__WEBPACK_IMPORTED_MODULE_1__["Givens"], { onStepSelectionChange: updateGivens, steps: givens })),
         react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "when" },
             react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_When__WEBPACK_IMPORTED_MODULE_2__["WhenStep"], { onStepSelection: updateWhen, step: when })),
         react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "then" },
@@ -28728,8 +28724,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _Board__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(19);
-/* harmony import */ var _QueuingMachine__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(20);
-/* harmony import */ var _testStepRecorder__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(21);
+/* harmony import */ var _queuing_machine__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(20);
+/* harmony import */ var _TestStepRecorder__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(21);
 __webpack_require__(15);
 
 
@@ -28743,23 +28739,23 @@ class ImmediateQueuingMachine {
     }
 }
 const globalBoard = new _Board__WEBPACK_IMPORTED_MODULE_1__["Board"]();
-const globalStepNavigator = new _QueuingMachine__WEBPACK_IMPORTED_MODULE_2__["QueuingMachine"]([_testStepRecorder__WEBPACK_IMPORTED_MODULE_3__["TestStepTurn"].When, _testStepRecorder__WEBPACK_IMPORTED_MODULE_3__["TestStepTurn"].Then, _testStepRecorder__WEBPACK_IMPORTED_MODULE_3__["TestStepTurn"].Given]);
+const globalStepNavigator = new _queuing_machine__WEBPACK_IMPORTED_MODULE_2__["QueuingMachine"]([_TestStepRecorder__WEBPACK_IMPORTED_MODULE_3__["TestStepTurn"].When, _TestStepRecorder__WEBPACK_IMPORTED_MODULE_3__["TestStepTurn"].Then, _TestStepRecorder__WEBPACK_IMPORTED_MODULE_3__["TestStepTurn"].Given]);
 function GivenStep(props) {
-    var Step = Object(_testStepRecorder__WEBPACK_IMPORTED_MODULE_3__["testStepRecorder"])({
+    var Step = Object(_TestStepRecorder__WEBPACK_IMPORTED_MODULE_3__["testStepRecorder"])({
         board: globalBoard,
         stepNavigator: new ImmediateQueuingMachine(),
         stepDisplayTitle: '',
         selectionWaitingMessage: 'Select minimum required steps for the when to end up then.',
-        turn: _testStepRecorder__WEBPACK_IMPORTED_MODULE_3__["TestStepTurn"].Given,
+        turn: _TestStepRecorder__WEBPACK_IMPORTED_MODULE_3__["TestStepTurn"].Given,
     });
     return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Step, Object.assign({}, props));
 }
 const Givens = GivenSteps({
     board: globalBoard,
     stepNavigator: globalStepNavigator,
-    stepDisplayTitle: _testStepRecorder__WEBPACK_IMPORTED_MODULE_3__["TestStepTurn"].Given,
+    stepDisplayTitle: _TestStepRecorder__WEBPACK_IMPORTED_MODULE_3__["TestStepTurn"].Given,
     selectionWaitingMessage: 'Select minimum required steps for the when to end up then.',
-    turn: _testStepRecorder__WEBPACK_IMPORTED_MODULE_3__["TestStepTurn"].Given,
+    turn: _TestStepRecorder__WEBPACK_IMPORTED_MODULE_3__["TestStepTurn"].Given,
 });
 function GivenSteps(options) {
     return class GivenSteps extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
@@ -28796,7 +28792,7 @@ function GivenSteps(options) {
             };
         }
         componentDidMount() {
-            globalStepNavigator.onTurn(_testStepRecorder__WEBPACK_IMPORTED_MODULE_3__["TestStepTurn"].Given, () => {
+            globalStepNavigator.onTurn(_TestStepRecorder__WEBPACK_IMPORTED_MODULE_3__["TestStepTurn"].Given, () => {
                 this.setState({ isActive: true });
                 if (this.props.steps)
                     this.setState({ indexedSteps: this.props.steps });
@@ -29113,20 +29109,9 @@ module.exports = function (list, options) {
 
 /***/ }),
 /* 17 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(18);
-/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
-// Imports
-
-var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(false);
-// Module
-___CSS_LOADER_EXPORT___.push([module.i, "html {\n  height: 100%;\n}\nbody {\n  height: 100%;\n  font-family: helvetica, arial, sans-serif;\n  margin: 2em;\n}\n.centered-for-demo {\n  height: 100%;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  flex-direction: column;\n}\n.i-am-red {\n  background-color: red;\n}\n.i-am-blue {\n  background-color: #88c1ff;\n}\n.i-am-yellow {\n  background-color: yellow;\n}\n.cats-container {\n  max-height: 100%;\n  overflow: auto;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n.scrollable-container {\n  height: 100%;\n  overflow-y: auto;\n  padding-top: 30px;\n  padding-left: 10px;\n  padding-right: 10px;\n  padding-bottom: 20px;\n  box-sizing: border-box;\n}\n.scrollable-content {\n  height: 2000px;\n  background-color: #2a79ff;\n}\n.delete-button {\n  display: inline-block;\n  vertical-align: top;\n  height: 30px;\n  background: none;\n  border: 1px solid #CCC;\n  box-sizing: border-box;\n  border-radius: 4px;\n  margin-left: 8px;\n  cursor: pointer;\n}\n.row-input:hover,\n.row-input:active,\n.delete-button:hover,\n.delete-button:active {\n  border: 1px solid #666;\n}\n.row {\n  margin-bottom: 20px;\n}\n.old-test-recorder {\n  display: grid;\n  grid-template-columns: 1fr 1fr;\n  grid-template-rows: auto auto auto auto auto auto auto;\n  grid-template-areas: \"given given\" \"when when\" \"then then\" \"test-name-label test-name-input\" \"test-context-label test-context-input\" \"sut-label sut-input\" \"save-button save-button\";\n}\n.test-form-details {\n  display: grid;\n  grid-template-columns: 1fr 1fr;\n  grid-template-rows: auto auto auto auto;\n  grid-template-areas: \"test-name-label test-name-input\" \"test-context-label test-context-input\" \"sut-label sut-input\" \"save-button save-button\";\n  padding: 10px 4px 4px 6px;\n}\n.given {\n  grid-area: given;\n}\n.when {\n  grid-area: when;\n}\n.then {\n  grid-area: then;\n}\n.test-name-label {\n  grid-area: test-name-label;\n}\n.test-context-label {\n  grid-area: test-context-label;\n}\n.test-name-input {\n  display: inline-block;\n  vertical-align: top;\n  border: 1px solid #CCC;\n  border-radius: 4px;\n  padding: 4px 4px 4px 6px;\n  box-sizing: content-box;\n  grid-area: test-name-input;\n}\n.test-context-input {\n  display: inline-block;\n  vertical-align: top;\n  border: 1px solid #CCC;\n  border-radius: 4px;\n  padding: 4px 4px 4px 6px;\n  box-sizing: content-box;\n  grid-area: test-context-input;\n}\n.sut-input {\n  display: inline-block;\n  vertical-align: top;\n  border: 1px solid #CCC;\n  border-radius: 4px;\n  padding: 4px 4px 4px 6px;\n  box-sizing: content-box;\n  grid-area: sut-input;\n}\n.sut-input {\n  display: inline-block;\n  vertical-align: top;\n  border: 1px solid #CCC;\n  border-radius: 4px;\n  padding: 4px 4px 4px 6px;\n  box-sizing: content-box;\n  grid-area: sut-input;\n}\n.save-button {\n  grid-area: save-button;\n  display: block;\n  background-color: #4262FF;\n  border: none;\n  color: #FFF;\n  height: 50px;\n  box-sizing: border-box;\n  border-radius: 4px;\n  text-align: center;\n  font-size: 22px;\n  cursor: pointer;\n}\n.input {\n  display: inline-block;\n  vertical-align: top;\n  border: 1px solid #CCC;\n  border-radius: 4px;\n  padding: 4px 4px 4px 6px;\n  box-sizing: content-box;\n}\n.step-title {\n  display: flex;\n  justify-content: center;\n  padding: 10px 0px 0px 0px;\n  font-weight: 550;\n}\n.step-data {\n  padding: 20px;\n}\n.step-date-property {\n  display: grid;\n  grid-template-columns: 1fr 1fr;\n}\n.property-label {\n  font-size: 15px;\n  padding: 4px 4px 4px 6px;\n}\n.property-input {\n  display: inline-block;\n  vertical-align: top;\n  border: 1px solid #CCC;\n  border-radius: 4px;\n  padding: 4px 4px 4px 6px;\n  box-sizing: content-box;\n  height: 15px;\n  width: 100%;\n}\nh1 {\n  font-style: italic;\n  color: #090909;\n}\nhtml,\nbody {\n  height: 100%;\n  margin: 0;\n  padding: 0;\n}\n.add-step-button {\n  display: block;\n  background: none;\n  border: 1px solid #090909;\n  color: #090909;\n  height: 30px;\n  box-sizing: border-box;\n  border-radius: 4px;\n  text-align: center;\n  font-size: 14px;\n  cursor: pointer;\n  margin-bottom: 20px;\n}\n.waiting-for-step {\n  text-align: center;\n  border-style: solid;\n}\n", ""]);
-// Exports
-/* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
-
+throw new Error("Module build failed (from ./node_modules/less-loader/dist/cjs.js):\nError: ENOENT: no such file or directory, open '/home/mohsen/Desktop/Event Model Driven Testing/src/TestFactory/styles.less'");
 
 /***/ }),
 /* 18 */
@@ -29364,7 +29349,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "testStepRecorder", function() { return testStepRecorder; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _Step__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(22);
+/* harmony import */ var _step__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(22);
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -29392,7 +29377,7 @@ function testStepRecorder({ stepDisplayTitle: stepType, selectionWaitingMessage,
             super(props);
         }
         updateWidget(widget) {
-            Object(_Step__WEBPACK_IMPORTED_MODULE_1__["convertWidgetToStepData"])(widget, data => {
+            Object(_step__WEBPACK_IMPORTED_MODULE_1__["convertWidgetToStepData"])(widget, data => {
                 const step = {
                     metadata: {
                         widget: widget,
@@ -29461,7 +29446,7 @@ function convertWidgetToStepData(widget, succeed, fail) {
         fail("Unknown text format.");
     }
     // const value = chunks
-    const toCamelCase = (str) => str.trim().toLowerCase()
+    const toCamelCase = (str) => str.trim() //.toLowerCase()
         .replace(/([^A-Z0-9]+)(.)/ig, function (match) {
         return arguments[2].toUpperCase();
     });
@@ -29484,16 +29469,16 @@ function convertWidgetToStepData(widget, succeed, fail) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "WhenStep", function() { return WhenStep; });
-/* harmony import */ var _testStepRecorder__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(21);
-/* harmony import */ var _Given__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(14);
+/* harmony import */ var _TestStepRecorder__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(21);
+/* harmony import */ var _given__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(14);
 
 
-const WhenStep = Object(_testStepRecorder__WEBPACK_IMPORTED_MODULE_0__["testStepRecorder"])({
-    board: _Given__WEBPACK_IMPORTED_MODULE_1__["globalBoard"],
-    stepNavigator: _Given__WEBPACK_IMPORTED_MODULE_1__["globalStepNavigator"],
-    stepDisplayTitle: _testStepRecorder__WEBPACK_IMPORTED_MODULE_0__["TestStepTurn"].When,
+const WhenStep = Object(_TestStepRecorder__WEBPACK_IMPORTED_MODULE_0__["testStepRecorder"])({
+    board: _given__WEBPACK_IMPORTED_MODULE_1__["globalBoard"],
+    stepNavigator: _given__WEBPACK_IMPORTED_MODULE_1__["globalStepNavigator"],
+    stepDisplayTitle: _TestStepRecorder__WEBPACK_IMPORTED_MODULE_0__["TestStepTurn"].When,
     selectionWaitingMessage: 'Select the exercise you want to test.',
-    turn: _testStepRecorder__WEBPACK_IMPORTED_MODULE_0__["TestStepTurn"].When,
+    turn: _TestStepRecorder__WEBPACK_IMPORTED_MODULE_0__["TestStepTurn"].When,
 });
 
 
@@ -29504,16 +29489,16 @@ const WhenStep = Object(_testStepRecorder__WEBPACK_IMPORTED_MODULE_0__["testStep
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ThenStep", function() { return ThenStep; });
-/* harmony import */ var _testStepRecorder__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(21);
-/* harmony import */ var _Given__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(14);
+/* harmony import */ var _TestStepRecorder__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(21);
+/* harmony import */ var _given__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(14);
 
 
-const ThenStep = Object(_testStepRecorder__WEBPACK_IMPORTED_MODULE_0__["testStepRecorder"])({
-    board: _Given__WEBPACK_IMPORTED_MODULE_1__["globalBoard"],
-    stepNavigator: _Given__WEBPACK_IMPORTED_MODULE_1__["globalStepNavigator"],
-    stepDisplayTitle: _testStepRecorder__WEBPACK_IMPORTED_MODULE_0__["TestStepTurn"].Then,
+const ThenStep = Object(_TestStepRecorder__WEBPACK_IMPORTED_MODULE_0__["testStepRecorder"])({
+    board: _given__WEBPACK_IMPORTED_MODULE_1__["globalBoard"],
+    stepNavigator: _given__WEBPACK_IMPORTED_MODULE_1__["globalStepNavigator"],
+    stepDisplayTitle: _TestStepRecorder__WEBPACK_IMPORTED_MODULE_0__["TestStepTurn"].Then,
     selectionWaitingMessage: 'What should happen then?',
-    turn: _testStepRecorder__WEBPACK_IMPORTED_MODULE_0__["TestStepTurn"].Then,
+    turn: _TestStepRecorder__WEBPACK_IMPORTED_MODULE_0__["TestStepTurn"].Then,
 });
 
 
@@ -32152,22 +32137,27 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "TestExplorer", function() { return TestExplorer; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _test_explorer_less__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(43);
+/* harmony import */ var _test_explorer_less__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_test_explorer_less__WEBPACK_IMPORTED_MODULE_1__);
+
 
 const TestExplorer = (props) => {
     var _a;
-    const testStepViewModelItem = {
-        width: "100px",
-        height: "100px",
-        display: "inline-block",
-        margin: "5px",
-        padding: "5px",
-        overflowWrap: "break-word",
-    };
-    const testStepsViewModelItem = {
-        display: "flex"
-    };
-    if (!((_a = props.location.state) === null || _a === void 0 ? void 0 : _a.newTest))
-        return react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null, "No Tests");
+    if (!((_a = props.location.state) === null || _a === void 0 ? void 0 : _a.newTest)) 
+    // return <div>No Tests</div >
+    {
+        var t = {
+            backgroundColor: "blue"
+        };
+        return react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null,
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", null, "test Name\t"),
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("br", null),
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "test-steps-view-model-item" },
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", { className: "test-step-view-model-item" }, "GivenGivenGivenGivenGivenGivenGiven"),
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", { className: "test-step-view-model-item" }, "WhenWhenWhenWhenWhenWhenWhenWhenWhenWhen"),
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", { className: "test-step-view-model-item" }, "ThenThenThenThenThenThenThenThenThen")));
+    }
+    //**************************************************************************** */
     const viewModel = props.location.state.newTest;
     console.log(viewModel);
     return react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null,
@@ -32175,13 +32165,94 @@ const TestExplorer = (props) => {
             viewModel.testName,
             "\t"),
         react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("br", null),
-        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { style: testStepsViewModelItem, className: "test-steps-view-model-item" },
-            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", { 
-                // style={viewModel.givens[0].step.metadata.widget.style}
-                className: "test-step-view-model-item" }, viewModel.givens[0].step.data.type),
+        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "test-steps-view-model-item" },
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", { style: viewModel.givens[0].step.metadata.widget.style, className: "test-step-view-model-item" }, viewModel.givens[0].step.data.type),
             react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", { style: viewModel.when.metadata.widget.style, className: "test-step-view-model-item" }, viewModel.when.data.type),
             react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", { style: viewModel.then.metadata.widget.style, className: "test-step-view-model-item" }, viewModel.then.data.type)));
 };
+
+
+/***/ }),
+/* 40 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var api = __webpack_require__(16);
+            var content = __webpack_require__(41);
+
+            content = content.__esModule ? content.default : content;
+
+            if (typeof content === 'string') {
+              content = [[module.i, content, '']];
+            }
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = api(content, options);
+
+
+
+module.exports = content.locals || {};
+
+/***/ }),
+/* 41 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(18);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
+// Imports
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(false);
+// Module
+___CSS_LOADER_EXPORT___.push([module.i, "html {\n  height: 100%;\n}\nbody {\n  height: 100%;\n  font-family: helvetica, arial, sans-serif;\n  margin: 2em;\n}\n.centered-for-demo {\n  height: 100%;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  flex-direction: column;\n}\n.i-am-red {\n  background-color: red;\n}\n.i-am-blue {\n  background-color: #88c1ff;\n}\n.i-am-yellow {\n  background-color: yellow;\n}\n.cats-container {\n  max-height: 100%;\n  overflow: auto;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\nh1 {\n  font-style: italic;\n  color: #373fff;\n}\nhtml,\nbody {\n  height: 100%;\n  margin: 0;\n  padding: 0;\n}\n.scrollable-container {\n  height: 100%;\n  overflow-y: auto;\n  padding-top: 30px;\n  padding-left: 23px;\n  padding-bottom: 20px;\n  box-sizing: border-box;\n}\n.scrollable-content {\n  height: 2000px;\n  background-color: #2a79ff;\n}\n.add-row-button {\n  display: block;\n  background: none;\n  border: 1px solid #4262FF;\n  color: #4262FF;\n  height: 30px;\n  box-sizing: border-box;\n  border-radius: 4px;\n  text-align: center;\n  font-size: 14px;\n  cursor: pointer;\n  margin-bottom: 20px;\n}\n.build-button {\n  display: block;\n  background-color: #4262FF;\n  border: none;\n  color: #FFF;\n  height: 50px;\n  box-sizing: border-box;\n  border-radius: 4px;\n  text-align: center;\n  font-size: 22px;\n  cursor: pointer;\n  width: 274px;\n}\n.row-input {\n  display: inline-block;\n  vertical-align: top;\n  width: 107px;\n  height: 30px;\n  border: 1px solid #CCC;\n  border-radius: 4px;\n  padding: 4px 4px 4px 6px;\n  box-sizing: border-box;\n}\n.delete-button {\n  display: inline-block;\n  vertical-align: top;\n  height: 30px;\n  background: none;\n  border: 1px solid #CCC;\n  box-sizing: border-box;\n  border-radius: 4px;\n  margin-left: 8px;\n  cursor: pointer;\n}\n.row-input:hover,\n.row-input:active,\n.delete-button:hover,\n.delete-button:active {\n  border: 1px solid #666;\n}\n.row {\n  margin-bottom: 20px;\n}\n", ""]);
+// Exports
+/* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+/* 42 */,
+/* 43 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var api = __webpack_require__(16);
+            var content = __webpack_require__(44);
+
+            content = content.__esModule ? content.default : content;
+
+            if (typeof content === 'string') {
+              content = [[module.i, content, '']];
+            }
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = api(content, options);
+
+
+
+module.exports = content.locals || {};
+
+/***/ }),
+/* 44 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(18);
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
+// Imports
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(false);
+// Module
+___CSS_LOADER_EXPORT___.push([module.i, ".test-step-view-model-item {\n  width: 100px;\n  height: 100px;\n  display: inline-block;\n  margin: 5px;\n  padding: 5px;\n  overflow-wrap: break-word;\n}\n.test-steps-view-model-item {\n  display: flex;\n}\n", ""]);
+// Exports
+/* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
 
 
 /***/ })

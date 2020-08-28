@@ -7,7 +7,7 @@ module.exports = {
 	// Tip! Just delete not using files, but main.ts is required
 	entry: {
 		index: './src/index.ts',
-		sidebar: './src/TestFactory/sidebar.tsx', // Example! It works with React.
+		sidebar: './src/sidebar.tsx', // Example! It works with React.
 		modal: './src/modal.ts'
 	},
 	module: {

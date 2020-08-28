@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 40);
+/******/ 	return __webpack_require__(__webpack_require__.s = 42);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -466,20 +466,8 @@ function toComment(sourceMap) {
 /***/ 40:
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(41);
-let closeButton = document.querySelector('.close-button');
-closeButton.addEventListener('click', () => {
-    miro.board.ui.closeModal();
-});
-
-
-/***/ }),
-
-/***/ 41:
-/***/ (function(module, exports, __webpack_require__) {
-
 var api = __webpack_require__(16);
-            var content = __webpack_require__(42);
+            var content = __webpack_require__(41);
 
             content = content.__esModule ? content.default : content;
 
@@ -500,7 +488,7 @@ module.exports = content.locals || {};
 
 /***/ }),
 
-/***/ 42:
+/***/ 41:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -511,9 +499,21 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(false);
 // Module
-___CSS_LOADER_EXPORT___.push([module.i, ".test-step-view-model-item {\n  width: 100px;\n  height: 100px;\n  display: inline-block;\n  margin: 5px;\n  padding: 5px;\n  overflow-wrap: break-word;\n}\n.test-steps-view-model-item {\n  display: flex;\n}\nhtml {\n  height: 100%;\n}\nbody {\n  height: 100%;\n  font-family: helvetica, arial, sans-serif;\n  margin: 2em;\n}\n.centered-for-demo {\n  height: 100%;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  flex-direction: column;\n}\n.i-am-red {\n  background-color: red;\n}\n.i-am-blue {\n  background-color: #88c1ff;\n}\n.i-am-yellow {\n  background-color: yellow;\n}\n.cats-container {\n  max-height: 100%;\n  overflow: auto;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\nh1 {\n  font-style: italic;\n  color: #373fff;\n}\nhtml,\nbody {\n  height: 100%;\n  margin: 0;\n  padding: 0;\n}\n.scrollable-container {\n  height: 100%;\n  overflow-y: auto;\n  padding-top: 30px;\n  padding-left: 23px;\n  padding-bottom: 20px;\n  box-sizing: border-box;\n}\n.scrollable-content {\n  height: 2000px;\n  background-color: #2a79ff;\n}\n.add-row-button {\n  display: block;\n  background: none;\n  border: 1px solid #4262FF;\n  color: #4262FF;\n  height: 30px;\n  box-sizing: border-box;\n  border-radius: 4px;\n  text-align: center;\n  font-size: 14px;\n  cursor: pointer;\n  margin-bottom: 20px;\n}\n.build-button {\n  display: block;\n  background-color: #4262FF;\n  border: none;\n  color: #FFF;\n  height: 50px;\n  box-sizing: border-box;\n  border-radius: 4px;\n  text-align: center;\n  font-size: 22px;\n  cursor: pointer;\n  width: 274px;\n}\n.row-input {\n  display: inline-block;\n  vertical-align: top;\n  width: 107px;\n  height: 30px;\n  border: 1px solid #CCC;\n  border-radius: 4px;\n  padding: 4px 4px 4px 6px;\n  box-sizing: border-box;\n}\n.delete-button {\n  display: inline-block;\n  vertical-align: top;\n  height: 30px;\n  background: none;\n  border: 1px solid #CCC;\n  box-sizing: border-box;\n  border-radius: 4px;\n  margin-left: 8px;\n  cursor: pointer;\n}\n.row-input:hover,\n.row-input:active,\n.delete-button:hover,\n.delete-button:active {\n  border: 1px solid #666;\n}\n.row {\n  margin-bottom: 20px;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.i, "html {\n  height: 100%;\n}\nbody {\n  height: 100%;\n  font-family: helvetica, arial, sans-serif;\n  margin: 2em;\n}\n.centered-for-demo {\n  height: 100%;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  flex-direction: column;\n}\n.i-am-red {\n  background-color: red;\n}\n.i-am-blue {\n  background-color: #88c1ff;\n}\n.i-am-yellow {\n  background-color: yellow;\n}\n.cats-container {\n  max-height: 100%;\n  overflow: auto;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\nh1 {\n  font-style: italic;\n  color: #373fff;\n}\nhtml,\nbody {\n  height: 100%;\n  margin: 0;\n  padding: 0;\n}\n.scrollable-container {\n  height: 100%;\n  overflow-y: auto;\n  padding-top: 30px;\n  padding-left: 23px;\n  padding-bottom: 20px;\n  box-sizing: border-box;\n}\n.scrollable-content {\n  height: 2000px;\n  background-color: #2a79ff;\n}\n.add-row-button {\n  display: block;\n  background: none;\n  border: 1px solid #4262FF;\n  color: #4262FF;\n  height: 30px;\n  box-sizing: border-box;\n  border-radius: 4px;\n  text-align: center;\n  font-size: 14px;\n  cursor: pointer;\n  margin-bottom: 20px;\n}\n.build-button {\n  display: block;\n  background-color: #4262FF;\n  border: none;\n  color: #FFF;\n  height: 50px;\n  box-sizing: border-box;\n  border-radius: 4px;\n  text-align: center;\n  font-size: 22px;\n  cursor: pointer;\n  width: 274px;\n}\n.row-input {\n  display: inline-block;\n  vertical-align: top;\n  width: 107px;\n  height: 30px;\n  border: 1px solid #CCC;\n  border-radius: 4px;\n  padding: 4px 4px 4px 6px;\n  box-sizing: border-box;\n}\n.delete-button {\n  display: inline-block;\n  vertical-align: top;\n  height: 30px;\n  background: none;\n  border: 1px solid #CCC;\n  box-sizing: border-box;\n  border-radius: 4px;\n  margin-left: 8px;\n  cursor: pointer;\n}\n.row-input:hover,\n.row-input:active,\n.delete-button:hover,\n.delete-button:active {\n  border: 1px solid #666;\n}\n.row {\n  margin-bottom: 20px;\n}\n", ""]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ 42:
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(40);
+let closeButton = document.querySelector('.close-button');
+closeButton.addEventListener('click', () => {
+    miro.board.ui.closeModal();
+});
 
 
 /***/ })

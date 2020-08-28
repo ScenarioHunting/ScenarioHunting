@@ -28,7 +28,7 @@ export function convertWidgetToStepData(widget: Widget
     }
     // const value = chunks
     const toCamelCase = (str: string) =>
-        str.trim().toLowerCase()
+        str.trim()//.toLowerCase()
             .replace(/([^A-Z0-9]+)(.)/ig,
                 function (match) {
                     return arguments[2].toUpperCase();

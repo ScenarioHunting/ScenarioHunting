@@ -1,9 +1,9 @@
 require('./styles.less')
 import * as React from 'react'
 import { Board } from '../Board';
-import { QueuingMachine } from './QueuingMachine';
-import { testStepRecorder, TestStepTurn, TestStepProps, TestStepOptions } from './testStepRecorder';
-import { Step } from "./Step";
+import { QueuingMachine } from './queuing-machine';
+import { testStepRecorder, TestStepTurn, TestStepProps, TestStepOptions } from './TestStepRecorder';
+import { Step } from "./step";
 
 
 class ImmediateQueuingMachine<T>{

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Board, Widget } from 'Board';
-import { IQueuingMachine } from './QueuingMachine';
-import { Step, convertWidgetToStepData } from './Step';
+import { IQueuingMachine } from './queuing-machine';
+import { Step, convertWidgetToStepData } from './step';
 export enum TestStepTurn {
     Then = 'Then',
     When = 'When',

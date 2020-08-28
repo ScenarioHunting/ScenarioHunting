@@ -1,20 +1,15 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { TestStepTurn } from './testStepRecorder';
+import { TestStepTurn } from './TestFactory/TestStepRecorder';
 import { Board } from 'Board';
-import { IQueuingMachine } from './QueuingMachine';
-import { TestRecorder, ViewModel } from './TestRecorder';
+import { IQueuingMachine } from './TestFactory/queuing-machine';
+import { TestRecorder, ViewModel } from './TestFactory/test-recorder';
 import { Router, Link } from "@reach/router"
-import { TestExplorer } from "../TestExplorer/TestExplorer"
+import { TestExplorer } from "./TestExplorer/test-explorer"
 import "./styles.less"
 function createTestRecorder(globalBoard: Board, globalStepNavigator: IQueuingMachine<TestStepTurn>) {
 
 }
-// const style: React.CSSProperties = {
-// 	// backgroundColor: "DodgerBlue",
-// 	width: "100%",
-// 	height: "100%"
-// }
 
 ReactDOM.render(
 	<>

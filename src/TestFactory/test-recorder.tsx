@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { globalBoard, globalStepNavigator, Givens, IndexedStep } from './Given';
+import { globalBoard, globalStepNavigator, Givens, IndexedStep } from './given';
 import { WhenStep as When } from './When';
 import { ThenStep as Then } from './Then';
-import { Step } from "./Step";
+import { Step } from "./step";
 import { navigate } from "@reach/router"
 
 export type ViewModel = {
@@ -85,18 +85,18 @@ export function TestRecorder(props) {
             return
         }
 
-        const dto = toDto(givens, when, then)
+        // const dto = toDto(givens, when, then)
 
-        var requestBody = JSON.stringify(dto);
-        console.log(requestBody);
-        const response = await fetch('https://localhost:6001/Tests',
-            {
-                headers: { 'Content-Type': 'application/json' },
-                method: 'POST',
-                body: requestBody
-            });
-        if (response.ok)
-            globalBoard.showNotification('Test created successfully.');
+        // var requestBody = JSON.stringify(dto);
+        // console.log(requestBody);
+        // const response = await fetch('https://localhost:6001/Tests',
+        //     {
+        //         headers: { 'Content-Type': 'application/json' },
+        //         method: 'POST',
+        //         body: requestBody
+        //     });
+        // if (response.ok)
+        //     globalBoard.showNotification('Test created successfully.');
         var viewModel: ViewModel = {
             testContext,
             sutName,
@@ -105,7 +105,7 @@ export function TestRecorder(props) {
         }
 
         await navigate('/test-explorer', { state: { newTest: viewModel } })
-        console.log(response);
+        // console.log(response);
     };
     return (
         <div className="test-recorder">
