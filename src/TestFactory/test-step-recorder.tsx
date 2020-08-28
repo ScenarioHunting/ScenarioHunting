@@ -1,5 +1,6 @@
+import './test-step-recorder.less';
 import * as React from 'react';
-import { Board, Widget } from 'Board';
+import { Board, Widget } from 'board';
 import { IQueuingMachine } from './queuing-machine';
 import { Step, convertWidgetToStepData } from './step';
 export enum TestStepTurn {

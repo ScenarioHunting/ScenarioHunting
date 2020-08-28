@@ -1,8 +1,7 @@
-require('./styles.less')
 import * as React from 'react'
-import { Board } from '../Board';
+import { Board } from '../board';
 import { QueuingMachine } from './queuing-machine';
-import { testStepRecorder, TestStepTurn, TestStepProps, TestStepOptions } from './TestStepRecorder';
+import { testStepRecorder, TestStepTurn, TestStepProps, TestStepOptions } from './test-step-recorder';
 import { Step } from "./step";
 
 

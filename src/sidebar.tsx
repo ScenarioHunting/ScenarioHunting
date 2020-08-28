@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { TestStepTurn } from './TestFactory/TestStepRecorder';
-import { Board } from 'Board';
+import { TestStepTurn } from './TestFactory/test-step-recorder';
+import { Board } from 'board';
 import { IQueuingMachine } from './TestFactory/queuing-machine';
 import { TestRecorder, ViewModel } from './TestFactory/test-recorder';
 import { Router, Link } from "@reach/router"

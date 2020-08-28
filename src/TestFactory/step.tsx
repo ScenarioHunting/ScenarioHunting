@@ -1,4 +1,4 @@
-import { Widget } from 'Board';
+import { Widget } from 'board';
 
 export type Step = {
     metadata: StepMetadata

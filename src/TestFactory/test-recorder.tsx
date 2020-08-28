@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { globalBoard, globalStepNavigator, Givens, IndexedStep } from './given';
-import { WhenStep as When } from './When';
-import { ThenStep as Then } from './Then';
+import { WhenStep as When } from './when';
+import { ThenStep as Then } from './then';
 import { Step } from "./step";
 import { navigate } from "@reach/router"
 
