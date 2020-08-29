@@ -1,5 +1,6 @@
 import { testStepRecorder, TestStepTurn } from "./test-step-recorder";
-import { globalBoard, globalStepNavigator } from "./given";
+import {  globalStepNavigator } from "./given";
+import { globalBoard } from "../global";
 
 export const ThenStep = testStepRecorder({
 	board: globalBoard,

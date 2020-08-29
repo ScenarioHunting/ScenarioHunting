@@ -42,7 +42,11 @@ export class Board {
     showNotification = (message: string) =>
         miro.showNotification(message)
 
+    zoomTo = (widget: Widget) =>
+        miro.board.viewport.zoomToObject(widget.id, true)
+
     static async captureSingleItemSelections(widgets, succeed, fail) {
+        // miro.board.widgets.sel
     }
 }
 export type Widget = {
@@ -67,13 +71,13 @@ function convertToDto(widget: SDK.IWidget): Widget | string {
     }
     else
         return 'The widget ' + JSON.stringify(widget) + ' is does not have x, and y.'
-        
+
     dto.style = {} as CSSProperties
     if (widget["style"] && widget["style"]["backgroundColor"]) {
-        console.log('Setting style:',widget["style"]["backgroundColor"])
+        console.log('Setting style:', widget["style"]["backgroundColor"])
         dto.style.backgroundColor = widget["style"]["backgroundColor"]
     } else if (widget["style"] && widget["style"]["stickerBackgroundColor"]) {
-        console.log('Setting style:',widget["style"]["stickerBackgroundColor"])
+        console.log('Setting style:', widget["style"]["stickerBackgroundColor"])
         dto.style.backgroundColor = widget["style"]["stickerBackgroundColor"]
 
     }

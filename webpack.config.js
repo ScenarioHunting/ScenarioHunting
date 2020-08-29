@@ -27,11 +27,17 @@ module.exports = {
 					loader: "less-loader"
 				}],
 				exclude: /node_modules/
+			},
+			{
+				test: /\.(png|svg|jpg|gif)$/,
+				use: [
+				  'file-loader',
+				]
 			}
 		]
 	},
 	resolve: {
-		extensions: ['.tsx', '.ts', '.js', '.less', '.css']
+		extensions: ['.tsx', '.ts', '.js', '.less', '.css','.svg']
 	},
 	output: {
 		filename: '[name].js',

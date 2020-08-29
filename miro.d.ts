@@ -197,8 +197,8 @@ declare module SDK {
 		isMemberOfCurrentAccount(): Promise<boolean>
 	}
 
-	type InputWidget = string | {id: string}
-	type InputWidgets = string | string[] | {id: string} | {id: string}[]
+	type InputWidget = string | { id: string }
+	type InputWidgets = string | string[] | { id: string } | { id: string }[]
 
 	interface IBoardInfoCommands {
 		get(): Promise<IBoardInfo>
@@ -206,18 +206,18 @@ declare module SDK {
 
 	interface IBoardUICommands {
 		// Promise will resolves when sidebar closes
-		openLeftSidebar(iframeURL: string, options?: {width?: number}): Promise<any>
+		openLeftSidebar(iframeURL: string, options?: { width?: number }): Promise<any>
 
 		// Promise will resolves when library closes
-		openLibrary(iframeURL: string, options: {title: string}): Promise<any>
+		openLibrary(iframeURL: string, options: { title: string }): Promise<any>
 
 		// Promise will resolves when modal closes
-		openModal(iframeURL: string, options?: {width?: number; height?: number} | {fullscreen: boolean}): Promise<any>
+		openModal(iframeURL: string, options?: { width?: number; height?: number } | { fullscreen: boolean }): Promise<any>
 
 		// Promise will resolves when bottomPanel closes
 		// options.width: default is 120px, min is 80px, max is 320px
 		// options.height: default is 48px, min is 48px, max is 200px
-		openBottomPanel(iframeURL: string, options?: {width?: number; height?: number}): Promise<any>
+		openBottomPanel(iframeURL: string, options?: { width?: number; height?: number }): Promise<any>
 
 		// Throws error if sidebar opened not by this plugin
 		closeLeftSidebar(data?: any): void
@@ -232,7 +232,7 @@ declare module SDK {
 
 		// Resize the current iFrame inside sidebar or modal (currently supports bottom-panel only)
 		// You can pass HTMLElement, css selector or size
-		resizeTo(value: HTMLElement | string | {width?: number; height?: number}): void
+		resizeTo(value: HTMLElement | string | { width?: number; height?: number }): void
 
 		// Add the ability to drag-and-drop objects from custom view to the canvas
 		initDraggableItemsContainer(container: HTMLElement, options: DraggableItemsContainerOptions): void
@@ -253,7 +253,7 @@ declare module SDK {
 
 	interface IBoardUtils {
 		/** Calculate widgets union boundaries */
-		unionWidgetBounds(widgets: {bounds: IBounds}[]): IBounds
+		unionWidgetBounds(widgets: { bounds: IBounds }[]): IBounds
 	}
 
 	interface IViewportOptions {
@@ -267,6 +267,7 @@ declare module SDK {
 		set(viewport: IRect, options?: IViewportOptions): Promise<IRect>
 
 		getScale(): Promise<number>
+		zoomToObject(widgetId: string, select: boolean)
 
 		/** Get size of default UI panels on viewport sides.
 		 *  Return value: {left: 60, top: 60, right: 0, bottom: 60} */
@@ -303,7 +304,7 @@ declare module SDK {
 		 * Currently user can select only one widget.
 		 * Warning! Use this command in main iframe only.
 		 */
-		enterSelectWidgetsMode(): Promise<{selectedWidgets: IWidget[]}>
+		enterSelectWidgetsMode(): Promise<{ selectedWidgets: IWidget[] }>
 	}
 
 	interface IBoardWidgetsCommands {
@@ -312,7 +313,7 @@ declare module SDK {
 		 * Requires scope: BOARDS:WRITE
 		 * Requires BoardPermission.EDIT_CONTENT for current user
 		 */
-		create<T extends IWidget>(widgets: OneOrMany<{type: string; [index: string]: any}>): Promise<T[]>
+		create<T extends IWidget>(widgets: OneOrMany<{ type: string;[index: string]: any }>): Promise<T[]>
 
 		/**
 		 * filterBy uses https://lodash.com/docs/4.17.11#filter
@@ -325,7 +326,7 @@ declare module SDK {
 		 * Requires scope: BOARDS:WRITE
 		 * Requires BoardPermission.EDIT_CONTENT for current user
 		 */
-		update<T extends IWidget>(widgets: OneOrMany<{id: string; [index: string]: any}>): Promise<T[]>
+		update<T extends IWidget>(widgets: OneOrMany<{ id: string;[index: string]: any }>): Promise<T[]>
 
 		/**
 		 * Requires scope: BOARDS:WRITE
@@ -373,9 +374,9 @@ declare module SDK {
 		__blinkWidget(widgets: InputWidgets): Promise<void>
 	}
 
-	type InputTags = string | string[] | {id: string} | {id: string}[]
-	type CreateTagRequest = {title: string; color: number | string; widgetIds?: InputWidgets}
-	type UpdateTagRequest = {id: string; title?: string; color?: number | string; widgetIds?: InputWidgets}
+	type InputTags = string | string[] | { id: string } | { id: string }[]
+	type CreateTagRequest = { title: string; color: number | string; widgetIds?: InputWidgets }
+	type UpdateTagRequest = { id: string; title?: string; color?: number | string; widgetIds?: InputWidgets }
 
 	// API for tags is experimental.
 	// It will become stable in June 2020.
@@ -441,9 +442,9 @@ declare module SDK {
 
 	type OneOrMany<T> = T | T[]
 
-	type WidgetMetadata = {[x: string]: any}
+	type WidgetMetadata = { [x: string]: any }
 
-	type WidgetCapabilities = {editable: boolean}
+	type WidgetCapabilities = { editable: boolean }
 
 	interface IWidgetNamespaces {
 		metadata: WidgetMetadata
@@ -563,7 +564,7 @@ declare module SDK {
 		endWidgetId: string | undefined
 		readonly startPosition: IPoint
 		readonly endPosition: IPoint
-		readonly captions: {text: string}[]
+		readonly captions: { text: string }[]
 		style: {
 			lineColor: LineColorStyle
 			lineThickness: LineThicknessStyle

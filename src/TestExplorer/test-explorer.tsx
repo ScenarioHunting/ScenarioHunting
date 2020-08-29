@@ -1,63 +1,104 @@
 import * as React from 'react';
 import { ViewModel } from '../TestFactory/test-recorder';
 import "./test-explorer.less"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlay } from '@fortawesome/free-solid-svg-icons'
+import { Widget } from 'board';
+import { globalBoard } from '../global';
+
+enum TestStatus {
+    Skipped,
+    Passed,
+    Failed,
+    Running
+}
+
+interface TestExecutionStatus {
+    Message?: any;
+    Status: TestStatus;
+}
+
+interface TestExecutionViewModel {
+    TestName: string;
+    Result: TestExecutionStatus;
+}
 
 export const TestExplorer = (props): JSX.Element => {
 
-    if (!props.location.state?.newTest)
-    // return <div>No Tests</div >
+    const getAllTests = async (testContext: string) => {
+        const response = await fetch(`https://localhost:6001/Tests/all/${testContext}`,
+            {
+                headers: { 'Content-Type': 'application/json' },
+                method: 'GET',
+            });
 
-    {
-        var t: React.CSSProperties = {
-            backgroundColor: "blue"
+        if (response.ok) {
+            console.log(await response.json())
+            
         }
-        return <div>
-            <span>test Name	</span>
-            <br />
-            <div className="test-steps-view-model-item">
-                {/* <span style={testStepViewModelItem} */}
-                <span className="test-step-view-model-item">
-                    GivenGivenGivenGivenGivenGivenGiven
-            </span>
-
-                <span className="test-step-view-model-item">
-                    WhenWhenWhenWhenWhenWhenWhenWhenWhenWhen
-            </span>
-                <span className="test-step-view-model-item">
-                    ThenThenThenThenThenThenThenThenThen
-            </span>
-            </div>
-        </div>
     }
 
 
-
-
-
-
-
-
-
-
-    //**************************************************************************** */
+    if (!props.location.state?.newTest)
+        return <div>No Tests</div >
     const viewModel = props.location.state.newTest as ViewModel
-    console.log(viewModel)
-    return <div>
-        <span>{viewModel.testName}	</span>
+
+    const tests = [viewModel]
+
+    return <>
+        {tests.map(vm => <TestExplorerItem viewModel={vm} />)}
+    </>
+
+}
+const TestExplorerItem = (props): JSX.Element => {
+    let status: TestExecutionStatus
+    const runTest = async (testContext: string, testName: string) => {
+        const response = await fetch(`https://localhost:6001/Tests/run/${testContext}/${testName}`,
+            {
+                headers: { 'Content-Type': 'application/json' },
+                method: 'GET',
+            });
+
+        if (response.ok) {
+            console.log(await response.json())
+            status = (await response.json() as TestExecutionViewModel).Result
+        }
+    }
+    const focusWidget = (widget: Widget) =>
+        globalBoard.zoomTo(widget)
+
+    console.log(props.viewModel)
+    return <div className="test-item">
+        <div className="test-item-header">
+            <span >{props.viewModel.testName}</span>
+            <FontAwesomeIcon icon={faPlay}
+                className="icon"
+                onClick={async _ => runTest(props.viewModel.testContext
+                    , props.viewModel.testName)} />
+        </div>
         <br />
         <div className="test-steps-view-model-item">
-            <span style={viewModel.givens[0].step.metadata.widget.style}
-                className="test-step-view-model-item">
-                {viewModel.givens[0].step.data.type}
-            </span>
+            {
+                props.viewModel.givens.map(given =>
 
-            <span style={viewModel.when.metadata.widget.style}
+                    <span onClick={_ => focusWidget(given.step.metadata.widget)}
+                        style={given.step.metadata.widget.style}
+                        className="test-step-view-model-item">
+                        {given.step.data.type}
+                    </span>
+
+                )
+            }
+
+            <span onClick={_ => focusWidget(props.viewModel.when.metadata.widget)}
+                style={props.viewModel.when.metadata.widget.style}
                 className="test-step-view-model-item">
-                {viewModel.when.data.type}
+                {props.viewModel.when.data.type}
             </span>
-            <span style={viewModel.then.metadata.widget.style}
+            <span onClick={_ => focusWidget(props.viewModel.then.metadata.widget)}
+                style={props.viewModel.then.metadata.widget.style}
                 className="test-step-view-model-item">
-                {viewModel.then.data.type}
+                {props.viewModel.then.data.type}
             </span>
         </div>
     </div>

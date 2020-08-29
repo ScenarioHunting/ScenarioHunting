@@ -3,6 +3,7 @@ import { Board } from '../board';
 import { QueuingMachine } from './queuing-machine';
 import { testStepRecorder, TestStepTurn, TestStepProps, TestStepOptions } from './test-step-recorder';
 import { Step } from "./step";
+import { globalBoard } from '../global';
 
 
 class ImmediateQueuingMachine<T>{
@@ -11,7 +12,6 @@ class ImmediateQueuingMachine<T>{
 	nextTurn = () => { }
 }
 
-export const globalBoard = new Board()
 export const globalStepNavigator = new QueuingMachine([TestStepTurn.When, TestStepTurn.Then, TestStepTurn.Given])
 
 function GivenStep(props: TestStepProps) {

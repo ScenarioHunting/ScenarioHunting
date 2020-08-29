@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { globalBoard, globalStepNavigator, Givens, IndexedStep } from './given';
+import {  globalStepNavigator, Givens, IndexedStep } from './given';
 import { WhenStep as When } from './when';
 import { ThenStep as Then } from './then';
 import { Step } from "./step";
 import { navigate } from "@reach/router"
+import { globalBoard } from '../global';
 
 export type ViewModel = {
     givens: IndexedStep[]
