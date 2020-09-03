@@ -28655,7 +28655,7 @@ function TestRecorder(props) {
                 }),
                 when: when.data,
                 thens: [{ step: then.data, index: 0 }],
-                systemUnderTestName: sutName,
+                sut: sutName,
             },
             metadata: {
                 contents: JSON.stringify({
@@ -28675,22 +28675,29 @@ function TestRecorder(props) {
             showValidationError('No then selections. Please save the test after selecting the then step.');
             return;
         }
-        // const dto = toDto(givens, when, then)
-        // var requestBody = JSON.stringify(dto);
-        // console.log(requestBody);
-        // const response = await fetch('https://localhost:6001/Tests',
-        //     {
-        //         headers: { 'Content-Type': 'application/json' },
-        //         method: 'POST',
-        //         body: requestBody
-        //     });
-        // if (response.ok)
-        //     globalBoard.showNotification('Test created successfully.');
+        const dto = toDto(givens, when, then);
+        var requestBody = JSON.stringify(dto);
+        console.log(requestBody);
+        const response = yield fetch('https://localhost:6001/Tests', {
+            headers: { 'Content-Type': 'application/json' },
+            method: 'POST',
+            body: requestBody
+        });
+        if (response.ok)
+            _global__WEBPACK_IMPORTED_MODULE_5__["globalBoard"].showNotification('Test created successfully.');
+        const toViewModel = (step) => {
+            return {
+                type: step.data.type,
+                widget: step.metadata.widget
+            };
+        };
         var viewModel = {
             testContext,
             sutName,
             testName,
-            givens, when, then,
+            givens: givens.map(step => toViewModel(step.step)),
+            when: toViewModel(when),
+            then: toViewModel(then)
         };
         yield Object(_reach_router__WEBPACK_IMPORTED_MODULE_4__["navigate"])('/test-explorer', { state: { newTest: viewModel } });
         // console.log(response);
@@ -28704,13 +28711,13 @@ function TestRecorder(props) {
             react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_then__WEBPACK_IMPORTED_MODULE_3__["ThenStep"], { onStepSelection: updateThen, step: then })),
         then &&
             react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "test-form-details" },
-                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("label", { className: "test-name-label" }, "Test Name:"),
-                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("input", { type: 'text', className: "test-name-input", value: testName, onChange: x => recordTestName(x.target.value), placeholder: "Test Name" }),
                 react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("label", { className: "test-context-label" }, "Test Context:"),
                 react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("input", { type: 'text', className: "test-context-input", value: testContext, onChange: x => recordTestContext(x.target.value), placeholder: "Test Context" }),
                 react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("label", { className: "sut-label" }, "SUT:"),
                 react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("input", { type: 'text', className: "sut-input", value: sutName, onChange: x => recordSutName(x.target.value), placeholder: "Sut Name" }),
-                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("button", { className: 'save-button', onClick: save }, "Save"))));
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("button", { className: 'save-button', onClick: save }, "Save"),
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("label", { className: "test-name-label" }, "Test Name:"),
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("input", { type: 'text', className: "test-name-input", value: testName, onChange: x => recordTestName(x.target.value), placeholder: "Test Name" }))));
 }
 
 
@@ -32189,10 +32196,12 @@ var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _argume
 
 var TestStatus;
 (function (TestStatus) {
-    TestStatus[TestStatus["Skipped"] = 0] = "Skipped";
-    TestStatus[TestStatus["Passed"] = 1] = "Passed";
-    TestStatus[TestStatus["Failed"] = 2] = "Failed";
-    TestStatus[TestStatus["Running"] = 3] = "Running";
+    TestStatus[TestStatus["Skipped"] = "Skipped"] = "Skipped";
+    TestStatus[TestStatus["Passed"] = "Passed"] = "Passed";
+    TestStatus[TestStatus["Failed"] = "Failed"] = "Failed";
+    TestStatus[TestStatus["Error"] = "Error"] = "Error";
+    TestStatus[TestStatus["NotRun"] = "NotRun"] = "NotRun";
+    TestStatus[TestStatus["Running"] = "Running"] = "Running";
 })(TestStatus || (TestStatus = {}));
 const TestExplorer = (props) => {
     var _a;
@@ -32201,27 +32210,85 @@ const TestExplorer = (props) => {
             headers: { 'Content-Type': 'application/json' },
             method: 'GET',
         });
+        console.log(response.body);
         if (response.ok) {
-            console.log(yield response.json());
+            console.log(JSON.stringify(yield response.json()));
+            // var xxx = (await response.json()).Tests.map(x => {
+            //     return {
+            //         testName: x.test.testName,
+            //         testContext: "SampleService",
+            //         sutName: x.test.sut,
+            //         givens: x.test.given.map((step, i) => {
+            //             return {
+            //                 type: step.type,
+            //                 widget: JSON.parse(x.Metadata).given[i]
+            //             }
+            //         }) as StepInfo[]
+            //         when: {
+            //             type: x.test.
+            //         }
+            //         // then: Step
+            //     }
+            // })
+        }
+        else {
+            console.log(response);
         }
     });
+    // getAllTests('SampleService')
     if (!((_a = props.location.state) === null || _a === void 0 ? void 0 : _a.newTest))
         return react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null, "No Tests");
     const viewModel = props.location.state.newTest;
     const tests = [viewModel];
-    return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, tests.map(vm => react__WEBPACK_IMPORTED_MODULE_0__["createElement"](TestExplorerItem, { viewModel: vm })));
+    return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, tests.map(vm => react__WEBPACK_IMPORTED_MODULE_0__["createElement"](TestExplorerItem, { key: vm.testName, viewModel: vm })));
+};
+const TestResult = (props) => {
+    return react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", { title: props.message, className: "test-running-status" }, props.status == TestStatus.NotRun.toString() ?
+        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "test-not-run" },
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_2__["FontAwesomeIcon"], { icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_3__["faRunning"] }),
+            "Not Run")
+        : props.status == TestStatus.Running.toString() ?
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "test-running" }, "Running")
+            : props.status == TestStatus.Passed.toString() ?
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "test-passed" }, "Passed")
+                : props.status == TestStatus.Failed.toString() ?
+                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "test-failed" }, "Failed")
+                    : props.status == TestStatus.Skipped.toString() ?
+                        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "test-skipped" }, "Skipped")
+                        :
+                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "test-running-error" }, "Error in running"));
+    // switch (props.Status) {
+    //     case TestStatus.Passed:
+    //         return <pre>Passed</pre>
+    //     case TestStatus.Failed:
+    //         return <pre>Failed</pre>
+    //     case TestStatus.Skipped:
+    //         return <pre>Skipped</pre>
+    //     default:
+    //         return <pre>Error</pre>
+    // }
+    // return <></>
 };
 const TestExplorerItem = (props) => {
-    let status;
+    const [status, recordStatus] = react__WEBPACK_IMPORTED_MODULE_0__["useState"]({
+        status: TestStatus.NotRun.toString()
+    });
     const runTest = (testContext, testName) => __awaiter(void 0, void 0, void 0, function* () {
+        recordStatus({ status: TestStatus.Running.toString() });
         const response = yield fetch(`https://localhost:6001/Tests/run/${testContext}/${testName}`, {
             headers: { 'Content-Type': 'application/json' },
             method: 'GET',
         });
         if (response.ok) {
-            console.log(yield response.json());
-            status = (yield response.json()).Result;
+            const json = (yield response.json())[0];
+            const status = json.result;
+            console.log(status);
+            recordStatus(status);
         }
+        recordStatus({
+            status: TestStatus.Error.toString(),
+            message: response.statusText
+        });
     });
     const focusWidget = (widget) => _global__WEBPACK_IMPORTED_MODULE_4__["globalBoard"].zoomTo(widget);
     console.log(props.viewModel);
@@ -32229,13 +32296,14 @@ const TestExplorerItem = (props) => {
         react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "test-item-header" },
             react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", null, props.viewModel.testName),
             react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_2__["FontAwesomeIcon"], { icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_3__["faPlay"], className: "icon", onClick: (_) => __awaiter(void 0, void 0, void 0, function* () {
-                    return runTest(props.viewModel.testContext, props.viewModel.testName);
-                }) })),
+                    return yield runTest(props.viewModel.testContext, props.viewModel.testName);
+                }) }),
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](TestResult, { status: status.status, message: status === null || status === void 0 ? void 0 : status.message })),
         react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("br", null),
         react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "test-steps-view-model-item" },
-            props.viewModel.givens.map(given => react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", { onClick: _ => focusWidget(given.step.metadata.widget), style: given.step.metadata.widget.style, className: "test-step-view-model-item" }, given.step.data.type)),
-            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", { onClick: _ => focusWidget(props.viewModel.when.metadata.widget), style: props.viewModel.when.metadata.widget.style, className: "test-step-view-model-item" }, props.viewModel.when.data.type),
-            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", { onClick: _ => focusWidget(props.viewModel.then.metadata.widget), style: props.viewModel.then.metadata.widget.style, className: "test-step-view-model-item" }, props.viewModel.then.data.type)));
+            props.viewModel.givens.map(given => react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", { onClick: _ => focusWidget(given.widget), style: given.widget.style, className: "test-step-view-model-item" }, given.type)),
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", { onClick: _ => focusWidget(props.viewModel.when.widget), style: props.viewModel.when.widget.style, className: "test-step-view-model-item" }, props.viewModel.when.type),
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", { onClick: _ => focusWidget(props.viewModel.then.widget), style: props.viewModel.then.widget.style, className: "test-step-view-model-item" }, props.viewModel.then.type)));
 };
 
 
@@ -32275,7 +32343,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(false);
 // Module
-___CSS_LOADER_EXPORT___.push([module.i, ".test-step-view-model-item {\n  width: 18vw;\n  height: 18vw;\n  display: inline-block;\n  margin: 1vw;\n  padding: 1.2vw;\n  overflow-wrap: break-word;\n  font-size: 4.2vw;\n}\n.test-steps-view-model-item {\n  display: flex;\n  justify-content: flex-start;\n}\n.test-item {\n  background-color: #d9d9d9;\n  padding: 1.2vw;\n  margin-top: 1vw;\n}\n.test-item-header {\n  background-color: #d9d9d9;\n  padding-top: 3vw;\n  margin-top: 1vw;\n  padding: 1vw;\n  display: flex;\n}\n.icon {\n  margin: 10px;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.i, ".test-step-view-model-item {\n  width: 18vw;\n  height: 18vw;\n  display: inline-block;\n  margin: 1vw;\n  padding: 1.2vw;\n  overflow-wrap: break-word;\n  font-size: 4.2vw;\n}\n.test-steps-view-model-item {\n  display: flex;\n  justify-content: flex-start;\n}\n.test-item {\n  background-color: #d9d9d9;\n  padding: 1.2vw;\n  margin-top: 1vw;\n}\n.test-item-header {\n  background-color: #d9d9d9;\n  padding-top: 3vw;\n  margin-top: 1vw;\n  padding: 1vw;\n  display: flex;\n}\n.icon {\n  margin-left: 10px;\n  color: #6c6868;\n}\n.test-running-status {\n  margin-left: 10px;\n}\n.test-not-run {\n  margin-left: 10px;\n  color: #6c6868;\n}\n.test-running {\n  margin-left: 10px;\n  color: #6c6868;\n}\n.test-passed {\n  margin-left: 10px;\n  color: #6c6868;\n  color: green;\n}\n.test-failed {\n  margin-left: 10px;\n  color: #6c6868;\n  color: red;\n}\n.test-skipped {\n  margin-left: 10px;\n  color: #6c6868;\n}\n.test-running-error {\n  margin-left: 10px;\n  color: #6c6868;\n  color: red;\n}\n", ""]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
 

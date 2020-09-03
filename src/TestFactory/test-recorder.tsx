@@ -1,15 +1,20 @@
 import * as React from 'react';
-import {  globalStepNavigator, Givens, IndexedStep } from './given';
+import { globalStepNavigator, Givens, IndexedStep } from './given';
 import { WhenStep as When } from './when';
 import { ThenStep as Then } from './then';
 import { Step } from "./step";
 import { navigate } from "@reach/router"
 import { globalBoard } from '../global';
+import { Widget } from 'board';
 
+export type StepInfo = {
+    type: string
+    widget: Widget
+}
 export type ViewModel = {
-    givens: IndexedStep[]
-    when: Step
-    then: Step
+    givens: StepInfo[]
+    when: StepInfo
+    then: StepInfo
     testName: string
     testContext: string
     sutName: string
@@ -65,7 +70,7 @@ export function TestRecorder(props) {
                 }),
                 when: when.data as StepDataDto,
                 thens: [{ step: then.data as StepDataDto, index: 0 } as IndexedStepDataDto],
-                systemUnderTestName: sutName,
+                sut: sutName,
             },
             metadata: {
                 contents: JSON.stringify({
@@ -86,23 +91,31 @@ export function TestRecorder(props) {
             return
         }
 
-        // const dto = toDto(givens, when, then)
+        const dto = toDto(givens, when, then)
 
-        // var requestBody = JSON.stringify(dto);
-        // console.log(requestBody);
-        // const response = await fetch('https://localhost:6001/Tests',
-        //     {
-        //         headers: { 'Content-Type': 'application/json' },
-        //         method: 'POST',
-        //         body: requestBody
-        //     });
-        // if (response.ok)
-        //     globalBoard.showNotification('Test created successfully.');
+        var requestBody = JSON.stringify(dto);
+        console.log(requestBody);
+        const response = await fetch('https://localhost:6001/Tests',
+            {
+                headers: { 'Content-Type': 'application/json' },
+                method: 'POST',
+                body: requestBody
+            });
+        if (response.ok)
+            globalBoard.showNotification('Test created successfully.');
+        const toViewModel = (step: Step): StepInfo => {
+            return {
+                type: step.data.type,
+                widget: step.metadata.widget
+            }
+        }
         var viewModel: ViewModel = {
             testContext,
             sutName,
             testName,
-            givens, when, then,
+            givens: givens.map(step => toViewModel(step.step))
+            , when: toViewModel(when)
+            , then: toViewModel(then)
         }
 
         await navigate('/test-explorer', { state: { newTest: viewModel } })
@@ -124,9 +137,6 @@ export function TestRecorder(props) {
             </div>
             {then &&
                 <div className="test-form-details">
-                    <label className="test-name-label">Test Name:</label>
-                    <input type='text' className="test-name-input" value={testName} onChange={x => recordTestName(x.target.value)} placeholder="Test Name" />
-
                     <label className="test-context-label">Test Context:</label>
                     <input type='text' className="test-context-input" value={testContext} onChange={x => recordTestContext(x.target.value)} placeholder="Test Context" />
 
@@ -134,6 +144,9 @@ export function TestRecorder(props) {
                     <input type='text' className="sut-input" value={sutName} onChange={x => recordSutName(x.target.value)} placeholder="Sut Name" />
 
                     <button className='save-button' onClick={save}>Save</button>
+
+                    <label className="test-name-label">Test Name:</label>
+                    <input type='text' className="test-name-input" value={testName} onChange={x => recordTestName(x.target.value)} placeholder="Test Name" />
                 </div>
             }
 
@@ -167,7 +180,7 @@ type IndexedStepDataDto = {
 }
 
 type TestDto = {
-    systemUnderTestName: string
+    sut: string
 
     givens: IndexedStepDataDto[]
     when: StepDataDto
