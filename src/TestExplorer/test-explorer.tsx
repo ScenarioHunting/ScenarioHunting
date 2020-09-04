@@ -11,7 +11,7 @@ enum TestStatus {
     Skipped = "Skipped" as any,
     Passed = "Passed" as any,
     Failed = "Failed" as any,
-    Error = "Error" as any,
+    Error = "Error in running the test" as any,
     NotRun = "NotRun" as any,
     Running = "Running" as any
 }
@@ -90,10 +90,16 @@ const TestResult = (props: TestExecutionStatus): JSX.Element => {
                     <div className="test-passed">
                         {/* <FontAwesomeIcon icon={faCheck} /> */}
                         Passed
+                        <span className="tooltiptext">
+                            Test is running please wait!
+                                </span>
                     </div >
                     : props.status == TestStatus.Failed.toString() ?
                         <div className="test-failed">
                             {/* <FontAwesomeIcon icon={faStop} /> */}
+                            <span className="tooltiptext">
+                                {props.message}
+                            </span>
                          Failed
                          </div >
                         : props.status == TestStatus.Skipped.toString() ?
@@ -105,7 +111,10 @@ const TestResult = (props: TestExecutionStatus): JSX.Element => {
 
                             <div className="test-running-error">
                                 {/* <FontAwesomeIcon icon={faCut} /> */}
-                        Error in running: {props.message}
+                        Error in running
+                                <span className="tooltiptext">
+                                    {props.message}
+                                </span>
                             </div>
         }
     </span>
