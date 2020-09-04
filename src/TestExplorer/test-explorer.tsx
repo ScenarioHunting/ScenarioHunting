@@ -78,7 +78,7 @@ const TestResult = (props: TestExecutionStatus): JSX.Element => {
     return <span title={props.message} className="test-running-status">
         {props.status == TestStatus.NotRun.toString() ?
             <div className="test-not-run">
-                <FontAwesomeIcon icon={faRunning} />
+                {/* <FontAwesomeIcon icon={faRunning} /> */}
             Not Run
             </div>
             : props.status == TestStatus.Running.toString() ?
@@ -102,9 +102,10 @@ const TestResult = (props: TestExecutionStatus): JSX.Element => {
                         Skipped
                         </div>
                             :
+
                             <div className="test-running-error">
                                 {/* <FontAwesomeIcon icon={faCut} /> */}
-                        Error in running
+                        Error in running: {props.status}
                         </div>
         }
     </span>
