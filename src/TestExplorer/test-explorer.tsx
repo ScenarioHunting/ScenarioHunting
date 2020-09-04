@@ -139,6 +139,7 @@ const TestExplorerItem = (props): JSX.Element => {
             const status = (json as TestExecutionViewModel).result
             console.log(status)
             recordStatus(status)
+            return;
         }
         recordStatus({
             status: TestStatus.Error.toString(),
