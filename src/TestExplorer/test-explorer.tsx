@@ -105,8 +105,8 @@ const TestResult = (props: TestExecutionStatus): JSX.Element => {
 
                             <div className="test-running-error">
                                 {/* <FontAwesomeIcon icon={faCut} /> */}
-                        Error in running: {props.status}
-                        </div>
+                        Error in running: {props.message}
+                            </div>
         }
     </span>
     // switch (props.Status) {
