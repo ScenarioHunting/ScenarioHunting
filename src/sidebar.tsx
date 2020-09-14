@@ -19,11 +19,11 @@ ReactDOM.render(
 			<Link to="/test-explorer">Test Explorer</Link> |{" "}
 		</nav> */}
 		<Router>
-			<TestRecorder path="/" />
+			<TestRecorder default path="/" />
 			<TestExplorer path="test-explorer" />
 		</Router>
 
 	</>
 	, document.getElementById('react-app')
 )
- navigate('/')
+//  navigate('/')
