@@ -24,13 +24,14 @@ export function TestRecorder(props) {
     React.useEffect(() => {
         globalBoard.unselectAll()
             .then(globalStepNavigator.start);
-    }, []);
+        // }, []);
 
 
-    React.useEffect(() =>
+        // React.useEffect(() =>{
         recordTestName(testName == "" ?
             when?.data.type + '_' + then?.data.type
-            : testName))
+            : testName)
+    })
 
     async function getBoardTitle() {
         let boardInfo = await miro.board.info.get();
