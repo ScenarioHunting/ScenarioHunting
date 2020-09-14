@@ -13,10 +13,10 @@ function createTestRecorder(globalBoard: Board, globalStepNavigator: IQueuingMac
 
 ReactDOM.render(
 	<>
-		<nav>
+		{/* <nav>
 			<Link to="/">New Test</Link> |{" "}
 			<Link to="/test-explorer">Test Explorer</Link> |{" "}
-		</nav>
+		</nav> */}
 		<Router>
 			<TestRecorder path="/" />
 			<TestExplorer path="test-explorer" />
