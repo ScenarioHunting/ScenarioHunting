@@ -26,4 +26,4 @@ ReactDOM.render(
 	</>
 	, document.getElementById('react-app')
 )
- navigate('/test-explorer')
+ navigate('/')
