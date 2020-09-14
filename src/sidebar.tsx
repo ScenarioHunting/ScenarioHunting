@@ -7,6 +7,7 @@ import { TestRecorder, ViewModel } from './TestFactory/test-recorder';
 import { Router, Link } from "@reach/router"
 import { TestExplorer } from "./TestExplorer/test-explorer"
 import "./styles.less"
+import { navigate } from "@reach/router"
 function createTestRecorder(globalBoard: Board, globalStepNavigator: IQueuingMachine<TestStepTurn>) {
 
 }
@@ -25,3 +26,4 @@ ReactDOM.render(
 	</>
 	, document.getElementById('react-app')
 )
+ navigate('/test-explorer')
