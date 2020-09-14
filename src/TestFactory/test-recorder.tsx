@@ -27,7 +27,10 @@ export function TestRecorder(props) {
     }, []);
 
 
-
+    React.useEffect(() =>
+        recordTestName(testName == "" ?
+            when?.data.type + '_' + then?.data.type
+            : testName))
 
     async function getBoardTitle() {
         let boardInfo = await miro.board.info.get();
@@ -37,8 +40,8 @@ export function TestRecorder(props) {
     const [givens, recordGiven] = React.useState<IndexedStep[]>([]);
     const [when, recordWhen] = React.useState<Step>();
     const [then, recordThen] = React.useState<Step>();
-    const [testName, recordTestName] = React.useState<string>(when?.data.type + '_' + then?.data.type);
-    const [testContext, recordTestContext] = React.useState<string>("General");
+    const [testName, recordTestName] = React.useState<string>("");
+    const [testContext, recordTestContext] = React.useState<string>("SampleService");
     const [sutName, recordSutName] = React.useState<string>("");
 
     const updateGivens = (givenResults: IndexedStep[]) => {
