@@ -90,16 +90,17 @@ const TestResult = (props: TestExecutionStatus): JSX.Element => {
                     <div className="test-passed">
                         {/* <FontAwesomeIcon icon={faCheck} /> */}
                         Passed
-                        <span className="tooltiptext">
+                        {/* <span className="tooltiptext">
                             Test is running please wait!
-                                </span>
+                        </span> */}
+
                     </div >
                     : props.status == TestStatus.Failed.toString() ?
-                        <div className="test-failed">
+                        <div className="test-failed" >
                             {/* <FontAwesomeIcon icon={faStop} /> */}
-                            <span className="tooltiptext">
+                            {/* <span className="tooltiptext" >
                                 {props.message}
-                            </span>
+                            </span> */}
                          Failed
                          </div >
                         : props.status == TestStatus.Skipped.toString() ?
@@ -112,9 +113,9 @@ const TestResult = (props: TestExecutionStatus): JSX.Element => {
                             <div className="test-running-error">
                                 {/* <FontAwesomeIcon icon={faCut} /> */}
                         Error in running
-                                <span className="tooltiptext">
+                                {/* <span className="tooltiptext">
                                     {props.message}
-                                </span>
+                                </span> */}
                             </div>
         }
     </span>
@@ -148,6 +149,7 @@ const TestExplorerItem = (props): JSX.Element => {
             const status = (json as TestExecutionViewModel).result
             console.log(status)
             recordStatus(status)
+            // (await miro.board.widgets.create({type: 'shape', x:-6152.906990387802-200, y:7674.673277112374-200}))[0]
             return;
         }
         recordStatus({
