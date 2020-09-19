@@ -28814,10 +28814,10 @@ function GivenSteps(options) {
             console.log("onChange:", updatedSteps);
         };
         return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null,
-            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("h1", null,
-                "Given(",
-                indexedSteps.length,
-                ")"),
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("h1", null, "Given"),
+            "(",
+            indexedSteps.length,
+            ")",
             isActive &&
                 react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null,
                     react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("button", { className: "add-step-button", onClick: add }, "+ Given")),
@@ -28869,15 +28869,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _step__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(21);
-var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 
 
 
@@ -28892,11 +28883,9 @@ class TestStepOptions {
 class TestStepProps {
 }
 function testStepRecorder({ stepDisplayTitle: stepType, selectionWaitingMessage, turn, board, stepNavigator }) {
-    return class TestStepRecorder extends react__WEBPACK_IMPORTED_MODULE_1__["Component"] {
-        constructor(props) {
-            super(props);
-        }
-        updateWidget(widget) {
+    return (props) => {
+        var _a, _b, _c, _d, _e;
+        const updateWidget = (widget) => {
             Object(_step__WEBPACK_IMPORTED_MODULE_2__["convertWidgetToStepData"])(widget, data => {
                 const step = {
                     metadata: {
@@ -28908,46 +28897,41 @@ function testStepRecorder({ stepDisplayTitle: stepType, selectionWaitingMessage,
                         properties: data.properties
                     }
                 };
-                this.props.onStepSelection(step);
+                props.onStepSelection(step);
             }, board.showNotification);
-        }
-        componentDidMount() {
-            return __awaiter(this, void 0, void 0, function* () {
-                board.unselectAll();
-                stepNavigator.onTurn(turn, () => {
-                    board.showNotification(selectionWaitingMessage);
-                    console.log('Waiting...');
-                    board.onNextSingleSelection(widget => {
-                        console.log(turn, 'Done...');
-                        this.updateWidget(widget);
-                        stepNavigator.nextTurn();
-                    });
+        };
+        react__WEBPACK_IMPORTED_MODULE_1__["useEffect"](() => {
+            board.unselectAll();
+            stepNavigator.onTurn(turn, () => {
+                board.showNotification(selectionWaitingMessage);
+                console.log('Waiting...');
+                board.onNextSingleSelection(widget => {
+                    console.log(turn, 'Done...');
+                    updateWidget(widget);
+                    stepNavigator.nextTurn();
                 });
             });
-        }
-        onValueChange(index, event) {
-            this.props.step.data.properties[index].simplePropertyValue
+        });
+        const onValueChange = (index, event) => {
+            props.step.data.properties[index].simplePropertyValue
                 = event.currentTarget.value;
-        }
-        makeExample() {
-            board.openModal('../modal.html');
-        }
-        render() {
-            var _a, _b, _c, _d, _e;
-            return (react__WEBPACK_IMPORTED_MODULE_1__["createElement"]("div", { className: "test-step" },
-                react__WEBPACK_IMPORTED_MODULE_1__["createElement"]("h1", { className: "step-type" },
-                    stepType,
-                    " "),
-                (!((_a = this.props.step) === null || _a === void 0 ? void 0 : _a.data)) ? react__WEBPACK_IMPORTED_MODULE_1__["createElement"]("div", { className: "waiting-for-step" },
-                    " ",
-                    react__WEBPACK_IMPORTED_MODULE_1__["createElement"]("h1", null, "?"),
-                    " ") :
-                    react__WEBPACK_IMPORTED_MODULE_1__["createElement"]("div", { style: (_b = this.props.step) === null || _b === void 0 ? void 0 : _b.metadata.widget.style, className: "step-content" },
-                        react__WEBPACK_IMPORTED_MODULE_1__["createElement"]("span", { className: "step-title" }, (_c = this.props.step) === null || _c === void 0 ? void 0 : _c.data.type),
-                        react__WEBPACK_IMPORTED_MODULE_1__["createElement"]("div", { className: "step-data" }, (_e = (_d = this.props.step) === null || _d === void 0 ? void 0 : _d.data.properties) === null || _e === void 0 ? void 0 : _e.map((property, index) => react__WEBPACK_IMPORTED_MODULE_1__["createElement"]("div", { className: "step-date-property", key: `${property}~${index}` },
-                            react__WEBPACK_IMPORTED_MODULE_1__["createElement"]("label", { className: "property-label" }, property.propertyName),
-                            react__WEBPACK_IMPORTED_MODULE_1__["createElement"]("input", { readOnly: false, onChange: (e) => this.onValueChange(index, e), className: "property-input", type: "text", value: property.simplePropertyValue })))))));
-        }
+        };
+        // const makeExample=()=> {
+        //     board.openModal('../modal.html')
+        // }
+        return (react__WEBPACK_IMPORTED_MODULE_1__["createElement"]("div", { className: "test-step" },
+            react__WEBPACK_IMPORTED_MODULE_1__["createElement"]("h1", { className: "step-type" },
+                stepType,
+                " "),
+            (!((_a = props.step) === null || _a === void 0 ? void 0 : _a.data)) ? react__WEBPACK_IMPORTED_MODULE_1__["createElement"]("div", { className: "waiting-for-step" },
+                " ",
+                react__WEBPACK_IMPORTED_MODULE_1__["createElement"]("h1", null, "?"),
+                " ") :
+                react__WEBPACK_IMPORTED_MODULE_1__["createElement"]("div", { style: (_b = props.step) === null || _b === void 0 ? void 0 : _b.metadata.widget.style, className: "step-content" },
+                    react__WEBPACK_IMPORTED_MODULE_1__["createElement"]("span", { className: "step-title" }, (_c = props.step) === null || _c === void 0 ? void 0 : _c.data.type),
+                    react__WEBPACK_IMPORTED_MODULE_1__["createElement"]("div", { className: "step-data" }, (_e = (_d = props.step) === null || _d === void 0 ? void 0 : _d.data.properties) === null || _e === void 0 ? void 0 : _e.map((property, index) => react__WEBPACK_IMPORTED_MODULE_1__["createElement"]("div", { className: "step-date-property", key: `${property}~${index}` },
+                        react__WEBPACK_IMPORTED_MODULE_1__["createElement"]("label", { className: "property-label" }, property.propertyName),
+                        react__WEBPACK_IMPORTED_MODULE_1__["createElement"]("input", { readOnly: false, onChange: (e) => onValueChange(index, e), className: "property-input", type: "text", value: property.simplePropertyValue })))))));
     };
 }
 
