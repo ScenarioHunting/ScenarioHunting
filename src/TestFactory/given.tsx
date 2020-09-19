@@ -4,7 +4,7 @@ import { QueuingMachine } from './queuing-machine';
 import { testStepRecorder, TestStepTurn, TestStepProps, TestStepOptions } from './test-step-recorder';
 import { Step } from "./step";
 import { globalBoard } from '../global';
-
+import { useWhatChanged } from "@simbathesailor/use-what-changed";
 
 class ImmediateQueuingMachine<T>{
 	onTurn = (_: T, whatToDo: () => void) => whatToDo()
@@ -62,12 +62,13 @@ function GivenSteps(options: TestStepOptions) {
 					setIndexedSteps(props.steps)
 			})
 		})
-
+		useWhatChanged([indexedSteps])
 		let nextId: number = 1
 		const add = (event) => {
 			const data = indexedSteps;
 			data.unshift({ index: nextId } as IndexedStep)
 			nextId++;
+			
 			setIndexedSteps(data)
 		}
 		const onStepSelection = (updatedStep: Step) => {

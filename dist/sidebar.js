@@ -28737,6 +28737,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _queuing_machine__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(15);
 /* harmony import */ var _test_step_recorder__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(16);
 /* harmony import */ var _global__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(22);
+/* harmony import */ var _simbathesailor_use_what_changed__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(52);
+
 
 
 
@@ -28785,6 +28787,7 @@ function GivenSteps(options) {
                     setIndexedSteps(props.steps);
             });
         });
+        Object(_simbathesailor_use_what_changed__WEBPACK_IMPORTED_MODULE_4__["useWhatChanged"])([indexedSteps]);
         let nextId = 1;
         const add = (event) => {
             const data = indexedSteps;
@@ -42697,6 +42700,188 @@ var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBP
 ___CSS_LOADER_EXPORT___.push([module.i, "html {\n  height: 100%;\n}\nbody {\n  height: 100%;\n  font-family: helvetica, arial, sans-serif;\n  margin: 2em;\n}\n.centered-for-demo {\n  height: 100%;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  flex-direction: column;\n}\nhtml,\nbody {\n  height: 100%;\n  margin: 0;\n  padding: 0;\n}\n.scrollable-container {\n  height: 100%;\n  overflow-y: auto;\n  padding-top: 30px;\n  padding-left: 10px;\n  padding-right: 10px;\n  padding-bottom: 20px;\n  box-sizing: border-box;\n}\n.scrollable-content {\n  height: 2000px;\n  background-color: #2a79ff;\n}\n", ""]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+/* 51 */,
+/* 52 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useWhatChanged", function() { return useWhatChanged; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+
+var what_debug_changed = 0;
+/**
+ * Taken random color logic from some stackoverflow answer
+ */
+
+function getRandomColor() {
+  var letters = '0123456789ABCDEF';
+  var color = '#';
+
+  for (var i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+
+  return color;
+}
+/**
+ *
+ * Check whether the dependency item is an object. then
+ */
+
+
+var isObject = function isObject(t) {
+  return Object.prototype.toString.call(t) === '[object Object]';
+};
+
+function getPrintableInfo(dependencyItem) {
+  /**
+   * Printing the info into viewable format
+   */
+  if (isObject(dependencyItem) || Array.isArray(dependencyItem)) {
+    var ans;
+
+    try {
+      ans = JSON.stringify(dependencyItem, null, 2);
+    } catch (e) {
+      ans = 'CIRCULAR JSON';
+    }
+
+    return ans;
+  }
+
+  return dependencyItem;
+}
+
+var isDevelopment = "none" === 'development';
+
+function useHotRefs(value) {
+  var fnRef = react__WEBPACK_IMPORTED_MODULE_0___default.a.useRef(value);
+  react__WEBPACK_IMPORTED_MODULE_0___default.a.useEffect(function () {
+    fnRef.current = value;
+  });
+  return fnRef;
+}
+
+function useWhatChanged(dependency, dependencyNames, suffix) {
+  // const logRef =
+  // This ref is responsible for book keeping of the old value
+  var dependencyRef = react__WEBPACK_IMPORTED_MODULE_0___default.a.useRef(dependency); // For count bookkeeping , for easy debugging
+
+  var whatChangedHookCountRef = react__WEBPACK_IMPORTED_MODULE_0___default.a.useRef(1); // For assigning color for easy debugging
+
+  var backgroundColorRef = react__WEBPACK_IMPORTED_MODULE_0___default.a.useRef('');
+  var isDependencyArr = Array.isArray(dependencyRef.current);
+  react__WEBPACK_IMPORTED_MODULE_0___default.a.useEffect(function () {
+    // const MyWindow: IWindow = window;
+    if (dependencyRef.current && isDependencyArr // dependencyRef.current.length > 0
+    ) {
+        what_debug_changed++;
+        whatChangedHookCountRef.current = what_debug_changed;
+        backgroundColorRef.current = getRandomColor();
+      }
+  }, [dependencyRef, isDependencyArr]);
+
+  function postConsole() {
+    console.log('\n');
+    console.log("%c///// END SECTION/////", "background: " + backgroundColorRef.current + "; color: white; font-size: 10px", '\n');
+    console.log('\n');
+    console.log('\n');
+  }
+
+  function logBanners(_ref) {
+    var isFirstMount = _ref.isFirstMount,
+        suffixText = _ref.suffixText,
+        isBlankArrayAsDependency = _ref.isBlankArrayAsDependency;
+
+    if (isDevelopment) {
+      console.log("%c///// START SECTION /////", "background: " + backgroundColorRef.current + "; color: white; font-size: 10px", '\n');
+      console.log('\n');
+      console.log("%c " + whatChangedHookCountRef.current + " " + (suffix || ''), "background: " + backgroundColorRef.current + "; color: white; font-size: 10px", '👇🏾', "" + (isFirstMount ? 'FIRST RUN' : 'UPDATES'), "" + suffixText);
+
+      if (isBlankArrayAsDependency) {
+        postConsole();
+      }
+    }
+  }
+
+  var longBannersRef = useHotRefs(logBanners);
+  react__WEBPACK_IMPORTED_MODULE_0___default.a.useEffect(function () {
+    if (!(dependencyRef.current && isDependencyArr)) {
+      return;
+    } // if (dependencyRef.current.length === 0) {
+    //   return;
+    // }
+    // More info, if needed by user
+
+
+    var stringSplitted = dependencyNames ? dependencyNames.split(',') : null;
+    var changed = false;
+    var whatChanged = dependency ? dependency.reduce(function (acc, dep, index) {
+      if (dependencyRef.current && dep !== dependencyRef.current[index]) {
+        var oldValue = dependencyRef.current[index];
+        dependencyRef.current[index] = dep;
+
+        if (dependencyNames && stringSplitted) {
+          changed = true;
+          acc["\"\u2705\" " + stringSplitted[index]] = {
+            'Old Value': getPrintableInfo(oldValue),
+            'New Value': getPrintableInfo(dep)
+          };
+        } else {
+          acc["\"\u2705\" " + index] = {
+            'Old Value': getPrintableInfo(oldValue),
+            'New Value': getPrintableInfo(dep)
+          };
+        }
+
+        return acc;
+      }
+
+      if (dependencyNames && stringSplitted) {
+        acc["\"\u23FA\" " + stringSplitted[index]] = {
+          'Old Value': getPrintableInfo(dep),
+          'New Value': getPrintableInfo(dep)
+        };
+      } else {
+        acc["\"\u23FA\" " + index] = {
+          'Old Value': getPrintableInfo(dep),
+          'New Value': getPrintableInfo(dep)
+        };
+      }
+
+      return acc;
+    }, {}) : {};
+
+    if (isDevelopment) {
+      var isBlankArrayAsDependency = whatChanged && Object.keys(whatChanged).length === 0 && isDependencyArr;
+      longBannersRef.current({
+        isFirstMount: !changed,
+        suffixText: isBlankArrayAsDependency ? " \uD83D\uDC49\uD83C\uDFFD This will run only once on mount." : "",
+        isBlankArrayAsDependency: isBlankArrayAsDependency
+      });
+
+      if (!isBlankArrayAsDependency) {
+        console.table(whatChanged);
+        postConsole();
+      }
+    }
+  }, [].concat(function () {
+    if (dependency && isDependencyArr) {
+      return dependency;
+    }
+
+    return [];
+  }(), [dependencyRef, longBannersRef]));
+}
+
+
+//# sourceMappingURL=use-what-changed.esm.js.map
 
 
 /***/ })
