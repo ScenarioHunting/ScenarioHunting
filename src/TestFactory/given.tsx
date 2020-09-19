@@ -61,7 +61,7 @@ function GivenSteps(options: TestStepOptions) {
 				if (props.steps)
 					setIndexedSteps(props.steps)
 			})
-		})
+		}, [indexedSteps])
 		useWhatChanged([indexedSteps])
 
 		// React.useEffect(() => {

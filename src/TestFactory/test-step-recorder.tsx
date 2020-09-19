@@ -59,9 +59,9 @@ export function testStepRecorder({ stepDisplayTitle: stepType, selectionWaitingM
             props.step!.data.properties[index].simplePropertyValue
                 = event.currentTarget.value;
         }
-        // const makeExample=()=> {
-        //     board.openModal('../modal.html')
-        // }
+        const makeExample=()=> {
+            board.openModal('../modal.html')
+        }
         
             return(
                 <div className = "test-step" >
