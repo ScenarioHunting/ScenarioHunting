@@ -28797,8 +28797,10 @@ function GivenSteps(options) {
             const data = indexedSteps;
             data.unshift({ index: nextId });
             nextId++;
+            console.log("Given steps were:", indexedSteps);
             console.log("Resetting given steps to:", data);
             setIndexedSteps(data);
+            console.log("Given steps set to:", indexedSteps);
         };
         const onStepSelection = (updatedStep) => {
             // function replace<T>(arr: Array<T>, newItem: T, predicate: (old: T) => Boolean) {
