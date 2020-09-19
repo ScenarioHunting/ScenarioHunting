@@ -4,7 +4,7 @@ const webpack = require('webpack');
 const { json } = require('express');
 
 module.exports = {
-	mode: 'none', // Tip! compile in 'production' mode before publish
+	mode: 'development', // Tip! compile in 'production' mode before publish
 
 	// Tip! Just delete not using files, but main.ts is required
 	entry: {
@@ -45,11 +45,12 @@ module.exports = {
 		filename: '[name].js',
 		path: path.resolve(__dirname, 'dist')
 	},
+	
 	plugins: [
 		new HtmlWebPackPlugin({
 			template: "./src/index.html",
 			filename: "./index.html"
 		}),
-		new webpack.DefinePlugin({"process.env.NODE_ENV":JSON.stringify("development")})
+		// new webpack.DefinePlugin({"process.env.NODE_ENV":JSON.stringify("development")})
 	]
 }
