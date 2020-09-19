@@ -1,5 +1,7 @@
 const path = require('path')
 const HtmlWebPackPlugin = require("html-webpack-plugin");
+const webpack = require('webpack');
+const { json } = require('express');
 
 module.exports = {
 	mode: 'none', // Tip! compile in 'production' mode before publish
@@ -47,6 +49,7 @@ module.exports = {
 		new HtmlWebPackPlugin({
 			template: "./src/index.html",
 			filename: "./index.html"
-		})
+		}),
+		new webpack.DefinePlugin({"process.env.NODE_ENV":JSON.stringify("development")})
 	]
 }

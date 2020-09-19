@@ -70,10 +70,11 @@ function GivenSteps(options: TestStepOptions) {
 
 		let nextId: number = 1
 		const add = (event) => {
+			console.log("Env:" + process.env.NODE_ENV)
 			const data = indexedSteps;
 			data.unshift({ index: nextId } as IndexedStep)
 			nextId++;
-
+			console.log("Resetting given steps to:" , data)
 			setIndexedSteps(data)
 		}
 		const onStepSelection = (updatedStep: Step) => {

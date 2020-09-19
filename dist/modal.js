@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 51);
+/******/ 	return __webpack_require__(__webpack_require__.s = 52);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -463,11 +463,11 @@ function toComment(sourceMap) {
 
 /***/ }),
 
-/***/ 49:
+/***/ 50:
 /***/ (function(module, exports, __webpack_require__) {
 
 var api = __webpack_require__(18);
-            var content = __webpack_require__(50);
+            var content = __webpack_require__(51);
 
             content = content.__esModule ? content.default : content;
 
@@ -488,7 +488,7 @@ module.exports = content.locals || {};
 
 /***/ }),
 
-/***/ 50:
+/***/ 51:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -506,10 +506,10 @@ ___CSS_LOADER_EXPORT___.push([module.i, "html {\n  height: 100%;\n}\nbody {\n  h
 
 /***/ }),
 
-/***/ 51:
+/***/ 52:
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(49);
+__webpack_require__(50);
 let closeButton = document.querySelector('.close-button');
 closeButton.addEventListener('click', () => {
     miro.board.ui.closeModal();
