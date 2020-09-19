@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "watch": "webpack -w",
-    "build": "webpack -d",
+    "build": "webpack -d", 
     "dev-server": "webpack-dev-server --open",
     "start": "node server.js",
     "heroku-postbuild": "npm run build"

@@ -4,7 +4,7 @@ const webpack = require('webpack');
 const { json } = require('express');
 
 module.exports = {
-	mode: 'development', // Tip! compile in 'production' mode before publish
+	mode: 'none', // Tip! compile in 'production' mode before publish
 
 	// Tip! Just delete not using files, but main.ts is required
 	entry: {
