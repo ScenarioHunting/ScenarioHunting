@@ -97,7 +97,7 @@ function GivenSteps(options: TestStepOptions) {
 		}
 		return (
 			<div>
-				<h1>Given</h1>({indexedSteps.length})
+				<h1>Given({indexedSteps.length})</h1>
 
 				{isActive &&
 					<>
