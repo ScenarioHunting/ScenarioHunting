@@ -41,38 +41,36 @@ export type GivenStepsProps = {
 	steps?: IndexedStep[]
 }
 function GivenSteps(options: TestStepOptions) {
-	type State = {
-		isActive: boolean
-		indexedSteps: IndexedStep[]
-	}
+	// type State = {
+	// 	isActive: boolean
+	// 	indexedSteps: IndexedStep[]
+	// }
 
-	return class GivenSteps extends React.Component<GivenStepsProps, State> {
+	return function (props: GivenStepsProps) {
 
-		constructor(props) {
-			super(props)
-			this.nextId = 1
-			this.add = this.add.bind(this)
-			this.state = {
-				isActive: false,
-				indexedSteps: []
-			}
-		}
+		const [isActive, setIsActive] = React.useState<boolean>(false)
+		const [indexedSteps, setIndexedSteps] = React.useState<IndexedStep[]>([])
+		// const [state, setState] = React.useState<State>({
+		// 	isActive: false,
+		// 	indexedSteps: []
+		// })
 
-		componentDidMount() {
+		React.useEffect(() => {
 			globalStepNavigator.onTurn(TestStepTurn.Given, () => {
-				this.setState({ isActive: true })
-				if (this.props.steps)
-					this.setState({ indexedSteps: this.props.steps })
+				setIsActive(true)
+				if (props.steps)
+					setIndexedSteps(props.steps)
 			})
+		})
+
+		let nextId: number = 1
+		const add = (event) => {
+			const data = indexedSteps;
+			data.unshift({ index: nextId } as IndexedStep)
+			nextId++;
+			setIndexedSteps(data)
 		}
-		nextId: number
-		add(event) {
-			const data = this.state.indexedSteps;
-			data.unshift({ index: this.nextId } as IndexedStep)
-			this.nextId++;
-			this.setState({ indexedSteps: data })
-		}
-		onStepSelection = (updatedStep: Step) => {
+		const onStepSelection = (updatedStep: Step) => {
 			// function replace<T>(arr: Array<T>, newItem: T, predicate: (old: T) => Boolean) {
 			// }
 			const replaceOldIfEqual = (oldStep: IndexedStep, updatedStep: Step) => {
@@ -85,38 +83,36 @@ function GivenSteps(options: TestStepOptions) {
 					: oldStep
 			}
 
-			const indexedStep = this.state.indexedSteps.map(oldStep => replaceOldIfEqual(oldStep, updatedStep))
+			const updatedSteps = indexedSteps.map(oldStep => replaceOldIfEqual(oldStep, updatedStep))
 
-			this.setState({ indexedSteps: indexedStep })
+			setIndexedSteps(updatedSteps)
 
-			this.props.onStepSelectionChange(indexedStep)
-			console.log("onChange:", indexedStep)
+			props.onStepSelectionChange(updatedSteps)
+			console.log("onChange:", updatedSteps)
 		}
-		render = () => {
-			return (
-				<div>
-					<h1>Given</h1>
-					
-					{this.state.isActive &&
-						<>
-							{/* <h3>{options.selectionWaitingMessage}</h3> */}
-							<button className="add-step-button"
-								onClick={this.add.bind(this)}>
-								+ Given
+		return (
+			<div>
+				<h1>Given</h1>
+
+				{isActive &&
+					<>
+						{/* <h3>{options.selectionWaitingMessage}</h3> */}
+						<button className="add-step-button"
+							onClick={add}>
+							+ Given
 							</button>
-						</>
-					}
-					{
-						this.state.indexedSteps.map(data =>
-							<GivenStep
-								onStepSelection={this.onStepSelection}
-								step={data.step}
-								key={data.index}
-							/>)
-					}
-				</div>
-			)
-		}
+					</>
+				}
+				{
+					indexedSteps.map(data =>
+						<GivenStep
+							onStepSelection={onStepSelection}
+							step={data.step}
+							key={data.index}
+						/>)
+				}
+			</div>
+		)
 	}
 }
 

@@ -106,8 +106,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-function createTestRecorder(globalBoard, globalStepNavigator) {
-}
 react_dom__WEBPACK_IMPORTED_MODULE_1__["render"](react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null,
     react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("nav", null,
         react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_reach_router__WEBPACK_IMPORTED_MODULE_3__["Link"], { to: "/" }, "New Test"),
@@ -117,8 +115,9 @@ react_dom__WEBPACK_IMPORTED_MODULE_1__["render"](react__WEBPACK_IMPORTED_MODULE_
         " |",
         " "),
     react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_reach_router__WEBPACK_IMPORTED_MODULE_3__["Router"], null,
-        react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_TestFactory_test_recorder__WEBPACK_IMPORTED_MODULE_2__["TestRecorder"], { path: "/" }),
+        react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_TestFactory_test_recorder__WEBPACK_IMPORTED_MODULE_2__["TestRecorder"], { default: true, path: "/" }),
         react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_TestExplorer_test_explorer__WEBPACK_IMPORTED_MODULE_4__["TestExplorer"], { path: "test-explorer" }))), document.getElementById('react-app'));
+//  navigate('/')
 
 
 /***/ }),
@@ -28615,6 +28614,10 @@ function TestRecorder(props) {
         _global__WEBPACK_IMPORTED_MODULE_5__["globalBoard"].unselectAll()
             .then(_given__WEBPACK_IMPORTED_MODULE_1__["globalStepNavigator"].start);
     }, []);
+    // React.useEffect(() =>
+    //     recordTestName(testName == "" ?
+    //         when?.data.type + '_' + then?.data.type
+    //         : testName))
     function getBoardTitle() {
         return __awaiter(this, void 0, void 0, function* () {
             let boardInfo = yield miro.board.info.get();
@@ -28624,8 +28627,8 @@ function TestRecorder(props) {
     const [givens, recordGiven] = react__WEBPACK_IMPORTED_MODULE_0__["useState"]([]);
     const [when, recordWhen] = react__WEBPACK_IMPORTED_MODULE_0__["useState"]();
     const [then, recordThen] = react__WEBPACK_IMPORTED_MODULE_0__["useState"]();
-    const [testName, recordTestName] = react__WEBPACK_IMPORTED_MODULE_0__["useState"]((when === null || when === void 0 ? void 0 : when.data.type) + '_' + (then === null || then === void 0 ? void 0 : then.data.type));
-    const [testContext, recordTestContext] = react__WEBPACK_IMPORTED_MODULE_0__["useState"]("General");
+    const [testName, recordTestName] = react__WEBPACK_IMPORTED_MODULE_0__["useState"]("");
+    const [testContext, recordTestContext] = react__WEBPACK_IMPORTED_MODULE_0__["useState"]("SampleService");
     const [sutName, recordSutName] = react__WEBPACK_IMPORTED_MODULE_0__["useState"]("");
     const updateGivens = (givenResults) => {
         recordGiven(givenResults);
@@ -28764,52 +28767,52 @@ const Givens = GivenSteps({
     turn: _test_step_recorder__WEBPACK_IMPORTED_MODULE_2__["TestStepTurn"].Given,
 });
 function GivenSteps(options) {
-    return class GivenSteps extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
-        constructor(props) {
-            super(props);
-            this.onStepSelection = (updatedStep) => {
-                // function replace<T>(arr: Array<T>, newItem: T, predicate: (old: T) => Boolean) {
-                // }
-                const replaceOldIfEqual = (oldStep, updatedStep) => {
-                    const oldEqualsNew = oldStep.step == undefined
-                        || oldStep.step.metadata.widget.id === updatedStep.metadata.widget.id;
-                    return oldEqualsNew
-                        ? { step: updatedStep, index: oldStep.index }
-                        : oldStep;
-                };
-                const indexedStep = this.state.indexedSteps.map(oldStep => replaceOldIfEqual(oldStep, updatedStep));
-                this.setState({ indexedSteps: indexedStep });
-                this.props.onStepSelectionChange(indexedStep);
-                console.log("onChange:", indexedStep);
-            };
-            this.render = () => {
-                return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null,
-                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("h1", null, "Given"),
-                    this.state.isActive &&
-                        react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null,
-                            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("button", { className: "add-step-button", onClick: this.add.bind(this) }, "+ Given")),
-                    this.state.indexedSteps.map(data => react__WEBPACK_IMPORTED_MODULE_0__["createElement"](GivenStep, { onStepSelection: this.onStepSelection, step: data.step, key: data.index }))));
-            };
-            this.nextId = 1;
-            this.add = this.add.bind(this);
-            this.state = {
-                isActive: false,
-                indexedSteps: []
-            };
-        }
-        componentDidMount() {
+    // type State = {
+    // 	isActive: boolean
+    // 	indexedSteps: IndexedStep[]
+    // }
+    return function (props) {
+        const [isActive, setIsActive] = react__WEBPACK_IMPORTED_MODULE_0__["useState"](false);
+        const [indexedSteps, setIndexedSteps] = react__WEBPACK_IMPORTED_MODULE_0__["useState"]([]);
+        // const [state, setState] = React.useState<State>({
+        // 	isActive: false,
+        // 	indexedSteps: []
+        // })
+        react__WEBPACK_IMPORTED_MODULE_0__["useEffect"](() => {
             globalStepNavigator.onTurn(_test_step_recorder__WEBPACK_IMPORTED_MODULE_2__["TestStepTurn"].Given, () => {
-                this.setState({ isActive: true });
-                if (this.props.steps)
-                    this.setState({ indexedSteps: this.props.steps });
+                setIsActive(true);
+                if (props.steps)
+                    setIndexedSteps(props.steps);
             });
-        }
-        add(event) {
-            const data = this.state.indexedSteps;
-            data.unshift({ index: this.nextId });
-            this.nextId++;
-            this.setState({ indexedSteps: data });
-        }
+        });
+        let nextId = 1;
+        const add = (event) => {
+            const data = indexedSteps;
+            data.unshift({ index: nextId });
+            nextId++;
+            setIndexedSteps(data);
+        };
+        const onStepSelection = (updatedStep) => {
+            // function replace<T>(arr: Array<T>, newItem: T, predicate: (old: T) => Boolean) {
+            // }
+            const replaceOldIfEqual = (oldStep, updatedStep) => {
+                const oldEqualsNew = oldStep.step == undefined
+                    || oldStep.step.metadata.widget.id === updatedStep.metadata.widget.id;
+                return oldEqualsNew
+                    ? { step: updatedStep, index: oldStep.index }
+                    : oldStep;
+            };
+            const updatedSteps = indexedSteps.map(oldStep => replaceOldIfEqual(oldStep, updatedStep));
+            setIndexedSteps(updatedSteps);
+            props.onStepSelectionChange(updatedSteps);
+            console.log("onChange:", updatedSteps);
+        };
+        return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null,
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("h1", null, "Given"),
+            isActive &&
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null,
+                    react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("button", { className: "add-step-button", onClick: add }, "+ Given")),
+            indexedSteps.map(data => react__WEBPACK_IMPORTED_MODULE_0__["createElement"](GivenStep, { onStepSelection: onStepSelection, step: data.step, key: data.index }))));
     };
 }
 
@@ -32199,7 +32202,7 @@ var TestStatus;
     TestStatus[TestStatus["Skipped"] = "Skipped"] = "Skipped";
     TestStatus[TestStatus["Passed"] = "Passed"] = "Passed";
     TestStatus[TestStatus["Failed"] = "Failed"] = "Failed";
-    TestStatus[TestStatus["Error"] = "Error"] = "Error";
+    TestStatus[TestStatus["Error"] = "Error in running the test"] = "Error";
     TestStatus[TestStatus["NotRun"] = "NotRun"] = "NotRun";
     TestStatus[TestStatus["Running"] = "Running"] = "Running";
 })(TestStatus || (TestStatus = {}));
@@ -32244,9 +32247,7 @@ const TestExplorer = (props) => {
 };
 const TestResult = (props) => {
     return react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", { title: props.message, className: "test-running-status" }, props.status == TestStatus.NotRun.toString() ?
-        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "test-not-run" },
-            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_2__["FontAwesomeIcon"], { icon: _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_3__["faRunning"] }),
-            "Not Run")
+        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "test-not-run" }, "Not Run")
         : props.status == TestStatus.Running.toString() ?
             react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { className: "test-running" }, "Running")
             : props.status == TestStatus.Passed.toString() ?
@@ -32284,6 +32285,8 @@ const TestExplorerItem = (props) => {
             const status = json.result;
             console.log(status);
             recordStatus(status);
+            // (await miro.board.widgets.create({type: 'shape', x:-6152.906990387802-200, y:7674.673277112374-200}))[0]
+            return;
         }
         recordStatus({
             status: TestStatus.Error.toString(),
@@ -32343,7 +32346,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(false);
 // Module
-___CSS_LOADER_EXPORT___.push([module.i, ".test-step-view-model-item {\n  width: 18vw;\n  height: 18vw;\n  display: inline-block;\n  margin: 1vw;\n  padding: 1.2vw;\n  overflow-wrap: break-word;\n  font-size: 4.2vw;\n}\n.test-steps-view-model-item {\n  display: flex;\n  justify-content: flex-start;\n}\n.test-item {\n  background-color: #d9d9d9;\n  padding: 1.2vw;\n  margin-top: 1vw;\n}\n.test-item-header {\n  background-color: #d9d9d9;\n  padding-top: 3vw;\n  margin-top: 1vw;\n  padding: 1vw;\n  display: flex;\n}\n.icon {\n  margin-left: 10px;\n  color: #6c6868;\n}\n.test-running-status {\n  margin-left: 10px;\n}\n.test-not-run {\n  margin-left: 10px;\n  color: #6c6868;\n}\n.test-running {\n  margin-left: 10px;\n  color: #6c6868;\n}\n.test-passed {\n  margin-left: 10px;\n  color: #6c6868;\n  color: green;\n}\n.test-failed {\n  margin-left: 10px;\n  color: #6c6868;\n  color: red;\n}\n.test-skipped {\n  margin-left: 10px;\n  color: #6c6868;\n}\n.test-running-error {\n  margin-left: 10px;\n  color: #6c6868;\n  color: red;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.i, ".test-step-view-model-item {\n  width: 18vw;\n  height: 18vw;\n  display: inline-block;\n  margin: 1vw;\n  padding: 1.2vw;\n  overflow-wrap: break-word;\n  font-size: 4.2vw;\n}\n.test-steps-view-model-item {\n  display: flex;\n  justify-content: flex-start;\n}\n.test-item {\n  background-color: #d9d9d9;\n  padding: 1.2vw;\n  margin-top: 1vw;\n}\n.test-item-header {\n  background-color: #d9d9d9;\n  padding-top: 3vw;\n  margin-top: 1vw;\n  padding: 1vw;\n  display: flex;\n}\n.tooltip {\n  position: relative;\n  display: inline-block;\n  border-bottom: 1px dotted black;\n  /* If you want dots under the hoverable text */\n}\n/* Tooltip text */\n.tooltip .tooltiptext {\n  visibility: hidden;\n  width: 120px;\n  background-color: black;\n  color: #fff;\n  text-align: center;\n  padding: 5px 0;\n  border-radius: 6px;\n  /* Position the tooltip text - see examples below! */\n  position: absolute;\n  z-index: 1;\n}\n/* Show the tooltip text when you mouse over the tooltip container */\n.tooltip:hover .tooltiptext {\n  visibility: visible;\n}\n.icon {\n  margin-left: 10px;\n  color: #6c6868;\n}\n.test-running-status {\n  margin-left: 10px;\n}\n.test-not-run {\n  margin-left: 10px;\n  color: #6c6868;\n}\n.test-running {\n  margin-left: 10px;\n  color: #6c6868;\n}\n.test-passed {\n  margin-left: 10px;\n  color: #6c6868;\n  color: green;\n}\n.test-failed {\n  margin-left: 10px;\n  color: #6c6868;\n  color: red;\n}\n.test-skipped {\n  margin-left: 10px;\n  color: #6c6868;\n}\n.test-running-error {\n  margin-left: 10px;\n  color: #6c6868;\n  color: red;\n}\n", ""]);
 // Exports
 /* harmony default export */ __webpack_exports__["default"] = (___CSS_LOADER_EXPORT___);
 
