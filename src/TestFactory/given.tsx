@@ -64,9 +64,9 @@ function GivenSteps(options: TestStepOptions) {
 		})
 		useWhatChanged([indexedSteps])
 
-		React.useEffect(() => {
-			// console.log("some thing changed , need to figure out")
-		}, [indexedSteps])
+		// React.useEffect(() => {
+		// 	// console.log("some thing changed , need to figure out")
+		// }, [indexedSteps])
 
 		let nextId: number = 1
 		const add = (event) => {

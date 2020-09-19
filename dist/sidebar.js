@@ -28788,9 +28788,9 @@ function GivenSteps(options) {
             });
         });
         Object(_simbathesailor_use_what_changed__WEBPACK_IMPORTED_MODULE_4__["useWhatChanged"])([indexedSteps]);
-        react__WEBPACK_IMPORTED_MODULE_0__["useEffect"](() => {
-            // console.log("some thing changed , need to figure out")
-        }, [indexedSteps]);
+        // React.useEffect(() => {
+        // 	// console.log("some thing changed , need to figure out")
+        // }, [indexedSteps])
         let nextId = 1;
         const add = (event) => {
             // const data = indexedSteps;
