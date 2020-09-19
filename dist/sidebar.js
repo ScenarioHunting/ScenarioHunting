@@ -28788,6 +28788,9 @@ function GivenSteps(options) {
             });
         });
         Object(_simbathesailor_use_what_changed__WEBPACK_IMPORTED_MODULE_4__["useWhatChanged"])([indexedSteps]);
+        react__WEBPACK_IMPORTED_MODULE_0__["useEffect"](() => {
+            // console.log("some thing changed , need to figure out")
+        }, [indexedSteps]);
         let nextId = 1;
         const add = (event) => {
             const data = indexedSteps;
@@ -28810,12 +28813,13 @@ function GivenSteps(options) {
             props.onStepSelectionChange(updatedSteps);
             console.log("onChange:", updatedSteps);
         };
-        return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null,
+        return;
+        react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null,
             react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("h1", null, "Given"),
             isActive &&
                 react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null,
                     react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("button", { className: "add-step-button", onClick: add }, "+ Given")),
-            indexedSteps.map(data => react__WEBPACK_IMPORTED_MODULE_0__["createElement"](GivenStep, { onStepSelection: onStepSelection, step: data.step, key: data.index }))));
+            indexedSteps.map(data => react__WEBPACK_IMPORTED_MODULE_0__["createElement"](GivenStep, { onStepSelection: onStepSelection, step: data.step, key: data.index })));
     };
 }
 
