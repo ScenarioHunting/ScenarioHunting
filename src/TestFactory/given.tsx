@@ -63,11 +63,11 @@ function GivenSteps(options: TestStepOptions) {
 			})
 		})
 		useWhatChanged([indexedSteps])
-		
+
 		React.useEffect(() => {
 			// console.log("some thing changed , need to figure out")
 		}, [indexedSteps])
-		
+
 		let nextId: number = 1
 		const add = (event) => {
 			const data = indexedSteps;
@@ -96,28 +96,28 @@ function GivenSteps(options: TestStepOptions) {
 			props.onStepSelectionChange(updatedSteps)
 			console.log("onChange:", updatedSteps)
 		}
-		return
-		<div>
-			<h1>Given</h1>
+		return (
+			<div>
+				<h1>Given</h1>
 
-			{isActive &&
-				<>
-					{/* <h3>{options.selectionWaitingMessage}</h3> */}
-					<button className="add-step-button"
-						onClick={add}>
-						+ Given
+				{isActive &&
+					<>
+						{/* <h3>{options.selectionWaitingMessage}</h3> */}
+						<button className="add-step-button"
+							onClick={add}>
+							+ Given
 							</button>
-				</>
-			}
-			{
-				indexedSteps.map(data =>
-					<GivenStep
-						onStepSelection={onStepSelection}
-						step={data.step}
-						key={data.index}
-					/>)
-			}
-		</div>
+					</>
+				}
+				{
+					indexedSteps.map(data =>
+						<GivenStep
+							onStepSelection={onStepSelection}
+							step={data.step}
+							key={data.index}
+						/>)
+				}
+			</div>)
 
 	}
 }
