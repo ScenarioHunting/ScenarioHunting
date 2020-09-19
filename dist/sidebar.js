@@ -28799,7 +28799,7 @@ function GivenSteps(options) {
             nextId++;
             console.log("Given steps were:", indexedSteps);
             console.log("Resetting given steps to:", data);
-            setIndexedSteps(data);
+            setIndexedSteps([...data]);
             console.log("Given steps set to:", indexedSteps);
         };
         const onStepSelection = (updatedStep) => {
@@ -28813,7 +28813,7 @@ function GivenSteps(options) {
                     : oldStep;
             };
             const updatedSteps = indexedSteps.map(oldStep => replaceOldIfEqual(oldStep, updatedStep));
-            setIndexedSteps(updatedSteps);
+            setIndexedSteps([...updatedSteps]);
             props.onStepSelectionChange(updatedSteps);
             console.log("onChange:", updatedSteps);
         };
@@ -28822,7 +28822,8 @@ function GivenSteps(options) {
             isActive &&
                 react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null,
                     react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("button", { className: "add-step-button", onClick: add }, "+ Given")),
-            indexedSteps.map(data => react__WEBPACK_IMPORTED_MODULE_0__["createElement"](GivenStep, { onStepSelection: onStepSelection, step: data.step, key: data.index }))));
+            indexedSteps.map(data => react__WEBPACK_IMPORTED_MODULE_0__["createElement"](GivenStep, { onStepSelection: onStepSelection, step: data.step, key: data.index })),
+            indexedSteps.length));
     };
 }
 

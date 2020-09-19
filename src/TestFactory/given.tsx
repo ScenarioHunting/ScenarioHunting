@@ -74,10 +74,10 @@ function GivenSteps(options: TestStepOptions) {
 			const data = indexedSteps;
 			data.unshift({ index: nextId } as IndexedStep)
 			nextId++;
-			console.log("Given steps were:" , indexedSteps)
-			console.log("Resetting given steps to:" , data)
-			setIndexedSteps(data)
-			console.log("Given steps set to:" , indexedSteps)
+			console.log("Given steps were:", indexedSteps)
+			console.log("Resetting given steps to:", data)
+			setIndexedSteps([...data])
+			console.log("Given steps set to:", indexedSteps)
 		}
 		const onStepSelection = (updatedStep: Step) => {
 			// function replace<T>(arr: Array<T>, newItem: T, predicate: (old: T) => Boolean) {
@@ -94,7 +94,7 @@ function GivenSteps(options: TestStepOptions) {
 
 			const updatedSteps = indexedSteps.map(oldStep => replaceOldIfEqual(oldStep, updatedStep))
 
-			setIndexedSteps(updatedSteps)
+			setIndexedSteps([...updatedSteps])
 
 			props.onStepSelectionChange(updatedSteps)
 			console.log("onChange:", updatedSteps)
@@ -120,6 +120,8 @@ function GivenSteps(options: TestStepOptions) {
 							key={data.index}
 						/>)
 				}
+				{indexedSteps.length}
+
 			</div>)
 
 	}
