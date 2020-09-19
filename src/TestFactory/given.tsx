@@ -70,14 +70,10 @@ function GivenSteps(options: TestStepOptions) {
 
 		let nextId: number = 1
 		const add = (event) => {
-			console.log("Env:" + process.env.NODE_ENV)
-			const data = indexedSteps;
-			data.unshift({ index: nextId } as IndexedStep)
+			// const data = indexedSteps;
+			// data.unshift({ index: nextId } as IndexedStep)
+			setIndexedSteps([{ index: nextId } as IndexedStep, ...indexedSteps])
 			nextId++;
-			console.log("Given steps were:", indexedSteps)
-			console.log("Resetting given steps to:", data)
-			setIndexedSteps([...data])
-			console.log("Given steps set to:", indexedSteps)
 		}
 		const onStepSelection = (updatedStep: Step) => {
 			// function replace<T>(arr: Array<T>, newItem: T, predicate: (old: T) => Boolean) {
@@ -101,7 +97,7 @@ function GivenSteps(options: TestStepOptions) {
 		}
 		return (
 			<div>
-				<h1>Given</h1>
+				<h1>Given({indexedSteps.length})</h1>
 
 				{isActive &&
 					<>
@@ -120,7 +116,7 @@ function GivenSteps(options: TestStepOptions) {
 							key={data.index}
 						/>)
 				}
-				{indexedSteps.length}
+
 
 			</div>)
 

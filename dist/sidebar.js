@@ -28793,14 +28793,10 @@ function GivenSteps(options) {
         }, [indexedSteps]);
         let nextId = 1;
         const add = (event) => {
-            console.log("Env:" + "development");
-            const data = indexedSteps;
-            data.unshift({ index: nextId });
+            // const data = indexedSteps;
+            // data.unshift({ index: nextId } as IndexedStep)
+            setIndexedSteps([{ index: nextId }, ...indexedSteps]);
             nextId++;
-            console.log("Given steps were:", indexedSteps);
-            console.log("Resetting given steps to:", data);
-            setIndexedSteps([...data]);
-            console.log("Given steps set to:", indexedSteps);
         };
         const onStepSelection = (updatedStep) => {
             // function replace<T>(arr: Array<T>, newItem: T, predicate: (old: T) => Boolean) {
@@ -28818,12 +28814,14 @@ function GivenSteps(options) {
             console.log("onChange:", updatedSteps);
         };
         return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null,
-            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("h1", null, "Given"),
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("h1", null,
+                "Given(",
+                indexedSteps.length,
+                ")"),
             isActive &&
                 react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null,
                     react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("button", { className: "add-step-button", onClick: add }, "+ Given")),
-            indexedSteps.map(data => react__WEBPACK_IMPORTED_MODULE_0__["createElement"](GivenStep, { onStepSelection: onStepSelection, step: data.step, key: data.index })),
-            indexedSteps.length));
+            indexedSteps.map(data => react__WEBPACK_IMPORTED_MODULE_0__["createElement"](GivenStep, { onStepSelection: onStepSelection, step: data.step, key: data.index }))));
     };
 }
 
