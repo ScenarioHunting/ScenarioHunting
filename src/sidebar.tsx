@@ -8,16 +8,13 @@ import { Router, Link } from "@reach/router"
 import { TestExplorer } from "./TestExplorer/test-explorer"
 import "./styles.less"
 import { navigate } from "@reach/router"
-function createTestRecorder(globalBoard: Board, globalStepNavigator: IQueuingMachine<TestStepTurn>) {
-
-}
 
 ReactDOM.render(
 	<>
-		{/* <nav>
+		<nav>
 			<Link to="/">New Test</Link> |{" "}
 			<Link to="/test-explorer">Test Explorer</Link> |{" "}
-		</nav> */}
+		</nav>
 		<Router>
 			<TestRecorder default path="/" />
 			<TestExplorer path="test-explorer" />
