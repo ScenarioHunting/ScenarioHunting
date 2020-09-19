@@ -61,12 +61,9 @@ function GivenSteps(options: TestStepOptions) {
 				if (props.steps)
 					setIndexedSteps(props.steps)
 			})
-		}, [indexedSteps])
+		})
 		useWhatChanged([indexedSteps])
 
-		// React.useEffect(() => {
-		// 	// console.log("some thing changed , need to figure out")
-		// }, [indexedSteps])
 
 		let nextId: number = 1
 		const add = (event) => {
@@ -97,7 +94,7 @@ function GivenSteps(options: TestStepOptions) {
 		}
 		return (
 			<div>
-				<h1>Given({indexedSteps.length})</h1>
+				<h1>Given</h1>({indexedSteps.length})
 
 				{isActive &&
 					<>

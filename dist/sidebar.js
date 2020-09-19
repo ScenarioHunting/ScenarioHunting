@@ -28786,11 +28786,8 @@ function GivenSteps(options) {
                 if (props.steps)
                     setIndexedSteps(props.steps);
             });
-        }, [indexedSteps]);
+        });
         Object(_simbathesailor_use_what_changed__WEBPACK_IMPORTED_MODULE_4__["useWhatChanged"])([indexedSteps]);
-        // React.useEffect(() => {
-        // 	// console.log("some thing changed , need to figure out")
-        // }, [indexedSteps])
         let nextId = 1;
         const add = (event) => {
             // const data = indexedSteps;
@@ -28814,10 +28811,10 @@ function GivenSteps(options) {
             console.log("onChange:", updatedSteps);
         };
         return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null,
-            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("h1", null,
-                "Given(",
-                indexedSteps.length,
-                ")"),
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("h1", null, "Given"),
+            "(",
+            indexedSteps.length,
+            ")",
             isActive &&
                 react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null,
                     react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("button", { className: "add-step-button", onClick: add }, "+ Given")),
