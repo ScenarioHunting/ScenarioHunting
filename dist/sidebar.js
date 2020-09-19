@@ -28911,7 +28911,7 @@ function testStepRecorder({ stepDisplayTitle: stepType, selectionWaitingMessage,
                     stepNavigator.nextTurn();
                 });
             });
-        });
+        }, [stepNavigator]);
         const onValueChange = (index, event) => {
             props.step.data.properties[index].simplePropertyValue
                 = event.currentTarget.value;

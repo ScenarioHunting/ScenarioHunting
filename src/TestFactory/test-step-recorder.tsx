@@ -54,7 +54,7 @@ export function testStepRecorder({ stepDisplayTitle: stepType, selectionWaitingM
                     stepNavigator.nextTurn();
                 });
             });
-        })
+        },[stepNavigator])
         const onValueChange=(index: number, event: React.ChangeEvent<HTMLInputElement>) =>{
             props.step!.data.properties[index].simplePropertyValue
                 = event.currentTarget.value;
