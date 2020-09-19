@@ -28883,7 +28883,7 @@ class TestStepOptions {
 class TestStepProps {
 }
 function testStepRecorder({ stepDisplayTitle: stepType, selectionWaitingMessage, turn, board, stepNavigator }) {
-    return (props) => {
+    return function (props) {
         var _a, _b, _c, _d, _e;
         const updateWidget = (widget) => {
             Object(_step__WEBPACK_IMPORTED_MODULE_2__["convertWidgetToStepData"])(widget, data => {
