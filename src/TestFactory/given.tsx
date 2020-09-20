@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { Board } from '../board';
 import { QueuingMachine } from './queuing-machine';
 import { testStepRecorder, TestStepTurn, TestStepProps, TestStepOptions } from './test-step-recorder';
 import { Step } from "./step";
@@ -37,6 +36,7 @@ export type IndexedStep = {
 	step: Step
 }
 export type GivenStepsProps = {
+	// eslint-disable-next-line no-unused-vars
 	onStepSelectionChange: (stepResults: IndexedStep[]) => void
 	steps?: IndexedStep[]
 }
@@ -46,7 +46,7 @@ function GivenSteps(options: TestStepOptions) {
 	// 	indexedSteps: IndexedStep[]
 	// }
 
-	return function (props: GivenStepsProps) {
+	return function givens(props: GivenStepsProps) {
 
 		const [isActive, setIsActive] = React.useState<boolean>(false)
 		const [indexedSteps, setIndexedSteps] = React.useState<IndexedStep[]>([])
@@ -56,7 +56,7 @@ function GivenSteps(options: TestStepOptions) {
 		// })
 
 		React.useEffect(() => {
-			globalStepNavigator.onTurn(TestStepTurn.Given, () => {
+			options.stepNavigator.onTurn(TestStepTurn.Given, () => {
 				setIsActive(true)
 				if (props.steps)
 					setIndexedSteps(props.steps)
@@ -66,7 +66,7 @@ function GivenSteps(options: TestStepOptions) {
 
 
 		let nextId: number = 1
-		const add = (event) => {
+		const add = () => {
 			// const data = indexedSteps;
 			// data.unshift({ index: nextId } as IndexedStep)
 			setIndexedSteps([{ index: nextId } as IndexedStep, ...indexedSteps])

@@ -1,13 +1,10 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { TestStepTurn } from './TestFactory/test-step-recorder';
-import { Board } from 'board';
-import { IQueuingMachine } from './TestFactory/queuing-machine';
-import { TestRecorder, ViewModel } from './TestFactory/test-recorder';
+import TestRecorder from './TestFactory/test-recorder';
 import { Router, Link } from "@reach/router"
 import { TestExplorer } from "./TestExplorer/test-explorer"
 import "./styles.less"
-import { navigate } from "@reach/router"
+// import { navigate } from "@reach/router"
 
 ReactDOM.render(
 	<>

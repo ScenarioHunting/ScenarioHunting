@@ -1,4 +1,5 @@
 import * as React from 'react';
+// import { RouteComponentProps } from '@reach/router';
 import { globalStepNavigator, Givens, IndexedStep } from './given';
 import { WhenStep as When } from './when';
 import { ThenStep as Then } from './then';
@@ -19,7 +20,7 @@ export type ViewModel = {
     testContext: string
     sutName: string
 }
-export function TestRecorder(props) {
+const TestRecorder:React.FC<any>=()=> {
 
     React.useEffect(() => {
         globalBoard.unselectAll()
@@ -32,10 +33,6 @@ export function TestRecorder(props) {
     //         when?.data.type + '_' + then?.data.type
     //         : testName))
 
-    async function getBoardTitle() {
-        let boardInfo = await miro.board.info.get();
-        // this.setState({ boardTitle: boardInfo.title });
-    }
 
     const [givens, recordGiven] = React.useState<IndexedStep[]>([]);
     const [when, recordWhen] = React.useState<Step>();
@@ -56,13 +53,13 @@ export function TestRecorder(props) {
     const showValidationError = (errorText: string) => {
         globalBoard.showNotification(errorText)
     }
-    const toDto = (given: IndexedStep[], when: Step, then: Step): NewTestDto => {
+    const toDto = (givens: IndexedStep[], when: Step, then: Step): NewTestDto => {
 
         return {
             context: testContext,
             testName: testName,
             test: {
-                givens: given.map(indexedStep => {
+                givens: givens.map(indexedStep => {
                     return {
                         step: {
                             type: indexedStep.step.data.type,
@@ -77,7 +74,7 @@ export function TestRecorder(props) {
             },
             metadata: {
                 contents: JSON.stringify({
-                    given: given.map(is => { step: is.step.metadata, is.index }),
+                    given: givens.map(given => { given.step.metadata, given.index }),
                     when: when.metadata,
                     then: [{ step: then.metadata, index: 0 }]
                 })
@@ -157,6 +154,7 @@ export function TestRecorder(props) {
     );
 }
 
+export default TestRecorder
 
 
 //----------------------
