@@ -25,7 +25,9 @@ type TestRecorderProps = {
     board: Board
 }
 const TestRecorder: React.FC<any> = ({ board = globalBoard }: TestRecorderProps) => {
-
+    if (!board) {
+        //TODO: Implement guard
+    }
     React.useEffect(() => {
         board.unselectAll()
             .then(globalStepNavigator.start);

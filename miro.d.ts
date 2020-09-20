@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 declare const miro: SDK.Root
 
 declare module SDK {

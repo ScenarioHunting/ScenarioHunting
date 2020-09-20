@@ -47,22 +47,25 @@ export type LocalTestCreationResult = {
     , then: Step
 }
 
-export async function Save(test: LocalTestCreationResult,onSuccess,onError) {
-    const dto = toDto(test)
+export async function Save(test: LocalTestCreationResult, onSuccess, onError) {
+    try {
+        const dto = toDto(test)
 
-    var requestBody = JSON.stringify(dto);
-    console.log(requestBody);
-    const response = await fetch('https://localhost:6001/Tests',//TODO: read it from config file
-        {
-            headers: { 'Content-Type': 'application/json' },
-            method: 'POST',
-            body: requestBody
-        });
-    if (response.ok)
-        onSuccess()
-    else
-        onError(response.statusText)
-        
-
+        var requestBody = JSON.stringify(dto);
+        console.log(requestBody);
+        const response = await fetch('https://localhost:6001/Tests',//TODO: read it from config file
+            {
+                headers: { 'Content-Type': 'application/json' },
+                method: 'POST',
+                body: requestBody
+            });
+        if (response.ok)
+            onSuccess()
+        else
+            onError(response.statusText)
+    }
+    catch (error) {
+        onError(error)
+    }
 
 }

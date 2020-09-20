@@ -1,4 +1,5 @@
-import { ReactText, CSSProperties } from "react";
+/* eslint-disable no-undef */
+import { CSSProperties } from "react";
 
 export class Board {
     openModal(modalAddress: string) {
@@ -6,6 +7,7 @@ export class Board {
         throw new Error("Method not implemented.");
     }
 
+    // eslint-disable-next-line no-unused-vars
     onNextSingleSelection(succeed: (selected: Widget) => void) {
         console.log("Waiting for the next single selection!")
         const select = async (selections) => {
@@ -45,9 +47,9 @@ export class Board {
     zoomTo = (widget: Widget) =>
         miro.board.viewport.zoomToObject(widget.id, true)
 
-    static async captureSingleItemSelections(widgets, succeed, fail) {
-        // miro.board.widgets.sel
-    }
+    // static async captureSingleItemSelections(widgets, succeed, fail) {
+    //     // miro.board.widgets.sel
+    // }
 }
 export type Widget = {
     id: string
