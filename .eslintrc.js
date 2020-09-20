@@ -6,7 +6,8 @@ module.exports = {
   },
   extends: [
     'plugin:react/recommended',
-    'eslint:recommended'
+    'eslint:recommended',
+    "plugin:react-hooks/recommended",
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -21,7 +22,7 @@ module.exports = {
     '@typescript-eslint'
   ],
   rules: {
-    'no-use-before-define': [0],
+    'no-use-before-define': 'off',
     '@typescript-eslint/no-use-before-define': [1],
   }
 }

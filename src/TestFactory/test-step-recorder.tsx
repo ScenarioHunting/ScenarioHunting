@@ -4,8 +4,11 @@ import { Board, Widget } from 'board';
 import { IQueuingMachine } from './queuing-machine';
 import { Step, convertWidgetToStepData } from './step';
 export enum TestStepTurn {
+    // eslint-disable-next-line no-unused-vars
     Then = 'Then',
+    // eslint-disable-next-line no-unused-vars
     When = 'When',
+    // eslint-disable-next-line no-unused-vars
     Given = 'Given',
 }
 
@@ -18,12 +21,13 @@ export class TestStepOptions {
 }
 
 export class TestStepProps {
+    // eslint-disable-next-line no-unused-vars
     onStepSelection: (stepResult: Step) => void
     step?: Step
 }
 
 export function testStepRecorder({ stepDisplayTitle: stepType, selectionWaitingMessage, turn, board, stepNavigator }: TestStepOptions) {
-    return function (props: TestStepProps) {
+    return function Recorder(props: TestStepProps) {
         const updateWidget = (widget: Widget) => {
             convertWidgetToStepData(widget,
                 data => {
@@ -59,9 +63,9 @@ export function testStepRecorder({ stepDisplayTitle: stepType, selectionWaitingM
             props.step!.data.properties[index].simplePropertyValue
                 = event.currentTarget.value;
         }
-        const makeExample=()=> {
-            board.openModal('../modal.html')
-        }
+        // const makeExample=()=> {
+        //     board.openModal('../modal.html')
+        // }
         
             return(
                 <div className = "test-step" >
