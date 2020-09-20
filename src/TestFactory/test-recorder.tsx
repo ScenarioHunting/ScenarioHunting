@@ -7,6 +7,7 @@ import { Step } from "./step";
 import { navigate } from "@reach/router"
 import { globalBoard } from '../global';
 import { Widget } from 'board';
+import { Save, LocalTestCreationResult } from './server';
 
 export type StepInfo = {
     type: string
@@ -20,7 +21,7 @@ export type ViewModel = {
     testContext: string
     sutName: string
 }
-const TestRecorder:React.FC<any>=()=> {
+const TestRecorder: React.FC<any> = () => {
 
     React.useEffect(() => {
         globalBoard.unselectAll()
@@ -47,40 +48,13 @@ const TestRecorder:React.FC<any>=()=> {
     const updateWhen = (when: Step) => {
         recordWhen(when);
     };
-    const updateThen = (when: Step) => {
-        recordThen(when);
+    const updateThen = (then: Step) => {
+        recordThen(then);
     };
     const showValidationError = (errorText: string) => {
         globalBoard.showNotification(errorText)
     }
-    const toDto = (givens: IndexedStep[], when: Step, then: Step): NewTestDto => {
 
-        return {
-            context: testContext,
-            testName: testName,
-            test: {
-                givens: givens.map(indexedStep => {
-                    return {
-                        step: {
-                            type: indexedStep.step.data.type,
-                            properties: indexedStep.step.data.properties.map(p => p as StepDataPropertyDto)
-                        } as StepDataDto,
-                        index: indexedStep.index
-                    } as IndexedStepDataDto
-                }),
-                when: when.data as StepDataDto,
-                thens: [{ step: then.data as StepDataDto, index: 0 } as IndexedStepDataDto],
-                sut: sutName,
-            },
-            metadata: {
-                contents: JSON.stringify({
-                    given: givens.map(given => { given.step.metadata, given.index }),
-                    when: when.metadata,
-                    then: [{ step: then.metadata, index: 0 }]
-                })
-            }
-        }
-    }
     const save = async () => {
         if (!when) {
             showValidationError('No when selections. Please save the test after selecting the when step.')
@@ -91,18 +65,18 @@ const TestRecorder:React.FC<any>=()=> {
             return
         }
 
-        const dto = toDto(givens, when, then)
+        Save({
+            testContext,
+            testName,
+            sutName,
 
-        var requestBody = JSON.stringify(dto);
-        console.log(requestBody);
-        const response = await fetch('https://localhost:6001/Tests',
-            {
-                headers: { 'Content-Type': 'application/json' },
-                method: 'POST',
-                body: requestBody
-            });
-        if (response.ok)
-            globalBoard.showNotification('Test created successfully.');
+            givens,
+            when,
+            then
+        } as LocalTestCreationResult
+            , () => globalBoard.showNotification('Test created successfully.')
+            , () => globalBoard.showNotification('Test creation error try again later.')//TODO: provide more guidance to user
+        )
         const toViewModel = (step: Step): StepInfo => {
             return {
                 type: step.data.type,
@@ -158,36 +132,3 @@ export default TestRecorder
 
 
 //----------------------
-
-type NewTestDto = {
-    context: string
-    testName: string
-    test: TestDto
-    metadata: TestMetadataDto
-}
-type StepDataPropertyDto = {
-    propertyName: string
-    simplePropertyValue: string
-}
-
-type StepDataDto = {
-    type: string
-    properties: StepDataPropertyDto[]
-}
-
-type IndexedStepDataDto = {
-    step: StepDataDto
-    index: number
-}
-
-type TestDto = {
-    sut: string
-
-    givens: IndexedStepDataDto[]
-    when: StepDataDto
-    thens: IndexedStepDataDto[]
-}
-
-type TestMetadataDto = {
-    contents: string
-}

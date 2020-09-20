@@ -46,7 +46,7 @@ function GivenSteps(options: TestStepOptions) {
 	// 	indexedSteps: IndexedStep[]
 	// }
 
-	return function givens(props: GivenStepsProps) {
+	return function Givens(props: GivenStepsProps) {
 
 		const [isActive, setIsActive] = React.useState<boolean>(false)
 		const [indexedSteps, setIndexedSteps] = React.useState<IndexedStep[]>([])
@@ -94,7 +94,7 @@ function GivenSteps(options: TestStepOptions) {
 		}
 		return (
 			<div>
-				<><h1>Given</h1>({indexedSteps.length})</>
+				<h1>Given({indexedSteps.length})</h1>
 
 				{isActive &&
 					<>
