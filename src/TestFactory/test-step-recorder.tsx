@@ -58,7 +58,8 @@ export function testStepRecorder({ stepDisplayTitle: stepType, selectionWaitingM
                     stepNavigator.nextTurn();
                 });
             });
-        },[updateWidget])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        },[stepNavigator])
         const onValueChange=(index: number, event: React.ChangeEvent<HTMLInputElement>) =>{
             props.step!.data.properties[index].simplePropertyValue
                 = event.currentTarget.value;
