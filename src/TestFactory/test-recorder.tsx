@@ -6,7 +6,7 @@ import { ThenStep as Then } from './then';
 import { Step } from "./step";
 import { navigate } from "@reach/router"
 import { globalBoard } from '../global';
-import { Widget } from 'board';
+import { Widget, Board } from 'board';
 import { Save, LocalTestCreationResult } from './server';
 
 export type StepInfo = {
@@ -21,12 +21,15 @@ export type ViewModel = {
     testContext: string
     sutName: string
 }
-const TestRecorder: React.FC<any> = () => {
+type TestRecorderProps = {
+    board: Board
+}
+const TestRecorder: React.FC<any> = ({ board = globalBoard }: TestRecorderProps) => {
 
     React.useEffect(() => {
-        globalBoard.unselectAll()
+        board.unselectAll()
             .then(globalStepNavigator.start);
-    }, []);
+    }, [board]);
 
 
     // React.useEffect(() =>
@@ -52,7 +55,7 @@ const TestRecorder: React.FC<any> = () => {
         recordThen(then);
     };
     const showValidationError = (errorText: string) => {
-        globalBoard.showNotification(errorText)
+        board.showNotification(errorText)
     }
 
     const save = async () => {
@@ -74,9 +77,10 @@ const TestRecorder: React.FC<any> = () => {
             when,
             then
         } as LocalTestCreationResult
-            , () => globalBoard.showNotification('Test created successfully.')
-            , () => globalBoard.showNotification('Test creation error try again later.')//TODO: provide more guidance to user
-        )
+            , () => board.showNotification('Test created successfully.')
+            , (statusText: string) => board.showNotification('Test creation error try again later.\n' + statusText)//TODO: provide more guidance to user
+        );
+
         const toViewModel = (step: Step): StepInfo => {
             return {
                 type: step.data.type,
@@ -84,10 +88,10 @@ const TestRecorder: React.FC<any> = () => {
             }
         }
         var viewModel: ViewModel = {
-            testContext,
-            sutName,
-            testName,
-            givens: givens.map(step => toViewModel(step.step))
+            testContext
+            , sutName
+            , testName
+            , givens: givens.map(step => toViewModel(step.step))
             , when: toViewModel(when)
             , then: toViewModel(then)
         }

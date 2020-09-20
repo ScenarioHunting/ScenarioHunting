@@ -52,7 +52,7 @@ export async function Save(test: LocalTestCreationResult,onSuccess,onError) {
 
     var requestBody = JSON.stringify(dto);
     console.log(requestBody);
-    const response = await fetch('https://localhost:6001/Tests',
+    const response = await fetch('https://localhost:6001/Tests',//TODO: read it from config file
         {
             headers: { 'Content-Type': 'application/json' },
             method: 'POST',
@@ -61,7 +61,7 @@ export async function Save(test: LocalTestCreationResult,onSuccess,onError) {
     if (response.ok)
         onSuccess()
     else
-        onError()
+        onError(response.statusText)
         
 
 
