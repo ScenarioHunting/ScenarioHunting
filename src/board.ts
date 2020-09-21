@@ -1,7 +1,15 @@
 /* eslint-disable no-undef */
 import { CSSProperties } from "react";
-
-export class Board {
+export interface IBoard {
+    // eslint-disable-next-line no-unused-vars
+    onNextSingleSelection(succeed: (selected: Widget) => void)
+    unselectAll: () => Promise<void>
+    // eslint-disable-next-line no-unused-vars
+    showNotification: (message: string) => Promise<void>
+    // eslint-disable-next-line no-unused-vars
+    zoomTo: (widget: Widget) => any
+}
+export class Board implements IBoard {
     openModal(modalAddress: string) {
         miro.board.ui.openModal(modalAddress, { width: 50, height: 50 })
         throw new Error("Method not implemented.");

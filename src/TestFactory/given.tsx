@@ -13,9 +13,10 @@ class ImmediateQueuingMachine<T>{
 
 export const globalStepNavigator = new QueuingMachine([TestStepTurn.When, TestStepTurn.Then, TestStepTurn.Given])
 
-let GivenStep = testStepRecorder({
+const GivenStep = testStepRecorder({
 	board: globalBoard,
 	stepNavigator: new ImmediateQueuingMachine<TestStepTurn>(),
+	
 	stepDisplayTitle: '',
 	selectionWaitingMessage: 'Select minimum required steps for the when to end up then.',
 	turn: TestStepTurn.Given,

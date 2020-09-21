@@ -6,7 +6,7 @@ import { ThenStep as Then } from './then';
 import { Step } from "./step";
 import { navigate } from "@reach/router"
 import { globalBoard } from '../global';
-import { Widget, Board } from 'board';
+import { Widget, IBoard } from 'board';
 import { Save, LocalTestCreationResult } from './server';
 
 export type StepInfo = {
@@ -22,7 +22,7 @@ export type ViewModel = {
     sutName: string
 }
 type TestRecorderProps = {
-    board: Board
+    board: IBoard
     // eslint-disable-next-line no-unused-vars
     save: (test: LocalTestCreationResult, onSuccess, onError) => Promise<void>
 }

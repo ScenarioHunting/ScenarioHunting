@@ -1,3 +1,3 @@
-import { Board } from "./board";
+import { Board, IBoard } from "./board";
 
-export let globalBoard = new Board()
+export let globalBoard: IBoard = new Board()

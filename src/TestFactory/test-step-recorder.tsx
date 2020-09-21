@@ -1,6 +1,6 @@
 import './test-step-recorder.less';
 import * as React from 'react';
-import { Board, Widget } from 'board';
+import { Widget, IBoard } from 'board';
 import { IQueuingMachine } from './queuing-machine';
 import { Step, convertWidgetToStepData } from './step';
 export enum TestStepTurn {
@@ -16,7 +16,7 @@ export class TestStepOptions {
     stepDisplayTitle: string
     selectionWaitingMessage: string
     turn: TestStepTurn
-    board: Board
+    board: IBoard
     stepNavigator: IQueuingMachine<TestStepTurn>
 }
 

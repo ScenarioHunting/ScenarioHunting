@@ -1,10 +1,12 @@
 export interface IQueuingMachine<T> {
+    // eslint-disable-next-line no-unused-vars
     onTurn(_: T, whatToDo: () => void)
     start(): void
     nextTurn(): void
 }
 
 export class QueuingMachine<T> {
+    // eslint-disable-next-line no-unused-vars
     constructor(private sortedTokens: T[]) { }
     onTurn = (token: T, whatToDo: () => void) => {
         console.log(token, 'registered, func:', whatToDo)
