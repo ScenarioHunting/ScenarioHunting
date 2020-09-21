@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { QueuingMachine } from './queuing-machine';
-import { testStepRecorder, TestStepTurn, TestStepProps, TestStepOptions } from './test-step-recorder';
+import { testStepRecorder, TestStepTurn, TestStepOptions } from './test-step-recorder';
 import { Step } from "./step";
 import { globalBoard } from '../global';
 import { useWhatChanged } from "@simbathesailor/use-what-changed";
@@ -13,17 +13,24 @@ class ImmediateQueuingMachine<T>{
 
 export const globalStepNavigator = new QueuingMachine([TestStepTurn.When, TestStepTurn.Then, TestStepTurn.Given])
 
-function GivenStep(props: TestStepProps) {
+let GivenStep = testStepRecorder({
+	board: globalBoard,
+	stepNavigator: new ImmediateQueuingMachine<TestStepTurn>(),
+	stepDisplayTitle: '',
+	selectionWaitingMessage: 'Select minimum required steps for the when to end up then.',
+	turn: TestStepTurn.Given,
+});
+// function GivenStep(props: TestStepProps) {
 
-	var Step = testStepRecorder({
-		board: globalBoard,
-		stepNavigator: new ImmediateQueuingMachine<TestStepTurn>(),
-		stepDisplayTitle: '',
-		selectionWaitingMessage: 'Select minimum required steps for the when to end up then.',
-		turn: TestStepTurn.Given,
-	});
-	return <Step {...props} />
-}
+// 	var Step = testStepRecorder({
+// 		board: globalBoard,
+// 		stepNavigator: new ImmediateQueuingMachine<TestStepTurn>(),
+// 		stepDisplayTitle: '',
+// 		selectionWaitingMessage: 'Select minimum required steps for the when to end up then.',
+// 		turn: TestStepTurn.Given,
+// 	});
+// 	return <Step {...props} />
+// }
 export const Givens = GivenSteps({
 	board: globalBoard,
 	stepNavigator: globalStepNavigator,

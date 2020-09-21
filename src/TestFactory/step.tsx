@@ -18,8 +18,10 @@ type StepDataProperty = {
     simplePropertyValue: string
 }
 export function convertWidgetToStepData(widget: Widget
+    // eslint-disable-next-line no-unused-vars
     , succeed: (data: StepData) => void
-    , fail: (string) => void) {
+    // eslint-disable-next-line no-unused-vars
+    , fail: (error: string) => void) {
 
     const chunks = widget.text.split('\n')
     let type = chunks.shift()
@@ -30,7 +32,7 @@ export function convertWidgetToStepData(widget: Widget
     const toCamelCase = (str: string) =>
         str.trim()//.toLowerCase()
             .replace(/([^A-Z0-9]+)(.)/ig,
-                function (match) {
+                function () {
                     return arguments[2].toUpperCase();
                 }
             )

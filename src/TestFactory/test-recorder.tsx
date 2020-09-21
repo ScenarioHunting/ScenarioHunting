@@ -63,7 +63,7 @@ const TestRecorder: React.FC<any> = ({ board = globalBoard
         board.showNotification(errorText)
     }
 
-    const submit = async () => {
+    const saveAndRedirectToExplorer = async () => {
         if (!when) {
             showValidationError('No when selections. Please save the test after selecting the when step.')
             return
@@ -126,7 +126,7 @@ const TestRecorder: React.FC<any> = ({ board = globalBoard
                     <label className="sut-label">SUT:</label>
                     <input type='text' className="sut-input" value={sutName} onChange={x => recordSutName(x.target.value)} placeholder="Sut Name" />
 
-                    <button className='save-button' onClick={submit}>Save</button>
+                    <button className='save-button' onClick={saveAndRedirectToExplorer}>Save</button>
 
                     <label className="test-name-label">Test Name:</label>
                     <input type='text' className="test-name-input" value={testName} onChange={x => recordTestName(x.target.value)} placeholder="Test Name" />
