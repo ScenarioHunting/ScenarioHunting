@@ -1,7 +1,5 @@
 const path = require('path')
 const HtmlWebPackPlugin = require("html-webpack-plugin");
-const webpack = require('webpack');
-const { json } = require('express');
 
 module.exports = {
 	mode: 'development', // Tip! compile in 'production' mode before publish
@@ -33,7 +31,7 @@ module.exports = {
 			{
 				test: /\.(png|svg|jpg|gif)$/,
 				use: [
-				  'file-loader',
+					'file-loader',
 				]
 			}
 		]
