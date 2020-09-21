@@ -3,11 +3,9 @@ import * as React from 'react';
 import { ViewModel, StepInfo } from '../TestFactory/test-recorder';
 import "./test-explorer.less"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlay, faCheck, faRunning, faStop, faExclamation, faCut } from '@fortawesome/free-solid-svg-icons'
+import { faPlay } from '@fortawesome/free-solid-svg-icons'
 import { Widget } from 'board';
 import { globalBoard } from '../dependency-container';
-import { stat } from 'fs/promises';
-import { Console } from 'console';
 
 enum TestStatus {
     Skipped = "Skipped" as any,
@@ -71,7 +69,7 @@ export const TestExplorer = (props): JSX.Element => {
     // eslint-disable-next-line react/prop-types
     const viewModel = props.location.state.newTest as ViewModel
     // eslint-disable-next-line react/prop-types
-    console.log('typeof props from test-explorer.tsx', props)
+    console.log('typeof props from test-explorer.tsx', typeof props)
 
     const tests = [viewModel]
 

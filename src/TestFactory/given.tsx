@@ -1,5 +1,4 @@
-import { globalStepNavigator } from '../dependency-container';
-import { globalBoard } from '../dependency-container';
+import { globalStepNavigator ,globalBoard } from '../dependency-container';
 import * as React from 'react'
 import { testStepRecorder, TestStepOptions } from './test-step-recorder';
 import { TestStepTurn } from "./TestStepTurn";
