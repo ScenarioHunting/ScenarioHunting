@@ -3,15 +3,7 @@ import * as React from 'react';
 import { Widget, IBoard } from 'board';
 import { IQueuingMachine } from './queuing-machine';
 import { Step, convertWidgetToStepData } from './step';
-export enum TestStepTurn {
-    // eslint-disable-next-line no-unused-vars
-    Then = 'Then',
-    // eslint-disable-next-line no-unused-vars
-    When = 'When',
-    // eslint-disable-next-line no-unused-vars
-    Given = 'Given',
-}
-
+import { TestStepTurn } from './TestStepTurn';
 export class TestStepOptions {
     stepDisplayTitle: string
     selectionWaitingMessage: string

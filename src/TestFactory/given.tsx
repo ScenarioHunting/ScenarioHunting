@@ -1,8 +1,9 @@
+import { globalStepNavigator } from '../dependency-container';
+import { globalBoard } from '../dependency-container';
 import * as React from 'react'
-import { QueuingMachine } from './queuing-machine';
-import { testStepRecorder, TestStepTurn, TestStepOptions } from './test-step-recorder';
+import { testStepRecorder, TestStepOptions } from './test-step-recorder';
+import { TestStepTurn } from "./TestStepTurn";
 import { Step } from "./step";
-import { globalBoard } from '../global';
 import { useWhatChanged } from "@simbathesailor/use-what-changed";
 
 class ImmediateQueuingMachine<T>{
@@ -11,12 +12,11 @@ class ImmediateQueuingMachine<T>{
 	nextTurn = () => { }
 }
 
-export const globalStepNavigator = new QueuingMachine([TestStepTurn.When, TestStepTurn.Then, TestStepTurn.Given])
 
 const GivenStep = testStepRecorder({
 	board: globalBoard,
 	stepNavigator: new ImmediateQueuingMachine<TestStepTurn>(),
-	
+
 	stepDisplayTitle: '',
 	selectionWaitingMessage: 'Select minimum required steps for the when to end up then.',
 	turn: TestStepTurn.Given,

@@ -1,11 +1,12 @@
+import { globalStepNavigator } from '../dependency-container';
+import { globalBoard } from '../dependency-container';
 import * as React from 'react';
 // import { RouteComponentProps } from '@reach/router';
-import { globalStepNavigator, Givens, IndexedStep } from './given';
+import { Givens, IndexedStep } from './given';
 import { WhenStep as When } from './when';
 import { ThenStep as Then } from './then';
 import { Step } from "./step";
 import { navigate } from "@reach/router"
-import { globalBoard } from '../global';
 import { Widget, IBoard } from 'board';
 import { Save, LocalTestCreationResult } from './server';
 

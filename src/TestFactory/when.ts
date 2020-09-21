@@ -1,6 +1,7 @@
-import { testStepRecorder, TestStepTurn } from "./test-step-recorder";
-import {  globalStepNavigator } from "./given";
-import { globalBoard } from "../global";
+import { testStepRecorder } from "./test-step-recorder";
+import { TestStepTurn } from "./TestStepTurn";
+import { globalBoard } from "../dependency-container";
+import { globalStepNavigator } from "../dependency-container";
 
 export const WhenStep = testStepRecorder({
 	board: globalBoard,
