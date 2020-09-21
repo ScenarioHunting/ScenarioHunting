@@ -23,8 +23,11 @@ export type ViewModel = {
 }
 type TestRecorderProps = {
     board: Board
+    // eslint-disable-next-line no-unused-vars
+    save: (test: LocalTestCreationResult, onSuccess, onError) => Promise<void>
 }
-const TestRecorder: React.FC<any> = ({ board = globalBoard }: TestRecorderProps) => {
+const TestRecorder: React.FC<any> = ({ board = globalBoard
+    , save = Save }: TestRecorderProps) => {
     if (!board) {
         //TODO: Implement guard
     }
@@ -60,7 +63,7 @@ const TestRecorder: React.FC<any> = ({ board = globalBoard }: TestRecorderProps)
         board.showNotification(errorText)
     }
 
-    const save = async () => {
+    const submit = async () => {
         if (!when) {
             showValidationError('No when selections. Please save the test after selecting the when step.')
             return
@@ -70,7 +73,7 @@ const TestRecorder: React.FC<any> = ({ board = globalBoard }: TestRecorderProps)
             return
         }
 
-        Save({
+        save({
             testContext,
             testName,
             sutName,
@@ -123,7 +126,7 @@ const TestRecorder: React.FC<any> = ({ board = globalBoard }: TestRecorderProps)
                     <label className="sut-label">SUT:</label>
                     <input type='text' className="sut-input" value={sutName} onChange={x => recordSutName(x.target.value)} placeholder="Sut Name" />
 
-                    <button className='save-button' onClick={save}>Save</button>
+                    <button className='save-button' onClick={submit}>Save</button>
 
                     <label className="test-name-label">Test Name:</label>
                     <input type='text' className="test-name-input" value={testName} onChange={x => recordTestName(x.target.value)} placeholder="Test Name" />

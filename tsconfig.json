@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "baseUrl": "./src",
-    "outDir": "./dist/",
+    "outDir": "dist2",
     "strictNullChecks": true,
     "allowUnreachableCode": true,
     "experimentalDecorators": true,
