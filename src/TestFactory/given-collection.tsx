@@ -1,4 +1,4 @@
-import { globalStepNavigator, globalBoard } from '../dependency-container';
+import { singletonStepNavigator, singletonBoard } from '../dependency-container';
 import * as React from 'react'
 import { TestStepOptions } from './test-step-recorder';
 import { TestStepTurn } from "./test-step-turn";
@@ -92,8 +92,8 @@ function createGivenStepCollection(options: TestStepOptions) {
 }
 
 export const Givens = createGivenStepCollection({
-	board: globalBoard,
-	stepNavigator: globalStepNavigator,
+	board: singletonBoard,
+	stepNavigator: singletonStepNavigator,
 	stepType: TestStepTurn.Given,
 	selectionWaitingMessage: 'Select minimum required steps for the when to end up then.',
 	turn: TestStepTurn.Given,

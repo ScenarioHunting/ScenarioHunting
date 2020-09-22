@@ -1,4 +1,4 @@
-import { globalStepNavigator, globalBoard } from '../dependency-container';
+import { singletonStepNavigator, singletonBoard } from '../dependency-container';
 import * as React from 'react';
 import { Givens, IndexedStep } from './given-collection';
 import { WhenStep as When } from './when-step';
@@ -27,8 +27,8 @@ export type ViewModel = {
 //     // eslint-disable-next-line no-unused-vars
 //     save: (test: LocalTestCreationResult, onSuccess, onError) => Promise<void>
 // }
-export const createTestRecorder = (board = globalBoard
-    , stepNavigator = globalStepNavigator
+export const createTestRecorder = (board = singletonBoard
+    , stepNavigator = singletonStepNavigator
     , save = Save): React.FC<any> => () => {
         if (!board) {
             //TODO: Implement guard

@@ -1,11 +1,11 @@
 import { createTestStepRecorder } from "./test-step-recorder";
 import { TestStepTurn } from "./test-step-turn";
-import { globalBoard } from "../dependency-container";
-import { globalStepNavigator } from "../dependency-container";
+import { singletonBoard } from "../dependency-container";
+import { singletonStepNavigator } from "../dependency-container";
 
 export const WhenStep = createTestStepRecorder({
-	board: globalBoard,
-	stepNavigator: globalStepNavigator,
+	board: singletonBoard,
+	stepNavigator: singletonStepNavigator,
 	stepType: TestStepTurn.When,
 	selectionWaitingMessage: 'Select the exercise you want to test.',
 	turn: TestStepTurn.When,

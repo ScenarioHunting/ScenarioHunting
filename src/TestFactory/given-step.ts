@@ -1,5 +1,5 @@
 import { TestStepTurn } from "./test-step-turn";
-import { globalBoard } from "../dependency-container";
+import { singletonBoard } from "../dependency-container";
 import { createTestStepRecorder } from "./test-step-recorder";
 
 class ImmediateQueuingMachine<T>{
@@ -11,7 +11,7 @@ let immediateQueuingMachine = new ImmediateQueuingMachine<TestStepTurn>();
 
 
 export const GivenStep = createTestStepRecorder({
-    board: globalBoard,
+    board: singletonBoard,
     stepNavigator: immediateQueuingMachine,
 
     stepType: '',
