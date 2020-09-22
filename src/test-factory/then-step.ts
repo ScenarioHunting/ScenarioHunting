@@ -3,7 +3,7 @@ import { TestStepTurn } from "./test-step-turn";
 import { singletonBoard } from "../global-dependency-container";
 import { singletonStepNavigator } from "./local-dependency-container";
 
-export const ThenStep = createTestStepRecorder({
+export let ThenStep = createTestStepRecorder({
 	board: singletonBoard,
 	stepNavigator: singletonStepNavigator,
 	stepType: TestStepTurn.Then,

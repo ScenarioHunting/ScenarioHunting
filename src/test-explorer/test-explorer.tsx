@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import * as React from 'react';
-import { ViewModel } from '../TestFactory/test-recorder';
+import { ViewModel } from '../test-factory/test-recorder';
 import "./test-explorer.less"
 import {TestExplorerItem}from'./test-explorer-item'
 

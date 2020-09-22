@@ -1,10 +1,4 @@
 /* eslint-disable no-unused-vars */
-export interface IQueuingMachine<T> {
-    onTurn(_: T, whatToDo: () => void)
-    start(): void
-    nextTurn(): void
-}
-
 export class QueuingMachine<T> {
     constructor(private sortedTokens: T[]) { }
     onTurn = (token: T, whatToDo: () => void) => {

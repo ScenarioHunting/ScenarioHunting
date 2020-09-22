@@ -21,13 +21,6 @@ export type ViewModel = {
     testContext: string
     sutName: string
 }
-
-// type TestRecorderDependencies = {
-//     board: IBoard
-//     stepNavigator: IQueuingMachine<TestStepTurn>
-//     // eslint-disable-next-line no-unused-vars
-//     save: (test: LocalTestCreationResult, onSuccess, onError) => Promise<void>
-// }
 export const createTestRecorder = (board = singletonBoard
     , stepNavigator = singletonStepNavigator
     , save = Save): React.FC<any> => () => {
@@ -142,6 +135,3 @@ export const createTestRecorder = (board = singletonBoard
 
 
 export let TestRecorder = createTestRecorder()
-
-
-//----------------------

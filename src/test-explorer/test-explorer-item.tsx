@@ -3,7 +3,7 @@ import { faPlay } from '@fortawesome/free-solid-svg-icons'
 import { Widget } from 'board';
 import { singletonBoard } from '../global-dependency-container';
 import * as React from 'react';
-import { ViewModel } from 'TestFactory/test-recorder';
+import { ViewModel } from 'test-factory/test-recorder';
 import { TestExecutionStatus, TestExecutionViewModel } from './test-execution-viewmodel';
 import { TestStatus } from './test-status';
 import { TestResult } from './test-result';

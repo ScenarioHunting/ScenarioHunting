@@ -1,10 +1,10 @@
 import './test-step-recorder.less';
 import * as React from 'react';
 import { Widget, IBoard } from 'board';
-import { IQueuingMachine } from './queuing-machine';
+import { IQueuingMachine } from "../queuing-machine/iqueuing-machine";
 import { Step, convertWidgetToStepData } from './board-data-mapper';
 import { TestStepTurn } from './test-step-turn';
-export class TestStepOptions {
+export class TestStepDependencies {
     stepType: string
     selectionWaitingMessage: string
     turn: TestStepTurn
@@ -23,7 +23,7 @@ export function createTestStepRecorder({ stepType
     , turn
     , board
     , stepNavigator
-}: TestStepOptions) {
+}: TestStepDependencies) {
     return function StepRecorder(props: TestStepProps) {
         const updateWidget = (widget: Widget) => {
             convertWidgetToStepData(widget,
