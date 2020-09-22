@@ -1,4 +1,4 @@
-import { singletonStepNavigator, singletonBoard } from '../dependency-container';
+import {  singletonBoard } from '../global-dependency-container';
 import * as React from 'react';
 import { Givens, IndexedStep } from './given-collection';
 import { WhenStep as When } from './when-step';
@@ -7,6 +7,7 @@ import { Step } from "./board-data-mapper";
 import { navigate } from "@reach/router"
 import { Widget } from 'board';
 import { Save, LocalTestCreationResult } from './test-recorder-http-service';
+import { singletonStepNavigator } from './local-dependency-container';
 
 export type StepInfo = {
     type: string

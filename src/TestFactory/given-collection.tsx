@@ -1,6 +1,5 @@
-import { singletonStepNavigator, singletonBoard } from '../dependency-container';
+import { singletonStepNavigator } from './local-dependency-container';
 import * as React from 'react'
-import { TestStepOptions } from './test-step-recorder';
 import { TestStepTurn } from "./test-step-turn";
 import { Step } from "./board-data-mapper";
 import { useWhatChanged } from "@simbathesailor/use-what-changed";
@@ -16,85 +15,87 @@ export type GivenStepsProps = {
 	onStepSelectionChange: (stepResults: IndexedStep[]) => void
 	steps?: IndexedStep[]
 }
-function createGivenStepCollection(options: TestStepOptions) {
-	return function GivenStepCollection(props: GivenStepsProps) {
+export let createGivenStepCollection =
+	(stepNavigator = singletonStepNavigator) =>
+		(props: GivenStepsProps) => {
 
-		const [isActive, setIsActive] = React.useState<boolean>(false)
-		const [indexedSteps, setIndexedSteps] = React.useState<IndexedStep[]>([])
-		// const [state, setState] = React.useState<State>({
-		// 	isActive: false,
-		// 	indexedSteps: []
-		// })
+			const [isActive, setIsActive] = React.useState<boolean>(false)
+			const [indexedSteps, setIndexedSteps] = React.useState<IndexedStep[]>([])
+			// const [state, setState] = React.useState<State>({
+			// 	isActive: false,
+			// 	indexedSteps: []
+			// })
 
-		React.useEffect(() => {
-			options.stepNavigator.onTurn(TestStepTurn.Given, () => {
-				setIsActive(true)
-				if (props.steps)
-					setIndexedSteps(props.steps)
+			React.useEffect(() => {
+				stepNavigator.onTurn(TestStepTurn.Given, () => {
+					setIsActive(true)
+					if (props.steps)
+						setIndexedSteps(props.steps)
+				})
 			})
-		})
-		useWhatChanged([indexedSteps])
+			useWhatChanged([indexedSteps])
 
 
-		let nextId: number = 1
-		const add = () => {
-			// const data = indexedSteps;
-			// data.unshift({ index: nextId } as IndexedStep)
-			setIndexedSteps([{ index: nextId } as IndexedStep, ...indexedSteps])
-			nextId++;
-		}
-		const onStepSelection = (updatedStep: Step) => {
-			// function replace<T>(arr: Array<T>, newItem: T, predicate: (old: T) => Boolean) {
-			// }
-			const replaceOldIfEqual = (oldStep: IndexedStep, updatedStep: Step) => {
-
-				const oldEqualsNew: boolean = oldStep.step == undefined
-					|| oldStep.step.metadata.widget.id === updatedStep.metadata.widget.id
-
-				return oldEqualsNew
-					? { step: updatedStep, index: oldStep.index } as IndexedStep
-					: oldStep
+			let nextId: number = 1
+			const add = () => {
+				// const data = indexedSteps;
+				// data.unshift({ index: nextId } as IndexedStep)
+				setIndexedSteps([{ index: nextId } as IndexedStep, ...indexedSteps])
+				nextId++;
 			}
+			const onStepSelection = (updatedStep: Step) => {
+				// function replace<T>(arr: Array<T>, newItem: T, predicate: (old: T) => Boolean) {
+				// }
+				const replaceOldIfEqual = (oldStep: IndexedStep, updatedStep: Step) => {
 
-			const updatedSteps = indexedSteps.map(oldStep => replaceOldIfEqual(oldStep, updatedStep))
+					const oldEqualsNew: boolean = oldStep.step == undefined
+						|| oldStep.step.metadata.widget.id === updatedStep.metadata.widget.id
 
-			setIndexedSteps([...updatedSteps])
+					return oldEqualsNew
+						? { step: updatedStep, index: oldStep.index } as IndexedStep
+						: oldStep
+				}
 
-			props.onStepSelectionChange(updatedSteps)
-			console.log("onChange:", updatedSteps)
-		}
-		return (
-			<div>
-				<h1>Given({indexedSteps.length})</h1>
+				const updatedSteps = indexedSteps.map(oldStep => replaceOldIfEqual(oldStep, updatedStep))
 
-				{isActive &&
-					<>
-						{/* <h3>{options.selectionWaitingMessage}</h3> */}
-						<button className="add-step-button"
-							onClick={add}>
-							+ Given
+				setIndexedSteps([...updatedSteps])
+
+				props.onStepSelectionChange(updatedSteps)
+				console.log("onChange:", updatedSteps)
+			}
+			return (
+				<div>
+					<h1>Given({indexedSteps.length})</h1>
+
+					{isActive &&
+						<>
+							{/* <h3>{options.selectionWaitingMessage}</h3> */}
+							<button className="add-step-button"
+								onClick={add}>
+								+ Given
 							</button>
-					</>
-				}
-				{
-					indexedSteps.map(data =>
-						<GivenStep
-							onStepSelection={onStepSelection}
-							step={data.step}
-							key={data.index}
-						/>)
-				}
+						</>
+					}
+					{
+						indexedSteps.map(data =>
+							<GivenStep
+								onStepSelection={onStepSelection}
+								step={data.step}
+								key={data.index}
+							/>)
+					}
 
 
-			</div>)
+				</div>)
 
-	}
-}
+		}
 
-export const Givens = createGivenStepCollection({
-	board: singletonBoard,
-	stepNavigator: singletonStepNavigator,
-	stepType: TestStepTurn.Given,
-	selectionWaitingMessage: 'Select minimum required steps for the when to end up then.',
-	turn: TestStepTurn.Given,
-})
+
+export const Givens = createGivenStepCollection()
+// export const Givens = createGivenStepCollection({
+// 	board: singletonBoard,
+// 	stepNavigator: singletonStepNavigator,
+// 	stepType: TestStepTurn.Given,
+// 	selectionWaitingMessage: 'Select minimum required steps for the when to end up then.',
+// 	turn: TestStepTurn.Given,
+// })

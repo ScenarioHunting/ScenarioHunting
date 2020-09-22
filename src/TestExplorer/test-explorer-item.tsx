@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay } from '@fortawesome/free-solid-svg-icons'
 import { Widget } from 'board';
-import { singletonBoard } from '../dependency-container';
+import { singletonBoard } from '../global-dependency-container';
 import * as React from 'react';
 import { ViewModel } from 'TestFactory/test-recorder';
 import { TestExecutionStatus, TestExecutionViewModel } from './test-execution-viewmodel';

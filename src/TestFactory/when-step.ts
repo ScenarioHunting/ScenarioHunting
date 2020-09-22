@@ -1,9 +1,9 @@
 import { createTestStepRecorder } from "./test-step-recorder";
 import { TestStepTurn } from "./test-step-turn";
-import { singletonBoard } from "../dependency-container";
-import { singletonStepNavigator } from "../dependency-container";
+import { singletonBoard } from "../global-dependency-container";
+import { singletonStepNavigator } from "./local-dependency-container";
 
-export const WhenStep = createTestStepRecorder({
+export let WhenStep = createTestStepRecorder({
 	board: singletonBoard,
 	stepNavigator: singletonStepNavigator,
 	stepType: TestStepTurn.When,
