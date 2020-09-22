@@ -1,5 +1,5 @@
 import { TestStepTurn } from "./test-step-turn";
-import { globalBoard } from "dependency-container";
+import { globalBoard } from "../dependency-container";
 import { createTestStepRecorder } from "./test-step-recorder";
 
 class ImmediateQueuingMachine<T>{
