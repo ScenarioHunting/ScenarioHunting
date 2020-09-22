@@ -1,5 +1,5 @@
 import { IndexedStep } from "./given-collection"
-import { Step } from "./board-example-mapper"
+import { Step } from "./board-data-mapper"
 import { CreateTestDto, StepDataDto, IndexedStepDataDto, StepDataPropertyDto } from "./dto"
 
 const toDto = ({ testContext

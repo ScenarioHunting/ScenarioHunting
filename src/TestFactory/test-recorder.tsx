@@ -3,10 +3,10 @@ import * as React from 'react';
 import { Givens, IndexedStep } from './given-collection';
 import { WhenStep as When } from './when-step';
 import { ThenStep as Then } from './then-step';
-import { Step } from "./board-example-mapper";
+import { Step } from "./board-data-mapper";
 import { navigate } from "@reach/router"
-import { Widget, IBoard } from 'board';
-import { Save, LocalTestCreationResult } from './server';
+import { Widget } from 'board';
+import { Save, LocalTestCreationResult } from './test-recorder-http-service';
 
 export type StepInfo = {
     type: string
@@ -20,123 +20,127 @@ export type ViewModel = {
     testContext: string
     sutName: string
 }
-type TestRecorderProps = {
-    board: IBoard
-    // eslint-disable-next-line no-unused-vars
-    save: (test: LocalTestCreationResult, onSuccess, onError) => Promise<void>
-}
-const TestRecorder: React.FC<any> = ({ board = globalBoard
-    , save = Save }: TestRecorderProps) => {
-    if (!board) {
-        //TODO: Implement guard
-    }
-    React.useEffect(() => {
-        board.unselectAll()
-            .then(globalStepNavigator.start);
-    }, [board]);
 
-
-    // React.useEffect(() =>
-    //     recordTestName(testName == "" ?
-    //         when?.data.type + '_' + then?.data.type
-    //         : testName))
-
-
-    const [givens, recordGiven] = React.useState<IndexedStep[]>([]);
-    const [when, recordWhen] = React.useState<Step>();
-    const [then, recordThen] = React.useState<Step>();
-    const [testName, recordTestName] = React.useState<string>("");
-    const [testContext, recordTestContext] = React.useState<string>("SampleService");
-    const [sutName, recordSutName] = React.useState<string>("");
-
-    const updateGivens = (givenResults: IndexedStep[]) => {
-        recordGiven(givenResults);
-    };
-    const updateWhen = (when: Step) => {
-        recordWhen(when);
-    };
-    const updateThen = (then: Step) => {
-        recordThen(then);
-    };
-    const showValidationError = (errorText: string) => {
-        board.showNotification(errorText)
-    }
-
-    const saveAndRedirectToExplorer = async () => {
-        if (!when) {
-            showValidationError('No when selections. Please save the test after selecting the when step.')
-            return
+// type TestRecorderDependencies = {
+//     board: IBoard
+//     stepNavigator: IQueuingMachine<TestStepTurn>
+//     // eslint-disable-next-line no-unused-vars
+//     save: (test: LocalTestCreationResult, onSuccess, onError) => Promise<void>
+// }
+export const createTestRecorder = (board = globalBoard
+    , stepNavigator = globalStepNavigator
+    , save = Save): React.FC<any> => () => {
+        if (!board) {
+            //TODO: Implement guard
         }
-        if (!then) {
-            showValidationError('No then selections. Please save the test after selecting the then step.')
-            return
+        React.useEffect(() => {
+            board.unselectAll()
+                .then(stepNavigator.start);
+        }, [board]);
+
+
+        // React.useEffect(() =>
+        //     recordTestName(testName == "" ?
+        //         when?.data.type + '_' + then?.data.type
+        //         : testName))
+
+
+        const [givens, recordGiven] = React.useState<IndexedStep[]>([]);
+        const [when, recordWhen] = React.useState<Step>();
+        const [then, recordThen] = React.useState<Step>();
+        const [testName, recordTestName] = React.useState<string>("");
+        const [testContext, recordTestContext] = React.useState<string>("SampleService");
+        const [sutName, recordSutName] = React.useState<string>("");
+
+        const updateGivens = (givenResults: IndexedStep[]) => {
+            recordGiven(givenResults);
+        };
+        const updateWhen = (when: Step) => {
+            recordWhen(when);
+        };
+        const updateThen = (then: Step) => {
+            recordThen(then);
+        };
+        const showValidationError = (errorText: string) => {
+            board.showNotification(errorText)
         }
 
-        save({
-            testContext,
-            testName,
-            sutName,
-
-            givens,
-            when,
-            then
-        } as LocalTestCreationResult
-            , () => board.showNotification('Test created successfully.')
-            , (statusText: string) => board.showNotification('Test creation error try again later.\n' + statusText)//TODO: provide more guidance to user
-        );
-
-        const toViewModel = (step: Step): StepInfo => {
-            return {
-                type: step.data.type,
-                widget: step.metadata.widget
+        const saveAndRedirectToExplorer = async () => {
+            if (!when) {
+                showValidationError('No when selections. Please save the test after selecting the when step.')
+                return
             }
-        }
-        var viewModel: ViewModel = {
-            testContext
-            , sutName
-            , testName
-            , givens: givens.map(step => toViewModel(step.step))
-            , when: toViewModel(when)
-            , then: toViewModel(then)
-        }
+            if (!then) {
+                showValidationError('No then selections. Please save the test after selecting the then step.')
+                return
+            }
 
-        await navigate('/test-explorer', { state: { newTest: viewModel } })
-        // console.log(response);
-    };
-    return (
-        <div className="test-recorder">
+            save({
+                testContext,
+                testName,
+                sutName,
 
-            <div className="given">
-                <Givens onStepSelectionChange={updateGivens} steps={givens} />
-            </div >
+                givens,
+                when,
+                then
+            } as LocalTestCreationResult
+                , () => board.showNotification('Test created successfully.')
+                , (statusText: string) => board.showNotification('Test creation error try again later.\n' + statusText)//TODO: provide more guidance to user
+            );
 
-            <div className="when">
-                <When onStepSelection={updateWhen} step={when} />
-            </div>
+            const toViewModel = (step: Step): StepInfo => {
+                return {
+                    type: step.data.type,
+                    widget: step.metadata.widget
+                }
+            }
+            var viewModel: ViewModel = {
+                testContext
+                , sutName
+                , testName
+                , givens: givens.map(step => toViewModel(step.step))
+                , when: toViewModel(when)
+                , then: toViewModel(then)
+            }
 
-            <div className="then">
-                <Then onStepSelection={updateThen} step={then} />
-            </div>
-            {then &&
-                <div className="test-form-details">
-                    <label className="test-context-label">Test Context:</label>
-                    <input type='text' className="test-context-input" value={testContext} onChange={x => recordTestContext(x.target.value)} placeholder="Test Context" />
+            await navigate('/test-explorer', { state: { newTest: viewModel } })
+            // console.log(response);
+        };
+        return (
+            <div className="test-recorder">
 
-                    <label className="sut-label">SUT:</label>
-                    <input type='text' className="sut-input" value={sutName} onChange={x => recordSutName(x.target.value)} placeholder="Sut Name" />
+                <div className="given">
+                    <Givens onStepSelectionChange={updateGivens} steps={givens} />
+                </div >
 
-                    <button className='save-button' onClick={saveAndRedirectToExplorer}>Save</button>
-
-                    <label className="test-name-label">Test Name:</label>
-                    <input type='text' className="test-name-input" value={testName} onChange={x => recordTestName(x.target.value)} placeholder="Test Name" />
+                <div className="when">
+                    <When onStepSelection={updateWhen} step={when} />
                 </div>
-            }
 
-        </div>
-    );
-}
+                <div className="then">
+                    <Then onStepSelection={updateThen} step={then} />
+                </div>
+                {then &&
+                    <div className="test-form-details">
+                        <label className="test-context-label">Test Context:</label>
+                        <input type='text' className="test-context-input" value={testContext} onChange={x => recordTestContext(x.target.value)} placeholder="Test Context" />
 
-export default TestRecorder
+                        <label className="sut-label">SUT:</label>
+                        <input type='text' className="sut-input" value={sutName} onChange={x => recordSutName(x.target.value)} placeholder="Sut Name" />
+
+                        <button className='save-button' onClick={saveAndRedirectToExplorer}>Save</button>
+
+                        <label className="test-name-label">Test Name:</label>
+                        <input type='text' className="test-name-input" value={testName} onChange={x => recordTestName(x.target.value)} placeholder="Test Name" />
+                    </div>
+                }
+
+            </div>
+        );
+    }
+
+
+export let TestRecorder = createTestRecorder()
 
 
 //----------------------

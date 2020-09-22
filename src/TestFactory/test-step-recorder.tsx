@@ -2,7 +2,7 @@ import './test-step-recorder.less';
 import * as React from 'react';
 import { Widget, IBoard } from 'board';
 import { IQueuingMachine } from './queuing-machine';
-import { Step, convertWidgetToStepData } from './board-example-mapper';
+import { Step, convertWidgetToStepData } from './board-data-mapper';
 import { TestStepTurn } from './test-step-turn';
 export class TestStepOptions {
     stepType: string

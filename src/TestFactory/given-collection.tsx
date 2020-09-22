@@ -2,7 +2,7 @@ import { globalStepNavigator, globalBoard } from '../dependency-container';
 import * as React from 'react'
 import { TestStepOptions } from './test-step-recorder';
 import { TestStepTurn } from "./test-step-turn";
-import { Step } from "./board-example-mapper";
+import { Step } from "./board-data-mapper";
 import { useWhatChanged } from "@simbathesailor/use-what-changed";
 import { GivenStep } from './given-step';
 
