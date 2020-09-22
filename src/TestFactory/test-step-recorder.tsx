@@ -2,10 +2,10 @@ import './test-step-recorder.less';
 import * as React from 'react';
 import { Widget, IBoard } from 'board';
 import { IQueuingMachine } from './queuing-machine';
-import { Step, convertWidgetToStepData } from './step';
-import { TestStepTurn } from './TestStepTurn';
+import { Step, convertWidgetToStepData } from './board-example-mapper';
+import { TestStepTurn } from './test-step-turn';
 export class TestStepOptions {
-    stepDisplayTitle: string
+    stepType: string
     selectionWaitingMessage: string
     turn: TestStepTurn
     board: IBoard
@@ -18,8 +18,13 @@ export class TestStepProps {
     step?: Step
 }
 
-export function testStepRecorder({ stepDisplayTitle: stepType, selectionWaitingMessage, turn, board, stepNavigator }: TestStepOptions) {
-    return function Recorder(props: TestStepProps) {
+export function createTestStepRecorder({ stepType
+    , selectionWaitingMessage
+    , turn
+    , board
+    , stepNavigator
+}: TestStepOptions) {
+    return function StepRecorder(props: TestStepProps) {
         const updateWidget = (widget: Widget) => {
             convertWidgetToStepData(widget,
                 data => {
@@ -50,40 +55,40 @@ export function testStepRecorder({ stepDisplayTitle: stepType, selectionWaitingM
                     stepNavigator.nextTurn();
                 });
             });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        },[stepNavigator])
-        const onValueChange=(index: number, event: React.ChangeEvent<HTMLInputElement>) =>{
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+        }, [stepNavigator])
+        const onValueChange = (index: number, event: React.ChangeEvent<HTMLInputElement>) => {
             props.step!.data.properties[index].simplePropertyValue
                 = event.currentTarget.value;
         }
         // const makeExample=()=> {
         //     board.openModal('../modal.html')
         // }
-        
-            return(
-                <div className = "test-step" >
-                    <h1 className="step-type">{stepType} </h1>
-                    {
-                        (!props.step?.data) ? <div className="waiting-for-step"> <h1 >?</h1> </div> :
 
-            <div style={props.step?.metadata.widget.style} className="step-content">
-                <span className="step-title">{props.step?.data.type}</span>
+        return (
+            <div className="test-step" >
+                <h1 className="step-type">{stepType} </h1>
+                {
+                    (!props.step?.data) ? <div className="waiting-for-step"> <h1 >?</h1> </div> :
 
-                <div className="step-data">
-                    {props.step?.data.properties?.map((property, index) =>
-                        <div className="step-date-property" key={`${property}~${index}`}>
-                            <label className="property-label">{property.propertyName}</label>
-                            <input readOnly={false} onChange={(e) => onValueChange(index, e)} className="property-input" type="text" value={property.simplePropertyValue}></input>
-                        </div>
-                    )}
-                </div>
-                {/* <br />
+                        <div style={props.step?.metadata.widget.style} className="step-content">
+                            <span className="step-title">{props.step?.data.type}</span>
+
+                            <div className="step-data">
+                                {props.step?.data.properties?.map((property, index) =>
+                                    <div className="step-date-property" key={`${property}~${index}`}>
+                                        <label className="property-label">{property.propertyName}</label>
+                                        <input readOnly={false} onChange={(e) => onValueChange(index, e)} className="property-input" type="text" value={property.simplePropertyValue}></input>
+                                    </div>
+                                )}
+                            </div>
+                            {/* <br />
                 {props.data && <button
                     onClick={makeExample.bind(this)}>Make an Example</button>
                 } */}
-            </div>
-                    }
-                </div >
-            );
+                        </div>
+                }
+            </div >
+        );
     };
 }

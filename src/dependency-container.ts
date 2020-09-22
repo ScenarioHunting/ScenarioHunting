@@ -1,6 +1,6 @@
 import { Board, IBoard } from "./board";
 import { QueuingMachine } from "./TestFactory/queuing-machine";
-import { TestStepTurn } from "./TestFactory/TestStepTurn";
+import { TestStepTurn } from "./TestFactory/test-step-turn";
 
 let defaultTestCreationTurnOrder = [TestStepTurn.When, TestStepTurn.Then, TestStepTurn.Given];
 

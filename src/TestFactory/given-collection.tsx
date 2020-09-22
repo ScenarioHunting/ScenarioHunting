@@ -1,43 +1,12 @@
-import { globalStepNavigator ,globalBoard } from '../dependency-container';
+import { globalStepNavigator, globalBoard } from '../dependency-container';
 import * as React from 'react'
-import { testStepRecorder, TestStepOptions } from './test-step-recorder';
-import { TestStepTurn } from "./TestStepTurn";
-import { Step } from "./step";
+import { TestStepOptions } from './test-step-recorder';
+import { TestStepTurn } from "./test-step-turn";
+import { Step } from "./board-example-mapper";
 import { useWhatChanged } from "@simbathesailor/use-what-changed";
-
-class ImmediateQueuingMachine<T>{
-	onTurn = (_: T, whatToDo: () => void) => whatToDo()
-	start = () => { }
-	nextTurn = () => { }
-}
+import { GivenStep } from './given-step';
 
 
-const GivenStep = testStepRecorder({
-	board: globalBoard,
-	stepNavigator: new ImmediateQueuingMachine<TestStepTurn>(),
-
-	stepDisplayTitle: '',
-	selectionWaitingMessage: 'Select minimum required steps for the when to end up then.',
-	turn: TestStepTurn.Given,
-});
-// function GivenStep(props: TestStepProps) {
-
-// 	var Step = testStepRecorder({
-// 		board: globalBoard,
-// 		stepNavigator: new ImmediateQueuingMachine<TestStepTurn>(),
-// 		stepDisplayTitle: '',
-// 		selectionWaitingMessage: 'Select minimum required steps for the when to end up then.',
-// 		turn: TestStepTurn.Given,
-// 	});
-// 	return <Step {...props} />
-// }
-export const Givens = GivenSteps({
-	board: globalBoard,
-	stepNavigator: globalStepNavigator,
-	stepDisplayTitle: TestStepTurn.Given,
-	selectionWaitingMessage: 'Select minimum required steps for the when to end up then.',
-	turn: TestStepTurn.Given,
-})
 export type IndexedStep = {
 	index: number
 	step: Step
@@ -47,13 +16,8 @@ export type GivenStepsProps = {
 	onStepSelectionChange: (stepResults: IndexedStep[]) => void
 	steps?: IndexedStep[]
 }
-function GivenSteps(options: TestStepOptions) {
-	// type State = {
-	// 	isActive: boolean
-	// 	indexedSteps: IndexedStep[]
-	// }
-
-	return function Givens(props: GivenStepsProps) {
+function createGivenStepCollection(options: TestStepOptions) {
+	return function GivenStepCollection(props: GivenStepsProps) {
 
 		const [isActive, setIsActive] = React.useState<boolean>(false)
 		const [indexedSteps, setIndexedSteps] = React.useState<IndexedStep[]>([])
@@ -127,3 +91,10 @@ function GivenSteps(options: TestStepOptions) {
 	}
 }
 
+export const Givens = createGivenStepCollection({
+	board: globalBoard,
+	stepNavigator: globalStepNavigator,
+	stepType: TestStepTurn.Given,
+	selectionWaitingMessage: 'Select minimum required steps for the when to end up then.',
+	turn: TestStepTurn.Given,
+})

@@ -1,12 +1,12 @@
-import { testStepRecorder } from "./test-step-recorder";
-import { TestStepTurn } from "./TestStepTurn";
+import { createTestStepRecorder } from "./test-step-recorder";
+import { TestStepTurn } from "./test-step-turn";
 import { globalBoard } from "../dependency-container";
 import { globalStepNavigator } from "../dependency-container";
 
-export const ThenStep = testStepRecorder({
+export const ThenStep = createTestStepRecorder({
 	board: globalBoard,
 	stepNavigator: globalStepNavigator,
-	stepDisplayTitle: TestStepTurn.Then,
+	stepType: TestStepTurn.Then,
 	selectionWaitingMessage: 'What should happen then?',
 	turn: TestStepTurn.Then,
 	// onWidgetSelection: transit(TestStepTurn.Then, TestStepTurn.Given)
