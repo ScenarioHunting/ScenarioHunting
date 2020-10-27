@@ -1,13 +1,13 @@
 /* eslint-disable no-undef */
 type WhenTestResultsSummeryViewModel = {
     // boardId string?
-    Total: number
-    Passed: number
-    Failed: number
-    Pending: number
-    Skipped: number
+    total: number
+    passed: number
+    failed: number
+    pending: number
+    skipped: number
 
-    Example: any
+    example: any
 }
 export interface ITestResultReports {
     // eslint-disable-next-line no-unused-vars
