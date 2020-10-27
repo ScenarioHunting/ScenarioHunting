@@ -545,7 +545,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) *
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"singletonBoard\", function() { return singletonBoard; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"testResultReports\", function() { return testResultReports; });\n/* harmony import */ var _board__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./board */ \"./src/board.ts\");\n!(function webpackMissingModule() { var e = new Error(\"Cannot find module 'test-result-reports'\"); e.code = 'MODULE_NOT_FOUND'; throw e; }());\n\n\nlet singletonBoard = new _board__WEBPACK_IMPORTED_MODULE_0__[\"Board\"]();\nlet testResultReports = new !(function webpackMissingModule() { var e = new Error(\"Cannot find module 'test-result-reports'\"); e.code = 'MODULE_NOT_FOUND'; throw e; }())();\n\n\n//# sourceURL=webpack:///./src/global-dependency-container.ts?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"singletonBoard\", function() { return singletonBoard; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"testResultReports\", function() { return testResultReports; });\n/* harmony import */ var _board__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./board */ \"./src/board.ts\");\n/* harmony import */ var _test_result_reports__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./test-result-reports */ \"./src/test-result-reports.ts\");\n\n\nlet singletonBoard = new _board__WEBPACK_IMPORTED_MODULE_0__[\"Board\"]();\nlet testResultReports = new _test_result_reports__WEBPACK_IMPORTED_MODULE_1__[\"TestResultReports\"]();\n\n\n//# sourceURL=webpack:///./src/global-dependency-container.ts?");
 
 /***/ }),
 
@@ -795,6 +795,18 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) *
 
 "use strict";
 eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"WhenStep\", function() { return WhenStep; });\n/* harmony import */ var _test_step_recorder__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./test-step-recorder */ \"./src/test-factory/test-step-recorder.tsx\");\n/* harmony import */ var _test_step_turn__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./test-step-turn */ \"./src/test-factory/test-step-turn.tsx\");\n/* harmony import */ var _global_dependency_container__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../global-dependency-container */ \"./src/global-dependency-container.ts\");\n/* harmony import */ var _local_dependency_container__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./local-dependency-container */ \"./src/test-factory/local-dependency-container.ts\");\n\n\n\n\nlet WhenStep = Object(_test_step_recorder__WEBPACK_IMPORTED_MODULE_0__[\"createTestStepRecorder\"])({\n    board: _global_dependency_container__WEBPACK_IMPORTED_MODULE_2__[\"singletonBoard\"],\n    stepNavigator: _local_dependency_container__WEBPACK_IMPORTED_MODULE_3__[\"singletonStepNavigator\"],\n    stepType: _test_step_turn__WEBPACK_IMPORTED_MODULE_1__[\"TestStepTurn\"].When,\n    selectionWaitingMessage: 'Select the exercise you want to test.',\n    turn: _test_step_turn__WEBPACK_IMPORTED_MODULE_1__[\"TestStepTurn\"].When,\n});\n\n\n//# sourceURL=webpack:///./src/test-factory/when-step.ts?");
+
+/***/ }),
+
+/***/ "./src/test-result-reports.ts":
+/*!************************************!*\
+  !*** ./src/test-result-reports.ts ***!
+  \************************************/
+/*! exports provided: TestResultReports */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"TestResultReports\", function() { return TestResultReports; });\nvar __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {\n    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }\n    return new (P || (P = Promise))(function (resolve, reject) {\n        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }\n        function rejected(value) { try { step(generator[\"throw\"](value)); } catch (e) { reject(e); } }\n        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }\n        step((generator = generator.apply(thisArg, _arguments || [])).next());\n    });\n};\nclass TestResultReports {\n    constructor() {\n        this.get = (widgetId) => __awaiter(this, void 0, void 0, function* () {\n            const widget = (yield miro.board.widgets.get({ id: widgetId }))[0];\n            if (!widget\n                || !widget.metadata[\"3074457349056199734\"]\n                || !widget.metadata[\"3074457349056199734\"].testSummery\n                || !widget.metadata[\"3074457349056199734\"].testSummery) {\n                return false;\n            }\n            return widget.metadata[\"3074457349056199734\"].testSummery;\n        });\n    }\n}\n\n\n//# sourceURL=webpack:///./src/test-result-reports.ts?");
 
 /***/ })
 
