@@ -23,9 +23,9 @@ async function underline(widgets: SDK.IWidget[]) { // accept widgets as paramete
 miro.onReady(async () => {
 	await singletonBoard.interceptPossibleTextEdit(async (widgetId, theOriginalText) => {
 		var reportViewModel = await testResultReports.getTestSummeryForWidget(widgetId)
-		console.log("report: ", reportViewModel)
 		if (typeof reportViewModel == 'boolean')
-			return theOriginalText
+		return theOriginalText
+		console.log("report: ", reportViewModel)
 		var reportComponent = "<div id='test-summery'>" +
 			"<span style='background-color:red'>" + reportViewModel.Failed.toString() + "</span>" +
 			"<span style='background-color:green'>" + reportViewModel.Passed.toString() + "</span>" +
