@@ -16,8 +16,9 @@ async function underline(widgets: SDK.IWidget[]) { // accept widgets as paramete
 		text: textEdit
 	})
 }
-miro.onReady(() => {
-	miro.initialize({
+miro.onReady(async () => {
+	await miro.addListener("SELECTION_UPDATED", x => alert("metadata changed!" + JSON.stringify(x)))
+	await miro.initialize({
 		extensionPoints: {
 			getWidgetMenuItems: (widgets: SDK.IWidget[]/*, editMode: boolean*/): Promise<SDK.IWidgetMenuItem | SDK.IWidgetMenuItem[]> => {
 
