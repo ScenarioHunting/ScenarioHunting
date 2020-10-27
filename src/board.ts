@@ -3,6 +3,8 @@ import { CSSProperties } from "react";
 export interface IBoard {
     // eslint-disable-next-line no-unused-vars
     onNextSingleSelection(succeed: (selected: Widget) => void)
+    // eslint-disable-next-line no-unused-vars
+    interceptPossibleTextEdit(updateText: (widgetId: string, updatedWidget: string) => Promise<string>)
     unselectAll: () => Promise<void>
     // eslint-disable-next-line no-unused-vars
     showNotification: (message: string) => Promise<void>
@@ -16,7 +18,26 @@ export class Board implements IBoard {
     }
 
     // eslint-disable-next-line no-unused-vars
+    interceptPossibleTextEdit(updateText: (widgetId: string, updatedWidget: string) => Promise<string>) {
+        const select = async (selections) => {
+            var widgets = selections.data;
+            widgets.forEach(async item => {
+                var widget = (await miro.board.widgets.get({ id: item.id }))[0];
+                const originalWidgetText = getWidgetText(widget)
+                if (typeof originalWidgetText != 'boolean') {
+                    const newText = await updateText(widget.id, originalWidgetText)
+                    if (newText != originalWidgetText && setWidgetText(widget, newText))
+                        await miro.board.widgets.update([widget])
+                }
+            });
+        }
+
+        miro.addListener("SELECTION_UPDATED", select)
+    }
+
+    // eslint-disable-next-line no-unused-vars
     onNextSingleSelection(succeed: (selected: Widget) => void) {
+        //TODO: Guard 
         console.log("Waiting for the next single selection!")
         const select = async (selections) => {
             var widgets = selections.data;
@@ -94,11 +115,13 @@ function convertToDto(widget: SDK.IWidget): Widget | string {
     // if ("plainText" in widget)
     //     dto.text = widget["plainText"]
     // else 
-    if ("text" in widget) dto.text = widget["text"];
-    else if ("captions" in widget)
-        dto.text = widget["captions"][0]["text"]
-    else
-        return 'The widget ' + JSON.stringify(widget) + ' is does not have any text.'
+    const widgetText = getWidgetText(widget)
+    if (typeof widgetText == 'boolean') {
+        if (!widgetText)
+            return 'The widget ' + JSON.stringify(widget) + ' does not have any text.'
+    } else
+        dto.text = widgetText
+
     dto.text = dto.text
         .split('</p><p>').join('\n')
         .replace('<p>', '')
@@ -106,4 +129,22 @@ function convertToDto(widget: SDK.IWidget): Widget | string {
         .replace('&#43;', '+')
     console.log('Widget text converted by board.:', dto.text)
     return dto
+}
+function getWidgetText(widget: SDK.IWidget): string | boolean {
+    if ("text" in widget)
+        return widget["text"];
+    else if ("captions" in widget)
+        return widget["captions"][0]["text"]
+    else
+        return false
+}
+function setWidgetText(widget: SDK.IWidget, text: string): SDK.IWidget | boolean {
+    const anyWidget = widget as any
+    if ("text" in widget)
+        anyWidget["text"] = text;
+    else if ("captions" in widget)
+        anyWidget["captions"][0]["text"] = text
+    else
+        return false
+    return anyWidget as SDK.IWidget
 }
