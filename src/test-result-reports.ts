@@ -11,10 +11,10 @@ type WhenTestResultsSummeryViewModel = {
 }
 export interface ITestResultReports {
     // eslint-disable-next-line no-unused-vars
-    get: (widgetId: string) => Promise<WhenTestResultsSummeryViewModel | boolean>
+    getTestSummeryForWidget: (widgetId: string) => Promise<WhenTestResultsSummeryViewModel | boolean>
 }
 export class TestResultReports implements ITestResultReports {
-    get = async (widgetId: string): Promise<WhenTestResultsSummeryViewModel | boolean> => {
+    getTestSummeryForWidget = async (widgetId: string): Promise<WhenTestResultsSummeryViewModel | boolean> => {
         const widget = (await miro.board.widgets.get({ id: widgetId }))[0] as SDK.IWidget
         if (!widget
             || !widget.metadata["3074457349056199734"]

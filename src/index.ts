@@ -21,25 +21,22 @@ async function underline(widgets: SDK.IWidget[]) { // accept widgets as paramete
 
 
 miro.onReady(async () => {
-	await singletonBoard.interceptPossibleTextEdit(async (widgetId, text) => {
-		var vm = await testResultReports.get(widgetId)
-		if (typeof vm == 'boolean')
-			return text
-		var strReportSummery = "<div id='test-summery'>" +
-			"<span style='background-color:red'>" + vm.Failed + "</span>" +
-			"<span style='background-color:green'>" + vm.Passed + "</span>" +
-			"<span style='background-color:yellow'>" + vm.Skipped + "</span>" +
-			"<span style='background-color:lightblue'>" + vm.Pending + "</span>" +
+	await singletonBoard.interceptPossibleTextEdit(async (widgetId, theOriginalText) => {
+		var reportViewModel = await testResultReports.getTestSummeryForWidget(widgetId)
+		console.log("report: ", reportViewModel)
+		if (typeof reportViewModel == 'boolean')
+			return theOriginalText
+		var reportComponent = "<div id='test-summery'>" +
+			"<span style='background-color:red'>" + reportViewModel.Failed + "</span>" +
+			"<span style='background-color:green'>" + reportViewModel.Passed + "</span>" +
+			"<span style='background-color:yellow'>" + reportViewModel.Skipped + "</span>" +
+			"<span style='background-color:lightblue'>" + reportViewModel.Pending + "</span>" +
 			"</div>"
 		var regex = new RegExp("<div id='test-summery'>(.*)</div>")
-		//TODO: map the widget into a local struct so that text vs plain text vs value,.. does not tie the app to the board
-		if (regex.test(text)) {
-			text = text.replace(regex, strReportSummery)
-		}
-		else {
-			text += strReportSummery
-		}
-		return text
+		const isAnyReportsAlreadyViewed = regex.test(theOriginalText)
+		if (isAnyReportsAlreadyViewed)
+			return theOriginalText.replace(regex, reportComponent)
+		return theOriginalText + reportComponent
 	})
 	// await miro.addListener("SELECTION_UPDATED", async x => {
 	// 	if (!x
