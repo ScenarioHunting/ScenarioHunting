@@ -16,8 +16,57 @@ async function underline(widgets: SDK.IWidget[]) { // accept widgets as paramete
 		text: textEdit
 	})
 }
+type WhenTestResultsSummeryViewModel = {
+	// boardId string?
+	Total: number
+	Passed: number
+	Failed: number
+	Pending: number
+	Skipped: number
+
+	Example: any
+}
+
 miro.onReady(async () => {
-	await miro.addListener("SELECTION_UPDATED", x => alert("metadata changed!" + JSON.stringify(x)))
+	await miro.addListener("SELECTION_UPDATED", async x => {
+		if (!x
+			|| !x.data
+			|| x.data.length != 1
+			|| !x.data[0]
+			|| !x.data[0].metadata
+			|| !x.data[0].metadata["3074457349056199734"]
+			|| !(x.data[0].metadata["3074457349056199734"] as WhenTestResultsSummeryViewModel))
+			return;
+
+		const vm = (x.data[0].metadata["3074457349056199734"] as WhenTestResultsSummeryViewModel);
+		const widgetId = x.data[0].id
+		const widget = await miro.board.widgets.get(widgetId)[0]
+		//vm.metadata["3074457349056199734"].testSummery.failed
+		var strReportSummery = "<div id='test-summery'>" +
+			"<span style='background-color:red'>" + vm.Failed + "</span>" +
+			"<span style='background-color:green'>" + vm.Passed + "</span>" +
+			"<span style='background-color:yellow'>" + vm.Skipped + "</span>" +
+			"<span style='background-color:lightblue'>" + vm.Pending + "</span>" +
+			"</div>"
+		var regex = new RegExp("<div id='test-summery'>(.*)<\/div>")
+		//TODO: map the widget into a local struct so that text vs plain text vs value,.. does not tie the app to the board
+		if (regex.test(widget.text)) {
+			widget.text = widget.text.replace(regex, strReportSummery)
+		}
+		else {
+			widget.text += strReportSummery
+		}
+		delete widget.metadata
+
+		miro.board.widgets.update([widget])
+		//"<span style='background-color:red'> ccc </span>"
+		// "<div id='test-summery'><span style='background-color:red'>1</span><span style='background-color:green'>1</span><span style='background-color:yellow'>1</span><span style='background-color:lightblue'>1</span></div>".replace( new RegExp("<div id='test-summery'>(.*)<\/div>"),"<div id='test-summery'><span style='background-color:red'>1</span><span style='background-color:green'>1</span><span style='background-color:yellow'>1</span><span style='background-color:lightblue'>9</span></div>")
+		// w.text = w.text.replace("<div id='test-summery'>.*<\/div>","<div id='test-summery'><span style='background-color:red'>1</span><span style='background-color:green'>1</span><span style='background-color:yellow'>2</span><span style='background-color:lightblue'>1</span></div>")
+		//new RegExp("<div id='test-summery'>(.*)<\/div>").exec("<div id='test-summery'><span style='background-color:red'>1</span><span style='background-color:green'>1</span><span style='background-color:yellow'>1</span><span style='background-color:lightblue'>9</span></div>")[0]
+		// "<div id='test-summery'><span style='background-color:red'>1</span><span style='background-color:green'>1</span><span style='background-color:yellow'>1</span><span style='background-color:lightblue'>9</span></div>"
+		//delete vm.metadata
+		// miro.board.widgets.update([vm])
+	})
 	await miro.initialize({
 		extensionPoints: {
 			getWidgetMenuItems: (widgets: SDK.IWidget[]/*, editMode: boolean*/): Promise<SDK.IWidgetMenuItem | SDK.IWidgetMenuItem[]> => {
