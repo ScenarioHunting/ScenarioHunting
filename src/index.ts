@@ -40,7 +40,9 @@ miro.onReady(async () => {
 
 		const vm = (x.data[0].metadata["3074457349056199734"] as WhenTestResultsSummeryViewModel);
 		const widgetId = x.data[0].id
-		const widget = await miro.board.widgets.get(widgetId)[0]
+		console.log("x.data[0]: ", x.data[0])
+		const widget = (await miro.board.widgets.get(widgetId))[0] as any
+		console.log("widget: ", widget)
 		//vm.metadata["3074457349056199734"].testSummery.failed
 		var strReportSummery = "<div id='test-summery'>" +
 			"<span style='background-color:red'>" + vm.Failed + "</span>" +
@@ -58,7 +60,7 @@ miro.onReady(async () => {
 		}
 		delete widget.metadata
 
-		miro.board.widgets.update([widget])
+		await miro.board.widgets.update([widget])
 		//"<span style='background-color:red'> ccc </span>"
 		// "<div id='test-summery'><span style='background-color:red'>1</span><span style='background-color:green'>1</span><span style='background-color:yellow'>1</span><span style='background-color:lightblue'>1</span></div>".replace( new RegExp("<div id='test-summery'>(.*)<\/div>"),"<div id='test-summery'><span style='background-color:red'>1</span><span style='background-color:green'>1</span><span style='background-color:yellow'>1</span><span style='background-color:lightblue'>9</span></div>")
 		// w.text = w.text.replace("<div id='test-summery'>.*<\/div>","<div id='test-summery'><span style='background-color:red'>1</span><span style='background-color:green'>1</span><span style='background-color:yellow'>2</span><span style='background-color:lightblue'>1</span></div>")
