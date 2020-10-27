@@ -16,12 +16,12 @@ export class Board implements IBoard {
         miro.board.ui.openModal(modalAddress, { width: 50, height: 50 })
         throw new Error("Method not implemented.");
     }
-    private previouslySelectedWidgets : SDK.IWidget[]
+    private previouslySelectedWidgets: SDK.IWidget[]
     // eslint-disable-next-line no-unused-vars
     interceptPossibleTextEdit(updateText: (widgetId: string, updatedWidget: string) => Promise<string>) {
         const select = async (selections) => {
             var widgets = selections.data;
-            if (!this.previouslySelectedWidgets){
+            if (!this.previouslySelectedWidgets) {
                 this.previouslySelectedWidgets = widgets
             }
             this.previouslySelectedWidgets.forEach(async item => {
@@ -29,7 +29,8 @@ export class Board implements IBoard {
                 const originalWidgetText = getWidgetText(widget)
                 if (typeof originalWidgetText != 'boolean') {
                     const newText = await updateText(widget.id, originalWidgetText)
-                    if (newText != originalWidgetText && setWidgetText(widget, newText))
+                    if (newText != originalWidgetText
+                        && setWidgetText(widget, newText))
                         await miro.board.widgets.update([widget])
                 }
             });

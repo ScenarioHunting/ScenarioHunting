@@ -27,10 +27,10 @@ miro.onReady(async () => {
 		if (typeof reportViewModel == 'boolean')
 			return theOriginalText
 		var reportComponent = "<div id='test-summery'>" +
-			"<span style='background-color:red'>" + reportViewModel.Failed + "</span>" +
-			"<span style='background-color:green'>" + reportViewModel.Passed + "</span>" +
-			"<span style='background-color:yellow'>" + reportViewModel.Skipped + "</span>" +
-			"<span style='background-color:lightblue'>" + reportViewModel.Pending + "</span>" +
+			"<span style='background-color:red'>" + reportViewModel.Failed.toString() + "</span>" +
+			"<span style='background-color:green'>" + reportViewModel.Passed.toString() + "</span>" +
+			"<span style='background-color:yellow'>" + reportViewModel.Skipped.toString() + "</span>" +
+			"<span style='background-color:lightblue'>" + reportViewModel.Pending.toString() + "</span>" +
 			"</div>"
 		var regex = new RegExp("<div id='test-summery'>(.*)</div>")
 		const isAnyReportsAlreadyViewed = regex.test(theOriginalText)
