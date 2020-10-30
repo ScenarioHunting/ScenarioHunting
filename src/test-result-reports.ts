@@ -32,11 +32,11 @@ export class TestResultReports implements ITestResultReports {
         }
         const report = widget.metadata["3074457349056199734"].testReport as WhenTestReportViewModel
         const result: WhenTestResultsSummeryViewModel = {
-            total: report.passed?.length ?? 0 + report.failed?.length ?? 0 + report.pending?.length ?? 0 + report.skipped?.length ?? 0,
-            passed: report.passed?.length ?? 0,
-            failed: report.failed?.length ?? 0,
-            skipped: report.skipped?.length ?? 0,
-            pending: report.pending?.length ?? 0,
+            total: (report.passed ?? 0).length + (report.failed ?? 0).length + (report.pending ?? 0).length + (report.skipped ?? 0).length,
+            passed: (report.passed ?? 0).length,
+            failed: (report.failed ?? 0).length,
+            skipped: (report.skipped ?? 0).length,
+            pending: (report.pending ?? 0).length,
             // example: widget.metadata["3074457349056199734"].testSummery.example
         }
         console.log("Result:", result)
