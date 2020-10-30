@@ -32,6 +32,8 @@ miro.onReady(async () => {
 			"<span style='background-color:#f1c807;color:#046'> Skipping(" + reportViewModel.skipped + "/" + reportViewModel.total + ") </span>" +
 			"<span style='background-color:#199;color:#fff'> Pending(" + reportViewModel.pending + "/" + reportViewModel.total + ") </span>" +
 			"</div>"
+		console.log("ReportComponent:", reportComponent)
+
 		var regex = new RegExp("<div id='test-summery'>(.*)</div>")
 		const widgetAlreadyContainsAReport = regex.test(theOriginalText)
 		if (widgetAlreadyContainsAReport)
