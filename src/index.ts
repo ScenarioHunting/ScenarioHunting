@@ -19,6 +19,17 @@ async function underline(widgets: SDK.IWidget[]) { // accept widgets as paramete
 	})
 }
 
+const cleanLastReport = (textIncludingReport: string): string => {
+	var regex = new RegExp("<div data-section='test-summery'>(.*)</div>")
+	const widgetAlreadyContainsAReport = regex.test(textIncludingReport)
+	if (widgetAlreadyContainsAReport)
+		textIncludingReport = textIncludingReport.replace(regex, "")
+	textIncludingReport = textIncludingReport.replace(new RegExp("Failing[(]\\d/\\d[)]"), "")
+	textIncludingReport = textIncludingReport.replace(new RegExp("Passing[(]\\d/\\d[)]"), "")
+	textIncludingReport = textIncludingReport.replace(new RegExp("Skipping[(]\\d/\\d[)]"), "")
+	textIncludingReport = textIncludingReport.replace(new RegExp("Pending[(]\\d/\\d[)]"), "")
+	return textIncludingReport
+}
 
 miro.onReady(async () => {
 	await singletonBoard.interceptPossibleTextEdit(async (widgetId, theOriginalText) => {
@@ -26,10 +37,10 @@ miro.onReady(async () => {
 		if (typeof reportViewModel == 'boolean')
 			return theOriginalText
 
-		theOriginalText = theOriginalText.replace(new RegExp("Failing[(]\\d/\\d[)]"), "")
-		theOriginalText = theOriginalText.replace(new RegExp("Passing[(]\\d/\\d[)]"), "")
-		theOriginalText = theOriginalText.replace(new RegExp("Skipping[(]\\d/\\d[)]"), "")
-		theOriginalText = theOriginalText.replace(new RegExp("Pending[(]\\d/\\d[)]"), "")
+		// theOriginalText = theOriginalText.replace(new RegExp("Failing[(]\\d/\\d[)]"), "")
+		// theOriginalText = theOriginalText.replace(new RegExp("Passing[(]\\d/\\d[)]"), "")
+		// theOriginalText = theOriginalText.replace(new RegExp("Skipping[(]\\d/\\d[)]"), "")
+		// theOriginalText = theOriginalText.replace(new RegExp("Pending[(]\\d/\\d[)]"), "")
 
 		var reportComponent = "<div data-section='test-summery'>" +
 			"<span style='background-color:#de2f2f;color:#fff'> Failing(" + reportViewModel.failed + "/" + reportViewModel.total + ") </span>" +
@@ -37,13 +48,11 @@ miro.onReady(async () => {
 			"<span style='background-color:#f1c807;color:#046'> Skipping(" + reportViewModel.skipped + "/" + reportViewModel.total + ") </span>" +
 			"<span style='background-color:#199;color:#fff'> Pending(" + reportViewModel.pending + "/" + reportViewModel.total + ") </span>" +
 			"</div>"
-
-
-		var regex = new RegExp("<div data-section='test-summery'>(.*)</div>")
-		const widgetAlreadyContainsAReport = regex.test(theOriginalText)
-		if (widgetAlreadyContainsAReport)
-			return theOriginalText.replace(regex, reportComponent)
-
+		// var regex = new RegExp("<div data-section='test-summery'>(.*)</div>")
+		// const widgetAlreadyContainsAReport = regex.test(theOriginalText)
+		// if (widgetAlreadyContainsAReport)
+		// 	return theOriginalText.replace(regex, reportComponent)
+		theOriginalText = cleanLastReport(theOriginalText)
 		return theOriginalText + reportComponent
 	})
 	// await miro.addListener("SELECTION_UPDATED", async x => {
