@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-type WhenTestResultsSummeryViewModel = {
+class WhenTestResultsSummeryViewModel {
     // boardId string?
     total: number
     passed: number
@@ -7,11 +7,10 @@ type WhenTestResultsSummeryViewModel = {
     pending: number
     skipped: number
 
-    example: any
+    // example: any
 }
-type WhenTestReportViewModel = {
+class WhenTestReportViewModel {
     // boardId string?
-    total: string[]
     passed: string[]
     failed: string[]
     pending: string[]
@@ -31,13 +30,15 @@ export class TestResultReports implements ITestResultReports {
             return false
         }
         const report = widget.metadata["3074457349056199734"].testReport as WhenTestReportViewModel
-        return {
+        const result: WhenTestResultsSummeryViewModel = {
             total: report.passed?.length ?? 0 + report.failed?.length ?? 0 + report.pending?.length ?? 0 + report.skipped?.length ?? 0,
             passed: report.passed?.length ?? 0,
             failed: report.failed?.length ?? 0,
             skipped: report.skipped?.length ?? 0,
             pending: report.pending?.length ?? 0,
-        } as WhenTestResultsSummeryViewModel
+            // example: widget.metadata["3074457349056199734"].testSummery.example
+        }
+        return result
         // if (!widget
         //     || !widget.metadata["3074457349056199734"]
         //     || !widget.metadata["3074457349056199734"].testSummery
