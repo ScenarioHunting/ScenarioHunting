@@ -25,14 +25,12 @@ miro.onReady(async () => {
 		var reportViewModel = await testResultReports.getTestSummeryForWidget(widgetId)
 		if (typeof reportViewModel == 'boolean')
 			return theOriginalText
-		console.log("report: ", reportViewModel)
 		var reportComponent = "<div id='test-summery'>" +
-			"<span style='background-color:#de2f2f;color:#fff> Failing(" + reportViewModel.failed + "/" + reportViewModel.total + ") </span>" +
+			"<span style='background-color:#de2f2f;color:#fff'> Failing(" + reportViewModel.failed + "/" + reportViewModel.total + ") </span>" +
 			"<span style='background-color:#1fab0f;color:#eff'> Passing(" + reportViewModel.passed + "/" + reportViewModel.total + ") </span>" +
 			"<span style='background-color:#f1c807;color:#046'> Skipping(" + reportViewModel.skipped + "/" + reportViewModel.total + ") </span>" +
 			"<span style='background-color:#199;color:#fff'> Pending(" + reportViewModel.pending + "/" + reportViewModel.total + ") </span>" +
 			"</div>"
-		console.log("ReportComponent:", reportComponent)
 
 		var regex = new RegExp("<div id='test-summery'>(.*)</div>")
 		const widgetAlreadyContainsAReport = regex.test(theOriginalText)
