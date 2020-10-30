@@ -34,10 +34,10 @@ miro.onReady(async () => {
 
 		var regex = new RegExp("<div data-section='test-summery'>(.*)</div>")
 		const widgetAlreadyContainsAReport = regex.test(theOriginalText)
-		theOriginalText = theOriginalText.replace("Failing(/d//d)", "")
-		theOriginalText = theOriginalText.replace("Passing(/d//d)", "")
-		theOriginalText = theOriginalText.replace("Skipping(/d//d)", "")
-		theOriginalText = theOriginalText.replace("Pending(/d//d)", "")
+		theOriginalText = theOriginalText.replace(new RegExp("Failing[(]\\d/\\d[)]"), "")
+		theOriginalText = theOriginalText.replace(new RegExp("Passing[(]\\d/\\d[)]"), "")
+		theOriginalText = theOriginalText.replace(new RegExp("Skipping[(]\\d/\\d[)]"), "")
+		theOriginalText = theOriginalText.replace(new RegExp("Pending[(]\\d/\\d[)]"), "")
 		if (widgetAlreadyContainsAReport)
 			return theOriginalText.replace(regex, reportComponent)
 
