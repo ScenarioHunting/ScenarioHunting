@@ -138,7 +138,10 @@ function convertToDto(widget: SDK.IWidget): Widget | string {
 function getWidgetText(widget: SDK.IWidget): string | boolean {
     if ("text" in widget)
         return widget["text"];
-    else if ("captions" in widget)
+    else if ("captions" in widget
+            && widget["captions"]
+            && widget["captions"][0]
+            && widget["captions"][0]["text"])
         return widget["captions"][0]["text"]
     else
         return false

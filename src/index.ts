@@ -27,14 +27,14 @@ miro.onReady(async () => {
 			return theOriginalText
 		console.log("report: ", reportViewModel)
 		var reportComponent = "<div id='test-summery'>" +
-			"<span style='background-color:red'>" + reportViewModel.failed + "</span>" +
-			"<span style='background-color:green'>" + reportViewModel.passed + "</span>" +
-			"<span style='background-color:yellow'>" + reportViewModel.skipped + "</span>" +
-			"<span style='background-color:lightblue'>" + reportViewModel.pending + "</span>" +
+			"<span style='background-color:#de2f2f;color:#fff> Failing(" + reportViewModel.failed + "/" + reportViewModel.total + ") </span>" +
+			"<span style='background-color:rgb(31 171 15);color:#eff'> Passing(" + reportViewModel.passed + "/" + reportViewModel.total + ") </span>" +
+			"<span style='background-color:#f1c807;color:#046'> Skipping(" + reportViewModel.skipped + "/" + reportViewModel.total + ") </span>" +
+			"<span style='background-color:#199;color:#fff'> Pending(" + reportViewModel.pending + "/" + reportViewModel.total + ") </span>" +
 			"</div>"
 		var regex = new RegExp("<div id='test-summery'>(.*)</div>")
-		const isAnyReportsAlreadyViewed = regex.test(theOriginalText)
-		if (isAnyReportsAlreadyViewed)
+		const widgetAlreadyContainsAReport = regex.test(theOriginalText)
+		if (widgetAlreadyContainsAReport)
 			return theOriginalText.replace(regex, reportComponent)
 		return theOriginalText + reportComponent
 	})
