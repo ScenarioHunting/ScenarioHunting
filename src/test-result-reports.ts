@@ -16,6 +16,7 @@ class WhenTestReportViewModel {
     pending: string[]
     skipped: string[]
 }
+
 export interface ITestResultReports {
     // eslint-disable-next-line no-unused-vars
     getTestSummeryForWidget: (widgetId: string) => Promise<WhenTestResultsSummeryViewModel | boolean>
@@ -38,6 +39,7 @@ export class TestResultReports implements ITestResultReports {
             pending: report.pending?.length ?? 0,
             // example: widget.metadata["3074457349056199734"].testSummery.example
         }
+        console.log("Result:", result)
         return result
         // if (!widget
         //     || !widget.metadata["3074457349056199734"]
