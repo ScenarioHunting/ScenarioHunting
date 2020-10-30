@@ -31,13 +31,13 @@ export class TestResultReports implements ITestResultReports {
             return false
         }
         const report = widget.metadata["3074457349056199734"].testReport as WhenTestReportViewModel
-        return <WhenTestResultsSummeryViewModel>{
-            total: report.passed?.length??0 + report.failed?.length??0 + report.pending?.length??0 + report.skipped?.length??0,
-            passed: report.passed?.length??0,
-            failed: report.failed?.length??0,
-            skipped: report.skipped?.length??0,
-            pending: report.pending?.length??0,
-        }
+        return {
+            total: report.passed?.length ?? 0 + report.failed?.length ?? 0 + report.pending?.length ?? 0 + report.skipped?.length ?? 0,
+            passed: report.passed?.length ?? 0,
+            failed: report.failed?.length ?? 0,
+            skipped: report.skipped?.length ?? 0,
+            pending: report.pending?.length ?? 0,
+        } as WhenTestResultsSummeryViewModel
         // if (!widget
         //     || !widget.metadata["3074457349056199734"]
         //     || !widget.metadata["3074457349056199734"].testSummery
