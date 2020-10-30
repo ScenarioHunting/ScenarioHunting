@@ -25,17 +25,18 @@ miro.onReady(async () => {
 		var reportViewModel = await testResultReports.getTestSummeryForWidget(widgetId)
 		if (typeof reportViewModel == 'boolean')
 			return theOriginalText
-		var reportComponent = "<div id='test-summery'>" +
+		var reportComponent = "<div data-section='test-summery'>" +
 			"<span style='background-color:#de2f2f;color:#fff'> Failing(" + reportViewModel.failed + "/" + reportViewModel.total + ") </span>" +
 			"<span style='background-color:#1fab0f;color:#eff'> Passing(" + reportViewModel.passed + "/" + reportViewModel.total + ") </span>" +
 			"<span style='background-color:#f1c807;color:#046'> Skipping(" + reportViewModel.skipped + "/" + reportViewModel.total + ") </span>" +
 			"<span style='background-color:#199;color:#fff'> Pending(" + reportViewModel.pending + "/" + reportViewModel.total + ") </span>" +
 			"</div>"
 
-		var regex = new RegExp("<div id='test-summery'>(.*)</div>")
+		var regex = new RegExp("<div data-section='test-summery'>(.*)</div>")
 		const widgetAlreadyContainsAReport = regex.test(theOriginalText)
 		if (widgetAlreadyContainsAReport)
 			return theOriginalText.replace(regex, reportComponent)
+
 		return theOriginalText + reportComponent
 	})
 	// await miro.addListener("SELECTION_UPDATED", async x => {
