@@ -28,10 +28,11 @@ export const createTestRecorder = (board = singletonBoard
             //TODO: Implement guard
         }
         React.useEffect(() => {
-            (async (board: IBoard) => {
-                await board.unselectAll()
+            // (async (board: IBoard) => {
+            //     await 
+                board.unselectAll()
                     .then(stepNavigator.start);
-            })(board);
+            // })(board);
         }, [board]);
 
 

@@ -45,11 +45,11 @@ export function createTestStepRecorder({ stepType
             )
         }
         React.useEffect(() => {
-            (async (board: IBoard) => {
-                await board.unselectAll()
-                    .then(stepNavigator.start);
-            })(board);
-            // board.unselectAll();
+            // (async (board: IBoard) => {
+            //     await board.unselectAll()
+            //         .then(stepNavigator.start);
+            // })(board);
+            board.unselectAll();
             stepNavigator.onTurn(turn, () => {
                 board.showNotification(selectionWaitingMessage);
                 console.log('Waiting...')
