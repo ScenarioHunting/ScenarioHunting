@@ -127,6 +127,7 @@ async function convertToDto(widget: SDK.IWidget): Promise<ExampleWidget | string
                 await miro.showNotification("Examples should be connected to a fact they belong to.")
             return all[0]
         }
+        
         const widgetsPointingToThis = await Promise.all(incomingArrows.map(getTheStartingWidget))
 
         if (widgetsPointingToThis.length > 1) {
