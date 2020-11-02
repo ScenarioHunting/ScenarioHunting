@@ -92,6 +92,7 @@ export class Board implements IBoard {
 }
 export type Widget = {
     id: string
+    // exampleId: string
     type: string
     text: string
     x: number
@@ -138,6 +139,10 @@ function convertToDto(widget: SDK.IWidget): Widget | string {
         .replace('</p>', '')
         .replace('&#43;', '+')
     console.log('Widget text converted by board.:', dto.text)
+
+
+    dto.id
+
     return dto
 }
 function getWidgetText(widget: SDK.IWidget): string | boolean {
