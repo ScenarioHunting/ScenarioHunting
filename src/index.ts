@@ -33,6 +33,7 @@ const updateReportComponent = async (widgetId, theOriginalText) => {
 		textIncludingReport = textIncludingReport.replace(new RegExp("Passing[(]\\d+/\\d+[)]"), "")
 		textIncludingReport = textIncludingReport.replace(new RegExp("Skipping[(]\\d+/\\d+[)]"), "")
 		textIncludingReport = textIncludingReport.replace(new RegExp("Pending[(]\\d+/\\d+[)]"), "")
+		textIncludingReport = textIncludingReport.replace(new RegExp(`<div><span style="background-color:#de2f2f;color:#fff"> &nbsp;</span><span style="background-color:#1fab0f;color:#eff"> &nbsp;</span><span style="background-color:#f1c807;color:#046"> &nbsp;</span><span style="background-color:#199;color:#fff"> &nbsp;</span></div>`),"")
 		return textIncludingReport
 	}
 	theOriginalText = cleanLastReport(theOriginalText)

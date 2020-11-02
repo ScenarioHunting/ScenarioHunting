@@ -5,7 +5,7 @@ import { WhenStep as When } from './when-step';
 import { ThenStep as Then } from './then-step';
 import { Step } from "./board-data-mapper";
 import { navigate } from "@reach/router"
-import { Widget, IBoard } from 'board';
+import { Widget } from 'board';
 import { Save, LocalTestCreationResult } from './test-recorder-http-service';
 import { singletonStepNavigator } from './local-dependency-container';
 
