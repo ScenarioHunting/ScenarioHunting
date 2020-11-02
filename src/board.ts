@@ -129,7 +129,6 @@ async function convertToDto(widget: SDK.IWidget): Promise<ExampleWidget | string
         }
         const widgetsPointingToThis = await Promise.all(incomingArrows.map(getTheStartingWidget))
 
-
         if (widgetsPointingToThis.length > 1) {
             await miro.showNotification("Examples should not have more than one incoming line.")
             return ""
