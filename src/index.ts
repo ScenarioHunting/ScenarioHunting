@@ -10,10 +10,10 @@ async function makeAnExample(sourceWidget: SDK.IWidget) { // accept widgets as p
 	// const sourceWidget = widgets[0]
 	console.log("SOURCE!!!!!!!!!!!!!!", sourceWidget)
 
-	
-	miro.board.widgets.create({ ...sourceWidget });
+	const exampleWidget: SDK.IWidget = { ...sourceWidget, id: sourceWidget.id + "EXAMPLE" }
+	miro.board.widgets.create(exampleWidget);
 
-	console.log("SOURCE!!!!!!!!!!!!!!", sourceWidget)
+	console.log("EXAMPLE!!!!!!!!!!!!!!", exampleWidget)
 	// //let result = await miro.board.selection.get();
 	// let result = widgets;
 	// var textEdit = (await miro.board.widgets.get({ id: result[0].id }))[0]['text'];
