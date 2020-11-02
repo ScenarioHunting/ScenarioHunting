@@ -10,7 +10,7 @@ async function makeAnExample(sourceWidget: SDK.IWidget) { // accept widgets as p
 	// const sourceWidget = widgets[0]
 	console.log("SOURCE!!!!!!!!!!!!!!", sourceWidget)
 
-	const exampleWidget: SDK.IWidget = { ...sourceWidget, id: sourceWidget.id + "EXAMPLE" }
+	const exampleWidget: SDK.IWidget = { ...sourceWidget, id: "3074457349518488099" }
 	await miro.board.widgets.create(exampleWidget);
 
 	console.log("EXAMPLE!!!!!!!!!!!!!!", exampleWidget)
