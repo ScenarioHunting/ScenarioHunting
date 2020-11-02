@@ -1,4 +1,4 @@
-import { Widget } from 'board';
+import { ExampleWidget } from 'board';
 
 export type Step = {
     metadata: StepMetadata
@@ -7,7 +7,7 @@ export type Step = {
 
 type StepMetadata = {
     stepType: string
-    widget: Widget
+    widget: ExampleWidget
 }
 type StepData = {
     type: string
@@ -17,7 +17,7 @@ type StepDataProperty = {
     propertyName: string
     simplePropertyValue: string
 }
-export function convertWidgetToStepData(widget: Widget
+export function convertWidgetToStepData(widget: ExampleWidget
     // eslint-disable-next-line no-unused-vars
     , succeed: (data: StepData) => void
     // eslint-disable-next-line no-unused-vars

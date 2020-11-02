@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay } from '@fortawesome/free-solid-svg-icons'
-import { Widget } from 'board';
+import { ExampleWidget } from 'board';
 import { singletonBoard } from '../global-dependency-container';
 import * as React from 'react';
 import { ViewModel } from 'test-factory/test-recorder';
@@ -36,7 +36,7 @@ const createTestExplorerItem = (board = singletonBoard) => (props): JSX.Element 
         } as TestExecutionStatus)
 
     }
-    const focusWidget = (widget: Widget) =>
+    const focusWidget = (widget: ExampleWidget) =>
         board.zoomTo(widget)
 
     // eslint-disable-next-line react/prop-types

@@ -3,14 +3,14 @@ import { CSSProperties } from "react";
 import { resolve } from "path";
 export interface IBoard {
     // eslint-disable-next-line no-unused-vars
-    onNextSingleSelection(succeed: (selected: Widget) => void)
+    onNextSingleSelection(succeed: (selected: ExampleWidget) => void)
     // eslint-disable-next-line no-unused-vars
     interceptPossibleTextEdit(updateText: (widgetId: string, updatedWidget: string) => Promise<string>)
     unselectAll: () => Promise<void>
     // eslint-disable-next-line no-unused-vars
     showNotification: (message: string) => Promise<void>
     // eslint-disable-next-line no-unused-vars
-    zoomTo: (widget: Widget) => any
+    zoomTo: (widget: ExampleWidget) => any
 }
 export class Board implements IBoard {
     openModal(modalAddress: string) {
@@ -42,7 +42,7 @@ export class Board implements IBoard {
     }
 
     // eslint-disable-next-line no-unused-vars
-    onNextSingleSelection(succeed: (selected: Widget) => void) {
+    onNextSingleSelection(succeed: (selected: ExampleWidget) => void) {
         //TODO: Guard 
         console.log("Waiting for the next single selection!")
         const select = async (selections) => {
@@ -83,27 +83,61 @@ export class Board implements IBoard {
     showNotification = (message: string) =>
         miro.showNotification(message)
 
-    zoomTo = (widget: Widget) =>
+    zoomTo = (widget: ExampleWidget) =>
         miro.board.viewport.zoomToObject(widget.id, true)
 
     // static async captureSingleItemSelections(widgets, succeed, fail) {
     //     // miro.board.widgets.sel
     // }
 }
-export type Widget = {
+export type ExampleWidget = {
     id: string
-    // exampleId: string
+    fact: string
     type: string
     text: string
     x: number
     y: number
     style: CSSProperties
 }
-function convertToDto(widget: SDK.IWidget): Widget | string {
+// export type FactWidget = {
+//     id: string
+//     type: string
+//     text: string
+//     x: number
+//     y: number
+//     style: CSSProperties
+// }
+async function convertToDto(widget: SDK.IWidget): Promise<ExampleWidget | string> {
     var dto = {
         id: widget.id,
         type: widget.type,
-    } as Widget
+
+    } as ExampleWidget
+
+    //TODO: clean this up:
+    const incomingArrows = (await miro.board.widgets.get({ type: "LINE", endWidgetId: widget.id }) as SDK.ILineWidget[])
+        .filter(line => line.style.lineEndStyle != 0)
+    if (incomingArrows.length == 0) {
+        dto.fact = dto.id
+    }
+    else {
+        const getTheStartingWidget = async (arrow: SDK.ILineWidget): Promise<SDK.IWidget> => {
+            const all = await miro.board.widgets.get({ id: arrow.startWidgetId })
+            if (all.length == 0)
+                await miro.showNotification("Examples should be connected to a fact they belong to.")
+            return all[0]
+        }
+        const widgetsPointingToThis = await Promise.all(incomingArrows.map(getTheStartingWidget))
+
+
+        if (widgetsPointingToThis.length > 1) {
+            await miro.showNotification("Examples should not have more than one incoming line.")
+            return ""
+        }
+
+        dto.fact = widgetsPointingToThis[0].id
+    }
+    //
     console.log('Selection dto initiated.', dto)
 
     //TODO: Refactor this:

@@ -5,13 +5,13 @@ import { WhenStep as When } from './when-step';
 import { ThenStep as Then } from './then-step';
 import { Step } from "./board-data-mapper";
 import { navigate } from "@reach/router"
-import { Widget } from 'board';
+import { ExampleWidget } from 'board';
 import { Save, LocalTestCreationResult } from './test-recorder-http-service';
 import { singletonStepNavigator } from './local-dependency-container';
 
 export type StepInfo = {
     type: string
-    widget: Widget
+    widget: ExampleWidget
 }
 export type ViewModel = {
     givens: StepInfo[]

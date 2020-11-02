@@ -1,6 +1,6 @@
 import './test-step-recorder.less';
 import * as React from 'react';
-import { Widget, IBoard } from 'board';
+import { ExampleWidget, IBoard } from 'board';
 import { IQueuingMachine } from "../queuing-machine/iqueuing-machine";
 import { Step, convertWidgetToStepData } from './board-data-mapper';
 import { TestStepTurn } from './test-step-turn';
@@ -25,7 +25,7 @@ export function createTestStepRecorder({ stepType
     , stepNavigator
 }: TestStepDependencies) {
     return function StepRecorder(props: TestStepProps) {
-        const updateWidget = (widget: Widget) => {
+        const updateWidget = (widget: ExampleWidget) => {
             convertWidgetToStepData(widget,
                 data => {
                     const step: Step = {
