@@ -10,10 +10,8 @@ async function makeAnExample(sourceWidget: SDK.IWidget) { // accept widgets as p
 	// const sourceWidget = widgets[0]
 	console.log("SOURCE!!!!!!!!!!!!!!", sourceWidget)
 
-	const exampleWidget = await miro.board.widgets.create({ type: sourceWidget.type, bounds: sourceWidget.bounds });
-	console.log("EXAMPLE1!!!!!!!!!!!!!!", exampleWidget)
-	const exampleWidget2 = await miro.board.widgets.create({ type: sourceWidget.type });
-	console.log("EXAMPLE2!!!!!!!!!!!!!!", exampleWidget2)
+	const exampleWidget = await miro.board.widgets.create({ type: sourceWidget.type, bounds: { x: sourceWidget.bounds.x, y: sourceWidget.bounds.y } });
+	console.log("EXAMPLE!!!!!!!!!!!!!!", exampleWidget)
 
 	// //let result = await miro.board.selection.get();
 	// let result = widgets;
@@ -40,11 +38,15 @@ const updateReportComponent = async (widgetId, theOriginalText) => {
 		const widgetAlreadyContainsAReport = regex.test(textIncludingReport)
 		if (widgetAlreadyContainsAReport)
 			textIncludingReport = textIncludingReport.replace(regex, "")
-		textIncludingReport = textIncludingReport.replace(new RegExp("Failing[(]\\d+/\\d+[)]"), "")
-		textIncludingReport = textIncludingReport.replace(new RegExp("Passing[(]\\d+/\\d+[)]"), "")
-		textIncludingReport = textIncludingReport.replace(new RegExp("Skipping[(]\\d+/\\d+[)]"), "")
-		textIncludingReport = textIncludingReport.replace(new RegExp("Pending[(]\\d+/\\d+[)]"), "")
-		textIncludingReport = textIncludingReport.replace(new RegExp(`<div><span style="background-color:#de2f2f;color:#fff"> &nbsp;</span><span style="background-color:#1fab0f;color:#eff"> &nbsp;</span><span style="background-color:#f1c807;color:#046"> &nbsp;</span><span style="background-color:#199;color:#fff"> &nbsp;</span></div>`), "")
+
+		textIncludingReport = textIncludingReport
+			.replace(new RegExp("Failing[(]\\d+/\\d+[)]"), "")
+			.replace(new RegExp("Passing[(]\\d+/\\d+[)]"), "")
+			.replace(new RegExp("Skipping[(]\\d+/\\d+[)]"), "")
+			.replace(new RegExp("Pending[(]\\d+/\\d+[)]"), "")
+			.replace(new RegExp(`<div><span style="background-color:#de2f2f;color:#fff"> &nbsp;</span><span style="background-color:#1fab0f;color:#eff"> &nbsp;</span><span style="background-color:#f1c807;color:#046"> &nbsp;</span><span style="background-color:#199;color:#fff"> &nbsp;</span></div>`), "")
+			.replace(new RegExp(`<span style="background-color:.+>.+</span>`), "")
+		// "<div><span style="background-color:#de2f2f;color:#fff">  </span><span style="background-color:#1fab0f;color:#eff">  </span><span style="background-color:#f1c807;color:#046">  </span><span style="background-color:#199;color:#fff">  </span></div><div><span style="background-color:#de2f2f;color:#fff">  </span><span style="background-color:#1fab0f;color:#eff">  </span><span style="background-color:#f1c807;color:#046">  </span><span style="background-color:#199;color:#fff">  </span></div><div data-section='test-summery'><span style='background-color:#de2f2f;color:#fff'> Failing(0/1) </span><span style='background-color:#1fab0f;color:#eff'> Passing(1/1) </span><span style='background-color:#f1c807;color:#046'> Skipping(0/1) </span><span style='background-color:#199;color:#fff'> Pending(0/1) </span></div>"
 		return textIncludingReport
 	}
 	theOriginalText = cleanLastReport(theOriginalText)
