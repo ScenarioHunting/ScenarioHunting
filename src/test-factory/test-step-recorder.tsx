@@ -45,7 +45,11 @@ export function createTestStepRecorder({ stepType
             )
         }
         React.useEffect(() => {
-            board.unselectAll();
+            (async (board: IBoard) => {
+                await board.unselectAll()
+                    .then(stepNavigator.start);
+            })(board);
+            // board.unselectAll();
             stepNavigator.onTurn(turn, () => {
                 board.showNotification(selectionWaitingMessage);
                 console.log('Waiting...')
@@ -56,7 +60,7 @@ export function createTestStepRecorder({ stepType
                 });
             });
             // eslint-disable-next-line react-hooks/exhaustive-deps
-        }, [stepNavigator])
+        }, [board, stepNavigator])
         const onValueChange = (index: number, event: React.ChangeEvent<HTMLInputElement>) => {
             props.step!.data.properties[index].simplePropertyValue
                 = event.currentTarget.value;

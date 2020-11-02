@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
 import { CSSProperties } from "react";
+import { resolve } from "path";
 export interface IBoard {
     // eslint-disable-next-line no-unused-vars
     onNextSingleSelection(succeed: (selected: Widget) => void)
@@ -73,7 +74,11 @@ export class Board implements IBoard {
         return miro.addListener("SELECTION_UPDATED", select)
     }
 
-    unselectAll = () => miro.board.selection.clear()
+    unselectAll = async () => {
+        if (!miro || !miro.board)
+            await new Promise(resolve => setTimeout(resolve, 200))
+        await miro.board.selection.clear()
+    }
 
     showNotification = (message: string) =>
         miro.showNotification(message)
@@ -139,9 +144,9 @@ function getWidgetText(widget: SDK.IWidget): string | boolean {
     if ("text" in widget)
         return widget["text"];
     else if ("captions" in widget
-            && widget["captions"]
-            && widget["captions"][0]
-            && widget["captions"][0]["text"])
+        && widget["captions"]
+        && widget["captions"][0]
+        && widget["captions"][0]["text"])
         return widget["captions"][0]["text"]
     else
         return false

@@ -1,11 +1,11 @@
-import {  singletonBoard } from '../global-dependency-container';
+import { singletonBoard } from '../global-dependency-container';
 import * as React from 'react';
 import { Givens, IndexedStep } from './given-collection';
 import { WhenStep as When } from './when-step';
 import { ThenStep as Then } from './then-step';
 import { Step } from "./board-data-mapper";
 import { navigate } from "@reach/router"
-import { Widget } from 'board';
+import { Widget, IBoard } from 'board';
 import { Save, LocalTestCreationResult } from './test-recorder-http-service';
 import { singletonStepNavigator } from './local-dependency-container';
 
@@ -28,8 +28,10 @@ export const createTestRecorder = (board = singletonBoard
             //TODO: Implement guard
         }
         React.useEffect(() => {
-            board.unselectAll()
-                .then(stepNavigator.start);
+            (async (board: IBoard) => {
+                await board.unselectAll()
+                    .then(stepNavigator.start);
+            })(board);
         }, [board]);
 
 

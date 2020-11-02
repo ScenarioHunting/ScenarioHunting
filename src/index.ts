@@ -19,84 +19,37 @@ async function underline(widgets: SDK.IWidget[]) { // accept widgets as paramete
 	})
 }
 
-const cleanLastReport = (textIncludingReport: string): string => {
-	var regex = new RegExp("<div data-section='test-summery'>(.*)</div>")
-	const widgetAlreadyContainsAReport = regex.test(textIncludingReport)
-	if (widgetAlreadyContainsAReport)
-		textIncludingReport = textIncludingReport.replace(regex, "")
-	textIncludingReport = textIncludingReport.replace(new RegExp("Failing[(]\\d/\\d[)]"), "")
-	textIncludingReport = textIncludingReport.replace(new RegExp("Passing[(]\\d/\\d[)]"), "")
-	textIncludingReport = textIncludingReport.replace(new RegExp("Skipping[(]\\d/\\d[)]"), "")
-	textIncludingReport = textIncludingReport.replace(new RegExp("Pending[(]\\d/\\d[)]"), "")
-	return textIncludingReport
+const updateReportComponent = async (widgetId, theOriginalText) => {
+	var vm = await testResultReports.getTestSummeryForWidget(widgetId)
+	if (typeof vm == 'boolean')
+		return theOriginalText
+
+	const cleanLastReport = (textIncludingReport: string): string => {
+		var regex = new RegExp("<div data-section='test-summery'>.*</div>")
+		const widgetAlreadyContainsAReport = regex.test(textIncludingReport)
+		if (widgetAlreadyContainsAReport)
+			textIncludingReport = textIncludingReport.replace(regex, "")
+		textIncludingReport = textIncludingReport.replace(new RegExp("Failing[(]\\d+/\\d+[)]"), "")
+		textIncludingReport = textIncludingReport.replace(new RegExp("Passing[(]\\d+/\\d+[)]"), "")
+		textIncludingReport = textIncludingReport.replace(new RegExp("Skipping[(]\\d+/\\d+[)]"), "")
+		textIncludingReport = textIncludingReport.replace(new RegExp("Pending[(]\\d+/\\d+[)]"), "")
+		return textIncludingReport
+	}
+	theOriginalText = cleanLastReport(theOriginalText)
+
+	var reportComponent = "<div data-section='test-summery'>" +
+		"<span style='background-color:#de2f2f;color:#fff'> Failing(" + vm.failed + "/" + vm.total + ") </span>" +
+		"<span style='background-color:#1fab0f;color:#eff'> Passing(" + vm.passed + "/" + vm.total + ") </span>" +
+		"<span style='background-color:#f1c807;color:#046'> Skipping(" + vm.skipped + "/" + vm.total + ") </span>" +
+		"<span style='background-color:#199;color:#fff'> Pending(" + vm.pending + "/" + vm.total + ") </span>" +
+		"</div>"
+
+	return theOriginalText + reportComponent
 }
 
 miro.onReady(async () => {
-	await singletonBoard.interceptPossibleTextEdit(async (widgetId, theOriginalText) => {
-		var reportViewModel = await testResultReports.getTestSummeryForWidget(widgetId)
-		if (typeof reportViewModel == 'boolean')
-			return theOriginalText
+	await singletonBoard.interceptPossibleTextEdit(updateReportComponent)
 
-		// theOriginalText = theOriginalText.replace(new RegExp("Failing[(]\\d/\\d[)]"), "")
-		// theOriginalText = theOriginalText.replace(new RegExp("Passing[(]\\d/\\d[)]"), "")
-		// theOriginalText = theOriginalText.replace(new RegExp("Skipping[(]\\d/\\d[)]"), "")
-		// theOriginalText = theOriginalText.replace(new RegExp("Pending[(]\\d/\\d[)]"), "")
-
-		var reportComponent = "<div data-section='test-summery'>" +
-			"<span style='background-color:#de2f2f;color:#fff'> Failing(" + reportViewModel.failed + "/" + reportViewModel.total + ") </span>" +
-			"<span style='background-color:#1fab0f;color:#eff'> Passing(" + reportViewModel.passed + "/" + reportViewModel.total + ") </span>" +
-			"<span style='background-color:#f1c807;color:#046'> Skipping(" + reportViewModel.skipped + "/" + reportViewModel.total + ") </span>" +
-			"<span style='background-color:#199;color:#fff'> Pending(" + reportViewModel.pending + "/" + reportViewModel.total + ") </span>" +
-			"</div>"
-		// var regex = new RegExp("<div data-section='test-summery'>(.*)</div>")
-		// const widgetAlreadyContainsAReport = regex.test(theOriginalText)
-		// if (widgetAlreadyContainsAReport)
-		// 	return theOriginalText.replace(regex, reportComponent)
-		theOriginalText = cleanLastReport(theOriginalText)
-		return theOriginalText + reportComponent
-	})
-	// await miro.addListener("SELECTION_UPDATED", async x => {
-	// 	if (!x
-	// 		|| !x.data
-	// 		|| x.data.length != 1
-	// 		|| !x.data[0]
-	// 		|| !x.data[0].metadata
-	// 		|| !x.data[0].metadata["3074457349056199734"]
-	// 		|| !x.data[0].metadata["3074457349056199734"].testSummery
-	// 		|| !(x.data[0].metadata["3074457349056199734"].testSummery as WhenTestResultsSummeryViewModel))
-	// 		return;
-
-	// 	const vm = (x.data[0].metadata["3074457349056199734"].testSummery as WhenTestResultsSummeryViewModel);
-	// 	const widgetId = x.data[0].id
-	// 	console.log("x.data[0]: ", x.data[0])
-	// 	const widget = (await miro.board.widgets.get({ id: widgetId }))[0] as any//TODO: map it
-	// 	console.log("widget: ", widget)
-	// 	//vm.metadata["3074457349056199734"].testSummery.failed
-	// 	var strReportSummery = "<div id='test-summery'>" +
-	// 		"<span style='background-color:red'>" + vm.Failed + "</span>" +
-	// 		"<span style='background-color:green'>" + vm.Passed + "</span>" +
-	// 		"<span style='background-color:yellow'>" + vm.Skipped + "</span>" +
-	// 		"<span style='background-color:lightblue'>" + vm.Pending + "</span>" +
-	// 		"</div>"
-	// 	var regex = new RegExp("<div id='test-summery'>(.*)<\/div>")
-	// 	//TODO: map the widget into a local struct so that text vs plain text vs value,.. does not tie the app to the board
-	// 	if (regex.test(widget.text)) {
-	// 		widget.text = widget.text.replace(regex, strReportSummery)
-	// 	}
-	// 	else {
-	// 		widget.text += strReportSummery
-	// 	}
-	// 	delete widget.metadata
-
-	// 	await miro.board.widgets.update([widget])
-	// 	//"<span style='background-color:red'> ccc </span>"
-	// 	// "<div id='test-summery'><span style='background-color:red'>1</span><span style='background-color:green'>1</span><span style='background-color:yellow'>1</span><span style='background-color:lightblue'>1</span></div>".replace( new RegExp("<div id='test-summery'>(.*)<\/div>"),"<div id='test-summery'><span style='background-color:red'>1</span><span style='background-color:green'>1</span><span style='background-color:yellow'>1</span><span style='background-color:lightblue'>9</span></div>")
-	// 	// w.text = w.text.replace("<div id='test-summery'>.*<\/div>","<div id='test-summery'><span style='background-color:red'>1</span><span style='background-color:green'>1</span><span style='background-color:yellow'>2</span><span style='background-color:lightblue'>1</span></div>")
-	// 	//new RegExp("<div id='test-summery'>(.*)<\/div>").exec("<div id='test-summery'><span style='background-color:red'>1</span><span style='background-color:green'>1</span><span style='background-color:yellow'>1</span><span style='background-color:lightblue'>9</span></div>")[0]
-	// 	// "<div id='test-summery'><span style='background-color:red'>1</span><span style='background-color:green'>1</span><span style='background-color:yellow'>1</span><span style='background-color:lightblue'>9</span></div>"
-	// 	//delete vm.metadata
-	// 	// miro.board.widgets.update([vm])
-	// })
 	await miro.initialize({
 		extensionPoints: {
 			getWidgetMenuItems: (widgets: SDK.IWidget[]/*, editMode: boolean*/): Promise<SDK.IWidgetMenuItem | SDK.IWidgetMenuItem[]> => {
