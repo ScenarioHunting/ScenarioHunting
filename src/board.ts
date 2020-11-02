@@ -1,6 +1,5 @@
 /* eslint-disable no-undef */
 import { CSSProperties } from "react";
-import { resolve } from "path";
 export interface IBoard {
     // eslint-disable-next-line no-unused-vars
     onNextSingleSelection(succeed: (selected: ExampleWidget) => void)
@@ -62,14 +61,16 @@ export class Board implements IBoard {
             var widget = (await miro.board.widgets.get({ id: widgets[0].id }))[0];
             console.log("Converting the widget")
 
-            const dto = convertToDto(widget)
-            if (typeof dto == 'string')
-                console.log(dto)
-            else {
-                console.log(dto)
-                succeed(dto)
-                miro.removeListener("SELECTION_UPDATED", select)
-            }
+            convertToDto(widget)
+                .then(dto => {
+                    if (typeof dto == 'string')
+                        console.log(dto)
+                    else {
+                        console.log(dto)
+                        succeed(dto)
+                        miro.removeListener("SELECTION_UPDATED", select)
+                    }
+                })
         }
         return miro.addListener("SELECTION_UPDATED", select)
     }
@@ -121,7 +122,7 @@ async function convertToDto(widget: SDK.IWidget): Promise<ExampleWidget | string
         dto.fact = dto.id
     }
     else {
-        
+
         const getTheStartingWidget = async (arrow: SDK.ILineWidget): Promise<SDK.IWidget> => {
             const all = await miro.board.widgets.get({ id: arrow.startWidgetId })
             if (all.length == 0)
