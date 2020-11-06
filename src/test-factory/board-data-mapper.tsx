@@ -9,7 +9,7 @@ type StepMetadata = {
     stepType: string
     widget: ExampleWidget
 }
-type StepData = {
+export type StepData = {
     type: string
     properties: StepDataProperty[]
 }
@@ -17,15 +17,15 @@ type StepDataProperty = {
     propertyName: string
     simplePropertyValue: string
 }
-export function convertWidgetToStepData(widget: ExampleWidget
+export function convertWidgetToStepData(widgetText: string
+    // // eslint-disable-next-line no-unused-vars
+    // , succeed: (data: StepData) => void
     // eslint-disable-next-line no-unused-vars
-    , succeed: (data: StepData) => void
-    // eslint-disable-next-line no-unused-vars
-    , fail: (error: string) => void) {
+    , fail: (error: string) => void): StepData {
 
-    const chunks = widget.text.split('\n')
+    const chunks = widgetText.split('\n')
     let type = chunks.shift()
-    if (!type) {
+    if (!type && fail) {
         fail("Unknown text format.")
     }
     // const value = chunks
@@ -44,5 +44,6 @@ export function convertWidgetToStepData(widget: ExampleWidget
         .map(p => p.split(":"))
         .map(convert);
     // const example = Object.fromEntries(value)
-    succeed({ type, properties: example })
+    // succeed({ type, properties: example })
+    return { type, properties: example }
 }

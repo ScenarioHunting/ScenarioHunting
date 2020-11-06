@@ -1,9 +1,9 @@
 import './test-step-recorder.less';
 import * as React from 'react';
-import { ExampleWidget, IBoard } from 'board';
+import { IBoard, SelectedWidget } from 'board';
 import { IQueuingMachine } from "../queuing-machine/iqueuing-machine";
-import { Step, convertWidgetToStepData } from './board-data-mapper';
 import { TestStepTurn } from './test-step-turn';
+import { Step } from './board-data-mapper';
 export class TestStepDependencies {
     stepType: string
     selectionWaitingMessage: string
@@ -25,25 +25,30 @@ export function createTestStepRecorder({ stepType
     , stepNavigator
 }: TestStepDependencies) {
     return function StepRecorder(props: TestStepProps) {
-        const updateWidget = (widget: ExampleWidget) => {
-            convertWidgetToStepData(widget,
-                data => {
-                    const step: Step = {
-                        metadata: {
-                            widget: widget
-                            , stepType: stepType
-                        }
-                        , data: {
-                            type: data.type
-                            , properties: data.properties
-                        }
-                    }
-                    props.onStepSelection(step)
+        const updateWidget = (selectedWidget: SelectedWidget) =>
+            // convertWidgetToStepData(widget.text,
+            //     data => {
+            //         const step: Step = {
+            //             metadata: {
+            //                 widget: widget
+            //                 , stepType: stepType
+            //             }
+            //             , data: {
+            //                 type: data.type
+            //                 , properties: data.properties
+            //             }
+            //         }
+            //     }, board.showNotification
+
+            props.onStepSelection({
+                metadata: {
+                    widget: selectedWidget.widgetSnapshot
+                    , stepType: stepType
                 }
-                ,
-                board.showNotification
-            )
-        }
+                , data: selectedWidget.widgetData
+            })
+
+        // }
         React.useEffect(() => {
             // (async (board: IBoard) => {
             //     await board.unselectAll()
@@ -53,9 +58,9 @@ export function createTestStepRecorder({ stepType
             stepNavigator.onTurn(turn, () => {
                 board.showNotification(selectionWaitingMessage);
                 console.log('Waiting...')
-                board.onNextSingleSelection(widget => {
+                board.onNextSingleSelection(step => {
                     console.log(turn, 'Done...')
-                    updateWidget(widget);
+                    updateWidget(step);
                     stepNavigator.nextTurn();
                 });
             });
