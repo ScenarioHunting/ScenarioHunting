@@ -4,7 +4,7 @@ export type CreateTestDto = {
     test: TestDto
     metadata: TestMetadataDto
 }
-export type StepDataPropertyDto = {
+type StepDataPropertyDto = {
     propertyName: string
     simplePropertyValue: string
 }

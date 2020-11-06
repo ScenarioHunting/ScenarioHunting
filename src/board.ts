@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
-import { convertWidgetToStepData, StepData } from "./test-factory/board-data-mapper";
+import { convertWidgetToStepData } from "./test-factory/board-data-mapper";
 import { CSSProperties } from "react";
+import { StepDataDto } from "test-factory/dto";
 export interface IBoard {
     // eslint-disable-next-line no-unused-vars
     onNextSingleSelection(succeed: (selected: SelectedWidget) => void)
@@ -102,7 +103,7 @@ export type ExampleWidget = {
 }
 export type SelectedWidget = {
     widgetSnapshot: ExampleWidget
-    widgetData: StepData
+    widgetData: StepDataDto
 }
 
 // export type ExampleWidget = {

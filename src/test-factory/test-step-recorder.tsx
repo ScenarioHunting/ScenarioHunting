@@ -25,21 +25,7 @@ export function createTestStepRecorder({ stepType
     , stepNavigator
 }: TestStepDependencies) {
     return function StepRecorder(props: TestStepProps) {
-        const updateWidget = (selectedWidget: SelectedWidget) =>
-            // convertWidgetToStepData(widget.text,
-            //     data => {
-            //         const step: Step = {
-            //             metadata: {
-            //                 widget: widget
-            //                 , stepType: stepType
-            //             }
-            //             , data: {
-            //                 type: data.type
-            //                 , properties: data.properties
-            //             }
-            //         }
-            //     }, board.showNotification
-
+        const notifyParent = (selectedWidget: SelectedWidget) =>
             props.onStepSelection({
                 metadata: {
                     widget: selectedWidget.widgetSnapshot
@@ -48,19 +34,14 @@ export function createTestStepRecorder({ stepType
                 , data: selectedWidget.widgetData
             })
 
-        // }
         React.useEffect(() => {
-            // (async (board: IBoard) => {
-            //     await board.unselectAll()
-            //         .then(stepNavigator.start);
-            // })(board);
             board.unselectAll();
             stepNavigator.onTurn(turn, () => {
                 board.showNotification(selectionWaitingMessage);
                 console.log('Waiting...')
-                board.onNextSingleSelection(step => {
+                board.onNextSingleSelection(selectedWidget => {
                     console.log(turn, 'Done...')
-                    updateWidget(step);
+                    notifyParent(selectedWidget);
                     stepNavigator.nextTurn();
                 });
             });

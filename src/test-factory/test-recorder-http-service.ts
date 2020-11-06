@@ -1,6 +1,6 @@
 import { IndexedStep } from "./given-collection"
 import { Step } from "./board-data-mapper"
-import { CreateTestDto, StepDataDto, IndexedStepDataDto, StepDataPropertyDto } from "./dto"
+import { CreateTestDto, IndexedStepDataDto } from "./dto"
 
 const toDto = ({ testContext
     , testName
@@ -16,15 +16,16 @@ const toDto = ({ testContext
         test: {
             givens: givens.map(indexedStep => {
                 return {
-                    step: {
-                        type: indexedStep.step.data.type,
-                        properties: indexedStep.step.data.properties.map(p => p as StepDataPropertyDto)
-                    } as StepDataDto,
+                    step: indexedStep.step.data,
+                    // step: {
+                    //     type: indexedStep.step.data.type,
+                    //     properties: indexedStep.step.data.properties.map(p => p as StepDataPropertyDto)
+                    // },
                     index: indexedStep.index
                 } as IndexedStepDataDto
             }),
-            when: when.data as StepDataDto,
-            thens: [{ step: then.data as StepDataDto, index: 0 } as IndexedStepDataDto],
+            when: when.data,
+            thens: [{ step: then.data, index: 0 } as IndexedStepDataDto],
             sut: sutName,
         },
         metadata: {

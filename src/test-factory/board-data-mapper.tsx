@@ -1,18 +1,19 @@
 import { ExampleWidget } from 'board';
+import { StepDataDto } from './dto';
 
 export type Step = {
     metadata: StepMetadata
-    data: StepData
+    data: StepDataDto
 }
 
 type StepMetadata = {
     stepType: string
     widget: ExampleWidget
 }
-export type StepData = {
-    type: string
-    properties: StepDataProperty[]
-}
+// export type StepData = {
+//     type: string
+//     properties: StepDataProperty[]
+// }
 type StepDataProperty = {
     propertyName: string
     simplePropertyValue: string
@@ -21,7 +22,7 @@ export function convertWidgetToStepData(widgetText: string
     // // eslint-disable-next-line no-unused-vars
     // , succeed: (data: StepData) => void
     // eslint-disable-next-line no-unused-vars
-    , fail: (error: string) => void): StepData {
+    , fail: (error: string) => void): StepDataDto {
 
     const chunks = widgetText.split('\n')
     let type = chunks.shift()
