@@ -1,6 +1,6 @@
 import { IndexedStep } from "./given-collection"
-import { Step } from "./board-data-mapper"
 import { CreateTestDto, IndexedStepDataDto } from "./dto"
+import { SelectedWidget } from "board"
 
 const toDto = ({ testContext
     , testName
@@ -16,7 +16,7 @@ const toDto = ({ testContext
         test: {
             givens: givens.map(indexedStep => {
                 return {
-                    step: indexedStep.step.data,
+                    step: indexedStep.step.widgetData,
                     // step: {
                     //     type: indexedStep.step.data.type,
                     //     properties: indexedStep.step.data.properties.map(p => p as StepDataPropertyDto)
@@ -24,15 +24,15 @@ const toDto = ({ testContext
                     index: indexedStep.index
                 } as IndexedStepDataDto
             }),
-            when: when.data,
-            thens: [{ step: then.data, index: 0 } as IndexedStepDataDto],
+            when: when.widgetData,
+            thens: [{ step: then.widgetData, index: 0 } as IndexedStepDataDto],
             sut: sutName,
         },
         metadata: {
             contents: JSON.stringify({
-                given: givens.map(given => { given.step.metadata, given.index }),
-                when: when.metadata,
-                then: [{ step: then.metadata, index: 0 }]
+                given: givens.map(given => { given.step.widgetSnapshot, given.index }),
+                when: when.widgetSnapshot,
+                then: [{ step: then.widgetSnapshot, index: 0 }]
             })
         }
     }
@@ -44,8 +44,8 @@ export type LocalTestCreationResult = {
     , sutName: string
 
     , givens: IndexedStep[]
-    , when: Step
-    , then: Step
+    , when: SelectedWidget
+    , then: SelectedWidget
 }
 
 export async function Save(test: LocalTestCreationResult, onSuccess, onError) {

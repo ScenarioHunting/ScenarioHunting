@@ -3,9 +3,8 @@ import * as React from 'react';
 import { Givens, IndexedStep } from './given-collection';
 import { WhenStep as When } from './when-step';
 import { ThenStep as Then } from './then-step';
-import { Step } from "./board-data-mapper";
 import { navigate } from "@reach/router"
-import { ExampleWidget } from 'board';
+import { ExampleWidget, SelectedWidget } from 'board';
 import { Save, LocalTestCreationResult } from './test-recorder-http-service';
 import { singletonStepNavigator } from './local-dependency-container';
 
@@ -43,8 +42,8 @@ export const createTestRecorder = (board = singletonBoard
 
 
         const [givens, recordGiven] = React.useState<IndexedStep[]>([]);
-        const [when, recordWhen] = React.useState<Step>();
-        const [then, recordThen] = React.useState<Step>();
+        const [when, recordWhen] = React.useState<SelectedWidget>();
+        const [then, recordThen] = React.useState<SelectedWidget>();
         const [testName, recordTestName] = React.useState<string>("");
         const [testContext, recordTestContext] = React.useState<string>("SampleService");
         const [sutName, recordSutName] = React.useState<string>("");
@@ -52,10 +51,10 @@ export const createTestRecorder = (board = singletonBoard
         const updateGivens = (givenResults: IndexedStep[]) => {
             recordGiven(givenResults);
         };
-        const updateWhen = (when: Step) => {
+        const updateWhen = (when: SelectedWidget) => {
             recordWhen(when);
         };
-        const updateThen = (then: Step) => {
+        const updateThen = (then: SelectedWidget) => {
             recordThen(then);
         };
         const showValidationError = (errorText: string) => {
@@ -85,10 +84,10 @@ export const createTestRecorder = (board = singletonBoard
                 , (statusText: string) => board.showNotification('Test creation error try again later.\n' + statusText)//TODO: provide more guidance to user
             );
 
-            const toViewModel = (step: Step): StepInfo => {
+            const toViewModel = (step: SelectedWidget): StepInfo => {
                 return {
-                    type: step.data.type,
-                    widget: step.metadata.widget
+                    type: step.widgetData.type,
+                    widget: step.widgetSnapshot
                 }
             }
             var viewModel: ViewModel = {

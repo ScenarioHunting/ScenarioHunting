@@ -1,14 +1,14 @@
 import { singletonStepNavigator } from './local-dependency-container';
 import * as React from 'react'
 import { TestStepTurn } from "./test-step-turn";
-import { Step } from "./board-data-mapper";
 import { useWhatChanged } from "@simbathesailor/use-what-changed";
 import { GivenStep } from './given-step';
+import { SelectedWidget } from 'board';
 
 
 export type IndexedStep = {
 	index: number
-	step: Step
+	step: SelectedWidget
 }
 export type GivenStepsProps = {
 	// eslint-disable-next-line no-unused-vars
@@ -43,13 +43,13 @@ export let createGivenStepCollection =
 				setIndexedSteps([{ index: nextId } as IndexedStep, ...indexedSteps])
 				nextId++;
 			}
-			const onStepSelection = (updatedStep: Step) => {
+			const onStepSelection = (updatedStep: SelectedWidget) => {
 				// function replace<T>(arr: Array<T>, newItem: T, predicate: (old: T) => Boolean) {
 				// }
-				const replaceOldIfEqual = (oldStep: IndexedStep, updatedStep: Step) => {
+				const replaceOldIfEqual = (oldStep: IndexedStep, updatedStep: SelectedWidget) => {
 
 					const oldEqualsNew: boolean = oldStep.step == undefined
-						|| oldStep.step.metadata.widget.id === updatedStep.metadata.widget.id
+						|| oldStep.step.widgetSnapshot.id === updatedStep.widgetSnapshot.id
 
 					return oldEqualsNew
 						? { step: updatedStep, index: oldStep.index } as IndexedStep

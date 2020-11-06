@@ -1,15 +1,14 @@
-import { ExampleWidget } from 'board';
 import { StepDataDto } from './dto';
 
-export type Step = {
-    metadata: StepMetadata
-    data: StepDataDto
-}
+// export type Step = {
+//     metadata: StepMetadata
+//     data: StepDataDto
+// }
 
-type StepMetadata = {
-    stepType: string
-    widget: ExampleWidget
-}
+// type StepMetadata = {
+//     stepType: string
+//     widget: ExampleWidget
+// }
 // export type StepData = {
 //     type: string
 //     properties: StepDataProperty[]
