@@ -84,7 +84,7 @@ miro.onReady(async () => {
 	ws.onmessage = function (evt) {
 
 		console.log("RESPONSE: " + evt.data);
-		applyReportToWidget(evt.data.id, evt.data.testReport)
+		applyReportToWidget(evt.data.id, evt.data.testReport).catch(console.log)
 		// const widget = miro.board.widgets.get({ id: evt.data.id })
 
 	}

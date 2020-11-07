@@ -60,6 +60,7 @@ export class Board implements IBoard {
     }
     // eslint-disable-next-line no-unused-vars
     async getWidgetText(widgetId: string): Promise<string> {
+        console.log("Finding widget by id:" + widgetId)
         var widget = (await miro.board.widgets.get({ id: widgetId }))[0];
         return await getWidgetText(widget)
     }
@@ -91,14 +92,15 @@ export class Board implements IBoard {
 
             convertToDto(widget)
                 .then(dto => {
-                    if (typeof dto == 'string')
-                        console.log(dto)
-                    else {
-                        console.log(dto)
-                        succeed(dto)
-                        miro.removeListener("SELECTION_UPDATED", select)
-                    }
+                    // if (typeof dto == 'string')
+                    //     console.log(dto)
+                    // else {
+                    console.log(dto)
+                    succeed(dto)
+                    miro.removeListener("SELECTION_UPDATED", select)
+                    // }
                 })
+                .catch(console.log)
         }
         return miro.addListener("SELECTION_UPDATED", select)
     }
@@ -150,7 +152,7 @@ export type SelectedWidget = {
 //     y: number
 //     style: CSSProperties
 // }
-async function convertToDto(widget: SDK.IWidget): Promise<SelectedWidget | string> {
+async function convertToDto(widget: SDK.IWidget): Promise<SelectedWidget> {
     var dto = {
         id: widget.id,
         // type: widget.type,
@@ -173,7 +175,7 @@ async function convertToDto(widget: SDK.IWidget): Promise<SelectedWidget | strin
 
         if (widgetsPointingToThis.length > 1) {
             await miro.showNotification("Examples should not have more than one incoming line.")
-            return ""
+            return Promise.reject("Examples should not have more than one incoming line.")
         }
 
         dto.sourceWidget = widgetsPointingToThis[0]
@@ -195,11 +197,11 @@ async function convertToDto(widget: SDK.IWidget): Promise<SelectedWidget | strin
         dto.style.backgroundColor = widget["style"]["stickerBackgroundColor"]
     }
     const widgetText = await getWidgetText(widget)
-    if (typeof widgetText == 'boolean') {
-        if (!widgetText)
-            return 'The widget ' + JSON.stringify(widget) + ' does not have any text.'
-    } else
-        dto.text = widgetText
+    // if (typeof widgetText == 'boolean') {
+    //     if (!widgetText)
+    //         return Promise.reject('The widget ' + JSON.stringify(widget) + ' does not have any text.')
+    // } else
+    dto.text = widgetText
 
     dto.text = dto.text
         .split('</p><p>').join('\n')
@@ -302,6 +304,9 @@ async function convertToDto(widget: SDK.IWidget): Promise<SelectedWidget | strin
 //     return dto
 // }
 function getWidgetText(widget: SDK.IWidget): Promise<string> {
+    if (!widget)
+        return Promise.reject("Cannot get the widget text. The widget is undefined.")
+
     if ("text" in widget)
         return widget["text"];
     else if ("captions" in widget
