@@ -62,6 +62,24 @@ const updateReportComponent = async (widgetId, theOriginalText) => {
 }
 
 miro.onReady(async () => {
+	let ws = new WebSocket("ws://localhost:8080/ws")
+	ws.onopen = function () {
+		console.log("OPEN");
+	}
+	ws.onclose = function () {
+		console.log("CLOSE");
+		// ws = null;
+	}
+	ws.onmessage = function (evt) {
+		console.log("RESPONSE: " + evt.data);
+	}
+	ws.onerror = function (evt: Event) {
+		console.log("ERROR: " + evt);
+	}
+
+
+
+
 	await singletonBoard.interceptPossibleTextEdit(updateReportComponent)
 
 	await miro.initialize({
