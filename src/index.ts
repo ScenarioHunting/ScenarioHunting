@@ -71,9 +71,13 @@ miro.onReady(async () => {
 		// ws = null;
 	}
 	ws.onmessage = function (evt) {
+
 		console.log("RESPONSE: " + evt.data);
+
+		// const widget = miro.board.widgets.get({ id: evt.data.id })
+
 	}
-	ws.onerror = function (evt: Event) {
+	ws.onerror = function (evt) {
 		console.log("ERROR: " + evt);
 	}
 
