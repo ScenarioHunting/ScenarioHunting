@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-class WhenTestResultsSummeryViewModel {
+export class WhenTestResultsSummeryViewModel {
     // boardId string?
     total: number
     passed: number

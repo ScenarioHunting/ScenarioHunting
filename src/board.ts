@@ -4,6 +4,10 @@ import { CSSProperties } from "react";
 import { StepDataDto } from "test-factory/dto";
 export interface IBoard {
     // eslint-disable-next-line no-unused-vars
+    updateWidgetText(widgetId: string, newWidgetText: string): Promise<void>;
+    // eslint-disable-next-line no-unused-vars
+    getWidgetText(widgetId: string): Promise<string>
+    // eslint-disable-next-line no-unused-vars
     onNextSingleSelection(succeed: (selected: SelectedWidget) => void)
     // eslint-disable-next-line no-unused-vars
     interceptPossibleTextEdit(updateText: (widgetId: string, updatedWidget: string) => Promise<string>)
@@ -14,11 +18,26 @@ export interface IBoard {
     zoomTo: (widget: ExampleWidget) => any
 }
 export class Board implements IBoard {
+
     openModal(modalAddress: string) {
         miro.board.ui.openModal(modalAddress, { width: 50, height: 50 })
         throw new Error("Method not implemented.");
     }
     private previouslySelectedWidgets: SDK.IWidget[]
+
+    // eslint-disable-next-line no-unused-vars
+    onWidgetLeft(updateText: (widgetId: string) => Promise<void>) {
+        const select = async (selections) => {
+            var widgets = selections.data;
+            if (!this.previouslySelectedWidgets)
+                this.previouslySelectedWidgets = widgets
+
+            this.previouslySelectedWidgets.forEach(item => updateText(item.id))
+            this.previouslySelectedWidgets = widgets
+        }
+        miro.addListener("SELECTION_UPDATED", select)
+    }
+
     // eslint-disable-next-line no-unused-vars
     interceptPossibleTextEdit(updateText: (widgetId: string, updatedWidget: string) => Promise<string>) {
         const select = async (selections) => {
@@ -27,21 +46,28 @@ export class Board implements IBoard {
                 this.previouslySelectedWidgets = widgets
             }
             this.previouslySelectedWidgets.forEach(async item => {
-                var widget = (await miro.board.widgets.get({ id: item.id }))[0];
-                const originalWidgetText = getWidgetText(widget)
-                if (typeof originalWidgetText != 'boolean') {
-                    const newText = await updateText(widget.id, originalWidgetText)
-                    if (newText != originalWidgetText
-                        && setWidgetText(widget, newText))
-                        await miro.board.widgets.update([widget])
-                }
+                let widget = (await miro.board.widgets.get({ id: item.id }))[0];
+                const originalWidgetText = await getWidgetText(widget)
+                const newText = await updateText(widget.id, originalWidgetText)
+                widget = await setWidgetText(widget, newText)
+                if (newText != originalWidgetText)
+                    await miro.board.widgets.update([widget])
             });
             this.previouslySelectedWidgets = widgets
         }
 
         miro.addListener("SELECTION_UPDATED", select)
     }
-
+    // eslint-disable-next-line no-unused-vars
+    async getWidgetText(widgetId: string): Promise<string> {
+        var widget = (await miro.board.widgets.get({ id: widgetId }))[0];
+        return await getWidgetText(widget)
+    }
+    async updateWidgetText(widgetId: string, newWidgetText: string): Promise<void> {
+        let widget = (await miro.board.widgets.get({ id: widgetId }))[0];
+        widget = await setWidgetText(widget, newWidgetText)
+        await miro.board.widgets.update([widget])
+    }
     // eslint-disable-next-line no-unused-vars
     onNextSingleSelection(succeed: (selected: SelectedWidget) => void) {
         //TODO: Guard 
@@ -168,7 +194,7 @@ async function convertToDto(widget: SDK.IWidget): Promise<SelectedWidget | strin
         console.log('Setting style:', widget["style"]["stickerBackgroundColor"])
         dto.style.backgroundColor = widget["style"]["stickerBackgroundColor"]
     }
-    const widgetText = getWidgetText(widget)
+    const widgetText = await getWidgetText(widget)
     if (typeof widgetText == 'boolean') {
         if (!widgetText)
             return 'The widget ' + JSON.stringify(widget) + ' does not have any text.'
@@ -275,24 +301,24 @@ async function convertToDto(widget: SDK.IWidget): Promise<SelectedWidget | strin
 
 //     return dto
 // }
-function getWidgetText(widget: SDK.IWidget): string | boolean {
+function getWidgetText(widget: SDK.IWidget): Promise<string> {
     if ("text" in widget)
         return widget["text"];
     else if ("captions" in widget
         && widget["captions"]
         && widget["captions"][0]
         && widget["captions"][0]["text"])
-        return widget["captions"][0]["text"]
+        return Promise.resolve(widget["captions"][0]["text"])
     else
-        return false
+        return Promise.reject("Cannot get the widget text. The widget has no text fields.")
 }
-function setWidgetText(widget: SDK.IWidget, text: string): SDK.IWidget | boolean {
+function setWidgetText(widget: SDK.IWidget, text: string): Promise<SDK.IWidget> {
     const anyWidget = widget as any
     if ("text" in widget)
         anyWidget["text"] = text;
     else if ("captions" in widget)
         anyWidget["captions"][0]["text"] = text
     else
-        return false
-    return anyWidget as SDK.IWidget
+        return Promise.reject("Cannot set the widget text. The widget has no text fields.")
+    return Promise.resolve(anyWidget as SDK.IWidget)
 }
