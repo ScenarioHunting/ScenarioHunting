@@ -7,7 +7,7 @@ export class WhenTestResultsSummeryViewModel {
     pending: number
     skipped: number
 }
-class WhenTestReportViewModel {
+export class WhenTestReportViewModel {
     // boardId string?
     passed: string[]
     failed: string[]
@@ -30,15 +30,15 @@ export class TestResultReports implements ITestResultReports {
             return false
         }
         const report = widget.metadata["3074457349056199734"].testReport as WhenTestReportViewModel
-        const result: WhenTestResultsSummeryViewModel = {
-            total: (report.passed ?? []).length + (report.failed ?? []).length + (report.pending ?? []).length + (report.skipped ?? []).length,
-            passed: (report.passed ?? []).length,
-            failed: (report.failed ?? []).length,
-            skipped: (report.skipped ?? []).length,
-            pending: (report.pending ?? []).length,
-            // example: widget.metadata["3074457349056199734"].testSummery.example
-        }
-        return result
+        // const result: WhenTestResultsSummeryViewModel = {
+        //     total: (report.passed ?? []).length + (report.failed ?? []).length + (report.pending ?? []).length + (report.skipped ?? []).length,
+        //     passed: (report.passed ?? []).length,
+        //     failed: (report.failed ?? []).length,
+        //     skipped: (report.skipped ?? []).length,
+        //     pending: (report.pending ?? []).length,
+        //     // example: widget.metadata["3074457349056199734"].testSummery.example
+        // }
+        return TestReportToSummery(report)
         // if (!widget
         //     || !widget.metadata["3074457349056199734"]
         //     || !widget.metadata["3074457349056199734"].testReport
@@ -48,4 +48,15 @@ export class TestResultReports implements ITestResultReports {
         // }
         // return widget.metadata["3074457349056199734"].testSummery as WhenTestResultsSummeryViewModel
     }
+}
+export function TestReportToSummery(report: WhenTestReportViewModel): WhenTestResultsSummeryViewModel {
+    const result: WhenTestResultsSummeryViewModel = {
+        total: (report.passed ?? []).length + (report.failed ?? []).length + (report.pending ?? []).length + (report.skipped ?? []).length,
+        passed: (report.passed ?? []).length,
+        failed: (report.failed ?? []).length,
+        skipped: (report.skipped ?? []).length,
+        pending: (report.pending ?? []).length,
+        // example: widget.metadata["3074457349056199734"].testSummery.example
+    }
+    return result
 }
