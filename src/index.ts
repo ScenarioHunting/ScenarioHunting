@@ -75,12 +75,18 @@ let subscribeToServerEvents = (webSocketUrl: string) => {
 	let ws = new WebSocket(webSocketUrl)
 	ws.onopen = function () {
 		console.log("Websocket connection opened");
-		clearInterval(reconnectionTimer)
 	}
-	let reconnectionTimer: NodeJS.Timeout
 	ws.onclose = function () {
 		console.log("Web socket closed, trying to reconnect.");
-		reconnectionTimer = setInterval(() => ws = new WebSocket(webSocketUrl), 1000)
+		var reconnectionTimer = setInterval(() => {
+			try {
+				ws = new WebSocket(webSocketUrl)
+				clearInterval(reconnectionTimer)
+			}
+			catch (e) {
+				console.log(e)
+			}
+		}, 1000)
 		// ws = null;
 	}
 	ws.onmessage = function (evt) {
