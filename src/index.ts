@@ -73,11 +73,7 @@ const applyReportToWidget = async (widgetId: string, vm: WhenTestResultsSummeryV
 
 let subscribeToServerEvents = (webSocketUrl: string) => {
 	let ws = new WebSocket(webSocketUrl)
-	ws.onopen = function () {
-		console.log("Websocket connection opened");
-	}
-	ws.onclose = function () {
-		console.log("Web socket closed, trying to reconnect.");
+	function connect() {
 		var reconnectionTimer = setInterval(() => {
 			try {
 				ws = new WebSocket(webSocketUrl)
@@ -87,6 +83,13 @@ let subscribeToServerEvents = (webSocketUrl: string) => {
 				console.log(e)
 			}
 		}, 1000)
+	}
+	ws.onopen = function () {
+		console.log("Websocket connection opened");
+	}
+	ws.onclose = function () {
+		console.log("Web socket closed, trying to reconnect.");
+		connect()
 		// ws = null;
 	}
 	ws.onmessage = function (evt) {
@@ -101,6 +104,7 @@ let subscribeToServerEvents = (webSocketUrl: string) => {
 	}
 	ws.onerror = function (evt) {
 		console.log("ERROR: " + evt);
+		connect()
 	}
 }
 miro.onReady(async () => {
