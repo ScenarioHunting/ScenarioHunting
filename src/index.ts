@@ -71,17 +71,20 @@ const applyReportToWidget = async (widgetId: string, vm: WhenTestResultsSummeryV
 	await singletonBoard.updateWidgetText(widgetId, newWidgetText)
 }
 
-
-miro.onReady(async () => {
-	let ws = new WebSocket("ws://localhost:8080/ws")
+let subscribeToServerEvents = (webSocketUrl: string) => {
+	let ws = new WebSocket(webSocketUrl)
 	ws.onopen = function () {
-		console.log("OPEN");
+		console.log("Websocket connection opened");
+		clearInterval(reconnectionTimer)
 	}
+	let reconnectionTimer: NodeJS.Timeout
 	ws.onclose = function () {
-		console.log("CLOSE");
+		console.log("Web socket closed, trying to reconnect.");
+		reconnectionTimer = setInterval(() => ws = new WebSocket(webSocketUrl), 1000)
 		// ws = null;
 	}
 	ws.onmessage = function (evt) {
+		console.log("Summery: " + evt.data);
 		var message: { id: string, testReport: WhenTestReportViewModel } = JSON.parse(evt.data)
 		const summery = TestReportToSummery(message.testReport)
 		console.log("Summery: " + JSON.stringify(summery));
@@ -93,6 +96,9 @@ miro.onReady(async () => {
 	ws.onerror = function (evt) {
 		console.log("ERROR: " + evt);
 	}
+}
+miro.onReady(async () => {
+	subscribeToServerEvents("ws://localhost:8080/ws")
 
 
 
