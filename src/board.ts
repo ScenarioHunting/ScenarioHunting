@@ -159,9 +159,12 @@ async function getTheStartingWidget(arrow: SDK.ILineWidget): Promise<SDK.IWidget
         await miro.showNotification("Examples should be connected to a fact they belong to.")
     return all[0]
 }
-async function getAbstractionWidgetFor(exampleWidget: SDK.IWidget): Promise<SDK.IWidget> {
-    const incomingArrows = (await miro.board.widgets.get({ type: "LINE", endWidgetId: exampleWidget.id }) as SDK.ILineWidget[])
+async function getIncomingArrows(exampleWidget: SDK.IWidget): Promise<SDK.ILineWidget[]> {
+    return (await (await miro.board.widgets.get({ type: "LINE", endWidgetId: exampleWidget.id })).map(x => x as SDK.ILineWidget))
         .filter(line => line.style.lineEndStyle != 0)
+}
+async function getAbstractionWidgetFor(exampleWidget: SDK.IWidget): Promise<SDK.IWidget> {
+    const incomingArrows = await getIncomingArrows(exampleWidget)
     if (incomingArrows.length === 0)
         return Promise.resolve(exampleWidget)
 
