@@ -2,6 +2,7 @@
 import { convertWidgetToStepData } from "./test-factory/board-data-mapper";
 import { CSSProperties } from "react";
 import { StepDataDto } from "test-factory/dto";
+import { promises } from "fs";
 export interface IBoard {
     // eslint-disable-next-line no-unused-vars
     updateWidgetText(widgetId: string, newWidgetText: string): Promise<void>;
@@ -126,7 +127,7 @@ export type ExampleWidget = {
     // type: string
     style: CSSProperties
     text: string
-    sourceWidget: SDK.IWidget
+    abstractionWidget: SDK.IWidget
     exampleWidget: SDK.IWidget
 }
 export type SelectedWidget = {
@@ -152,6 +153,29 @@ export type SelectedWidget = {
 //     y: number
 //     style: CSSProperties
 // }
+async function getTheStartingWidget(arrow: SDK.ILineWidget): Promise<SDK.IWidget> {
+    const all = await miro.board.widgets.get({ id: arrow.startWidgetId })
+    if (all.length == 0)
+        await miro.showNotification("Examples should be connected to a fact they belong to.")
+    return all[0]
+}
+async function getAbstractionWidgetFor(exampleWidget: SDK.IWidget): Promise<SDK.IWidget> {
+    const incomingArrows = (await miro.board.widgets.get({ type: "LINE", endWidgetId: exampleWidget.id }) as SDK.ILineWidget[])
+        .filter(line => line.style.lineEndStyle != 0)
+    if (incomingArrows.length === 0)
+        return Promise.resolve(exampleWidget)
+
+    const widgetsPointingToThis = await Promise.all(incomingArrows.map(getTheStartingWidget))
+
+    if (widgetsPointingToThis.length > 1) {
+        const errorMessage = "Examples can not belong to more than one abstraction (only one incoming line)."
+        await miro.showNotification(errorMessage)
+        return Promise.reject(errorMessage)
+    }
+
+    return Promise.resolve(widgetsPointingToThis[0])
+
+}
 async function convertToDto(widget: SDK.IWidget): Promise<SelectedWidget> {
     var dto = {
         id: widget.id,
@@ -159,27 +183,29 @@ async function convertToDto(widget: SDK.IWidget): Promise<SelectedWidget> {
         exampleWidget: widget,
     } as ExampleWidget
 
-    //TODO: clean this up:
-    const incomingArrows = (await miro.board.widgets.get({ type: "LINE", endWidgetId: widget.id }) as SDK.ILineWidget[])
-        .filter(line => line.style.lineEndStyle != 0)
-    if (incomingArrows.length !== 0) {
+    // //TODO: clean this up:
+    // const incomingArrows = (await miro.board.widgets.get({ type: "LINE", endWidgetId: widget.id }) as SDK.ILineWidget[])
+    //     .filter(line => line.style.lineEndStyle != 0)
+    // const hasSeparateExampleWidgets = incomingArrows.length !== 0
+    // if (hasSeparateExampleWidgets) {
 
-        const getTheStartingWidget = async (arrow: SDK.ILineWidget): Promise<SDK.IWidget> => {
-            const all = await miro.board.widgets.get({ id: arrow.startWidgetId })
-            if (all.length == 0)
-                await miro.showNotification("Examples should be connected to a fact they belong to.")
-            return all[0]
-        }
+    //     const getTheStartingWidget = async (arrow: SDK.ILineWidget): Promise<SDK.IWidget> => {
+    //         const all = await miro.board.widgets.get({ id: arrow.startWidgetId })
+    //         if (all.length == 0)
+    //             await miro.showNotification("Examples should be connected to a fact they belong to.")
+    //         return all[0]
+    //     }
 
-        const widgetsPointingToThis = await Promise.all(incomingArrows.map(getTheStartingWidget))
+    //     const widgetsPointingToThis = await Promise.all(incomingArrows.map(getTheStartingWidget))
 
-        if (widgetsPointingToThis.length > 1) {
-            await miro.showNotification("Examples should not have more than one incoming line.")
-            return Promise.reject("Examples should not have more than one incoming line.")
-        }
+    //     if (widgetsPointingToThis.length > 1) {
+    //         await miro.showNotification("Examples should not have more than one incoming line.")
+    //         return Promise.reject("Examples should not have more than one incoming line.")
+    //     }
 
-        dto.sourceWidget = widgetsPointingToThis[0]
-    }
+    //     dto.abstractionWidget = widgetsPointingToThis[0]
+    // }
+    dto.abstractionWidget = await getAbstractionWidgetFor(dto.exampleWidget)
     //
     console.log('Selection dto initiated.', dto)
 
