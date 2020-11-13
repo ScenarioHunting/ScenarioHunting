@@ -1,32 +1,18 @@
 import { StepDataDto } from './dto';
-
-// export type Step = {
-//     metadata: StepMetadata
-//     data: StepDataDto
-// }
-
-// type StepMetadata = {
-//     stepType: string
-//     widget: ExampleWidget
-// }
-// export type StepData = {
-//     type: string
-//     properties: StepDataProperty[]
-// }
 type StepDataProperty = {
     propertyName: string
     simplePropertyValue: string
 }
-export function convertWidgetToStepData(widgetText: string
+export async function convertWidgetToStepData(exampleWidgetText: string
     // // eslint-disable-next-line no-unused-vars
     // , succeed: (data: StepData) => void
     // eslint-disable-next-line no-unused-vars
-    , fail: (error: string) => void): StepDataDto {
+): Promise<StepDataDto> {
 
-    const chunks = widgetText.split('\n')
+    const chunks = exampleWidgetText.split('\n')
     let type = chunks.shift()
-    if (!type && fail) {
-        fail("Unknown text format.")
+    if (!type) {
+        return Promise.reject("Unknown text format.")
     }
     // const value = chunks
     const toCamelCase = (str: string) =>
@@ -45,5 +31,5 @@ export function convertWidgetToStepData(widgetText: string
         .map(convert);
     // const example = Object.fromEntries(value)
     // succeed({ type, properties: example })
-    return { type, properties: example }
+    return Promise.resolve({ type, properties: example })
 }

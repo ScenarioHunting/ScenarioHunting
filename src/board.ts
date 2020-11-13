@@ -1,8 +1,7 @@
 /* eslint-disable no-undef */
-import { convertWidgetToStepData } from "./test-factory/board-data-mapper";
+import { convertWidgetToStepData as mapToStepData } from "./test-factory/board-data-mapper";
 import { CSSProperties } from "react";
 import { StepDataDto } from "test-factory/dto";
-import { promises } from "fs";
 export interface IBoard {
     // eslint-disable-next-line no-unused-vars
     updateWidgetText(widgetId: string, newWidgetText: string): Promise<void>;
@@ -126,7 +125,7 @@ export type ExampleWidget = {
     id: string
     // type: string
     style: CSSProperties
-    text: string
+    exampleText: string
     abstractionWidget: SDK.IWidget
     exampleWidget: SDK.IWidget
 }
@@ -135,24 +134,6 @@ export type SelectedWidget = {
     widgetData: StepDataDto
 }
 
-// export type ExampleWidget = {
-//     id: string
-//     fact: string
-//     type: string
-//     text: string
-//     x: number
-//     y: number
-//     style: CSSProperties
-// }
-
-// export type FactWidget = {
-//     id: string
-//     type: string
-//     text: string
-//     x: number
-//     y: number
-//     style: CSSProperties
-// }
 async function getTheStartingWidget(arrow: SDK.ILineWidget): Promise<SDK.IWidget> {
     const all = await miro.board.widgets.get({ id: arrow.startWidgetId })
     if (all.length == 0)
@@ -179,6 +160,17 @@ async function getAbstractionWidgetFor(exampleWidget: SDK.IWidget): Promise<SDK.
     return Promise.resolve(widgetsPointingToThis[0])
 
 }
+function getWidgetStyle(widget: SDK.IWidget): CSSProperties {
+    const style = {} as CSSProperties
+    if (widget["style"] && widget["style"]["backgroundColor"]) {
+        console.log('Setting style:', widget["style"]["backgroundColor"])
+        style.backgroundColor = widget["style"]["backgroundColor"]
+    } else if (widget["style"] && widget["style"]["stickerBackgroundColor"]) {
+        console.log('Setting style:', widget["style"]["stickerBackgroundColor"])
+        style.backgroundColor = widget["style"]["stickerBackgroundColor"]
+    }
+    return style
+}
 async function convertToDto(widget: SDK.IWidget): Promise<SelectedWidget> {
     var dto = {
         id: widget.id,
@@ -186,165 +178,57 @@ async function convertToDto(widget: SDK.IWidget): Promise<SelectedWidget> {
         exampleWidget: widget,
     } as ExampleWidget
 
-    // //TODO: clean this up:
-    // const incomingArrows = (await miro.board.widgets.get({ type: "LINE", endWidgetId: widget.id }) as SDK.ILineWidget[])
-    //     .filter(line => line.style.lineEndStyle != 0)
-    // const hasSeparateExampleWidgets = incomingArrows.length !== 0
-    // if (hasSeparateExampleWidgets) {
-
-    //     const getTheStartingWidget = async (arrow: SDK.ILineWidget): Promise<SDK.IWidget> => {
-    //         const all = await miro.board.widgets.get({ id: arrow.startWidgetId })
-    //         if (all.length == 0)
-    //             await miro.showNotification("Examples should be connected to a fact they belong to.")
-    //         return all[0]
-    //     }
-
-    //     const widgetsPointingToThis = await Promise.all(incomingArrows.map(getTheStartingWidget))
-
-    //     if (widgetsPointingToThis.length > 1) {
-    //         await miro.showNotification("Examples should not have more than one incoming line.")
-    //         return Promise.reject("Examples should not have more than one incoming line.")
-    //     }
-
-    //     dto.abstractionWidget = widgetsPointingToThis[0]
-    // }
     dto.abstractionWidget = await getAbstractionWidgetFor(dto.exampleWidget)
     //
     console.log('Selection dto initiated.', dto)
 
+    dto.style = getWidgetStyle(widget)
 
-    // if ("plainText" in widget)
-    //     dto.text = widget["plainText"]
-    // else 
+    try {
+        const purifyWidgetText = (originalText: string): string =>
+            originalText.split('</p><p>').join('\n')
+                .replace('<p>', '')
+                .replace('</p>', '')
+                .replace('&#43;', '+')
 
-    dto.style = {} as CSSProperties
-    if (widget["style"] && widget["style"]["backgroundColor"]) {
-        console.log('Setting style:', widget["style"]["backgroundColor"])
-        dto.style.backgroundColor = widget["style"]["backgroundColor"]
-    } else if (widget["style"] && widget["style"]["stickerBackgroundColor"]) {
-        console.log('Setting style:', widget["style"]["stickerBackgroundColor"])
-        dto.style.backgroundColor = widget["style"]["stickerBackgroundColor"]
+        dto.exampleText = purifyWidgetText(await getWidgetText(widget))
     }
-    const widgetText = await getWidgetText(widget)
-    // if (typeof widgetText == 'boolean') {
-    //     if (!widgetText)
-    //         return Promise.reject('The widget ' + JSON.stringify(widget) + ' does not have any text.')
-    // } else
-    dto.text = widgetText
+    catch (e) {
+        return Promise.reject('The widget ' + JSON.stringify(widget) + ' does not have any text.')
+    }
 
-    dto.text = dto.text
-        .split('</p><p>').join('\n')
-        .replace('<p>', '')
-        .replace('</p>', '')
-        .replace('&#43;', '+')
-    console.log('Widget text converted by board.:', dto.text)
 
-    var data = convertWidgetToStepData(dto.text, miro.showNotification)
-    const step = {
-        widgetSnapshot: dto
-        , widgetData: data
-    } as SelectedWidget
-    // const step: Step = {
-    //     metadata: {
-    //         widget: dto
-    //         , stepType: ""
-    //     }
-    //     , data: {
-    //         type: data.type
-    //         , properties: data.properties
-    //     }
-    // }
+    console.log('Widget text converted by board.:', dto.exampleText)
 
-    dto.id
+    try {
+        var data = await mapToStepData(dto.exampleText)
+        const step = {
+            widgetSnapshot: dto
+            , widgetData: data
+        } as SelectedWidget
 
-    return step
+        return step
+    }
+    catch (e) {
+        miro.showNotification(e)
+        return Promise.reject(e)
+    }
 }
-// async function convertToDto(widget: SDK.IWidget): Promise<ExampleWidget | string> {
-//     var dto = {
-//         id: widget.id,
-//         type: widget.type,
-
-//     } as ExampleWidget
-
-//     //TODO: clean this up:
-//     const incomingArrows = (await miro.board.widgets.get({ type: "LINE", endWidgetId: widget.id }) as SDK.ILineWidget[])
-//         .filter(line => line.style.lineEndStyle != 0)
-//     if (incomingArrows.length == 0) {
-//         dto.fact = dto.id
-//     }
-//     else {
-
-//         const getTheStartingWidget = async (arrow: SDK.ILineWidget): Promise<SDK.IWidget> => {
-//             const all = await miro.board.widgets.get({ id: arrow.startWidgetId })
-//             if (all.length == 0)
-//                 await miro.showNotification("Examples should be connected to a fact they belong to.")
-//             return all[0]
-//         }
-
-//         const widgetsPointingToThis = await Promise.all(incomingArrows.map(getTheStartingWidget))
-
-//         if (widgetsPointingToThis.length > 1) {
-//             await miro.showNotification("Examples should not have more than one incoming line.")
-//             return ""
-//         }
-
-//         dto.fact = widgetsPointingToThis[0].id
-//     }
-//     //
-//     console.log('Selection dto initiated.', dto)
-
-//     //TODO: Refactor this:
-//     if ("x" in widget && "y" in widget) {
-//         dto.x = widget["x"]
-//         dto.y = widget["y"]
-//     }
-//     else
-//         return 'The widget ' + JSON.stringify(widget) + ' is does not have x, and y.'
-
-//     dto.style = {} as CSSProperties
-//     if (widget["style"] && widget["style"]["backgroundColor"]) {
-//         console.log('Setting style:', widget["style"]["backgroundColor"])
-//         dto.style.backgroundColor = widget["style"]["backgroundColor"]
-//     } else if (widget["style"] && widget["style"]["stickerBackgroundColor"]) {
-//         console.log('Setting style:', widget["style"]["stickerBackgroundColor"])
-//         dto.style.backgroundColor = widget["style"]["stickerBackgroundColor"]
-
-//     }
-//     // if ("plainText" in widget)
-//     //     dto.text = widget["plainText"]
-//     // else 
-//     const widgetText = getWidgetText(widget)
-//     if (typeof widgetText == 'boolean') {
-//         if (!widgetText)
-//             return 'The widget ' + JSON.stringify(widget) + ' does not have any text.'
-//     } else
-//         dto.text = widgetText
-
-//     dto.text = dto.text
-//         .split('</p><p>').join('\n')
-//         .replace('<p>', '')
-//         .replace('</p>', '')
-//         .replace('&#43;', '+')
-//     console.log('Widget text converted by board.:', dto.text)
-
-
-//     dto.id
-
-//     return dto
-// }
 function getWidgetText(widget: SDK.IWidget): Promise<string> {
+
     if (!widget)
         return Promise.reject("Cannot get the widget text. The widget is undefined.")
 
     if ("text" in widget)
         return widget["text"];
-    else if ("captions" in widget
+
+    if ("captions" in widget
         && widget["captions"]
         && widget["captions"][0]
         && widget["captions"][0]["text"])
         return Promise.resolve(widget["captions"][0]["text"])
-    else
-        return Promise.reject("Cannot get the widget text. The widget has no text fields.")
+
+    return Promise.reject("Cannot get the widget text. The widget has no text fields.")
 }
 function setWidgetText(widget: SDK.IWidget, text: string): Promise<SDK.IWidget> {
     const anyWidget = widget as any
