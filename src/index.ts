@@ -70,7 +70,9 @@ const applyReportToWidget = async (widgetId: string, vm: WhenTestResultsSummeryV
 	const newWidgetText = attachReportToWidgetText(vm, originalWidgetText)
 	await singletonBoard.updateWidgetText(widgetId, newWidgetText)
 }
-
+let generateBoardSection = (content: any) => {
+	console.log("GeneratingBoardBasedOn:", content)
+}
 let subscribeToServerEvents = (webSocketUrl: string) => {
 	let ws = new WebSocket(webSocketUrl)
 	function connect() {
@@ -93,6 +95,10 @@ let subscribeToServerEvents = (webSocketUrl: string) => {
 		// ws = null;
 	}
 	ws.onmessage = function (evt) {
+		if (evt.data && evt.data.messageType == "BoardSectionGenerated") {
+			var content = evt.data.content
+			generateBoardSection(content)
+		}
 		console.log("Summery: " + evt.data);
 		var message: { id: string, testReport: WhenTestReportViewModel } = JSON.parse(evt.data)
 		const summery = TestReportToSummery(message.testReport)
