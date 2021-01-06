@@ -114,7 +114,6 @@ let subscribeToServerEvents = (webSocketUrl: string) => {
 	}
 }
 miro.onReady(async () => {
-	subscribeToServerEvents("ws://localhost:8080/ws")
 
 
 
@@ -162,4 +161,6 @@ miro.onReady(async () => {
 			}
 		}
 	})
+	subscribeToServerEvents("ws://localhost:8080/ws")
+
 })
