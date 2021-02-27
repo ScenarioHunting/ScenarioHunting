@@ -4,8 +4,10 @@ import { TestRecorder } from './test-factory/test-recorder';
 import { Router, Link } from "@reach/router"
 import { TestExplorer } from "./test-explorer/test-explorer"
 import "./styles.less"
+import * as FileSaver from 'file-saver';
 // import { navigate } from "@reach/router"
-
+var blob = new Blob([JSON.stringify("testCode")], { type: "text/plain;charset=utf-8" });
+FileSaver.saveAs(blob, "testName.cs");
 ReactDOM.render(
 	<>
 		<nav>
