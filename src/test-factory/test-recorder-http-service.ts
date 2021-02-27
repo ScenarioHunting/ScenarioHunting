@@ -72,8 +72,8 @@ export async function Save(test: LocalTestCreationResult, onSuccess, onError) {
         // var blob = new Blob([JSON.stringify(testCode)], { type: "text/plain;charset=utf-8" });
         // FileSaver.saveAs(blob, "testName.cs");
         saveAs(testCode, 'testName.cs')
-        console.log('testCode:');
-        console.log(testCode);
+        // console.log('testCode:');
+        // console.log(testCode);
 
         const response = await fetch('http://localhost:6000/Tests',//TODO: read it from config file
             {
@@ -121,7 +121,8 @@ function generateTestBody(dto: CreateTestDto): string {
         }
     }
     var sampleTestSchema = dtoToJsonSchema(dto)
-
+    // eslint-disable-next-line no-undef
+    console.log("sampleTestSchema: ",sampleTestSchema)
     var template = `using StoryTest;
 using Vlerx.Es.Messaging;
 using Vlerx.Es.Persistence;
@@ -134,7 +135,8 @@ using Xunit;
 namespace {{context}}.Tests
 {
     {{#* inline "callConstructor"}}
-    new {{title}}({{#each properties}}{{{example}}}{{log this}}{{debugger}}{{#skipLast}},{{/skipLast}}{{/each}})
+
+    new {{title}}({{#each properties}}{{{example}}}{{log .}}{{#skipLast}},{{/skipLast}}{{/each}})
     {{/inline}}
 
     public class Rel : IStorySpecification
@@ -165,6 +167,17 @@ namespace {{context}}.Tests
                      });
     }
 }`
+
+    // eslint-disable-next-line no-undef
+    miro.board.widgets.create({
+        type: 'Sticker',
+        text: template,
+        metadata: {
+            3074457349056199734: {
+                template,
+            }
+        }
+    })
     // const Handlebars = require("handlebars");
     Handlebars.registerHelper('skipLast', function (options) {
         if (options.data.last) {
@@ -179,6 +192,6 @@ namespace {{context}}.Tests
     var compiledTemplate = Handlebars.compile(template);
     //TODO: validate: the test must have When and Then at least.
     var finalText = compiledTemplate(sampleTestSchema)
-    console.log(finalText);
+    // console.log(finalText);
     return finalText
 }
