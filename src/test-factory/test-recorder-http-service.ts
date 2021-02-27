@@ -1,6 +1,8 @@
 import { IndexedStep } from "./given-collection"
-import { CreateTestDto, IndexedStepDataDto } from "./dto"
+import { CreateTestDto, IndexedStepDataDto, StepDataDto } from "./dto"
 import { SelectedWidget } from "board"
+import * as FileSaver from "file-saver"
+import Handlebars from "handlebars/dist/handlebars.js"
 
 const toDto = ({ testContext
     , testName
@@ -53,8 +55,11 @@ export async function Save(test: LocalTestCreationResult, onSuccess, onError) {
         const dto = toDto(test)
 
         var requestBody = JSON.stringify(dto);
-        console.log(requestBody);
-        const response = await fetch('https://localhost:6001/Tests',//TODO: read it from config file
+        var testCode = generateTestBody(dto)
+        var file = new File([JSON.stringify(testCode)], "testName.cs", { type: "text/plain;charset=utf-8" });
+        FileSaver.saveAs(file);
+        console.log(testCode);
+        const response = await fetch('http://localhost:6000/Tests',//TODO: read it from config file
             {
                 headers: { 'Content-Type': 'application/json' },
                 method: 'POST',
@@ -69,4 +74,95 @@ export async function Save(test: LocalTestCreationResult, onSuccess, onError) {
         onError(error)
     }
 
+}
+
+//********************** */
+function generateTestBody(dto: CreateTestDto): string {
+
+    function dtoToJsonSchema(dto: CreateTestDto) {
+        function stepToJsonSchema(step: StepDataDto) {
+            return {
+                $schema: "http://json-schema.org/draft-07/schema#",
+                title: step.type,
+                type: "object",
+                properties: step.properties.map(p => {
+                    var props = {}
+                    props[p.propertyName] = {
+                        type: "string",
+                        description: p.propertyName,
+                        example: p.simplePropertyValue
+                    }
+                    return props
+                })
+            }
+        }
+        return {
+            givens: dto.test.givens.map(given => stepToJsonSchema(given.step)),
+            when: stepToJsonSchema(dto.test.when),
+            thens: dto.test.thens.map(then => stepToJsonSchema(then.step)),
+            sut: dto.testName,
+            context: dto.context
+        }
+    }
+    var sampleTestSchema = dtoToJsonSchema(dto)
+
+    var template = `using StoryTest;
+using Vlerx.Es.Messaging;
+using Vlerx.Es.Persistence;
+using Vlerx.SampleContracts.{{Sut}};
+using Vlerx.{{context}}.{{Sut}};
+using Vlerx.{{context}}.{{Sut}}.Commands;
+using Vlerx.{{context}}.Tests.StoryTests;
+using Xunit;
+
+namespace {{context}}.Tests
+{
+    {{#* inline "callConstructor"}}
+    new {{title}}({{#each properties}}{{example}}{{#skipLast}},{{/skipLast}}{{/each}})
+    {{/inline}}
+
+    public class Rel : IStorySpecification
+    {
+        public IDomainEvent[] Given
+        => new IDomainEvent[]{
+    {{#each givens}}
+        {{> callConstructor .}},
+    {{/each}}
+        };
+        public ICommand When
+        => {{> callConstructor when}}
+        public IDomainEvent[] Then
+        => new IDomainEvent[]{
+    {{#each thens}}
+        {{> callConstructor .}},
+    {{/each}}
+        };
+
+        public string Sut { get; } = nameof({{sut}});
+
+        [Fact]
+        public void Run()
+        => TestAdapter.Test(this
+                , setupUseCases: eventStore =>
+                     new[] {
+                        new {{sut}}UseCases(new Repository<{{sut}}.State>(eventStore))
+                     });
+    }
+}`
+    // const Handlebars = require("handlebars");
+    Handlebars.registerHelper('skipLast', function (options) {
+        if (options.data.last) {
+            return options.inverse()
+        } else {
+            return options.fn()
+        }
+    })
+
+    //Conditional template loading
+    // Handlebars.registerPartial('')
+    var compiledTemplate = Handlebars.compile(template);
+    //TODO: validate: the test must have When and Then at least.
+    var finalText = compiledTemplate(sampleTestSchema)
+    console.log(finalText);
+    return finalText
 }
