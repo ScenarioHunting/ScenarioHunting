@@ -125,16 +125,16 @@ function generateTestBody(dto: CreateTestDto): string {
     var template = `using StoryTest;
 using Vlerx.Es.Messaging;
 using Vlerx.Es.Persistence;
-using Vlerx.SampleContracts.{{Sut}};
-using Vlerx.{{context}}.{{Sut}};
-using Vlerx.{{context}}.{{Sut}}.Commands;
+using Vlerx.SampleContracts.{{sut}};
+using Vlerx.{{context}}.{{sut}};
+using Vlerx.{{context}}.{{sut}}.Commands;
 using Vlerx.{{context}}.Tests.StoryTests;
 using Xunit;
 
 namespace {{context}}.Tests
 {
     {{#* inline "callConstructor"}}
-    new {{title}}({{#each properties}}{{example}}{{#skipLast}},{{/skipLast}}{{/each}})
+    new {{title}}({{#each properties}}{{{example}}}{{log this}}{{debugger}}{{#skipLast}},{{/skipLast}}{{/each}})
     {{/inline}}
 
     public class Rel : IStorySpecification
