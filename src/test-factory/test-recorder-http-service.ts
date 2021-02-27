@@ -74,6 +74,7 @@ export async function Save(test: LocalTestCreationResult, onSuccess, onError) {
         saveAs(testCode, 'testName.cs')
         console.log('testCode:');
         console.log(testCode);
+        
         const response = await fetch('http://localhost:6000/Tests',//TODO: read it from config file
             {
                 headers: { 'Content-Type': 'application/json' },
