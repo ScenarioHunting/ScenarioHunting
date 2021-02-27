@@ -1,8 +1,8 @@
 import { IndexedStep } from "./given-collection"
 import { CreateTestDto, IndexedStepDataDto, StepDataDto } from "./dto"
 import { SelectedWidget } from "board"
-import * as FileSaver from "file-saver"
 import Handlebars from "handlebars/dist/handlebars.js"
+import { isNullOrUndefined } from "util"
 
 const toDto = ({ testContext
     , testName
@@ -49,15 +49,29 @@ export type LocalTestCreationResult = {
     , when: SelectedWidget
     , then: SelectedWidget
 }
-
+function saveAs(fileName, data) {
+    var blob = new Blob([data], { type: "text/plain;charset=utf-8" });
+    if (isNullOrUndefined(window.navigator.msSaveOrOpenBlob)) {
+        var elem = window.document.createElement('a');
+        elem.href = window.URL.createObjectURL(blob);
+        elem.download = 'filename';
+        document.body.appendChild(elem);
+        elem.click();
+        document.body.removeChild(elem);
+    }
+    else {
+        window.navigator.msSaveBlob(blob, fileName);
+    }
+}
 export async function Save(test: LocalTestCreationResult, onSuccess, onError) {
     try {
         const dto = toDto(test)
 
         var requestBody = JSON.stringify(dto);
         var testCode = generateTestBody(dto)
-        var blob = new Blob([JSON.stringify(testCode)], { type: "text/plain;charset=utf-8" });
-        FileSaver.saveAs(blob, "testName.cs");
+        // var blob = new Blob([JSON.stringify(testCode)], { type: "text/plain;charset=utf-8" });
+        // FileSaver.saveAs(blob, "testName.cs");
+        saveAs(testCode, 'testName.cs')
         console.log(testCode);
         const response = await fetch('http://localhost:6000/Tests',//TODO: read it from config file
             {
