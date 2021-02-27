@@ -122,7 +122,7 @@ function generateTestBody(dto: CreateTestDto): string {
     }
     var sampleTestSchema = dtoToJsonSchema(dto)
     // eslint-disable-next-line no-undef
-    console.log("sampleTestSchema: ",sampleTestSchema)
+    console.log("sampleTestSchema: ", sampleTestSchema)
     var template = `using StoryTest;
 using Vlerx.Es.Messaging;
 using Vlerx.Es.Persistence;
@@ -135,8 +135,7 @@ using Xunit;
 namespace {{context}}.Tests
 {
     {{#* inline "callConstructor"}}
-
-    new {{title}}({{#each properties}}{{{example}}}{{log .}}{{#skipLast}},{{/skipLast}}{{/each}})
+    new {{title}}({{#each properties}}"{{{example}}}"{{#skipLast}},{{/skipLast}}{{/each}})
     {{/inline}}
 
     public class Rel : IStorySpecification
@@ -148,7 +147,7 @@ namespace {{context}}.Tests
     {{/each}}
         };
         public ICommand When
-        => {{> callConstructor when}}
+        => {{> callConstructor when}};
         public IDomainEvent[] Then
         => new IDomainEvent[]{
     {{#each thens}}
@@ -173,7 +172,7 @@ namespace {{context}}.Tests
         type: 'Sticker',
         text: template,
         metadata: {
-            3074457349056199734: {
+            3074457349056199700: {
                 template,
             }
         }
