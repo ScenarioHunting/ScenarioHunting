@@ -72,6 +72,7 @@ export async function Save(test: LocalTestCreationResult, onSuccess, onError) {
         // var blob = new Blob([JSON.stringify(testCode)], { type: "text/plain;charset=utf-8" });
         // FileSaver.saveAs(blob, "testName.cs");
         saveAs(testCode, 'testName.cs')
+        console.log('testCode:');
         console.log(testCode);
         const response = await fetch('http://localhost:6000/Tests',//TODO: read it from config file
             {
