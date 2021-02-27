@@ -49,14 +49,14 @@ export type LocalTestCreationResult = {
     , when: SelectedWidget
     , then: SelectedWidget
 }
-function saveAs(fileName, data) {
+function saveAs(data, fileName) {
     var blob = new Blob([data], { type: "text/plain;charset=utf-8" });
     if (isNullOrUndefined(window.navigator.msSaveOrOpenBlob)) {
         var elem = window.document.createElement('a');
         elem.href = window.URL.createObjectURL(blob);
-        elem.download = fileName;        
+        elem.download = fileName;
         document.body.appendChild(elem);
-        elem.click();        
+        elem.click();
         document.body.removeChild(elem);
     }
     else {
