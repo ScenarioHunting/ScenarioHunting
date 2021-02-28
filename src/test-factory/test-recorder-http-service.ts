@@ -122,7 +122,7 @@ function generateTestBody(dto: CreateTestDto): string {
     }
     var sampleTestSchema = dtoToJsonSchema(dto)
     // eslint-disable-next-line no-undef
-    console.log("sampleTestSchemaaaa: ", sampleTestSchema)
+    console.log("sampleTestScheme: ", sampleTestSchema)
     var template = `using StoryTest;
 using Vlerx.Es.Messaging;
 using Vlerx.Es.Persistence;
@@ -135,7 +135,10 @@ using Xunit;
 namespace {{context}}.Tests
 {
     {{#* inline "callConstructor"}}
-    new {{title}}({{#each properties}}"{{{description}}}"{{#skipLast}},{{/skipLast}}{{/each}})
+    new {{title}}({{#each properties}}"{{{example}}}"{{/each}})
+    new {{title}}({{#each properties}}"{{{log .}}}"{{#skipLast}},{{/skipLast}}{{/each}})
+    new {{title}}({{#each properties}}"{{{.}}}"{{#skipLast}},{{/skipLast}}{{/each}})
+    new {{title}}({{#each properties}}"{{{example}}}"{{#skipLast}},{{/skipLast}}{{/each}})
     {{/inline}}
 
     public class Rel : IStorySpecification
