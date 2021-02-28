@@ -122,7 +122,7 @@ function generateTestBody(dto: CreateTestDto): string {
     }
     var sampleTestSchema = dtoToJsonSchema(dto)
     // eslint-disable-next-line no-undef
-    console.log("sampleTestSchema: ", sampleTestSchema)
+    console.log("sampleTestSchemaaaa: ", sampleTestSchema)
     var template = `using StoryTest;
 using Vlerx.Es.Messaging;
 using Vlerx.Es.Persistence;
@@ -135,7 +135,7 @@ using Xunit;
 namespace {{context}}.Tests
 {
     {{#* inline "callConstructor"}}
-    new {{title}}({{#each properties}}"{{{example}}}"{{#skipLast}},{{/skipLast}}{{/each}})
+    new {{title}}({{#each properties}}"{{{description}}}"{{#skipLast}},{{/skipLast}}{{/each}})
     {{/inline}}
 
     public class Rel : IStorySpecification
@@ -172,12 +172,11 @@ namespace {{context}}.Tests
         type: 'Sticker',
         text: template,
         metadata: {
-            3074457349056199700: {
+            3074457349056199734: {
                 template,
             }
         }
     })
-    // const Handlebars = require("handlebars");
     Handlebars.registerHelper('skipLast', function (options) {
         if (options.data.last) {
             return options.inverse()
