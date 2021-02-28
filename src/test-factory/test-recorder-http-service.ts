@@ -170,37 +170,39 @@ namespace {{context}}.Tests
     var templateId = "CRT.Templates." + selectedTemplateName
     //<Upsert templates:>
     // eslint-disable-next-line no-undef
-    miro.board.widgets.get({
+    var widgets = await miro.board.widgets.get({
         "metadata": {
             "3074457349056199734": {
                 "templateId": templateId
             }
         }
-    }).then(w => {
-        var dbWidgets = w.filter(i => !isNullOrUndefined(i.metadata["3074457349056199734"].templateId))
-        if (dbWidgets.length == 0) {
-            // eslint-disable-next-line no-undef
-            miro.board.widgets.create({
-                "type": "sticker",
-                "text": template,
-                "metadata": {
-                    "3074457349056199734": {
-                        "templateId": templateId,
-                        // "templateContent": template
-                    }
-                },
-                "capabilities": {
-                    "editable": false
+    })
+    var dbWidgets = widgets.filter(i => !isNullOrUndefined(i.metadata["3074457349056199734"].templateId))
+    if (dbWidgets.length == 0) {
+        // eslint-disable-next-line no-undef
+        miro.board.widgets.create({
+            "type": "sticker",
+            "text": template,
+            "metadata": {
+                "3074457349056199734": {
+                    "templateId": templateId,
+                    // "templateContent": template
                 }
-            })
-            return;
-        }
+            },
+            "capabilities": {
+                "editable": false
+            },
+            "style": {
+                "textAlign": "l"
+            },
+        })
+    } else {
         var dbWidget = dbWidgets[0]
         dbWidget.metadata["3074457349056199734"].text = template
         // dbWidget.metadata["3074457349056199734"].templateContent = template
         // eslint-disable-next-line no-undef
         miro.board.widgets.update(dbWidget)
-    })
+    }
     //</Upsert templates>
 
 
@@ -216,22 +218,22 @@ namespace {{context}}.Tests
     })
     //<find template:>
     // eslint-disable-next-line no-undef
-    var w = await miro.board.widgets.get({
+    widgets = await miro.board.widgets.get({
         "metadata": {
             "3074457349056199734": {
                 "templateId": templateId
             }
         }
     })
-    if (w.length == 0)
-        throw new Error("Db widget not found")
-    if (isNullOrUndefined(w[0].metadata)
-        || isNullOrUndefined(w[0].metadata["3074457349056199734"])
-        || isNullOrUndefined(w[0].metadata["3074457349056199734"].templateId)
-        || isNullOrUndefined(w[0].metadata["3074457349056199734"].text))
+    if (widgets.length == 0)
+        throw new Error("Widget not found")
+    if (isNullOrUndefined(widgets[0].metadata)
+        || isNullOrUndefined(widgets[0].metadata["3074457349056199734"])
+        || isNullOrUndefined(widgets[0].metadata["3074457349056199734"].templateId)
+        || isNullOrUndefined(widgets[0].metadata["3074457349056199734"].text))
         throw new Error("No template in the widget")
 
-    var restoredTemplate = w[0]["text"]
+    var restoredTemplate = widgets[0]["text"]
     //</find template:>
 
     //Conditional template loading
