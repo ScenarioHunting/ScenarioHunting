@@ -139,6 +139,9 @@ namespace {{context}}.Tests
     new {{title}}({{#each properties}}"{{toJSON .}}"{{#skipLast}},{{/skipLast}}{{/each}})
     new {{title}}({{#each properties}}"{{{.}}}"{{#skipLast}},{{/skipLast}}{{/each}})
     new {{title}}({{#each properties}}"{{{example}}}"{{#skipLast}},{{/skipLast}}{{/each}})
+    new {{title}}({{#each properties }}{{example}}{{#skipLast}},{{/skipLast}}{{/each}})
+    new {{title}}({{#each properties }}{{this/example}}{{#skipLast}},{{/skipLast}}{{/each}})
+    new {{title}}({{#each properties }}{{./example}}{{#skipLast}},{{/skipLast}}{{/each}})
     {{/inline}}
 
     public class Rel : IStorySpecification
