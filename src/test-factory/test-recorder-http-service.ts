@@ -165,7 +165,7 @@ namespace {{context}}.Tests
                      });
     }
 }`
-    var text = "CRT DB Can be moved around, but don't delete, and don't copy, or create other objects with this content)"
+    // var text = "CRT DB Can be moved around, but don't delete, and don't copy, or create other objects with this content)"
     var selectedTemplateName = "csharp-domain-model-unit-test"
     var templateId = "CRT.Templates." + selectedTemplateName
     //<Upsert templates:>
@@ -217,14 +217,21 @@ namespace {{context}}.Tests
     //<find template:>
     // eslint-disable-next-line no-undef
     var w = await miro.board.widgets.get({
-        "text": text,
+        "metadata": {
+            "3074457349056199734": {
+                "templateId": templateId
+            }
+        }
     })
     if (w.length == 0)
         throw new Error("Db widget not found")
-    if (isNullOrUndefined(w[0].metadata) || isNullOrUndefined(w[0].metadata["3074457349056199734"]) || w[0].metadata["3074457349056199734"].templates.length == 0)
-        throw new Error("No template in the metadata of the Db widget")
+    if (isNullOrUndefined(w[0].metadata)
+        || isNullOrUndefined(w[0].metadata["3074457349056199734"])
+        || isNullOrUndefined(w[0].metadata["3074457349056199734"].templateId)
+        || isNullOrUndefined(w[0].metadata["3074457349056199734"].text))
+        throw new Error("No template in the widget")
 
-    var restoredTemplate = w[0].metadata["3074457349056199734"].templates[0]
+    var restoredTemplate = w[0]["text"]
     //</find template:>
 
     //Conditional template loading
