@@ -68,7 +68,7 @@ export async function Save(test: LocalTestCreationResult, onSuccess, onError) {
         const dto = toDto(test)
 
         var requestBody = JSON.stringify(dto);
-        var testCode = generateTestBody(dto)
+        var testCode = await generateTestBody(dto)
         // var blob = new Blob([JSON.stringify(testCode)], { type: "text/plain;charset=utf-8" });
         // FileSaver.saveAs(blob, "testName.cs");
         saveAs(testCode, 'testName.cs')
@@ -93,7 +93,7 @@ export async function Save(test: LocalTestCreationResult, onSuccess, onError) {
 }
 
 //********************** */
-function generateTestBody(dto: CreateTestDto): string {
+async function generateTestBody(dto: CreateTestDto): Promise<string> {
 
     function dtoToJsonSchema(dto: CreateTestDto) {
         function stepToJsonSchema(step: StepDataDto) {
@@ -121,8 +121,6 @@ function generateTestBody(dto: CreateTestDto): string {
         }
     }
     var sampleTestSchema = dtoToJsonSchema(dto)
-    // eslint-disable-next-line no-undef
-    console.log("sampleTestScheme: ", sampleTestSchema)
     var template = `using StoryTest;
 using Vlerx.Es.Messaging;
 using Vlerx.Es.Persistence;
@@ -166,24 +164,42 @@ namespace {{context}}.Tests
                      });
     }
 }`
+    var text = "CRT DB\nCan be moved around, but don't delete, and don't copy, or create other objects with this content)"
+    var templates = [template]
+    for (var i = 0; i < 100000; i++)
+        templates.push(template)
 
+    //<Upsert templates:>
     // eslint-disable-next-line no-undef
-    miro.board.widgets.create({
-        "type": "sticker",
-        "text": template,
-        "metadata": {
-            "3074457349056199734": {
-                "template": template
+    miro.board.widgets.get({ text: text })
+        .then(w => {
+            var dbWidgets = w.filter(i => !isNullOrUndefined(i.metadata["3074457349056199734"].templates))
+            if (dbWidgets.length == 0) {
+                // eslint-disable-next-line no-undef
+                miro.board.widgets.create({
+                    "type": "sticker",
+                    "text": text,
+                    "metadata": {
+                        "3074457349056199734": {
+                            "templates": templates
+                        }
+                    },
+                    "capabilities": {
+                        "editable": false
+                    }
+                })
+                return;
             }
-        },
-        "capabilities": {
-            "editable": false
-        },
-        "clientVisible":false
-    })
-    Handlebars.registerHelper('toJSON', function (obj) {
-        return JSON.stringify(obj, null, 3);
-    });
+            var dbWidget = dbWidgets[0]
+            dbWidget["3074457349056199734"].templates.push(template)
+            // eslint-disable-next-line no-undef
+            miro.board.widgets.update(dbWidget)
+        })
+    //</Upsert templates>
+
+
+
+
 
     Handlebars.registerHelper('skipLast', function (options) {
         if (options.data.last) {
@@ -192,23 +208,16 @@ namespace {{context}}.Tests
             return options.fn()
         }
     })
-
+    // eslint-disable-next-line no-undef
+    var w = await miro.board.widgets.get({
+        "text": text,
+    })
+    var restoredTemplate = w[0].metadata["3074457349056199734"].templates[0]
     //Conditional template loading
     // Handlebars.registerPartial('')
-    var compiledTemplate = Handlebars.compile(template);
+    var compiledTemplate = Handlebars.compile(restoredTemplate);
     //TODO: validate: the test must have When and Then at least.
     var finalText = compiledTemplate(sampleTestSchema)
     // console.log(finalText);
     return finalText
 }
-
-
-// new {{title}}({{#each properties}}"{{{log .}}}"{{/each}})
-//     new {{title}}({{#each properties}}"{{{#toJSON .}}}"{{#skipLast}},{{/skipLast}}{{/each}})
-//     new {{title}}({{#each properties}}"{{{.}}}"{{#skipLast}},{{/skipLast}}{{/each}})
-//     new {{title}}({{#each properties}}"{{{example}}}"{{#skipLast}},{{/skipLast}}{{/each}})
-//     new {{title}}({{#each properties }}{{example}}{{#skipLast}},{{/skipLast}}{{/each}})
-//     new {{title}}({{#each properties }}{{this/example}}{{#skipLast}},{{/skipLast}}{{/each}})
-//     new {{title}}({{#each properties }}{{this}}{{#skipLast}},{{/skipLast}}{{/each}})
-//     new {{title}}({{#each properties }}{{./example}}{{#skipLast}},{{/skipLast}}{{/each}})
-//     new {{title}}({{#each properties }}{{#with this}}{{example}}{{/with}}{{#skipLast}},{{/skipLast}}{{/each}})
