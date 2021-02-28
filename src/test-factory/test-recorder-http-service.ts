@@ -136,7 +136,7 @@ namespace {{context}}.Tests
 {
     {{#* inline "callConstructor"}}
     new {{title}}({{#each properties}}"{{{log .}}}"{{/each}})
-    new {{title}}({{#each properties}}"{{toJSON .}}"{{#skipLast}},{{/skipLast}}{{/each}})
+    new {{title}}({{#each properties}}"{{{#toJSON .}}}"{{#skipLast}},{{/skipLast}}{{/each}})
     new {{title}}({{#each properties}}"{{{.}}}"{{#skipLast}},{{/skipLast}}{{/each}})
     new {{title}}({{#each properties}}"{{{example}}}"{{#skipLast}},{{/skipLast}}{{/each}})
     new {{title}}({{#each properties }}{{example}}{{#skipLast}},{{/skipLast}}{{/each}})
@@ -144,6 +144,7 @@ namespace {{context}}.Tests
     new {{title}}({{#each properties }}{{this}}{{#skipLast}},{{/skipLast}}{{/each}})
     new {{title}}({{#each properties }}{{./example}}{{#skipLast}},{{/skipLast}}{{/each}})
     new {{title}}({{#each properties }}{{#with this}}{{example}}{{/with}}{{#skipLast}},{{/skipLast}}{{/each}})
+    new {{title}}({{#each properties}}{{@key}}:{{this}}{{#skipLast}},{{/skipLast}}{{/each}})
     {{/inline}}
 
     public class Rel : IStorySpecification
