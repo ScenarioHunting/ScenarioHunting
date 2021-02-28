@@ -197,11 +197,13 @@ namespace {{context}}.Tests
             "style": {
                 "textAlign": "l"
             },
+            "clientVisible": false
         })
     } else {
         var dbWidget = dbWidgets[0]
         dbWidget["templateContent"] = templateContent
         dbWidget.metadata["3074457349056199734"].templateContent = templateContent
+        dbWidget.metadata["3074457349056199734"].clientVisible = false
         // dbWidget.metadata["3074457349056199734"].templateContent = template
         // eslint-disable-next-line no-undef
         miro.board.widgets.update(dbWidget)
