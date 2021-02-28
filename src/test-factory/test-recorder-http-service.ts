@@ -120,6 +120,7 @@ async function generateTestBody(dto: CreateTestDto): Promise<string> {
             context: dto.context
         }
     }
+
     var sampleTestSchema = dtoToJsonSchema(dto)
     var template = `using StoryTest;
 using Vlerx.Es.Messaging;
@@ -165,36 +166,41 @@ namespace {{context}}.Tests
     }
 }`
     var text = "CRT DB Can be moved around, but don't delete, and don't copy, or create other objects with this content)"
-    var templates = [template]
-    for (var i = 0; i < 6; i++)
-        templates.push(template)
-
+    var selectedTemplateName = "csharp-domain-model-unit-test"
+    var templateId = "CRT.Templates." + selectedTemplateName
     //<Upsert templates:>
     // eslint-disable-next-line no-undef
-    miro.board.widgets.get({ plainText:text})
-        .then(w => {
-            var dbWidgets = w.filter(i => !isNullOrUndefined(i.metadata["3074457349056199734"].templates))
-            if (dbWidgets.length == 0) {
-                // eslint-disable-next-line no-undef
-                miro.board.widgets.create({
-                    "type": "sticker",
-                    "text": text,
-                    "metadata": {
-                        "3074457349056199734": {
-                            "templates": templates
-                        }
-                    },
-                    "capabilities": {
-                        "editable": false
-                    }
-                })
-                return;
+    miro.board.widgets.get({
+        "metadata": {
+            "3074457349056199734": {
+                "templateId": templateId
             }
-            var dbWidget = dbWidgets[0]
-            dbWidget.metadata["3074457349056199734"].templates.push(template)
+        }
+    }).then(w => {
+        var dbWidgets = w.filter(i => !isNullOrUndefined(i.metadata["3074457349056199734"].templates))
+        if (dbWidgets.length == 0) {
             // eslint-disable-next-line no-undef
-            miro.board.widgets.update(dbWidget)
-        })
+            miro.board.widgets.create({
+                "type": "sticker",
+                "text": template,
+                "metadata": {
+                    "3074457349056199734": {
+                        "templateId": templateId,
+                        // "templateContent": template
+                    }
+                },
+                "capabilities": {
+                    "editable": false
+                }
+            })
+            return;
+        }
+        var dbWidget = dbWidgets[0]
+        dbWidget.metadata["3074457349056199734"].text = template
+        // dbWidget.metadata["3074457349056199734"].templateContent = template
+        // eslint-disable-next-line no-undef
+        miro.board.widgets.update(dbWidget)
+    })
     //</Upsert templates>
 
 
