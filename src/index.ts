@@ -1,23 +1,7 @@
 import { singletonBoard, testResultReports } from "./global-dependency-container";
 import { WhenTestResultsSummeryViewModel, TestReportToSummery, WhenTestReportViewModel } from "./test-result-reports";
 
-// <Init>
-var role = "CRT.Templates"
-// eslint-disable-next-line no-undef
-miro.board.widgets.get({
-	"metadata": {
-		"3074457349056199734": {
-			"role": role,
-		}
-	}
-}).then(widgets => {
-	widgets.forEach(w => {
-		w.metadata["3074457349056199734"].clientVisible = false
-		// eslint-disable-next-line no-undef
-		miro.board.widgets.update(w)
-	})
-})
-// </Init>
+
 
 
 /* eslint-disable no-undef */
@@ -134,7 +118,23 @@ let subscribeToServerEvents = (webSocketUrl: string) => {
 }
 miro.onReady(async () => {
 
-
+	// <Init>
+	var role = "CRT.Templates"
+	// eslint-disable-next-line no-undef
+	miro.board.widgets.get({
+		"metadata": {
+			"3074457349056199734": {
+				"role": role,
+			}
+		}
+	}).then(widgets => {
+		widgets.forEach(w => {
+			w.metadata["3074457349056199734"].clientVisible = false
+			// eslint-disable-next-line no-undef
+			miro.board.widgets.update(w)
+		})
+	})
+	// </Init>
 
 
 	await singletonBoard.interceptPossibleTextEdit(attachReportToWidgetByWidgetId)
