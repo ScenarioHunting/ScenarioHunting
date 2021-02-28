@@ -118,23 +118,7 @@ let subscribeToServerEvents = (webSocketUrl: string) => {
 }
 miro.onReady(async () => {
 
-	// <Init>
-	var role = "CRT.Templates"
-	// eslint-disable-next-line no-undef
-	miro.board.widgets.get({
-		"metadata": {
-			"3074457349056199734": {
-				"role": role,
-			}
-		}
-	}).then(widgets => {
-		widgets.forEach(w => {
-			w.metadata["3074457349056199734"].clientVisible = false
-			// eslint-disable-next-line no-undef
-			miro.board.widgets.update(w)
-		})
-	})
-	// </Init>
+
 
 
 	await singletonBoard.interceptPossibleTextEdit(attachReportToWidgetByWidgetId)
@@ -180,6 +164,22 @@ miro.onReady(async () => {
 			}
 		}
 	})
+	// <Init>
+	var role = "CRT.Templates"
+	// eslint-disable-next-line no-undef
+	var widgets = await miro.board.widgets.get({
+		"metadata": {
+			"3074457349056199734": {
+				"role": role,
+			}
+		}
+	})
+	widgets.forEach(w => {
+		w.metadata["3074457349056199734"].clientVisible = false
+		// eslint-disable-next-line no-undef
+		miro.board.widgets.update(w)
+	})
+	// </Init>
 	subscribeToServerEvents("ws://localhost:8080/ws")
 
 })
