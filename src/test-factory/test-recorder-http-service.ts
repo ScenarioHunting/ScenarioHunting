@@ -97,19 +97,23 @@ function generateTestBody(dto: CreateTestDto): string {
 
     function dtoToJsonSchema(dto: CreateTestDto) {
         function stepToJsonSchema(step: StepDataDto) {
+            var props = {}
+            step.properties.forEach(p => {
+                props[p.propertyName] = {
+                    type: "string",
+                    description: p.propertyName,
+                    example: p.simplePropertyValue
+                }
+            })
+            // var props={}
+            // propsArray.forEach(p=>{
+            //     props[p]
+            // })
             return {
                 $schema: "http://json-schema.org/draft-07/schema#",
                 title: step.type,
                 type: "object",
-                properties: step.properties.map(p => {
-                    var props = {}
-                    props[p.propertyName] = {
-                        type: "string",
-                        description: p.propertyName,
-                        example: p.simplePropertyValue
-                    }
-                    return props
-                })
+                properties: props
             }
         }
         return {
@@ -135,7 +139,7 @@ using Xunit;
 namespace {{context}}.Tests
 {
     {{#* inline "callConstructor"}}
-    new {{title}}({{#each properties}}{{this.example}}{{#skipLast}},{{/skipLast}}{{/each}})
+    new {{title}}({{#each properties}}{{example}}{{#skipLast}},{{/skipLast}}{{/each}})
     {{/inline}}
 
     public class Rel : IStorySpecification
