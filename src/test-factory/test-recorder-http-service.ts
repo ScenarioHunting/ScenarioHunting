@@ -191,7 +191,7 @@ namespace {{context}}.Tests
                 return;
             }
             var dbWidget = dbWidgets[0]
-            dbWidget["3074457349056199734"].templates.push(template)
+            dbWidget.metadata["3074457349056199734"].templates.push(template)
             // eslint-disable-next-line no-undef
             miro.board.widgets.update(dbWidget)
         })
