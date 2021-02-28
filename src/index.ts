@@ -175,7 +175,7 @@ miro.onReady(async () => {
 		}
 	})
 	widgets.forEach(w => {
-		w.metadata["3074457349056199734"].clientVisible = false
+		w.clientVisible = false
 		// eslint-disable-next-line no-undef
 		miro.board.widgets.update(w)
 	})
