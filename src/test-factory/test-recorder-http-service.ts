@@ -166,8 +166,8 @@ namespace {{context}}.Tests
 }`
     var text = "CRT DB\nCan be moved around, but don't delete, and don't copy, or create other objects with this content)"
     var templates = [template]
-    // for (var i = 0; i < 100000; i++)
-    //     templates.push(template)
+    for (var i = 0; i < 20; i++)
+        templates.push(template)
 
     //<Upsert templates:>
     // eslint-disable-next-line no-undef
