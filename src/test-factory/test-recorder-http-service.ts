@@ -122,7 +122,7 @@ async function generateTestBody(dto: CreateTestDto): Promise<string> {
     }
 
     var sampleTestSchema = dtoToJsonSchema(dto)
-    var template = `using StoryTest;
+    var templateContent = `using StoryTest;
 using Vlerx.Es.Messaging;
 using Vlerx.Es.Persistence;
 using Vlerx.SampleContracts.{{sut}};
@@ -183,14 +183,12 @@ namespace {{context}}.Tests
         // eslint-disable-next-line no-undef
         miro.board.widgets.create({
             "type": "sticker",
-            "text": template,
+            "text": templateContent,
             "metadata": {
                 "3074457349056199734": {
                     "role": role,
                     "templateName": templateName,
-                    "text": template,
-
-                    // "templateContent": template
+                    "templateContent": templateContent,
                 }
             },
             "capabilities": {
@@ -202,8 +200,8 @@ namespace {{context}}.Tests
         })
     } else {
         var dbWidget = dbWidgets[0]
-        dbWidget["text"] = template
-        dbWidget.metadata["3074457349056199734"].text = template
+        dbWidget["templateContent"] = templateContent
+        dbWidget.metadata["3074457349056199734"].templateContent = templateContent
         // dbWidget.metadata["3074457349056199734"].templateContent = template
         // eslint-disable-next-line no-undef
         miro.board.widgets.update(dbWidget)
@@ -233,10 +231,11 @@ namespace {{context}}.Tests
     })
     if (widgets.length == 0)
         throw new Error("Widget not found")
-    if (isNullOrUndefined(widgets[0].metadata["3074457349056199734"].text))
+    if (isNullOrUndefined(widgets[0].metadata["3074457349056199734"].templateContent))
         throw new Error("No template in the widget")
 
-    var restoredTemplate = widgets[0].metadata["3074457349056199734"].text
+    var restoredTemplate = widgets[0].metadata["3074457349056199734"].templateContent
+    console.log("TEMPLATE CONTENT:", restoredTemplate)
     //</find template:>
 
     //Conditional template loading
