@@ -188,6 +188,8 @@ namespace {{context}}.Tests
                 "3074457349056199734": {
                     "role": role,
                     "templateName": templateName,
+                    "text": template,
+
                     // "templateContent": template
                 }
             },
@@ -200,6 +202,7 @@ namespace {{context}}.Tests
         })
     } else {
         var dbWidget = dbWidgets[0]
+        dbWidget["text"] = template
         dbWidget.metadata["3074457349056199734"].text = template
         // dbWidget.metadata["3074457349056199734"].templateContent = template
         // eslint-disable-next-line no-undef
@@ -230,10 +233,10 @@ namespace {{context}}.Tests
     })
     if (widgets.length == 0)
         throw new Error("Widget not found")
-    if (isNullOrUndefined(widgets[0]["plainText"]))
+    if (isNullOrUndefined(widgets[0].metadata["3074457349056199734"].text))
         throw new Error("No template in the widget")
 
-    var restoredTemplate = widgets[0]["plainText"]
+    var restoredTemplate = widgets[0].metadata["3074457349056199734"].text
     //</find template:>
 
     //Conditional template loading
