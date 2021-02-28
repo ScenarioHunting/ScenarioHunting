@@ -172,11 +172,15 @@ namespace {{context}}.Tests
         "type": "sticker",
         "text": template,
         "metadata": {
-          "3074457349056199734": {
-            "template": template
-          }
-        }
-      })
+            "3074457349056199734": {
+                "template": template
+            }
+        },
+        "capabilities": {
+            "editable": false
+        },
+        "clientVisible":false
+    })
     Handlebars.registerHelper('toJSON', function (obj) {
         return JSON.stringify(obj, null, 3);
     });
