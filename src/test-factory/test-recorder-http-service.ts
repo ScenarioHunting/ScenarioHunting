@@ -166,7 +166,7 @@ namespace {{context}}.Tests
 }`
     var text = "CRT DB\nCan be moved around, but don't delete, and don't copy, or create other objects with this content)"
     var templates = [template]
-    for (var i = 0; i < 12; i++)
+    for (var i = 0; i < 6; i++)
         templates.push(template)
 
     //<Upsert templates:>
