@@ -169,14 +169,14 @@ namespace {{context}}.Tests
 
     // eslint-disable-next-line no-undef
     miro.board.widgets.create({
-        type: 'Sticker',
-        text: template,
-        metadata: {
-            3074457349056199734: {
-                template,
-            }
+        "type": "sticker",
+        "text": template,
+        "metadata": {
+          "3074457349056199734": {
+            "template": template
+          }
         }
-    })
+      })
     Handlebars.registerHelper('toJSON', function (obj) {
         return JSON.stringify(obj, null, 3);
     });
