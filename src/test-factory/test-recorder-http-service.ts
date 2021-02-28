@@ -135,8 +135,8 @@ using Xunit;
 namespace {{context}}.Tests
 {
     {{#* inline "callConstructor"}}
-    new {{title}}({{#each properties}}"{{{example}}}"{{/each}})
-    new {{title}}({{#each properties}}"{{{log .}}}"{{#skipLast}},{{/skipLast}}{{/each}})
+    new {{title}}({{#each properties}}"{{{log .}}}"{{/each}})
+    new {{title}}({{#each properties}}"{{toJSON .}}"{{#skipLast}},{{/skipLast}}{{/each}})
     new {{title}}({{#each properties}}"{{{.}}}"{{#skipLast}},{{/skipLast}}{{/each}})
     new {{title}}({{#each properties}}"{{{example}}}"{{#skipLast}},{{/skipLast}}{{/each}})
     {{/inline}}
@@ -180,6 +180,10 @@ namespace {{context}}.Tests
             }
         }
     })
+    Handlebars.registerHelper('toJSON', function(obj) {
+        return JSON.stringify(obj, null, 3);
+    });
+    
     Handlebars.registerHelper('skipLast', function (options) {
         if (options.data.last) {
             return options.inverse()
