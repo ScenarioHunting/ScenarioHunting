@@ -164,14 +164,14 @@ namespace {{context}}.Tests
                      });
     }
 }`
-    var text = "CRT DB\nCan be moved around, but don't delete, and don't copy, or create other objects with this content)"
+    var text = "CRT DB Can be moved around, but don't delete, and don't copy, or create other objects with this content)"
     var templates = [template]
     for (var i = 0; i < 6; i++)
         templates.push(template)
 
     //<Upsert templates:>
     // eslint-disable-next-line no-undef
-    miro.board.widgets.get({ plainText:"CRT DB Can be moved around, but don't delete, and don't copy, or create other objects with this content)"})
+    miro.board.widgets.get({ plainText:text})
         .then(w => {
             var dbWidgets = w.filter(i => !isNullOrUndefined(i.metadata["3074457349056199734"].templates))
             if (dbWidgets.length == 0) {
