@@ -166,18 +166,19 @@ namespace {{context}}.Tests
     }
 }`
     // var text = "CRT DB Can be moved around, but don't delete, and don't copy, or create other objects with this content)"
-    var selectedTemplateName = "csharp-domain-model-unit-test"
-    var templateId = "CRT.Templates." + selectedTemplateName
+    var templateName = "csharp-domain-model-unit-test"
+    var role = "CRT.Templates"
     //<Upsert templates:>
     // eslint-disable-next-line no-undef
     var widgets = await miro.board.widgets.get({
         "metadata": {
             "3074457349056199734": {
-                "templateId": templateId
+                "role": role,
+                "templateName": templateName,
             }
         }
     })
-    var dbWidgets = widgets.filter(i => !isNullOrUndefined(i.metadata["3074457349056199734"].templateId))
+    var dbWidgets = widgets.filter(i => !isNullOrUndefined(i.metadata["3074457349056199734"].templateName))
     if (dbWidgets.length == 0) {
         // eslint-disable-next-line no-undef
         miro.board.widgets.create({
@@ -185,7 +186,8 @@ namespace {{context}}.Tests
             "text": template,
             "metadata": {
                 "3074457349056199734": {
-                    "templateId": templateId,
+                    "role": role,
+                    "templateName": templateName,
                     // "templateContent": template
                 }
             },
@@ -221,16 +223,14 @@ namespace {{context}}.Tests
     widgets = await miro.board.widgets.get({
         "metadata": {
             "3074457349056199734": {
-                "templateId": templateId
+                "role": role,
+                "templateName": templateName
             }
         }
     })
     if (widgets.length == 0)
         throw new Error("Widget not found")
-    if (isNullOrUndefined(widgets[0].metadata)
-        || isNullOrUndefined(widgets[0].metadata["3074457349056199734"])
-        || isNullOrUndefined(widgets[0].metadata["3074457349056199734"].templateId)
-        || isNullOrUndefined(widgets[0]["plainText"]))
+    if (isNullOrUndefined(widgets[0]["plainText"]))
         throw new Error("No template in the widget")
 
     var restoredTemplate = widgets[0]["plainText"]
