@@ -230,10 +230,10 @@ namespace {{context}}.Tests
     if (isNullOrUndefined(widgets[0].metadata)
         || isNullOrUndefined(widgets[0].metadata["3074457349056199734"])
         || isNullOrUndefined(widgets[0].metadata["3074457349056199734"].templateId)
-        || isNullOrUndefined(widgets[0].metadata["3074457349056199734"].text))
+        || isNullOrUndefined(widgets[0]["plainText"]))
         throw new Error("No template in the widget")
 
-    var restoredTemplate = widgets[0]["text"]
+    var restoredTemplate = widgets[0]["plainText"]
     //</find template:>
 
     //Conditional template loading
