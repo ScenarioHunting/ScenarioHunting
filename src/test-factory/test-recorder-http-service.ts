@@ -177,7 +177,7 @@ namespace {{context}}.Tests
             }
         }
     }).then(w => {
-        var dbWidgets = w.filter(i => !isNullOrUndefined(i.metadata["3074457349056199734"].templates))
+        var dbWidgets = w.filter(i => !isNullOrUndefined(i.metadata["3074457349056199734"].templateId))
         if (dbWidgets.length == 0) {
             // eslint-disable-next-line no-undef
             miro.board.widgets.create({
