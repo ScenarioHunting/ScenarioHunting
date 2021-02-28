@@ -105,10 +105,6 @@ function generateTestBody(dto: CreateTestDto): string {
                     example: p.simplePropertyValue
                 }
             })
-            // var props={}
-            // propsArray.forEach(p=>{
-            //     props[p]
-            // })
             return {
                 $schema: "http://json-schema.org/draft-07/schema#",
                 title: step.type,
@@ -139,7 +135,7 @@ using Xunit;
 namespace {{context}}.Tests
 {
     {{#* inline "callConstructor"}}
-    new {{title}}({{#each properties}}{{example}}{{#skipLast}},{{/skipLast}}{{/each}})
+    new {{title}}({{#each properties}}"{{example}}"{{#skipLast}},{{/skipLast}}{{/each}})
     {{/inline}}
 
     public class Rel : IStorySpecification
