@@ -141,7 +141,9 @@ namespace {{context}}.Tests
     new {{title}}({{#each properties}}"{{{example}}}"{{#skipLast}},{{/skipLast}}{{/each}})
     new {{title}}({{#each properties }}{{example}}{{#skipLast}},{{/skipLast}}{{/each}})
     new {{title}}({{#each properties }}{{this/example}}{{#skipLast}},{{/skipLast}}{{/each}})
+    new {{title}}({{#each properties }}{{this}}{{#skipLast}},{{/skipLast}}{{/each}})
     new {{title}}({{#each properties }}{{./example}}{{#skipLast}},{{/skipLast}}{{/each}})
+    new {{title}}({{#each properties }}{{#with this}}{{example}}{{/with}}{{#skipLast}},{{/skipLast}}{{/each}})
     {{/inline}}
 
     public class Rel : IStorySpecification
@@ -183,10 +185,10 @@ namespace {{context}}.Tests
             }
         }
     })
-    Handlebars.registerHelper('toJSON', function(obj) {
+    Handlebars.registerHelper('toJSON', function (obj) {
         return JSON.stringify(obj, null, 3);
     });
-    
+
     Handlebars.registerHelper('skipLast', function (options) {
         if (options.data.last) {
             return options.inverse()
