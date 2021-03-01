@@ -171,7 +171,7 @@ miro.onReady(async () => {
 	// eslint-disable-next-line no-undef
 	var widgets = await miro.board.widgets.get({
 		"metadata": {
-			"3074457349056199734": {
+			[miro.getClientId()]: {
 				"role": role,
 			}
 		}
