@@ -238,7 +238,7 @@ namespace {{context}}.Tests
     var templateName = "csharp-domain-model-unit-test"
     // var role = "CRT.Templates"
     //<Upsert templates:>
-    testTemplateRepository.addTemplate(templateName, templateContent)
+    await testTemplateRepository.addTemplate(templateName, templateContent)
     // eslint-disable-next-line no-undef
     // var widgets = await miro.board.widgets.get({
     //     "metadata": {
@@ -292,7 +292,7 @@ namespace {{context}}.Tests
         }
     })
 
-    var restoredTemplate = testTemplateRepository.getTemplateContentByName(templateName)
+    var restoredTemplate =await testTemplateRepository.getTemplateContentByName(templateName)
     console.log("TEMPLATE CONTENT:", restoredTemplate)
     //</find template:>
 
