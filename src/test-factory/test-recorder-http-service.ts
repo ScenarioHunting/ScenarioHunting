@@ -51,6 +51,7 @@ export type LocalTestCreationResult = {
     , then: SelectedWidget
 }
 function saveAs(fileName: string, data: string) {
+
     var blob = new Blob([data], { type: "text/plain;charset=utf-8" });
     if (isNullOrUndefined(window.navigator.msSaveOrOpenBlob)) {
         var elem = window.document.createElement('a');
@@ -70,6 +71,9 @@ export async function Save(test: LocalTestCreationResult, onSuccess, onError) {
 
         var requestBody = JSON.stringify(dto);
         var result = await generateTestCode(dtoToJsonSchema(dto))
+        console.log('Before saving:')
+        console.log('Test name:', result.testName)
+        console.log('Test code:', result.testName)
         saveAs(result.testName, result.testCode)
 
         const response = await fetch('http://localhost:6000/Tests',//TODO: read it from config file
@@ -128,7 +132,7 @@ class templateRepository {
         var dbWidgets = widgets.filter(i => !isNullOrUndefined(i.metadata[miro.getClientId()].templateName))
         return dbWidgets.map(w => w.metadata[miro.getClientId()].templateName)
     }
-    public async addTemplate(templateName: string, templateContent: string) {
+    public async createOrReplaceTemplate(templateName: string, templateContent: string) {
         // eslint-disable-next-line no-undef
         var widgets = await miro.board.widgets.get({
             "metadata": {
@@ -238,7 +242,7 @@ namespace {{context}}.Tests
     var templateName = "csharp-domain-model-unit-test"
     // var role = "CRT.Templates"
     //<Upsert templates:>
-    await testTemplateRepository.addTemplate(templateName, templateContent)
+    await testTemplateRepository.createOrReplaceTemplate(templateName, templateContent)
     // eslint-disable-next-line no-undef
     // var widgets = await miro.board.widgets.get({
     //     "metadata": {
@@ -293,17 +297,14 @@ namespace {{context}}.Tests
     })
 
     var restoredTemplate = await testTemplateRepository.getTemplateContentByName(templateName)
-    console.log("TEMPLATE CONTENT:", restoredTemplate)
     //</find template:>
 
     //Conditional template loading
     // Handlebars.registerPartial('')
     var compiledTemplate = Handlebars.compile(restoredTemplate);
-    
+
     //TODO: validate: the test must have When and Then at least.
     var testCode = compiledTemplate(testSchema)
-    console.log("TestName:", testSchema.testName)
-    console.log("TestCode:", testCode)
     // console.log(finalText);
-    return testSchema.testName, testCode
+    return { testName: testSchema.testName, testCode: testCode }
 }
