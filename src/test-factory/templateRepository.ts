@@ -48,7 +48,7 @@ class templateRepository {
                              });
             }
         }`;
-        var templateName = "csharp-domain-model-unit-test";
+        var templateName = "csharp-domain-model-unit-test.cs";
         this.createOrReplaceTemplate(templateName, templateContent);
     }
     private role = "CRT.Templates";
@@ -106,6 +106,8 @@ class templateRepository {
         }
     }
     public async getTemplateContentByName(templateName: string): Promise<string> {
+        console.log("get: TemplateName:", templateName)
+
         var widgets = await miro.board.widgets.get({
             "metadata": {
                 [miro.getClientId()]: {
