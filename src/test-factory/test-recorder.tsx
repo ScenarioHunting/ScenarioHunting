@@ -29,8 +29,8 @@ export const createTestRecorder = (board = singletonBoard
         React.useEffect(() => {
             // (async (board: IBoard) => {
             //     await 
-                board.unselectAll()
-                    .then(stepNavigator.start);
+            board.unselectAll()
+                .then(stepNavigator.start);
             // })(board);
         }, [board]);
 
@@ -102,6 +102,7 @@ export const createTestRecorder = (board = singletonBoard
             await navigate('/test-explorer', { state: { newTest: viewModel } })
             // console.log(response);
         };
+        const templateNames = ["csharp-domain-model-unit-test"]
         return (
             <div className="test-recorder">
 
@@ -128,6 +129,15 @@ export const createTestRecorder = (board = singletonBoard
 
                         <label className="test-name-label">Test Name:</label>
                         <input type='text' className="test-name-input" value={testName} onChange={x => recordTestName(x.target.value)} placeholder="Test Name" />
+
+
+                        <select>
+                            {templateNames.map((templateName) => (
+                                <option key={templateName} value={templateName}>
+                                    {templateName}
+                                </option>
+                            ))}
+                        </select>
                     </div>
                 }
 
