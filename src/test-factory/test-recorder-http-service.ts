@@ -3,7 +3,7 @@ import { IndexedStep } from "./given-collection"
 import { CreateTestDto, IndexedStepDataDto, StepDataDto } from "./dto"
 import { SelectedWidget } from "board"
 import Handlebars from "handlebars/dist/handlebars.js"
-import { getTemplateRepository } from "./templateRepository"
+import { getTemplateRepository } from "./template-repository"
 import { isNullOrUndefined } from "./isNullOrUndefined"
 
 const toDto = ({ testContext
@@ -71,7 +71,7 @@ export async function Save(templateName: string, test: LocalTestCreationResult, 
     try {
         const dto = toDto(test)
 
-        var testTemplateRepository = getTemplateRepository()
+        var testTemplateRepository = await getTemplateRepository()
         var restoredTemplate = await testTemplateRepository.getTemplateContentByName(templateName)
         var result = await generateTestCode(restoredTemplate, dtoToJsonSchema(dto))
         saveAs(result.testName, result.testCode)

@@ -5,7 +5,7 @@ import { isNullOrUndefined } from "./isNullOrUndefined";
 
 
 // import { isNullOrUndefined } from "util";
-export function getTemplateRepository(): templateRepository {
+export async function getTemplateRepository(): Promise<templateRepository> {
     var repo = new templateRepository()
 
     sampleTemplates.forEach(({ name, content }) =>
@@ -25,6 +25,10 @@ class templateRepository {
         });
         var dbWidgets = widgets.filter(i => !isNullOrUndefined(i.metadata[miro.getClientId()].templateName));
         return dbWidgets.map(w => w.metadata[miro.getClientId()].templateName);
+    }
+    public async removeTemplate(templateName: string) {
+        var widget = await this.findWidgetByTemplateName(templateName)
+        miro.board.widgets.deleteById(widget.id)
     }
     public async createOrReplaceTemplate(templateName: string, templateContent: string) {
 
@@ -67,7 +71,7 @@ class templateRepository {
             miro.board.widgets.update(dbWidget);
         }
     }
-    public async getTemplateContentByName(templateName: string): Promise<string> {
+    private async findWidgetByTemplateName(templateName: string): Promise<SDK.IWidget> {
         var widgets = await miro.board.widgets.get({
             "metadata": {
                 [miro.getClientId()]: {
@@ -76,12 +80,13 @@ class templateRepository {
                 }
             }
         });
-        if (widgets.length == 0)
-            throw new Error("Widget not found");
-        if (isNullOrUndefined(widgets[0].metadata[miro.getClientId()].templateContent))
+        if (widgets.length == 0 || isNullOrUndefined(widgets[0].metadata[miro.getClientId()].templateContent))
             throw new Error("Widget not found for template:" + templateName);
-
-        var restoredTemplate = widgets[0].metadata[miro.getClientId()].templateContent;
+        return widgets[0]
+    }
+    public async getTemplateContentByName(templateName: string): Promise<string> {
+        var widget = await this.findWidgetByTemplateName(templateName)
+        var restoredTemplate = widget.metadata[miro.getClientId()].templateContent;
         return restoredTemplate;
     }
 }

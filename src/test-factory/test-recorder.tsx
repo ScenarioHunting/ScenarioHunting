@@ -7,7 +7,7 @@ import { navigate } from "@reach/router"
 import { ExampleWidget, SelectedWidget } from 'board';
 import { Save, LocalTestCreationResult } from './test-recorder-http-service';
 import { singletonStepNavigator } from './local-dependency-container';
-import { getTemplateRepository } from './templateRepository';
+import { getTemplateRepository } from './template-repository';
 
 export type StepInfo = {
     type: string
@@ -45,18 +45,17 @@ export const createTestRecorder = (board = singletonBoard
         const [givens, recordGiven] = React.useState<IndexedStep[]>([]);
         const [when, recordWhen] = React.useState<SelectedWidget>();
         const [then, recordThen] = React.useState<SelectedWidget>();
-        const [testName, recordTestName] = React.useState<string>("");
+        const [testName, recordTestName] = React.useState<string>("TestName");
         const [testContext, recordTestContext] = React.useState<string>("SampleService");
-        const [sutName, recordSutName] = React.useState<string>("");
-        const [selectedTemplateName, selectTemplateName] = React.useState<string>("");
+        const [sutName, recordSutName] = React.useState<string>("SutName");
+        const [selectedTemplateName, selectTemplateName] = React.useState<string>("no template");
         const [availableTemplateNames, setAvailableTemplateNames] = React.useState<string[]>([]);
-        getTemplateRepository().getAllTemplateNames().then(x => {
+        getTemplateRepository().then(repo => repo.getAllTemplateNames().then(x => {
             if (availableTemplateNames.length == 0) {
-                console.log("availableTemplateNames:",availableTemplateNames)
                 setAvailableTemplateNames(x)
                 selectTemplateName(x[0])
             }
-        })
+        }))
         const updateGivens = (givenResults: IndexedStep[]) => {
             recordGiven(givenResults);
         };
