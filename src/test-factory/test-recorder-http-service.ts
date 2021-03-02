@@ -292,15 +292,18 @@ namespace {{context}}.Tests
         }
     })
 
-    var restoredTemplate =await testTemplateRepository.getTemplateContentByName(templateName)
+    var restoredTemplate = await testTemplateRepository.getTemplateContentByName(templateName)
     console.log("TEMPLATE CONTENT:", restoredTemplate)
     //</find template:>
 
     //Conditional template loading
     // Handlebars.registerPartial('')
     var compiledTemplate = Handlebars.compile(restoredTemplate);
+    
     //TODO: validate: the test must have When and Then at least.
     var testCode = compiledTemplate(testSchema)
+    console.log("TestName:", restoredTemplate)
+    console.log("TestSchema:", restoredTemplate)
     // console.log(finalText);
     return testSchema.testName, testCode
 }
