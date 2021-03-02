@@ -7,6 +7,7 @@ import { navigate } from "@reach/router"
 import { ExampleWidget, SelectedWidget } from 'board';
 import { Save, LocalTestCreationResult } from './test-recorder-http-service';
 import { singletonStepNavigator } from './local-dependency-container';
+import { getTemplateRepository } from './templateRepository';
 
 export type StepInfo = {
     type: string
@@ -40,10 +41,10 @@ export const createTestRecorder = (board = singletonBoard
         //         when?.data.type + '_' + then?.data.type
         //         : testName))
 
-        // getTemplateRepository().getAllTemplateNames().then(x => {
-        //     setAvailableTemplateNames(x)
-        //     // selectTemplateName(x[0])
-        // })
+        getTemplateRepository().getAllTemplateNames().then(x => {
+            setAvailableTemplateNames(x)
+            // selectTemplateName(x[0])
+        })
         const [givens, recordGiven] = React.useState<IndexedStep[]>([]);
         const [when, recordWhen] = React.useState<SelectedWidget>();
         const [then, recordThen] = React.useState<SelectedWidget>();
@@ -51,7 +52,7 @@ export const createTestRecorder = (board = singletonBoard
         const [testContext, recordTestContext] = React.useState<string>("SampleService");
         const [sutName, recordSutName] = React.useState<string>("");
         const [selectedTemplateName, selectTemplateName] = React.useState<string>();
-        const [availableTemplateNames] = React.useState<string[]>([]);
+        const [availableTemplateNames, setAvailableTemplateNames] = React.useState<string[]>([]);
 
         const updateGivens = (givenResults: IndexedStep[]) => {
             recordGiven(givenResults);
@@ -135,14 +136,14 @@ export const createTestRecorder = (board = singletonBoard
                         <input type='text' className="test-name-input" value={testName} onChange={x => recordTestName(x.target.value)} placeholder="Test Name" />
 
                         <label className="template-selector-label">Template:</label>
-                        <select className="template-selector" value={selectedTemplateName}
+                        {/* <select className="template-selector" value={selectedTemplateName}
                             onChange={(e) => selectTemplateName(e.target.value)}>
                             {availableTemplateNames.map((templateName) => (
                                 <option key={templateName} value={templateName}>
                                     {templateName}
                                 </option>
                             ))}
-                        </select>
+                        </select> */}
 
                     </div>
                 }
