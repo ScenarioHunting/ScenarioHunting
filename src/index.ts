@@ -165,8 +165,6 @@ miro.onReady(async () => {
 		}
 	})
 	// <Init>
-	alert(miro.getClientId())
-	console.log(miro.getClientId())
 	var role = "CRT.Templates"
 	// eslint-disable-next-line no-undef
 	var widgets = await miro.board.widgets.get({
