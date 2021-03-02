@@ -119,7 +119,7 @@ class templateRepository {
         if (widgets.length == 0)
             throw new Error("Widget not found");
         if (isNullOrUndefined(widgets[0].metadata[miro.getClientId()].templateContent))
-            throw new Error("No template in the widget");
+            throw new Error("Widget not found for template:" + templateName);
 
         var restoredTemplate = widgets[0].metadata[miro.getClientId()].templateContent;
         return restoredTemplate;

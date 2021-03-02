@@ -77,7 +77,7 @@ export const createTestRecorder = (board = singletonBoard
                 showValidationError('No then selections. Please save the test after selecting the then step.')
                 return
             }
-
+            console.log('Saving.. Template Name:' + selectedTemplateName)
             save(selectedTemplateName, {
                 testContext,
                 testName,
