@@ -7,7 +7,6 @@ import { navigate } from "@reach/router"
 import { ExampleWidget, SelectedWidget } from 'board';
 import { Save, LocalTestCreationResult } from './test-recorder-http-service';
 import { singletonStepNavigator } from './local-dependency-container';
-import { getTemplateRepository } from './templateRepository';
 
 export type StepInfo = {
     type: string
@@ -41,10 +40,10 @@ export const createTestRecorder = (board = singletonBoard
         //         when?.data.type + '_' + then?.data.type
         //         : testName))
 
-        getTemplateRepository().getAllTemplateNames().then(x => {
-            setAvailableTemplateNames(x)
-            // selectTemplateName(x[0])
-        })
+        // getTemplateRepository().getAllTemplateNames().then(x => {
+        //     setAvailableTemplateNames(x)
+        //     // selectTemplateName(x[0])
+        // })
         const [givens, recordGiven] = React.useState<IndexedStep[]>([]);
         const [when, recordWhen] = React.useState<SelectedWidget>();
         const [then, recordThen] = React.useState<SelectedWidget>();
@@ -52,7 +51,7 @@ export const createTestRecorder = (board = singletonBoard
         const [testContext, recordTestContext] = React.useState<string>("SampleService");
         const [sutName, recordSutName] = React.useState<string>("");
         const [selectedTemplateName, selectTemplateName] = React.useState<string>();
-        const [availableTemplateNames, setAvailableTemplateNames] = React.useState<string[]>([]);
+        const [availableTemplateNames] = React.useState<string[]>([]);
 
         const updateGivens = (givenResults: IndexedStep[]) => {
             recordGiven(givenResults);
