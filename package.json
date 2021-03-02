@@ -9,7 +9,7 @@
     "dev-server": "webpack-dev-server --open",
     "start": "node server.js",
     "preinstall": "rm -rf /dist",
-    "heroku-postbuild": "npm run build"
+    "heroku-prebuild": "npm run build"
   },
   "keywords": [],
   "author": "",
