@@ -66,10 +66,10 @@ function saveAs(fileName: string, data: string) {
         window.navigator.msSaveBlob(blob, fileName);
     }
 }
-export async function Save(templateName: string, test: LocalTestCreationResult): Promise<string> {
-    // export async function Save(templateName: string, test: LocalTestCreationResult, onSuccess, onError):Promise<void> {
+// export async function Save(templateName: string, test: LocalTestCreationResult): Promise<string> {
+export async function Save(templateName: string, test: LocalTestCreationResult, onSuccess, onError): Promise<void> {
     try {
-        console.log("Save: TemplateName:",templateName)
+        console.log("Save: TemplateName:", templateName)
         const dto = toDto(test)
 
 
@@ -86,15 +86,15 @@ export async function Save(templateName: string, test: LocalTestCreationResult):
                 body: requestBody
             });
         if (response.ok)
-            return 'Test created successfully.'
-        // onSuccess()
+            // return 'Test created successfully.'
+            onSuccess()
         else
-            return response.statusText
-        // onError(response.statusText)
+            // return response.statusText
+            onError(response.statusText)
     }
     catch (error) {
-            return error.toString()
-            // onError(error)
+        // return error.toString()
+        onError(error)
     }
 
 }

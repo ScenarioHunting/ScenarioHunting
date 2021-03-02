@@ -41,7 +41,7 @@ export const createTestRecorder = (board = singletonBoard
         //         when?.data.type + '_' + then?.data.type
         //         : testName))
 
-        const availableTemplateNames = getTemplateRepository().getAllTemplateNames()
+        var availableTemplateNames: string[] = []; getTemplateRepository().getAllTemplateNames().then(x => availableTemplateNames = x)
         const [givens, recordGiven] = React.useState<IndexedStep[]>([]);
         const [when, recordWhen] = React.useState<SelectedWidget>();
         const [then, recordThen] = React.useState<SelectedWidget>();
@@ -81,11 +81,10 @@ export const createTestRecorder = (board = singletonBoard
                 givens,
                 when,
                 then
-            } as LocalTestCreationResult)
-                .then(() => board.showNotification('Test created successfully.'))
-                .catch((statusText: string) => board.showNotification('Test creation error try again later.\n' + statusText))
-            //TODO: provide more guidance to user
-
+            } as LocalTestCreationResult
+                , () => board.showNotification('Test created successfully.')
+                , (statusText: string) => board.showNotification('Test creation error try again later.\n' + statusText)//TODO: provide more guidance to user
+            );
 
             const toViewModel = (step: SelectedWidget): StepInfo => {
                 return {
@@ -105,7 +104,6 @@ export const createTestRecorder = (board = singletonBoard
             await navigate('/test-explorer', { state: { newTest: viewModel } })
             // console.log(response);
         };
-        const templateNames = ["csharp-domain-model-unit-test"]
         return (
             <div className="test-recorder">
 
@@ -136,7 +134,7 @@ export const createTestRecorder = (board = singletonBoard
                         <label className="template-selector-label">Template:</label>
                         <select className="template-selector" value={selectedTemplateName}
                             onChange={(e) => selectTemplateName(e.target.value)}>
-                            {templateNames.map((templateName) => (
+                            {availableTemplateNames.map((templateName) => (
                                 <option key={templateName} value={templateName}>
                                     {templateName}
                                 </option>
