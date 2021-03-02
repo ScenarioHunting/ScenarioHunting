@@ -7,6 +7,7 @@ import { navigate } from "@reach/router"
 import { ExampleWidget, SelectedWidget } from 'board';
 import { Save, LocalTestCreationResult } from './test-recorder-http-service';
 import { singletonStepNavigator } from './local-dependency-container';
+import { getTemplateRepository } from './templateRepository';
 
 export type StepInfo = {
     type: string
@@ -40,13 +41,14 @@ export const createTestRecorder = (board = singletonBoard
         //         when?.data.type + '_' + then?.data.type
         //         : testName))
 
-
+        const availableTemplateNames = getTemplateRepository().getAllTemplateNames()
         const [givens, recordGiven] = React.useState<IndexedStep[]>([]);
         const [when, recordWhen] = React.useState<SelectedWidget>();
         const [then, recordThen] = React.useState<SelectedWidget>();
         const [testName, recordTestName] = React.useState<string>("");
         const [testContext, recordTestContext] = React.useState<string>("SampleService");
         const [sutName, recordSutName] = React.useState<string>("");
+        const [selectedTemplateName, selectTemplateName] = React.useState<string>(availableTemplateNames[0]);
 
         const updateGivens = (givenResults: IndexedStep[]) => {
             recordGiven(givenResults);
@@ -71,7 +73,7 @@ export const createTestRecorder = (board = singletonBoard
                 return
             }
 
-            save({
+            save(selectedTemplateName, {
                 testContext,
                 testName,
                 sutName,
@@ -131,7 +133,8 @@ export const createTestRecorder = (board = singletonBoard
                         <input type='text' className="test-name-input" value={testName} onChange={x => recordTestName(x.target.value)} placeholder="Test Name" />
 
                         <label className="template-selector-label">Template:</label>
-                        <select className="template-selector">
+                        <select className="template-selector" value={selectedTemplateName}
+                            onChange={(e) => selectTemplateName(e.target.value)}>
                             {templateNames.map((templateName) => (
                                 <option key={templateName} value={templateName}>
                                     {templateName}

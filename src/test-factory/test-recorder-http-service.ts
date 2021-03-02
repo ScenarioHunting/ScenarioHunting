@@ -4,6 +4,7 @@ import { CreateTestDto, IndexedStepDataDto, StepDataDto } from "./dto"
 import { SelectedWidget } from "board"
 import Handlebars from "handlebars/dist/handlebars.js"
 import { isNullOrUndefined } from "util"
+import { getTemplateRepository } from "./templateRepository"
 
 const toDto = ({ testContext
     , testName
@@ -65,17 +66,17 @@ function saveAs(fileName: string, data: string) {
         window.navigator.msSaveBlob(blob, fileName);
     }
 }
-export async function Save(test: LocalTestCreationResult, onSuccess, onError) {
+export async function Save(templateName: string, test: LocalTestCreationResult, onSuccess, onError) {
     try {
         const dto = toDto(test)
 
-        var requestBody = JSON.stringify(dto);
-        var result = await generateTestCode(dtoToJsonSchema(dto))
-        console.log('Before saving:')
-        console.log('Test name:', result.testName)
-        console.log('Test code:', result.testName)
+
+        var testTemplateRepository = getTemplateRepository()
+        var restoredTemplate = await testTemplateRepository.getTemplateContentByName(templateName)
+        var result = await generateTestCode(restoredTemplate, dtoToJsonSchema(dto))
         saveAs(result.testName, result.testCode)
 
+        var requestBody = JSON.stringify(dto);
         const response = await fetch('http://localhost:6000/Tests',//TODO: read it from config file
             {
                 headers: { 'Content-Type': 'application/json' },
@@ -119,174 +120,9 @@ function dtoToJsonSchema(dto: CreateTestDto) {
         testName: dto.testName,
     }
 }
-class templateRepository {
-    private role = "CRT.Templates"
-    public async getAllTemplateNames(): Promise<string[]> {
-        var widgets = await miro.board.widgets.get({
-            "metadata": {
-                [miro.getClientId()]: {
-                    "role": this.role,
-                }
-            }
-        })
-        var dbWidgets = widgets.filter(i => !isNullOrUndefined(i.metadata[miro.getClientId()].templateName))
-        return dbWidgets.map(w => w.metadata[miro.getClientId()].templateName)
-    }
-    public async createOrReplaceTemplate(templateName: string, templateContent: string) {
-        // eslint-disable-next-line no-undef
-        var widgets = await miro.board.widgets.get({
-            "metadata": {
-                [miro.getClientId()]: {
-                    "role": this.role,
-                    "templateName": templateName,
-                }
-            }
-        })
-        var dbWidgets = widgets.filter(i => !isNullOrUndefined(i.metadata[miro.getClientId()].templateName))
-        if (dbWidgets.length == 0) {
-            // eslint-disable-next-line no-undef
-            miro.board.widgets.create({
-                "type": "sticker",
-                "text": templateContent,
-                "metadata": {
-                    [miro.getClientId()]: {
-                        "role": this.role,
-                        "templateName": templateName,
-                        "templateContent": templateContent,
-                    }
-                },
-                "capabilities": {
-                    "editable": false
-                },
-                "style": {
-                    "textAlign": "l"
-                },
-                "clientVisible": false
-            })
-        } else {
-            var dbWidget = dbWidgets[0]
-            dbWidget["templateContent"] = templateContent
-            dbWidget.metadata[miro.getClientId()].templateContent = templateContent
-            dbWidget.metadata[miro.getClientId()].clientVisible = false
-            // dbWidget.metadata[miro.getClientId()].templateContent = template
-            // eslint-disable-next-line no-undef
-            miro.board.widgets.update(dbWidget)
-        }
-    }
-    public async getTemplateContentByName(templateName: string): Promise<string> {
-        var widgets = await miro.board.widgets.get({
-            "metadata": {
-                [miro.getClientId()]: {
-                    "role": this.role,
-                    "templateName": templateName
-                }
-            }
-        })
-        if (widgets.length == 0)
-            throw new Error("Widget not found")
-        if (isNullOrUndefined(widgets[0].metadata[miro.getClientId()].templateContent))
-            throw new Error("No template in the widget")
-
-        var restoredTemplate = widgets[0].metadata[miro.getClientId()].templateContent
-        return restoredTemplate
-    }
-}
 //********************** */
-async function generateTestCode(testSchema): Promise<{ testName: string, testCode: string }> {
-    var testTemplateRepository = new templateRepository()
 
-    var templateContent = `using StoryTest;
-using Vlerx.Es.Messaging;
-using Vlerx.Es.Persistence;
-using Vlerx.SampleContracts.{{sut}};
-using Vlerx.{{context}}.{{sut}};
-using Vlerx.{{context}}.{{sut}}.Commands;
-using Vlerx.{{context}}.Tests.StoryTests;
-using Xunit;
-
-namespace {{context}}.Tests
-{
-    {{#* inline "callConstructor"}}
-    new {{title}}({{#each properties}}"{{example}}"{{#skipLast}},{{/skipLast}}{{/each}})
-    {{/inline}}
-
-    public class Rel : IStorySpecification
-    {
-        public IDomainEvent[] Given
-        => new IDomainEvent[]{
-    {{#each givens}}
-        {{> callConstructor .}},
-    {{/each}}
-        };
-        public ICommand When
-        => {{> callConstructor when}};
-        public IDomainEvent[] Then
-        => new IDomainEvent[]{
-    {{#each thens}}
-        {{> callConstructor .}},
-    {{/each}}
-        };
-
-        public string Sut { get; } = nameof({{sut}});
-
-        [Fact]
-        public void Run()
-        => TestAdapter.Test(this
-                , setupUseCases: eventStore =>
-                     new[] {
-                        new {{sut}}UseCases(new Repository<{{sut}}.State>(eventStore))
-                     });
-    }
-}`
-    // var text = "CRT DB Can be moved around, but don't delete, and don't copy, or create other objects with this content)"
-    var templateName = "csharp-domain-model-unit-test"
-    // var role = "CRT.Templates"
-    //<Upsert templates:>
-    await testTemplateRepository.createOrReplaceTemplate(templateName, templateContent)
-    // eslint-disable-next-line no-undef
-    // var widgets = await miro.board.widgets.get({
-    //     "metadata": {
-    //         [miro.getClientId()]: {
-    //             "role": role,
-    //             "templateName": templateName,
-    //         }
-    //     }
-    // })
-    // var dbWidgets = widgets.filter(i => !isNullOrUndefined(i.metadata[miro.getClientId()].templateName))
-    // if (dbWidgets.length == 0) {
-    //     // eslint-disable-next-line no-undef
-    //     miro.board.widgets.create({
-    //         "type": "sticker",
-    //         "text": templateContent,
-    //         "metadata": {
-    //             [miro.getClientId()]: {
-    //                 "role": role,
-    //                 "templateName": templateName,
-    //                 "templateContent": templateContent,
-    //             }
-    //         },
-    //         "capabilities": {
-    //             "editable": false
-    //         },
-    //         "style": {
-    //             "textAlign": "l"
-    //         },
-    //         "clientVisible": false
-    //     })
-    // } else {
-    //     var dbWidget = dbWidgets[0]
-    //     dbWidget["templateContent"] = templateContent
-    //     dbWidget.metadata[miro.getClientId()].templateContent = templateContent
-    //     dbWidget.metadata[miro.getClientId()].clientVisible = false
-    //     // dbWidget.metadata[miro.getClientId()].templateContent = template
-    //     // eslint-disable-next-line no-undef
-    //     miro.board.widgets.update(dbWidget)
-    // }
-    //</Upsert templates>
-
-
-
-
+async function generateTestCode(restoredTemplate, testSchema): Promise<{ testName: string, testCode: string }> {
 
     Handlebars.registerHelper('skipLast', function (options) {
         if (options.data.last) {
@@ -296,15 +132,10 @@ namespace {{context}}.Tests
         }
     })
 
-    var restoredTemplate = await testTemplateRepository.getTemplateContentByName(templateName)
-    //</find template:>
 
-    //Conditional template loading
-    // Handlebars.registerPartial('')
     var compiledTemplate = Handlebars.compile(restoredTemplate);
 
     //TODO: validate: the test must have When and Then at least.
     var testCode = compiledTemplate(testSchema)
-    // console.log(finalText);
     return { testName: testSchema.testName, testCode: testCode }
 }
