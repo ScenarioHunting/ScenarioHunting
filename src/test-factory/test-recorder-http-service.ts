@@ -3,8 +3,8 @@ import { IndexedStep } from "./given-collection"
 import { CreateTestDto, IndexedStepDataDto, StepDataDto } from "./dto"
 import { SelectedWidget } from "board"
 import Handlebars from "handlebars/dist/handlebars.js"
-import { isNullOrUndefined } from "util"
 import { getTemplateRepository } from "./templateRepository"
+import { isNullOrUndefined } from "./isNullOrUndefined"
 
 const toDto = ({ testContext
     , testName

@@ -1,5 +1,6 @@
 const path = require('path')
 const HtmlWebPackPlugin = require("html-webpack-plugin");
+// const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
 	mode: 'development', // Tip! compile in 'production' mode before publish
@@ -34,15 +35,16 @@ module.exports = {
 				use: [
 					'file-loader',
 				]
-			}
+			},
 		]
 	},
 	resolve: {
-		extensions: ['.tsx', '.ts', '.js', '.less', '.css','.svg']
+		extensions: ['.tsx', '.ts', '.js', '.less', '.css', '.svg']
 	},
 	output: {
 		filename: '[name].js',
-		path: path.resolve(__dirname, 'dist')
+		path: path.resolve(__dirname, 'dist'),
+		clean: true
 	},
 	plugins: [
 		new HtmlWebPackPlugin({
@@ -53,6 +55,8 @@ module.exports = {
 			template: "./src/sidebar.html",
 			filename: "./sidebar.html"
 		}),
+		// new CleanWebpackPlugin(),
+
 		// new webpack.DefinePlugin({"process.env.NODE_ENV":JSON.stringify("development")})
 	]
 }
