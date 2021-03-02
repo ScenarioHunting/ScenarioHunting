@@ -302,8 +302,8 @@ namespace {{context}}.Tests
     
     //TODO: validate: the test must have When and Then at least.
     var testCode = compiledTemplate(testSchema)
-    console.log("TestName:", restoredTemplate)
-    console.log("TestSchema:", restoredTemplate)
+    console.log("TestName:", testSchema.testName)
+    console.log("TestCode:", testCode)
     // console.log(finalText);
     return testSchema.testName, testCode
 }
