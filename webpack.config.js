@@ -47,6 +47,7 @@ module.exports = {
 		clean: true
 	},
 	plugins: [
+		new CleanWebpackPlugin(),
 		new HtmlWebPackPlugin({
 			template: "./src/index.html",
 			filename: "./index.html"
@@ -55,7 +56,6 @@ module.exports = {
 			template: "./src/sidebar.html",
 			filename: "./sidebar.html"
 		}),
-		new CleanWebpackPlugin(),
 
 		// new webpack.DefinePlugin({"process.env.NODE_ENV":JSON.stringify("development")})
 	]
