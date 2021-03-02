@@ -41,14 +41,18 @@ export const createTestRecorder = (board = singletonBoard
         //         when?.data.type + '_' + then?.data.type
         //         : testName))
 
-        var availableTemplateNames: string[] = []; getTemplateRepository().getAllTemplateNames().then(x => availableTemplateNames = x)
+        getTemplateRepository().getAllTemplateNames().then(x => {
+            setAvailableTemplateNames(x)
+            selectTemplateName(x[0])
+        })
         const [givens, recordGiven] = React.useState<IndexedStep[]>([]);
         const [when, recordWhen] = React.useState<SelectedWidget>();
         const [then, recordThen] = React.useState<SelectedWidget>();
         const [testName, recordTestName] = React.useState<string>("");
         const [testContext, recordTestContext] = React.useState<string>("SampleService");
         const [sutName, recordSutName] = React.useState<string>("");
-        const [selectedTemplateName, selectTemplateName] = React.useState<string>(availableTemplateNames[0]);
+        const [selectedTemplateName, selectTemplateName] = React.useState<string>();
+        const [availableTemplateNames, setAvailableTemplateNames] = React.useState<string[]>();
 
         const updateGivens = (givenResults: IndexedStep[]) => {
             recordGiven(givenResults);
@@ -73,7 +77,7 @@ export const createTestRecorder = (board = singletonBoard
                 return
             }
 
-            save(selectedTemplateName, {
+            save(selectedTemplateName ?? '', {
                 testContext,
                 testName,
                 sutName,
@@ -134,7 +138,7 @@ export const createTestRecorder = (board = singletonBoard
                         <label className="template-selector-label">Template:</label>
                         <select className="template-selector" value={selectedTemplateName}
                             onChange={(e) => selectTemplateName(e.target.value)}>
-                            {availableTemplateNames.map((templateName) => (
+                            {(availableTemplateNames ?? []).map((templateName) => (
                                 <option key={templateName} value={templateName}>
                                     {templateName}
                                 </option>
