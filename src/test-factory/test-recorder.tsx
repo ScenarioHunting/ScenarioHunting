@@ -41,7 +41,7 @@ export const createTestRecorder = (board = singletonBoard
         //         when?.data.type + '_' + then?.data.type
         //         : testName))
 
-       
+
         const [givens, recordGiven] = React.useState<IndexedStep[]>([]);
         const [when, recordWhen] = React.useState<SelectedWidget>();
         const [then, recordThen] = React.useState<SelectedWidget>();
@@ -51,7 +51,8 @@ export const createTestRecorder = (board = singletonBoard
         const [selectedTemplateName, selectTemplateName] = React.useState<string>("");
         const [availableTemplateNames, setAvailableTemplateNames] = React.useState<string[]>([]);
         getTemplateRepository().getAllTemplateNames().then(x => {
-            setAvailableTemplateNames(x)
+            if (availableTemplateNames.length == 0)
+                setAvailableTemplateNames(x)
             // selectTemplateName(x[0])
         })
         const updateGivens = (givenResults: IndexedStep[]) => {

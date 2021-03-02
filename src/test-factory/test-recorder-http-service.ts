@@ -69,9 +69,7 @@ function saveAs(fileName: string, data: string) {
 // export async function Save(templateName: string, test: LocalTestCreationResult): Promise<string> {
 export async function Save(templateName: string, test: LocalTestCreationResult, onSuccess, onError): Promise<void> {
     try {
-        console.log("Save: TemplateName:", templateName)
         const dto = toDto(test)
-
 
         var testTemplateRepository = getTemplateRepository()
         var restoredTemplate = await testTemplateRepository.getTemplateContentByName(templateName)
