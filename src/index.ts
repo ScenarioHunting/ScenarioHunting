@@ -164,22 +164,22 @@ miro.onReady(async () => {
 			}
 		}
 	})
-	// <Init>
-	var role = "CRT.Templates"
-	// eslint-disable-next-line no-undef
-	var widgets = await miro.board.widgets.get({
-		"metadata": {
-			[miro.getClientId()]: {
-				"role": role,
-			}
-		}
-	})
-	widgets.forEach(w => {
-		w.clientVisible = false
-		// eslint-disable-next-line no-undef
-		miro.board.widgets.update(w)
-	})
-	// </Init>
+	// // <Init>
+	// var role = "CRT.Templates"
+	// // eslint-disable-next-line no-undef
+	// var widgets = await miro.board.widgets.get({
+	// 	"metadata": {
+	// 		[miro.getClientId()]: {
+	// 			"role": role,
+	// 		}
+	// 	}
+	// })
+	// widgets.forEach(w => {
+	// 	w.clientVisible = false
+	// 	// eslint-disable-next-line no-undef
+	// 	miro.board.widgets.update(w)
+	// })
+	// // </Init>
 	subscribeToServerEvents("ws://localhost:8080/ws")
 
 })
