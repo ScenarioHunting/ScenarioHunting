@@ -6,48 +6,48 @@ export function getTemplateRepository(): templateRepository {
 class templateRepository {
     constructor() {
         var templateContent = `using StoryTest;
-        using Vlerx.Es.Messaging;
-        using Vlerx.Es.Persistence;
-        using Vlerx.SampleContracts.{{sut}};
-        using Vlerx.{{context}}.{{sut}};
-        using Vlerx.{{context}}.{{sut}}.Commands;
-        using Vlerx.{{context}}.Tests.StoryTests;
-        using Xunit;
-        
-        namespace {{context}}.Tests
-        {
-            {{#* inline "callConstructor"}}
-            new {{title}}({{#each properties}}"{{example}}"{{#skipLast}},{{/skipLast}}{{/each}})
-            {{/inline}}
-        
-            public class Rel : IStorySpecification
-            {
-                public IDomainEvent[] Given
-                => new IDomainEvent[]{
-            {{#each givens}}
-                {{> callConstructor .}},
-            {{/each}}
-                };
-                public ICommand When
-                => {{> callConstructor when}};
-                public IDomainEvent[] Then
-                => new IDomainEvent[]{
-            {{#each thens}}
-                {{> callConstructor .}},
-            {{/each}}
-                };
-        
-                public string Sut { get; } = nameof({{sut}});
-        
-                [Fact]
-                public void Run()
-                => TestAdapter.Test(this
-                        , setupUseCases: eventStore =>
-                             new[] {
-                                new {{sut}}UseCases(new Repository<{{sut}}.State>(eventStore))
-                             });
-            }
-        }`;
+using Vlerx.Es.Messaging;
+using Vlerx.Es.Persistence;
+using Vlerx.SampleContracts.{{sut}};
+using Vlerx.{{context}}.{{sut}};
+using Vlerx.{{context}}.{{sut}}.Commands;
+using Vlerx.{{context}}.Tests.StoryTests;
+using Xunit;
+
+namespace {{context}}.Tests
+{
+    {{#* inline "callConstructor"}}
+    new {{title}}({{#each properties}}"{{example}}"{{#skipLast}},{{/skipLast}}{{/each}})
+    {{/inline}}
+
+    public class Rel : IStorySpecification
+    {
+        public IDomainEvent[] Given
+        => new IDomainEvent[]{
+    {{#each givens}}
+        {{> callConstructor .}},
+    {{/each}}
+        };
+        public ICommand When
+        => {{> callConstructor when}};
+        public IDomainEvent[] Then
+        => new IDomainEvent[]{
+    {{#each thens}}
+        {{> callConstructor .}},
+    {{/each}}
+        };
+
+        public string Sut { get; } = nameof({{sut}});
+
+        [Fact]
+        public void Run()
+        => TestAdapter.Test(this
+                , setupUseCases: eventStore =>
+                        new[] {
+                        new {{sut}}UseCases(new Repository<{{sut}}.State>(eventStore))
+                        });
+    }
+}`;
         var templateName = "csharp-domain-model-unit-test.cs";
         this.createOrReplaceTemplate(templateName, templateContent);
     }
@@ -106,8 +106,6 @@ class templateRepository {
         }
     }
     public async getTemplateContentByName(templateName: string): Promise<string> {
-        console.log("get: TemplateName:", templateName)
-
         var widgets = await miro.board.widgets.get({
             "metadata": {
                 [miro.getClientId()]: {

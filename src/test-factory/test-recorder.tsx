@@ -51,9 +51,11 @@ export const createTestRecorder = (board = singletonBoard
         const [selectedTemplateName, selectTemplateName] = React.useState<string>("");
         const [availableTemplateNames, setAvailableTemplateNames] = React.useState<string[]>([]);
         getTemplateRepository().getAllTemplateNames().then(x => {
-            if (availableTemplateNames.length == 0)
+            if (availableTemplateNames.length == 0) {
+                console.log("availableTemplateNames:",availableTemplateNames)
                 setAvailableTemplateNames(x)
-            // selectTemplateName(x[0])
+                selectTemplateName(x[0])
+            }
         })
         const updateGivens = (givenResults: IndexedStep[]) => {
             recordGiven(givenResults);
@@ -77,7 +79,6 @@ export const createTestRecorder = (board = singletonBoard
                 showValidationError('No then selections. Please save the test after selecting the then step.')
                 return
             }
-            console.log('Saving.. Template Name:' + selectedTemplateName)
             save(selectedTemplateName, {
                 testContext,
                 testName,
@@ -107,7 +108,6 @@ export const createTestRecorder = (board = singletonBoard
             }
 
             await navigate('/test-explorer', { state: { newTest: viewModel } })
-            // console.log(response);
         };
         return (
             <div className="test-recorder">
