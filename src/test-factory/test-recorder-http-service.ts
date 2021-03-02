@@ -115,7 +115,7 @@ function dtoToJsonSchema(dto: CreateTestDto) {
         testName: dto.testName,
     }
 }
-class testTemplateRepository {
+class templateRepository {
     private role = "CRT.Templates"
     public async getAllTemplateNames(): Promise<string[]> {
         var widgets = await miro.board.widgets.get({
@@ -189,7 +189,7 @@ class testTemplateRepository {
 }
 //********************** */
 async function generateTestCode(testSchema): Promise<{ testName: string, testCode: string }> {
-    var testTemplateRepository = new testTemplateRepository()
+    var testTemplateRepository = new templateRepository()
 
     var templateContent = `using StoryTest;
 using Vlerx.Es.Messaging;

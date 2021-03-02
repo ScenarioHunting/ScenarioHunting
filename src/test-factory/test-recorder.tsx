@@ -130,14 +130,15 @@ export const createTestRecorder = (board = singletonBoard
                         <label className="test-name-label">Test Name:</label>
                         <input type='text' className="test-name-input" value={testName} onChange={x => recordTestName(x.target.value)} placeholder="Test Name" />
 
-
-                        <select>
+                        <label className="template-selector-label">Template:</label>
+                        <select className="template-selector">
                             {templateNames.map((templateName) => (
                                 <option key={templateName} value={templateName}>
                                     {templateName}
                                 </option>
                             ))}
                         </select>
+
                     </div>
                 }
 
