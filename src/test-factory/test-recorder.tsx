@@ -43,7 +43,7 @@ export const createTestRecorder = (board = singletonBoard
 
         getTemplateRepository().getAllTemplateNames().then(x => {
             setAvailableTemplateNames(x)
-            selectTemplateName(x[0])
+            // selectTemplateName(x[0])
         })
         const [givens, recordGiven] = React.useState<IndexedStep[]>([]);
         const [when, recordWhen] = React.useState<SelectedWidget>();
@@ -52,7 +52,7 @@ export const createTestRecorder = (board = singletonBoard
         const [testContext, recordTestContext] = React.useState<string>("SampleService");
         const [sutName, recordSutName] = React.useState<string>("");
         const [selectedTemplateName, selectTemplateName] = React.useState<string>();
-        const [availableTemplateNames, setAvailableTemplateNames] = React.useState<string[]>();
+        const [availableTemplateNames, setAvailableTemplateNames] = React.useState<string[]>([]);
 
         const updateGivens = (givenResults: IndexedStep[]) => {
             recordGiven(givenResults);
@@ -138,7 +138,7 @@ export const createTestRecorder = (board = singletonBoard
                         <label className="template-selector-label">Template:</label>
                         <select className="template-selector" value={selectedTemplateName}
                             onChange={(e) => selectTemplateName(e.target.value)}>
-                            {(availableTemplateNames ?? []).map((templateName) => (
+                            {availableTemplateNames.map((templateName) => (
                                 <option key={templateName} value={templateName}>
                                     {templateName}
                                 </option>
