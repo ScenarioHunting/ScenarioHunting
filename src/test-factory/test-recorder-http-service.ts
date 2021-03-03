@@ -3,7 +3,7 @@ import { IndexedStep } from "./given-collection"
 import { CreateTestDto, IndexedStepDataDto, StepDataDto } from "./dto"
 import { SelectedWidget } from "board"
 import Handlebars from "handlebars/dist/handlebars.js"
-import { getTemplateRepository } from "./template-repository"
+import { getTemplateRepository, testCodeTemplate } from "./template-repository"
 import { isNullOrUndefined } from "./isNullOrUndefined"
 
 const toDto = ({ testContext
@@ -72,9 +72,10 @@ export async function Save(templateName: string, test: LocalTestCreationResult, 
         const dto = toDto(test)
 
         var testTemplateRepository = await getTemplateRepository()
-        var restoredTemplate = await testTemplateRepository.getTemplateContentByName(templateName)
-        var result = await generateTestCode(restoredTemplate, dtoToJsonSchema(dto))
-        saveAs(result.testName, result.testCode)
+        var restoredTemplate = await testTemplateRepository.getTemplateByName(templateName)
+        var viewModel = dtoToJsonSchema(dto)
+        var testCode = await generateTestCode(restoredTemplate, viewModel)
+        saveAs(viewModel.testName + restoredTemplate.testFileExtension, testCode)
 
         var requestBody = JSON.stringify(dto);
         const response = await fetch('http://localhost:6000/Tests',//TODO: read it from config file
@@ -125,7 +126,7 @@ function dtoToJsonSchema(dto: CreateTestDto) {
 }
 //********************** */
 
-async function generateTestCode(restoredTemplate, testSchema): Promise<{ testName: string, testCode: string }> {
+async function generateTestCode(restoredTemplate: testCodeTemplate, testSchema): Promise<string> {
 
     Handlebars.registerHelper('skipLast', function (options) {
         if (options.data.last) {
@@ -136,9 +137,9 @@ async function generateTestCode(restoredTemplate, testSchema): Promise<{ testNam
     })
 
 
-    var compiledTemplate = Handlebars.compile(restoredTemplate);
+    var compiledTemplate = Handlebars.compile(restoredTemplate.codeTemplate);
 
     //TODO: validate: the test must have When and Then at least.
     var testCode = compiledTemplate(testSchema)
-    return { testName: testSchema.testName, testCode: testCode }
+    return testCode
 }

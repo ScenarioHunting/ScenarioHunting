@@ -35,13 +35,13 @@ class templateRepository {
         var widget = await this.findWidgetByTemplateName(templateName)
         miro.board.widgets.deleteById(widget.id)
     }
-    public async createOrReplaceTemplate(templateName: string, templateContent: string) {
+    public async createOrReplaceTemplate(testCodeTemplate: testCodeTemplate) {
 
         var widgets = await miro.board.widgets.get({
             "metadata": {
                 [miro.getClientId()]: {
                     "role": this.role,
-                    "templateName": templateName,
+                    "templateName": testCodeTemplate.templateName,
                 }
             }
         });
@@ -50,12 +50,12 @@ class templateRepository {
 
             miro.board.widgets.create({
                 "type": "sticker",
-                "text": templateContent,
+                "text": testCodeTemplate.codeTemplate,
                 "metadata": {
                     [miro.getClientId()]: {
                         "role": this.role,
-                        "templateName": templateName,
-                        "templateContent": templateContent,
+                        "templateName": testCodeTemplate.templateName,
+                        "templateContent": testCodeTemplate.codeTemplate,
                     }
                 },
                 "capabilities": {
@@ -69,8 +69,8 @@ class templateRepository {
         }
         else {
             var dbWidget = dbWidgets[0];
-            dbWidget["templateContent"] = templateContent;
-            dbWidget.metadata[miro.getClientId()].templateContent = templateContent;
+            dbWidget["templateContent"] = testCodeTemplate.codeTemplate;
+            dbWidget.metadata[miro.getClientId()].templateContent = testCodeTemplate.codeTemplate;
             dbWidget.metadata[miro.getClientId()].clientVisible = false;
 
             miro.board.widgets.update(dbWidget);
@@ -89,17 +89,22 @@ class templateRepository {
             throw new Error("Widget not found for template:" + templateName);
         return widgets[0]
     }
-    public async getTemplateContentByName(templateName: string): Promise<string> {
+    public async getTemplateByName(templateName: string): Promise<testCodeTemplate> {
         var widget = await this.findWidgetByTemplateName(templateName)
         var restoredTemplate = widget.metadata[miro.getClientId()].templateContent;
         return restoredTemplate;
     }
 }
-
+export type testCodeTemplate = {
+    templateName: string,
+    codeTemplate: string,
+    testFileExtension: string
+}
 function addSamplesToRepository(repository: templateRepository) {
-    const sampleTemplates = [
+    const sampleTemplates: testCodeTemplate[] = [
         {
-            content: `using StoryTest;
+            testFileExtension: "cs",
+            codeTemplate: `using StoryTest;
 using Vlerx.Es.Messaging;
 using Vlerx.Es.Persistence;
 using Vlerx.SampleContracts.{{sut}};
@@ -142,11 +147,10 @@ namespace {{context}}.Tests
                         });
     }
 }`,
-            name: "sample-template.cs"
+            templateName: "sample-template"
         }
     ]
-    sampleTemplates.forEach(({ name, content }) =>
-        repository.createOrReplaceTemplate(name, content))
+    sampleTemplates.forEach(repository.createOrReplaceTemplate)
 }
 
 
