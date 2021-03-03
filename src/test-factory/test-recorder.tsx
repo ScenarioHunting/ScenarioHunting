@@ -159,11 +159,13 @@ export const createTestRecorder = (board = singletonBoard
     }
 
 
-export function TestRecorder() {
-    return (
-        <pre>
-            lkjdfhalksdjhfalskjdfhlaksjdhflaksjdhflaksjdfh
-        </pre>
-    )
-}
+export const ss = (board = singletonBoard
+    , stepNavigator = singletonStepNavigator
+    , save = Save): React.FC<any> => () => {
+        return <>
+            YESSSS!
+        </>
+    }
+
+export let TestRecorder = ss()
 // export let TestRecorder = createTestRecorder()
