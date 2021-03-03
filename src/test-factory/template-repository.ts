@@ -157,7 +157,7 @@ namespace {{context}}.Tests
             templateName: "sample-template"
         }
     ]
-    sampleTemplates.forEach(x => await repository.createOrReplaceTemplate(x))
+    sampleTemplates.forEach(repository.createOrReplaceTemplate)
 }
 
 
