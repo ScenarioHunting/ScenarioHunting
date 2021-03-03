@@ -3,7 +3,7 @@ import { IndexedStep } from "./given-collection"
 import { CreateTestDto, IndexedStepDataDto, StepDataDto } from "./dto"
 import { SelectedWidget } from "board"
 import Handlebars from "handlebars/dist/handlebars.js"
-import { getTemplateRepository, testCodeTemplate } from "./template-repository"
+import { getTemplateRepository } from "./template-repository"
 import { isNullOrUndefined } from "./isNullOrUndefined"
 
 const toDto = ({ testContext
@@ -74,8 +74,9 @@ export async function Save(templateName: string, test: LocalTestCreationResult):
 
         var testTemplateRepository = await getTemplateRepository()
         var restoredTemplate = await testTemplateRepository.getTemplateByName(templateName)
-        var testCode = await generateTestCode(restoredTemplate, viewModel)
-        saveAs(viewModel.testName + restoredTemplate.testFileExtension, testCode)
+        var testCode = await applyTemplate(restoredTemplate.codeTemplate, viewModel)
+        var testName = await applyTemplate(restoredTemplate.templateName, viewModel)
+        saveAs(testName + restoredTemplate.testFileExtension, testCode)
 
         var requestBody = JSON.stringify(dto);
         const response = await fetch('http://localhost:6000/Tests',//TODO: read it from config file
@@ -126,7 +127,7 @@ function dtoToJsonSchema(dto: CreateTestDto) {
 }
 //********************** */
 
-async function generateTestCode(restoredTemplate: testCodeTemplate, testSchema): Promise<string> {
+async function applyTemplate(template: string, testSchema): Promise<string> {
 
     Handlebars.registerHelper('skipLast', function (options) {
         if (options.data.last) {
@@ -137,7 +138,7 @@ async function generateTestCode(restoredTemplate: testCodeTemplate, testSchema):
     })
 
 
-    var compiledTemplate = Handlebars.compile(restoredTemplate.codeTemplate);
+    var compiledTemplate = Handlebars.compile(template);
 
     //TODO: validate: the test must have When and Then at least.
     var testCode = compiledTemplate(testSchema)
