@@ -67,13 +67,13 @@ function saveAs(fileName: string, data: string) {
     }
 }
 // export async function Save(templateName: string, test: LocalTestCreationResult): Promise<string> {
-export async function Save(templateName: string, test: LocalTestCreationResult, onSuccess, onError): Promise<void> {
+export async function Save(templateName: string, test: LocalTestCreationResult): Promise<string> {
     try {
         const dto = toDto(test)
+        var viewModel = dtoToJsonSchema(dto)
 
         var testTemplateRepository = await getTemplateRepository()
         var restoredTemplate = await testTemplateRepository.getTemplateByName(templateName)
-        var viewModel = dtoToJsonSchema(dto)
         var testCode = await generateTestCode(restoredTemplate, viewModel)
         saveAs(viewModel.testName + restoredTemplate.testFileExtension, testCode)
 
@@ -85,15 +85,15 @@ export async function Save(templateName: string, test: LocalTestCreationResult, 
                 body: requestBody
             });
         if (response.ok)
-            // return 'Test created successfully.'
-            onSuccess()
+            return 'Test created successfully.'
+        // onSuccess()
         else
-            // return response.statusText
-            onError(response.statusText)
+            return response.statusText
+        // onError(response.statusText)
     }
     catch (error) {
-        // return error.toString()
-        onError(error)
+        return error.toString()
+        // onError(error)
     }
 
 }

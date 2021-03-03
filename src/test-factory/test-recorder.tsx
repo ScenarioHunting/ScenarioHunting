@@ -87,10 +87,9 @@ export const createTestRecorder = (board = singletonBoard
                 givens,
                 when,
                 then
-            } as LocalTestCreationResult
-                , () => board.showNotification('Test created successfully.')
-                , (statusText: string) => board.showNotification('Test creation error try again later.\n' + statusText)//TODO: provide more guidance to user
-            );
+            } as LocalTestCreationResult)
+                .then(() => board.showNotification('Test created successfully.'))
+                .catch((statusText: string) => board.showNotification('Test creation error try again later.\n' + statusText))
 
             const toViewModel = (step: SelectedWidget): StepInfo => {
                 return {
