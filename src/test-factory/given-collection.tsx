@@ -33,7 +33,7 @@ export let createGivenStepCollection =
 			// 			setIndexedSteps(props.steps)
 			// 	})
 			// })
-			useWhatChanged([indexedSteps])
+			// useWhatChanged([indexedSteps])
 
 
 			let nextId: number = 1
