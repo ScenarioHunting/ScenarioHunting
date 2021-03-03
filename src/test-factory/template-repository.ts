@@ -118,8 +118,7 @@ using Xunit;
 namespace {{context}}.Tests
 {
     {{#* inline "callConstructor"}}
-    new {{title}}({{#each properties}}"{{example}}"{{#skipLast}},{{/skipLast}}{{/each}})
-    {{/inline}}
+    new {{title}}({{#each properties}}"{{example}}"{{#skipLast}},{{/skipLast}}{{/each}}){{/inline}}
 
     public class {{testName}} : IStorySpecification
     {

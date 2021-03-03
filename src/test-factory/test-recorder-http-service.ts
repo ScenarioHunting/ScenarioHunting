@@ -52,7 +52,7 @@ export type LocalTestCreationResult = {
     , then: SelectedWidget
 }
 function saveAs(fileName: string, data: string) {
-
+    console.log(`Saving as: file Name: ${fileName} content: ${JSON.stringify(data)}`)
     var blob = new Blob([data], { type: "text/plain;charset=utf-8" });
     if (isNullOrUndefined(window.navigator.msSaveOrOpenBlob)) {
         var elem = window.document.createElement('a');
