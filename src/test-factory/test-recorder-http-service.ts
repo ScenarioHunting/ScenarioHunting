@@ -141,6 +141,5 @@ async function applyTemplate(template: string, testSchema): Promise<string> {
     var compiledTemplate = Handlebars.compile(template);
 
     //TODO: validate: the test must have When and Then at least.
-    var testCode = compiledTemplate(testSchema)
-    return testCode
+    return compiledTemplate(testSchema)
 }

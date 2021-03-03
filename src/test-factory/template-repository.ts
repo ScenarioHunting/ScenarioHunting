@@ -91,7 +91,7 @@ class templateRepository {
     }
     public async getTemplateByName(templateName: string): Promise<testCodeTemplate> {
         var widget = await this.findWidgetByTemplateName(templateName)
-        var restoredTemplate = widget.metadata[miro.getClientId()].codeTemplate;
+        var restoredTemplate = widget.metadata[miro.getClientId()].testTemplate;
         return restoredTemplate;
     }
 }
