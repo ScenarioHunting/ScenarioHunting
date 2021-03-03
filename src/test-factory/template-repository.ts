@@ -4,23 +4,19 @@ import { isNullOrUndefined } from "./isNullOrUndefined";
 const role = "CRT.Templates";
 
 class templateRepository {
-    private isInitialized = false
     constructor() {
-        miro.onReady(() => {
-            if (!this.isInitialized)
-                miro.board.widgets.get({
-                    "metadata": {
-                        [miro.getClientId()]: {
-                            "role": role,
-                        }
-                    }
-                }).then(widgets =>
-                    widgets.forEach(w => {
-                        console.log(`Template :${w.metadata} is found`)
-                        w.clientVisible = false
-                        miro.board.widgets.update(w)
-                    }))
-        })
+        // miro.board.widgets.get({
+        //     "metadata": {
+        //         [miro.getClientId()]: {
+        //             "role": role,
+        //         }
+        //     }
+        // }).then(widgets =>
+        //     widgets.forEach(w => {
+        //         console.log(`Template :${w.metadata} is found.`)
+        //         w.clientVisible = false
+        //         miro.board.widgets.update(w)
+        //     }))
     }
     public async getAllTemplateNames(): Promise<string[]> {
         var widgets = await miro.board.widgets.get({
