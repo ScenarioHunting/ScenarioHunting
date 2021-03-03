@@ -1,4 +1,4 @@
-// import { singletonStepNavigator } from './local-dependency-container';
+import { singletonStepNavigator } from './local-dependency-container';
 import * as React from 'react'
 import { TestStepTurn } from "./test-step-turn";
 import { useWhatChanged } from "@simbathesailor/use-what-changed";
@@ -16,8 +16,7 @@ export type GivenStepsProps = {
 	steps?: IndexedStep[]
 }
 export let createGivenStepCollection =
-	() =>
-	// (stepNavigator = singletonStepNavigator) =>
+	(stepNavigator = singletonStepNavigator) =>
 		(props: GivenStepsProps) => {
 
 			const [isActive, setIsActive] = React.useState<boolean>(false)
@@ -27,14 +26,14 @@ export let createGivenStepCollection =
 			// 	indexedSteps: []
 			// })
 
-			// React.useEffect(() => {
-			// 	stepNavigator.onTurn(TestStepTurn.Given, () => {
-			// 		setIsActive(true)
-			// 		if (props.steps)
-			// 			setIndexedSteps(props.steps)
-			// 	})
-			// })
-			// useWhatChanged([indexedSteps])
+			React.useEffect(() => {
+				stepNavigator.onTurn(TestStepTurn.Given, () => {
+					setIsActive(true)
+					if (props.steps)
+						setIndexedSteps(props.steps)
+				})
+			})
+			useWhatChanged([indexedSteps])
 
 
 			let nextId: number = 1

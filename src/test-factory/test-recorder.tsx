@@ -6,7 +6,7 @@ import { ThenStep as Then } from './then-step';
 import { navigate } from "@reach/router"
 import { ExampleWidget, SelectedWidget } from 'board';
 import { Save, LocalTestCreationResult } from './test-recorder-http-service';
-// import { singletonStepNavigator } from './local-dependency-container';
+import { singletonStepNavigator } from './local-dependency-container';
 import { getTemplateRepository } from './template-repository';
 
 export type StepInfo = {
@@ -22,18 +22,18 @@ export type ViewModel = {
     sutName: string
 }
 export const createTestRecorder = (board = singletonBoard
-    // , stepNavigator = singletonStepNavigator
+    , stepNavigator = singletonStepNavigator
     , save = Save): React.FC<any> => () => {
         if (!board) {
             //TODO: Implement guard
         }
-        // React.useEffect(() => {
-        //     // (async (board: IBoard) => {
-        //     //     await 
-        //     board.unselectAll()
-        //         .then(stepNavigator.start);
-        //     // })(board);
-        // }, [board]);
+        React.useEffect(() => {
+            // (async (board: IBoard) => {
+            //     await 
+            board.unselectAll()
+                .then(stepNavigator.start);
+            // })(board);
+        }, [board]);
 
 
         // React.useEffect(() =>
