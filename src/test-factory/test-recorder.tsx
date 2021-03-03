@@ -179,8 +179,8 @@ export const ss = (board = singletonBoard
         const [availableTemplateNames, setAvailableTemplateNames] = React.useState<string[]>([]);
         getTemplateRepository().then(repo => repo.getAllTemplateNames().then(x => {
             if (availableTemplateNames.length == 0) {
+                setAvailableTemplateNames(x)
                 alert(":")
-                //     setAvailableTemplateNames(x)
                 // selectTemplateName(x[0])
             }
         }))
