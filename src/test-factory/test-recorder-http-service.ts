@@ -71,12 +71,15 @@ export async function Save(templateName: string, test: LocalTestCreationResult):
     try {
         const dto = toDto(test)
         var viewModel = dtoToJsonSchema(dto)
+        console.log("Saving the template for test:", viewModel.testName)
 
         var testTemplateRepository = await getTemplateRepository()
         var restoredTemplate = await testTemplateRepository.getTemplateByName(templateName)
+        console.log("restored template:", restoredTemplate)
         var testCode = await applyTemplate(restoredTemplate.codeTemplate, viewModel)
-        var testName = await applyTemplate(restoredTemplate.templateName, viewModel)
-        saveAs(testName + restoredTemplate.testFileExtension, testCode)
+        var testFileName = await applyTemplate(restoredTemplate.templateName, viewModel)
+        console.log("testCode:", testCode, "testFileName", testFileName)
+        saveAs(testFileName + restoredTemplate.testFileExtension, testCode)
 
         var requestBody = JSON.stringify(dto);
         const response = await fetch('http://localhost:6000/Tests',//TODO: read it from config file
