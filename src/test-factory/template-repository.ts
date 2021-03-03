@@ -46,6 +46,7 @@ class templateRepository {
         });
         var dbWidgets = widgets.filter(i => !isNullOrUndefined(i.metadata[miro.getClientId()].templateName));
         var json = JSON.stringify({ testTemplate: testCodeTemplate, role: role })
+        console.log('JSONNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN:', json)
         if (dbWidgets.length == 0) {
             console.log("Creating template:", testCodeTemplate)
             miro.board.widgets.create({
@@ -68,6 +69,7 @@ class templateRepository {
             console.log("Updating template:", testCodeTemplate)
 
             var dbWidget = dbWidgets[0];
+            dbWidget["test"] = testCodeTemplate.codeTemplate
             dbWidget.metadata[miro.getClientId()].testTemplate = json;
             dbWidget.metadata[miro.getClientId()].clientVisible = false;
 
@@ -160,6 +162,6 @@ namespace {{context}}.Tests
 export async function getTemplateRepository(): Promise<templateRepository> {
 
     var singletonInstance = new templateRepository()//Upfront instantiation to hide the widgets on init
-    // addSamplesToRepository(singletonInstance)
+    addSamplesToRepository(singletonInstance)
     return singletonInstance
 }
