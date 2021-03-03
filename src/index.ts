@@ -37,7 +37,6 @@ const underlineIcon = '<line x1="22" y1="22" x2="00" y2="22" stroke="currentColo
 // 	// 	text: textEdit
 // 	// })
 // }
-
 const attachReportToWidgetByWidgetId = async (widgetId: string, theOriginalText: string) => {
 	var vm = await testResultReports.getTestSummeryForWidget(widgetId)
 	if (typeof vm == 'boolean')
@@ -125,6 +124,7 @@ let subscribeToServerEvents = (webSocketUrl: string) => {
 miro.onReady(async () => {
 
 
+	console.log("Client Id:", miro.getClientId())
 
 
 	await singletonBoard.interceptPossibleTextEdit(attachReportToWidgetByWidgetId)

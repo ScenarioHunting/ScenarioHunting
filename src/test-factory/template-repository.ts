@@ -107,7 +107,7 @@ export type testCodeTemplate = {
     testFileExtension: string,
     testFileNameTemplate: string
 }
-function addSamplesToRepository(repository: templateRepository) {
+async function addSamplesToRepository(repository: templateRepository) {
     const sampleTemplates: testCodeTemplate[] = [
         {
             testFileNameTemplate: "{{testName}}",
@@ -157,13 +157,13 @@ namespace {{context}}.Tests
             templateName: "sample-template"
         }
     ]
-    sampleTemplates.forEach(repository.createOrReplaceTemplate)
+    sampleTemplates.forEach(x => await repository.createOrReplaceTemplate(x))
 }
 
 
 export async function getTemplateRepository(): Promise<templateRepository> {
 
     var singletonInstance = new templateRepository()//Upfront instantiation to hide the widgets on init
-    addSamplesToRepository(singletonInstance)
+    await addSamplesToRepository(singletonInstance)
     return singletonInstance
 }
