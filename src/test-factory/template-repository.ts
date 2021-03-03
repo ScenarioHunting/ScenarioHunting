@@ -5,7 +5,6 @@ const role = "CRT.Templates";
 
 class templateRepository {
     constructor() {
-        // eslint-disable-next-line no-undef
         miro.onReady(() =>
             miro.board.widgets.get({
                 "metadata": {
@@ -15,8 +14,8 @@ class templateRepository {
                 }
             }).then(widgets =>
                 widgets.forEach(w => {
+                    console.log(`Template :${w.metadata} is found`)
                     w.clientVisible = false
-                    // eslint-disable-next-line no-undef
                     miro.board.widgets.update(w)
                 }))
         )
@@ -37,12 +36,11 @@ class templateRepository {
         miro.board.widgets.deleteById(widget.id)
     }
     public async createOrReplaceTemplate(testCodeTemplate: testCodeTemplate) {
-        console.log("Adding template.")
         var widgets = await miro.board.widgets.get({
             "metadata": {
                 [miro.getClientId()]: {
                     "role": role,
-                    testTemplate: {
+                    "testTemplate": {
                         "templateName": testCodeTemplate.templateName
                     }
                 }
@@ -51,6 +49,7 @@ class templateRepository {
         var dbWidgets = widgets.filter(i => !isNullOrUndefined(i.metadata[miro.getClientId()].templateName));
         var json = JSON.stringify({ testTemplate: testCodeTemplate, role: role })
         if (dbWidgets.length == 0) {
+            console.log("Creating template:", testCodeTemplate)
             miro.board.widgets.create({
                 "type": "sticker",
                 "text": testCodeTemplate.codeTemplate,
@@ -65,13 +64,18 @@ class templateRepository {
                 },
                 "clientVisible": false
             });
+            console.log(`template:${testCodeTemplate.templateName} is created successfully.`)
         }
         else {
+            console.log("Updating template:", testCodeTemplate)
+
             var dbWidget = dbWidgets[0];
             dbWidget.metadata[miro.getClientId()].testTemplate = json;
             dbWidget.metadata[miro.getClientId()].clientVisible = false;
 
             miro.board.widgets.update(dbWidget);
+            console.log(`template:${testCodeTemplate.templateName} is updated successfully.`)
+
         }
     }
     private async findWidgetByTemplateName(templateName: string): Promise<SDK.IWidget> {
@@ -79,7 +83,7 @@ class templateRepository {
             "metadata": {
                 [miro.getClientId()]: {
                     "role": role,
-                    testTemplate: {
+                    "testTemplate": {
                         "templateName": templateName
                     }
                 }
