@@ -8,15 +8,14 @@ import { navigate } from "@reach/router"
 
 ReactDOM.render(
     <>
-    HIOOOOOOOOOOOOOO
-        {/* <nav>
+        <nav>
             <Link to="/">New Test</Link> |{" "}
             <Link to="/test-explorer">Test Explorer</Link> |{" "}
         </nav>
         <Router>
             <TestRecorder default path="/" />
-            <TestExplorer path="test-explorer" />
-        </Router> */}
+            {/* <TestExplorer path="test-explorer" /> */}
+        </Router>
     </>
     , document.getElementById('react-app')
 )

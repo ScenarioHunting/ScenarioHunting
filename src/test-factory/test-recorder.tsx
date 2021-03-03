@@ -116,8 +116,8 @@ export const createTestRecorder = (board = singletonBoard
         };
         return (
             <div className="test-recorder">
-
-                <div className="given">
+                kjhgkasjdhf
+                {/* <div className="given">
                     <Givens onStepSelectionChange={updateGivens} steps={givens} />
                 </div >
 
@@ -128,31 +128,31 @@ export const createTestRecorder = (board = singletonBoard
                 <div className="then">
                     <Then onStepSelection={updateThen} step={then} />
                 </div>
-                {/* {then && */}
-                <div className="test-form-details">
-                    <label className="test-context-label">Test Context:</label>
-                    <input type='text' className="test-context-input" value={testContext} onChange={x => recordTestContext(x.target.value)} placeholder="Test Context" />
+                {then &&
+                    <div className="test-form-details">
+                        <label className="test-context-label">Test Context:</label>
+                        <input type='text' className="test-context-input" value={testContext} onChange={x => recordTestContext(x.target.value)} placeholder="Test Context" />
 
-                    <label className="sut-label">SUT:</label>
-                    <input type='text' className="sut-input" value={sutName} onChange={x => recordSutName(x.target.value)} placeholder="Sut Name" />
+                        <label className="sut-label">SUT:</label>
+                        <input type='text' className="sut-input" value={sutName} onChange={x => recordSutName(x.target.value)} placeholder="Sut Name" />
 
-                    <button className='save-button' onClick={saveAndRedirectToExplorer}>Save</button>
+                        <button className='save-button' onClick={saveAndRedirectToExplorer}>Save</button>
 
-                    <label className="test-name-label">Test Name:</label>
-                    <input type='text' className="test-name-input" value={testName} onChange={x => recordTestName(x.target.value)} placeholder="Test Name" />
+                        <label className="test-name-label">Test Name:</label>
+                        <input type='text' className="test-name-input" value={testName} onChange={x => recordTestName(x.target.value)} placeholder="Test Name" />
 
-                    <label className="template-selector-label">Template:</label>
-                    <select className="template-selector" value={selectedTemplateName}
-                        onChange={(e) => selectTemplateName(e.target.value)}>
-                        {availableTemplateNames.map((templateName) => (
-                            <option key={templateName} value={templateName}>
-                                {templateName}
-                            </option>
-                        ))}
-                    </select>
+                        <label className="template-selector-label">Template:</label>
+                        <select className="template-selector" value={selectedTemplateName}
+                            onChange={(e) => selectTemplateName(e.target.value)}>
+                            {availableTemplateNames.map((templateName) => (
+                                <option key={templateName} value={templateName}>
+                                    {templateName}
+                                </option>
+                            ))}
+                        </select>
 
-                </div>
-                {/* } */}
+                    </div>
+                } */}
 
             </div>
         );
