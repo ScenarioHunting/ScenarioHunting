@@ -5,7 +5,7 @@ import { WhenStep as When } from './when-step';
 import { ThenStep as Then } from './then-step';
 import { navigate } from "@reach/router"
 import { ExampleWidget, SelectedWidget } from 'board';
-// import { Save, LocalTestCreationResult } from './test-recorder-http-service';
+import { Save, LocalTestCreationResult } from './test-recorder-http-service';
 import { singletonStepNavigator } from './local-dependency-container';
 import { getTemplateRepository } from './template-repository';
 
@@ -23,8 +23,7 @@ export type ViewModel = {
 }
 export const createTestRecorder = (board = singletonBoard
     , stepNavigator = singletonStepNavigator
-    // , save = Save
-    ): React.FC<any> => () => {
+    , save = Save): React.FC<any> => () => {
         if (!board) {
             //TODO: Implement guard
         }
@@ -83,20 +82,20 @@ export const createTestRecorder = (board = singletonBoard
                 showValidationError('No then selections. Please save the test after selecting the then step.')
                 return
             }
-            // try {
-            //     await save(selectedTemplateName, {
-            //         testContext,
-            //         testName,
-            //         sutName,
+            try {
+                await save(selectedTemplateName, {
+                    testContext,
+                    testName,
+                    sutName,
 
-            //         givens,
-            //         when,
-            //         then
-            //     } as LocalTestCreationResult)
-            //     board.showNotification('Test created successfully.')
-            // } catch {
-            //     board.showNotification('Test creation error try again later.\n')
-            // }
+                    givens,
+                    when,
+                    then
+                } as LocalTestCreationResult)
+                board.showNotification('Test created successfully.')
+            } catch {
+                board.showNotification('Test creation error try again later.\n')
+            }
 
             const toViewModel = (step: SelectedWidget): StepInfo => {
                 return {

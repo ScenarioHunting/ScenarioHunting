@@ -38,14 +38,15 @@ class templateRepository {
             "metadata": {
                 [miro.getClientId()]: {
                     "role": role,
-                    "testTemplate": {
-                        "templateName": testCodeTemplate.templateName
-                    }
+                    "templateName": testCodeTemplate.templateName
+                    // "testTemplate": {
+                    //     "templateName": testCodeTemplate.templateName
+                    // }
                 }
             }
         });
         var dbWidgets = widgets.filter(i => !isNullOrUndefined(i.metadata[miro.getClientId()].templateName));
-        var json = JSON.stringify({ testTemplate: testCodeTemplate, role: role })
+        var json = JSON.stringify({ templateName: testCodeTemplate.templateName, testTemplate: testCodeTemplate, role: role })
         console.log('JSONNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN:', json)
         if (dbWidgets.length == 0) {
             console.log("Creating template:", testCodeTemplate)
@@ -83,9 +84,10 @@ class templateRepository {
             "metadata": {
                 [miro.getClientId()]: {
                     "role": role,
-                    "testTemplate": {
-                        "templateName": templateName
-                    }
+                    "templateName": templateName,
+                    // "testTemplate": {
+                    //     "templateName": templateName
+                    // }
                 }
             }
         });
