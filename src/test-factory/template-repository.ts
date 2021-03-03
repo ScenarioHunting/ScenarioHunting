@@ -33,7 +33,7 @@ class templateRepository {
         return dbWidgets.map(w => w.metadata[miro.getClientId()].templateName);
     }
     public async removeTemplate(templateName: string) {
-        var widget = await findWidgetByTemplateName(templateName)
+        var widget = await this.findWidgetByTemplateName(templateName)
         miro.board.widgets.deleteById(widget.id)
     }
     public async createOrReplaceTemplate(testCodeTemplate: testCodeTemplate) {
@@ -90,7 +90,7 @@ class templateRepository {
         return widgets[0]
     }
     public async getTemplateByName(templateName: string): Promise<testCodeTemplate> {
-        var widget = await findWidgetByTemplateName(templateName)
+        var widget = await this.findWidgetByTemplateName(templateName)
         var restoredTemplate = widget.metadata[miro.getClientId()].codeTemplate;
         return restoredTemplate;
     }
