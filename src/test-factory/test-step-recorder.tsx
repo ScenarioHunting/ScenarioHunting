@@ -1,14 +1,14 @@
 import './test-step-recorder.less';
 import * as React from 'react';
 import { IBoard, SelectedWidget } from 'board';
-import { IQueuingMachine } from "../queuing-machine/iqueuing-machine";
+// import { IQueuingMachine } from "../queuing-machine/iqueuing-machine";
 import { TestStepTurn } from './test-step-turn';
 export class TestStepDependencies {
     stepType: string
     selectionWaitingMessage: string
     turn: TestStepTurn
     board: IBoard
-    stepNavigator: IQueuingMachine<TestStepTurn>
+    // stepNavigator: IQueuingMachine<TestStepTurn>
 }
 
 export class TestStepProps {
@@ -21,7 +21,7 @@ export function createTestStepRecorder({ stepType
     , selectionWaitingMessage
     , turn
     , board
-    , stepNavigator
+    // , stepNavigator
 }: TestStepDependencies) {
     return function StepRecorder(props: TestStepProps) {
         const notifyParent = (selectedWidget: SelectedWidget) =>
@@ -45,8 +45,7 @@ export function createTestStepRecorder({ stepType
         //             stepNavigator.nextTurn();
         //         });
         //     });
-
-        //     // eslint-disable-next-line react-hooks/exhaustive-deps
+            // eslint-disable-next-line react-hooks/exhaustive-deps
         // }, [board, stepNavigator])
         const onValueChange = (index: number, event: React.ChangeEvent<HTMLInputElement>) => {
             props.step!.widgetData.properties[index].simplePropertyValue

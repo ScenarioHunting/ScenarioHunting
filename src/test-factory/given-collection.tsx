@@ -1,4 +1,4 @@
-import { singletonStepNavigator } from './local-dependency-container';
+// import { singletonStepNavigator } from './local-dependency-container';
 import * as React from 'react'
 import { TestStepTurn } from "./test-step-turn";
 import { useWhatChanged } from "@simbathesailor/use-what-changed";
@@ -16,7 +16,8 @@ export type GivenStepsProps = {
 	steps?: IndexedStep[]
 }
 export let createGivenStepCollection =
-	(stepNavigator = singletonStepNavigator) =>
+	() =>
+	// (stepNavigator = singletonStepNavigator) =>
 		(props: GivenStepsProps) => {
 
 			const [isActive, setIsActive] = React.useState<boolean>(false)
