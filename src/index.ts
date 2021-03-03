@@ -124,7 +124,7 @@ let subscribeToServerEvents = (webSocketUrl: string) => {
 miro.onReady(async () => {
 
 
-	console.log("Client Id:", miro.getClientId())
+	// console.log("Client Id:", miro.getClientId())3074457349056199734
 
 
 	await singletonBoard.interceptPossibleTextEdit(attachReportToWidgetByWidgetId)
