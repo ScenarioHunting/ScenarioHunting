@@ -161,7 +161,9 @@ export const createTestRecorder = (board = singletonBoard
 
 export let TestRecorder = () => {
     return (
-        ;lksjf;laskdjf;alksdjf;laksdjf
+        <pre>
+            lkjdfhalksdjhfalskjdfhlaksjdhflaksjdhflaksjdfh
+        </pre>
     )
 }
 // export let TestRecorder = createTestRecorder()
