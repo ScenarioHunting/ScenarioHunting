@@ -175,13 +175,13 @@ export const ss = (board = singletonBoard
         // const [testName, recordTestName] = React.useState<string>("TestName");
         // const [testContext, recordTestContext] = React.useState<string>("ServiceName");
         // const [sutName, recordSutName] = React.useState<string>("SutName");
-        // const [selectedTemplateName, selectTemplateName] = React.useState<string>("no template");
+        const [selectedTemplateName, selectTemplateName] = React.useState<string>("no template");
         const [availableTemplateNames, setAvailableTemplateNames] = React.useState<string[]>([]);
         getTemplateRepository().then(repo => repo.getAllTemplateNames().then(x => {
             if (availableTemplateNames.length == 0) {
                 setAvailableTemplateNames(x)
                 alert(":")
-                // selectTemplateName(x[0])
+                selectTemplateName(x[0])
             }
         }))
 
