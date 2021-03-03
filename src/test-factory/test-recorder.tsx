@@ -57,12 +57,15 @@ export const createTestRecorder = (board = singletonBoard
             }
         }))
         const updateGivens = (givenResults: IndexedStep[]) => {
+            console.log("UPdating givens from test-recorder")
             recordGiven(givenResults);
         };
         const updateWhen = (when: SelectedWidget) => {
+            console.log("UPdating when from test-recorder")
             recordWhen(when);
         };
         const updateThen = (then: SelectedWidget) => {
+            console.log("UPdating then from test-recorder")
             recordThen(then);
         };
         const showValidationError = (errorText: string) => {
