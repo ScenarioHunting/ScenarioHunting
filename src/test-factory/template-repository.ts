@@ -114,7 +114,7 @@ namespace {{context}}.Tests
     new {{title}}({{#each properties}}"{{example}}"{{#skipLast}},{{/skipLast}}{{/each}})
     {{/inline}}
 
-    public class Rel : IStorySpecification
+    public class {{testName}} : IStorySpecification
     {
         public IDomainEvent[] Given
         => new IDomainEvent[]{
@@ -151,7 +151,7 @@ namespace {{context}}.Tests
 
 
 export async function getTemplateRepository(): Promise<templateRepository> {
-    
+
     var singletonInstance = new templateRepository()//Upfront instantiation to hide the widgets on init
     addSamplesToRepository(singletonInstance)
     return singletonInstance
