@@ -180,78 +180,78 @@ export const ss = (board = singletonBoard
         //         : testName))
 
 
-        const [givens, recordGiven] = React.useState<IndexedStep[]>([]);
-        const [when, recordWhen] = React.useState<SelectedWidget>();
-        const [then, recordThen] = React.useState<SelectedWidget>();
-        const [testName, recordTestName] = React.useState<string>("TestName");
-        const [testContext, recordTestContext] = React.useState<string>("ServiceName");
-        const [sutName, recordSutName] = React.useState<string>("SutName");
-        const [selectedTemplateName, selectTemplateName] = React.useState<string>("no template");
-        const [availableTemplateNames, setAvailableTemplateNames] = React.useState<string[]>([]);
-        getTemplateRepository().then(repo => repo.getAllTemplateNames().then(x => {
-            if (availableTemplateNames.length == 0) {
-                setAvailableTemplateNames(x)
-                selectTemplateName(x[0])
-            }
-        }))
+        // const [givens, recordGiven] = React.useState<IndexedStep[]>([]);
+        // const [when, recordWhen] = React.useState<SelectedWidget>();
+        // const [then, recordThen] = React.useState<SelectedWidget>();
+        // const [testName, recordTestName] = React.useState<string>("TestName");
+        // const [testContext, recordTestContext] = React.useState<string>("ServiceName");
+        // const [sutName, recordSutName] = React.useState<string>("SutName");
+        // const [selectedTemplateName, selectTemplateName] = React.useState<string>("no template");
+        // const [availableTemplateNames, setAvailableTemplateNames] = React.useState<string[]>([]);
+        // getTemplateRepository().then(repo => repo.getAllTemplateNames().then(x => {
+        //     if (availableTemplateNames.length == 0) {
+        //         setAvailableTemplateNames(x)
+        //         selectTemplateName(x[0])
+        //     }
+        // }))
         const updateGivens = (givenResults: IndexedStep[]) => {
             console.log("UPdating givens from test-recorder")
-            recordGiven(givenResults);
+            // recordGiven(givenResults);
         };
         const updateWhen = (when: SelectedWidget) => {
             console.log("UPdating when from test-recorder")
-            recordWhen(when);
+            // recordWhen(when);
         };
         const updateThen = (then: SelectedWidget) => {
             console.log("UPdating then from test-recorder")
-            recordThen(then);
+            // recordThen(then);
         };
         const showValidationError = (errorText: string) => {
             board.showNotification(errorText)
         }
 
-        const saveAndRedirectToExplorer = async () => {
-            console.log('saving...')
-            if (!when) {
-                showValidationError('No when selections. Please save the test after selecting the when step.')
-                return
-            }
-            if (!then) {
-                showValidationError('No then selections. Please save the test after selecting the then step.')
-                return
-            }
-            try {
-                await save(selectedTemplateName, {
-                    testContext,
-                    testName,
-                    sutName,
+        // const saveAndRedirectToExplorer = async () => {
+        //     console.log('saving...')
+        //     if (!when) {
+        //         showValidationError('No when selections. Please save the test after selecting the when step.')
+        //         return
+        //     }
+        //     if (!then) {
+        //         showValidationError('No then selections. Please save the test after selecting the then step.')
+        //         return
+        //     }
+        //     try {
+        //         await save(selectedTemplateName, {
+        //             testContext,
+        //             testName,
+        //             sutName,
 
-                    givens,
-                    when,
-                    then
-                } as LocalTestCreationResult)
-                board.showNotification('Test created successfully.')
-            } catch {
-                board.showNotification('Test creation error try again later.\n')
-            }
+        //             givens,
+        //             when,
+        //             then
+        //         } as LocalTestCreationResult)
+        //         board.showNotification('Test created successfully.')
+        //     } catch {
+        //         board.showNotification('Test creation error try again later.\n')
+        //     }
 
-            const toViewModel = (step: SelectedWidget): StepInfo => {
-                return {
-                    type: step.widgetData.type,
-                    widget: step.widgetSnapshot
-                }
-            }
-            var viewModel: ViewModel = {
-                testContext
-                , sutName
-                , testName
-                , givens: givens.map(step => toViewModel(step.step))
-                , when: toViewModel(when)
-                , then: toViewModel(then)
-            }
+        //     const toViewModel = (step: SelectedWidget): StepInfo => {
+        //         return {
+        //             type: step.widgetData.type,
+        //             widget: step.widgetSnapshot
+        //         }
+        //     }
+        //     var viewModel: ViewModel = {
+        //         testContext
+        //         , sutName
+        //         , testName
+        //         , givens: givens.map(step => toViewModel(step.step))
+        //         , when: toViewModel(when)
+        //         , then: toViewModel(then)
+        //     }
 
-            await navigate('/test-explorer', { state: { newTest: viewModel } })
-        };
+        //     await navigate('/test-explorer', { state: { newTest: viewModel } })
+        // };
         return <>
             YESSSS!
         </>
