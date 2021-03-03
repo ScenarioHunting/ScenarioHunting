@@ -5,18 +5,18 @@ const role = "CRT.Templates";
 
 class templateRepository {
     constructor() {
-        // miro.board.widgets.get({
-        //     "metadata": {
-        //         [miro.getClientId()]: {
-        //             "role": role,
-        //         }
-        //     }
-        // }).then(widgets =>
-        //     widgets.forEach(w => {
-        //         console.log(`Template :${w.metadata} is found.`)
-        //         w.clientVisible = false
-        //         miro.board.widgets.update(w)
-        //     }))
+        miro.board.widgets.get({
+            "metadata": {
+                [miro.getClientId()]: {
+                    "role": role,
+                }
+            }
+        }).then(widgets =>
+            widgets.forEach(w => {
+                console.log(`Template :${w.metadata} is found.`)
+                w.clientVisible = false
+                miro.board.widgets.update(w)
+            }))
     }
     public async getAllTemplateNames(): Promise<string[]> {
         var widgets = await miro.board.widgets.get({
@@ -160,6 +160,6 @@ namespace {{context}}.Tests
 export async function getTemplateRepository(): Promise<templateRepository> {
 
     var singletonInstance = new templateRepository()//Upfront instantiation to hide the widgets on init
-    addSamplesToRepository(singletonInstance)
+    // addSamplesToRepository(singletonInstance)
     return singletonInstance
 }
