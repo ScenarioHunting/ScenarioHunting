@@ -6,18 +6,20 @@ class templateRepository {
     constructor() {
         var role = "CRT.Templates"
         // eslint-disable-next-line no-undef
-        miro.board.widgets.get({
-            "metadata": {
-                [miro.getClientId()]: {
-                    "role": role,
+        miro.onReady(() =>
+            miro.board.widgets.get({
+                "metadata": {
+                    [miro.getClientId()]: {
+                        "role": role,
+                    }
                 }
-            }
-        }).then(widgets =>
-            widgets.forEach(w => {
-                w.clientVisible = false
-                // eslint-disable-next-line no-undef
-                miro.board.widgets.update(w)
-            }))
+            }).then(widgets =>
+                widgets.forEach(w => {
+                    w.clientVisible = false
+                    // eslint-disable-next-line no-undef
+                    miro.board.widgets.update(w)
+                }))
+        )
     }
     private role = "CRT.Templates";
     public async getAllTemplateNames(): Promise<string[]> {
