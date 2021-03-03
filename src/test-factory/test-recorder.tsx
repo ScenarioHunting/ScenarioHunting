@@ -79,17 +79,20 @@ export const createTestRecorder = (board = singletonBoard
                 showValidationError('No then selections. Please save the test after selecting the then step.')
                 return
             }
-            save(selectedTemplateName, {
-                testContext,
-                testName,
-                sutName,
+            try {
+                await save(selectedTemplateName, {
+                    testContext,
+                    testName,
+                    sutName,
 
-                givens,
-                when,
-                then
-            } as LocalTestCreationResult)
-                .then(() => board.showNotification('Test created successfully.'))
-                .catch((statusText: string) => board.showNotification('Test creation error try again later.\n' + statusText))
+                    givens,
+                    when,
+                    then
+                } as LocalTestCreationResult)
+                board.showNotification('Test created successfully.')
+            } catch {
+                board.showNotification('Test creation error try again later.\n')
+            }
 
             const toViewModel = (step: SelectedWidget): StepInfo => {
                 return {
