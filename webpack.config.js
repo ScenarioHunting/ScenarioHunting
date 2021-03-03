@@ -9,7 +9,6 @@ module.exports = {
 		index: './src/index.ts',
 		sidebar: './src/sidebar.tsx', // Example! It works with React.
 		modal: './src/modal.ts',
-		// sample: './src/sample.tsx'
 	},
 	module: {
 		rules: [
@@ -55,11 +54,6 @@ module.exports = {
 			template: "./src/sidebar.html",
 			filename: "./sidebar.html"
 		}),
-		new HtmlWebPackPlugin({
-			template: "./src/sample.html",
-			filename: "./sample.html"
-		}),
-
 		// new webpack.DefinePlugin({"process.env.NODE_ENV":JSON.stringify("development")})
 	]
 }
