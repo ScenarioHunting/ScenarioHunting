@@ -26,14 +26,14 @@ export let createGivenStepCollection =
 			// 	indexedSteps: []
 			// })
 
-			React.useEffect(() => {
-				stepNavigator.onTurn(TestStepTurn.Given, () => {
-					setIsActive(true)
-					if (props.steps)
-						setIndexedSteps(props.steps)
-				})
-			})
-			useWhatChanged([indexedSteps])
+			// React.useEffect(() => {
+			// 	stepNavigator.onTurn(TestStepTurn.Given, () => {
+			// 		setIsActive(true)
+			// 		if (props.steps)
+			// 			setIndexedSteps(props.steps)
+			// 	})
+			// })
+			// useWhatChanged([indexedSteps])
 
 
 			let nextId: number = 1
