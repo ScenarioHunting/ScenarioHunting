@@ -116,8 +116,8 @@ export const createTestRecorder = (board = singletonBoard
         };
         return (
             <div className="test-recorder">
-                kjhgkasjdhf
-                {/* <div className="given">
+
+                <div className="given">
                     <Givens onStepSelectionChange={updateGivens} steps={givens} />
                 </div >
 
@@ -152,7 +152,7 @@ export const createTestRecorder = (board = singletonBoard
                         </select>
 
                     </div>
-                } */}
+                }
 
             </div>
         );
