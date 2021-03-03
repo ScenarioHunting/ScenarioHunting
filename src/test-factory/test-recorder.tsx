@@ -162,13 +162,13 @@ export const createTestRecorder = (board = singletonBoard
 export const ss = (board = singletonBoard
     , stepNavigator = singletonStepNavigator
     , save = Save): React.FC<any> => () => {
-        // React.useEffect(() => {
-        //     // (async (board: IBoard) => {
-        //     //     await 
-        //     board.unselectAll()
-        //         .then(stepNavigator.start);
-        //     // })(board);
-        // }, [board]);
+        React.useEffect(() => {
+            // (async (board: IBoard) => {
+            //     await 
+            board.unselectAll()
+                .then(stepNavigator.start);
+            // })(board);
+        }, [board]);
         // const [givens, recordGiven] = React.useState<IndexedStep[]>([]);
         // const [when, recordWhen] = React.useState<SelectedWidget>();
         // const [then, recordThen] = React.useState<SelectedWidget>();
