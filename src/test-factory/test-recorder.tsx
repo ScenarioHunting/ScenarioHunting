@@ -88,7 +88,7 @@ export const createTestRecorder = (board = singletonBoard
                     givens,
                     when,
                     then
-                } as LocalTestCreationResult)
+                })
                 board.showNotification('Test created successfully.')
             } catch {
                 board.showNotification('Test creation error try again later.\n')

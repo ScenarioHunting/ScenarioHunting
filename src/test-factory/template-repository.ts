@@ -37,7 +37,7 @@ class templateRepository {
         miro.board.widgets.deleteById(widget.id)
     }
     public async createOrReplaceTemplate(testCodeTemplate: testCodeTemplate) {
-
+        console.log("Adding template.")
         var widgets = await miro.board.widgets.get({
             "metadata": {
                 [miro.getClientId()]: {
