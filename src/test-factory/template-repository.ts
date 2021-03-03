@@ -2,18 +2,23 @@
 
 import { isNullOrUndefined } from "./isNullOrUndefined";
 
-
-
-// import { isNullOrUndefined } from "util";
-export async function getTemplateRepository(): Promise<templateRepository> {
-    var repo = new templateRepository()
-
-    sampleTemplates.forEach(({ name, content }) =>
-        repo.createOrReplaceTemplate(name, content))
-
-    return repo
-}
 class templateRepository {
+    constructor() {
+        var role = "CRT.Templates"
+        // eslint-disable-next-line no-undef
+        miro.board.widgets.get({
+            "metadata": {
+                [miro.getClientId()]: {
+                    "role": role,
+                }
+            }
+        }).then(widgets =>
+            widgets.forEach(w => {
+                w.clientVisible = false
+                // eslint-disable-next-line no-undef
+                miro.board.widgets.update(w)
+            }))
+    }
     private role = "CRT.Templates";
     public async getAllTemplateNames(): Promise<string[]> {
         var widgets = await miro.board.widgets.get({
@@ -90,9 +95,11 @@ class templateRepository {
         return restoredTemplate;
     }
 }
-const sampleTemplates = [
-    {
-        content: `using StoryTest;
+
+function addSamplesToRepository(repository: templateRepository) {
+    const sampleTemplates = [
+        {
+            content: `using StoryTest;
 using Vlerx.Es.Messaging;
 using Vlerx.Es.Persistence;
 using Vlerx.SampleContracts.{{sut}};
@@ -135,6 +142,17 @@ namespace {{context}}.Tests
                         });
     }
 }`,
-        name: "sample-template.cs"
-    }
-]
+            name: "sample-template.cs"
+        }
+    ]
+    sampleTemplates.forEach(({ name, content }) =>
+        repository.createOrReplaceTemplate(name, content))
+}
+
+
+export async function getTemplateRepository(): Promise<templateRepository> {
+    
+    var singletonInstance = new templateRepository()//Upfront instantiation to hide the widgets on init
+    addSamplesToRepository(singletonInstance)
+    return singletonInstance
+}

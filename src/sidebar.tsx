@@ -16,7 +16,6 @@ ReactDOM.render(
 			<TestRecorder default path="/" />
 			<TestExplorer path="test-explorer" />
 		</Router>
-
 	</>
 	, document.getElementById('react-app')
 )
