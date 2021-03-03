@@ -34,19 +34,18 @@ export function createTestStepRecorder({ stepType
             //     , data: selectedWidget.widgetData
             // })
 
-        React.useEffect(() => {
-            board.unselectAll();
-            stepNavigator.onTurn(turn, () => {
-                board.showNotification(selectionWaitingMessage);
-                console.log('Waiting...')
-                board.onNextSingleSelection(selectedWidget => {
-                    console.log(turn, 'Done...')
-                    notifyParent(selectedWidget);
-                    stepNavigator.nextTurn();
-                });
-            });
-            // eslint-disable-next-line react-hooks/exhaustive-deps
-        }, [board, stepNavigator])
+        // React.useEffect(() => {
+        //     board.unselectAll();
+        //     stepNavigator.onTurn(turn, () => {
+        //         board.showNotification(selectionWaitingMessage);
+        //         console.log('Waiting...')
+        //         board.onNextSingleSelection(selectedWidget => {
+        //             console.log(turn, 'Done...')
+        //             notifyParent(selectedWidget);
+        //             stepNavigator.nextTurn();
+        //         });
+        //     });
+        // }, [board, stepNavigator])
         const onValueChange = (index: number, event: React.ChangeEvent<HTMLInputElement>) => {
             props.step!.widgetData.properties[index].simplePropertyValue
                 = event.currentTarget.value;
