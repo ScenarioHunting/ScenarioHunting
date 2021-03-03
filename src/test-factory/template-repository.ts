@@ -4,13 +4,12 @@ import { isNullOrUndefined } from "./isNullOrUndefined";
 
 class templateRepository {
     constructor() {
-        var role = "CRT.Templates"
         // eslint-disable-next-line no-undef
         miro.onReady(() =>
             miro.board.widgets.get({
                 "metadata": {
                     [miro.getClientId()]: {
-                        "role": role,
+                        "role": this.role,
                     }
                 }
             }).then(widgets =>
