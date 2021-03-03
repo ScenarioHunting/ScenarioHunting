@@ -159,11 +159,11 @@ export const createTestRecorder = (board = singletonBoard
     }
 
 
-// export function TestRecorder(): React.FC<any> => () => {
-//     return (
-//         <pre>
-//             lkjdfhalksdjhfalskjdfhlaksjdhflaksjdhflaksjdfh
-//         </pre>
-//     )
-// }
-export let TestRecorder = createTestRecorder()
+export function TestRecorder() {
+    return (
+        <pre>
+            lkjdfhalksdjhfalskjdfhlaksjdhflaksjdhflaksjdfh
+        </pre>
+    )
+}
+// export let TestRecorder = createTestRecorder()
