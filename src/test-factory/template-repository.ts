@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 
 import { isNullOrUndefined } from "./isNullOrUndefined";
+const role = "CRT.Templates";
 
 class templateRepository {
     constructor() {
@@ -9,7 +10,7 @@ class templateRepository {
             miro.board.widgets.get({
                 "metadata": {
                     [miro.getClientId()]: {
-                        "role": this.role,
+                        "role": role,
                     }
                 }
             }).then(widgets =>
@@ -20,12 +21,11 @@ class templateRepository {
                 }))
         )
     }
-    private role = "CRT.Templates";
     public async getAllTemplateNames(): Promise<string[]> {
         var widgets = await miro.board.widgets.get({
             "metadata": {
                 [miro.getClientId()]: {
-                    "role": this.role,
+                    "role": role,
                 }
             }
         });
@@ -33,7 +33,7 @@ class templateRepository {
         return dbWidgets.map(w => w.metadata[miro.getClientId()].templateName);
     }
     public async removeTemplate(templateName: string) {
-        var widget = await this.findWidgetByTemplateName(templateName)
+        var widget = await findWidgetByTemplateName(templateName)
         miro.board.widgets.deleteById(widget.id)
     }
     public async createOrReplaceTemplate(testCodeTemplate: testCodeTemplate) {
@@ -41,7 +41,7 @@ class templateRepository {
         var widgets = await miro.board.widgets.get({
             "metadata": {
                 [miro.getClientId()]: {
-                    "role": this.role,
+                    "role": role,
                     testTemplate: {
                         "templateName": testCodeTemplate.templateName
                     }
@@ -49,7 +49,7 @@ class templateRepository {
             }
         });
         var dbWidgets = widgets.filter(i => !isNullOrUndefined(i.metadata[miro.getClientId()].templateName));
-        var json = JSON.stringify({ testTemplate: testCodeTemplate, role: this.role })
+        var json = JSON.stringify({ testTemplate: testCodeTemplate, role: role })
         if (dbWidgets.length == 0) {
             miro.board.widgets.create({
                 "type": "sticker",
@@ -78,7 +78,7 @@ class templateRepository {
         var widgets = await miro.board.widgets.get({
             "metadata": {
                 [miro.getClientId()]: {
-                    "role": this.role,
+                    "role": role,
                     testTemplate: {
                         "templateName": templateName
                     }
@@ -90,7 +90,7 @@ class templateRepository {
         return widgets[0]
     }
     public async getTemplateByName(templateName: string): Promise<testCodeTemplate> {
-        var widget = await this.findWidgetByTemplateName(templateName)
+        var widget = await findWidgetByTemplateName(templateName)
         var restoredTemplate = widget.metadata[miro.getClientId()].codeTemplate;
         return restoredTemplate;
     }
