@@ -159,4 +159,9 @@ export const createTestRecorder = (board = singletonBoard
     }
 
 
-export let TestRecorder = createTestRecorder()
+export let TestRecorder = () => {
+    return (
+        ;lksjf;laskdjf;alksdjf;laksdjf
+    )
+}
+// export let TestRecorder = createTestRecorder()
