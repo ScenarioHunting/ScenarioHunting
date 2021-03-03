@@ -41,22 +41,20 @@ class templateRepository {
             "metadata": {
                 [miro.getClientId()]: {
                     "role": this.role,
-                    "templateName": testCodeTemplate.templateName,
+                    testTemplate: {
+                        "templateName": testCodeTemplate.templateName
+                    }
                 }
             }
         });
         var dbWidgets = widgets.filter(i => !isNullOrUndefined(i.metadata[miro.getClientId()].templateName));
+        var json = JSON.stringify({ testTemplate: testCodeTemplate, role: this.role })
         if (dbWidgets.length == 0) {
-
             miro.board.widgets.create({
                 "type": "sticker",
                 "text": testCodeTemplate.codeTemplate,
                 "metadata": {
-                    [miro.getClientId()]: {
-                        "role": this.role,
-                        "templateName": testCodeTemplate.templateName,
-                        "templateContent": testCodeTemplate.codeTemplate,
-                    }
+                    [miro.getClientId()]: json
                 },
                 "capabilities": {
                     "editable": false
@@ -69,8 +67,7 @@ class templateRepository {
         }
         else {
             var dbWidget = dbWidgets[0];
-            dbWidget["templateContent"] = testCodeTemplate.codeTemplate;
-            dbWidget.metadata[miro.getClientId()].templateContent = testCodeTemplate.codeTemplate;
+            dbWidget.metadata[miro.getClientId()].testTemplate = json;
             dbWidget.metadata[miro.getClientId()].clientVisible = false;
 
             miro.board.widgets.update(dbWidget);
@@ -81,28 +78,32 @@ class templateRepository {
             "metadata": {
                 [miro.getClientId()]: {
                     "role": this.role,
-                    "templateName": templateName
+                    testTemplate: {
+                        "templateName": templateName
+                    }
                 }
             }
         });
-        if (widgets.length == 0 || isNullOrUndefined(widgets[0].metadata[miro.getClientId()].templateContent))
+        if (widgets.length == 0 || isNullOrUndefined(widgets[0].metadata[miro.getClientId()].codeTemplate))
             throw new Error("Widget not found for template:" + templateName);
         return widgets[0]
     }
     public async getTemplateByName(templateName: string): Promise<testCodeTemplate> {
         var widget = await this.findWidgetByTemplateName(templateName)
-        var restoredTemplate = widget.metadata[miro.getClientId()].templateContent;
+        var restoredTemplate = widget.metadata[miro.getClientId()].codeTemplate;
         return restoredTemplate;
     }
 }
 export type testCodeTemplate = {
     templateName: string,
     codeTemplate: string,
-    testFileExtension: string
+    testFileExtension: string,
+    testFileNameTemplate: string
 }
 function addSamplesToRepository(repository: templateRepository) {
     const sampleTemplates: testCodeTemplate[] = [
         {
+            testFileNameTemplate: "{{testName}}",
             testFileExtension: "cs",
             codeTemplate: `using StoryTest;
 using Vlerx.Es.Messaging;

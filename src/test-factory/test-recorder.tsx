@@ -46,7 +46,7 @@ export const createTestRecorder = (board = singletonBoard
         const [when, recordWhen] = React.useState<SelectedWidget>();
         const [then, recordThen] = React.useState<SelectedWidget>();
         const [testName, recordTestName] = React.useState<string>("TestName");
-        const [testContext, recordTestContext] = React.useState<string>("SampleService");
+        const [testContext, recordTestContext] = React.useState<string>("ServiceName");
         const [sutName, recordSutName] = React.useState<string>("SutName");
         const [selectedTemplateName, selectTemplateName] = React.useState<string>("no template");
         const [availableTemplateNames, setAvailableTemplateNames] = React.useState<string[]>([]);
