@@ -47,9 +47,10 @@ export function createTestStepRecorder({ stepType
                     stepNavigator.nextTurn();
                 });
             });
-            // }, [notifyParent])
-            // }, [board, stepNavigator])
-        }, [props])
+        }, [])
+        // }, [notifyParent])
+        // }, [board, stepNavigator])
+        // }, [props])
         const onValueChange = (index: number, event: React.ChangeEvent<HTMLInputElement>) => {
             props.step!.widgetData.properties[index].simplePropertyValue
                 = event.currentTarget.value;
