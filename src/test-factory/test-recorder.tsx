@@ -195,5 +195,5 @@ export const ss = (board = singletonBoard
         </>
     }
 
-export let TestRecorder = ss()
-// export let TestRecorder = createTestRecorder()
+// export let TestRecorder = ss()
+export let TestRecorder = createTestRecorder()
