@@ -45,8 +45,7 @@ export function createTestStepRecorder({ stepType
                     stepNavigator.nextTurn();
                 });
             });
-            // eslint-disable-next-line react-hooks/exhaustive-deps
-        }, [board, stepNavigator])
+        }, [notifyParent])
         const onValueChange = (index: number, event: React.ChangeEvent<HTMLInputElement>) => {
             props.step!.widgetData.properties[index].simplePropertyValue
                 = event.currentTarget.value;

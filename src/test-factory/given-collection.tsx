@@ -21,18 +21,15 @@ export let createGivenStepCollection =
 
 			const [isActive, setIsActive] = React.useState<boolean>(false)
 			const [indexedSteps, setIndexedSteps] = React.useState<IndexedStep[]>([])
-			// const [state, setState] = React.useState<State>({
-			// 	isActive: false,
-			// 	indexedSteps: []
-			// })
 
 			React.useEffect(() => {
 				stepNavigator.onTurn(TestStepTurn.Given, () => {
 					setIsActive(true)
 					if (props.steps)
 						setIndexedSteps(props.steps)
+					alert('Given collection initiated')
 				})
-			},[props.steps])
+			}, [props.steps])
 			useWhatChanged([indexedSteps])
 
 

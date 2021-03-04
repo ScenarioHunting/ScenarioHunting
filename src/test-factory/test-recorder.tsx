@@ -45,29 +45,20 @@ export const createTestRecorder = (board = singletonBoard
         const [selectedTemplateName, selectTemplateName] = React.useState<string>("no template");
         const [availableTemplateNames, setAvailableTemplateNames] = React.useState<string[]>([]);
         React.useEffect(() => {
-            // (async (board: IBoard) => {
-            //     await 
             board.unselectAll()
                 .then(stepNavigator.start);
             getTemplateRepository().then(repo => repo.getAllTemplateNames().then(x => {
-                alert("d")
-                // if (availableTemplateNames.length == 0) {
                 setAvailableTemplateNames(x)
                 selectTemplateName(x[0])
-                // }
             }))
-            // })(board);
         }, []);
         const updateGivens = (givenResults: IndexedStep[]) => {
-            console.log("UPdating givens from test-recorder")
             recordGiven(givenResults);
         };
         const updateWhen = (when: SelectedWidget) => {
-            console.log("UPdating when from test-recorder")
             recordWhen(when);
         };
         const updateThen = (then: SelectedWidget) => {
-            console.log("UPdating then from test-recorder")
             recordThen(then);
         };
         const showValidationError = (errorText: string) => {
