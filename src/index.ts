@@ -171,6 +171,6 @@ miro.onReady(async () => {
 		}
 	})
 
-	subscribeToServerEvents("ws://localhost:8080/ws")
+	// subscribeToServerEvents("ws://localhost:8080/ws")
 
 })

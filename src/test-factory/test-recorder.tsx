@@ -23,7 +23,9 @@ export type ViewModel = {
 }
 export const createTestRecorder = (board = singletonBoard
     , stepNavigator = singletonStepNavigator
-    , save = Save): React.FC<any> => () => {
+    , save = Save) =>
+    // : React.FC<any> 
+    () => {
         if (!board) {
             //TODO: Implement guard
         }
