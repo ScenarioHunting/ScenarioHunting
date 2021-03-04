@@ -7,18 +7,18 @@ import "./styles.less"
 import { navigate } from "@reach/router"
 
 ReactDOM.render(
-    <TestRecorder />
+    // <TestRecorder />
 
-    // <>
-    //     <nav>
-    //         <Link to="/">New Test</Link> |{" "}
-    //         <Link to="/test-explorer">Test Explorer</Link> |{" "}
-    //     </nav>
-    //     <Router>
-    //         <TestRecorder default path="/" />
-    //         <TestExplorer path="test-explorer" />
-    //     </Router>
-    // </>
+    <>
+        <nav>
+            <Link to="/">New Test</Link> |{" "}
+            <Link to="/test-explorer">Test Explorer</Link> |{" "}
+        </nav>
+        <Router>
+            <TestRecorder default path="/" />
+            <TestExplorer path="test-explorer" />
+        </Router>
+    </>
     , document.getElementById('react-app')
 )
 navigate('/')

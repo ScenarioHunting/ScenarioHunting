@@ -32,7 +32,7 @@ export let createGivenStepCollection =
 					if (props.steps)
 						setIndexedSteps(props.steps)
 				})
-			})
+			},[props.steps])
 			useWhatChanged([indexedSteps])
 
 
