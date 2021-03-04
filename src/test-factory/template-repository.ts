@@ -15,7 +15,7 @@ class templateRepository {
             widgets.forEach(w => {
                 console.log(`Template :${w.metadata} is found.`)
                 w.clientVisible = false
-                miro.board.widgets.update(w)
+                miro.board.widgets.update(w).then(() => console.log("The template widgets are hidden."))
             }))
     }
     public async getAllTemplateNames(): Promise<string[]> {
@@ -31,9 +31,11 @@ class templateRepository {
     }
     public async removeTemplate(templateName: string) {
         var widget = await this.findWidgetByTemplateName(templateName)
-        miro.board.widgets.deleteById(widget.id)
+        await miro.board.widgets.deleteById(widget.id)
     }
     public async createOrReplaceTemplate(testCodeTemplate: testCodeTemplate) {
+        console.log('createOrReplaceTemplate:')
+        console.log('finding widget for template:', testCodeTemplate.templateName)
         var widgets = await miro.board.widgets.get({
             "metadata": {
                 [miro.getClientId()]: {
@@ -45,12 +47,14 @@ class templateRepository {
                 }
             }
         });
+        console.log(`${widgets.length} widgets found for template: ${testCodeTemplate.templateName}`)
+
         var dbWidgets = widgets.filter(i => !isNullOrUndefined(i.metadata[miro.getClientId()].templateName));
         var json = JSON.stringify({ templateName: testCodeTemplate.templateName, testTemplate: testCodeTemplate, role: role })
         console.log('JSONNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN:', json)
         if (dbWidgets.length == 0) {
             console.log("Creating template:", testCodeTemplate)
-            miro.board.widgets.create({
+            var w = await miro.board.widgets.create({
                 "type": "sticker",
                 "text": testCodeTemplate.codeTemplate,
                 "metadata": {
@@ -64,7 +68,7 @@ class templateRepository {
                 },
                 "clientVisible": false
             });
-            console.log(`template:${testCodeTemplate.templateName} is created successfully.`)
+            console.log(`template: ${testCodeTemplate.templateName} is created successfully in widget: ${w}.`)
         }
         else {
             console.log("Updating template:", testCodeTemplate)
@@ -74,7 +78,7 @@ class templateRepository {
             dbWidget.metadata[miro.getClientId()].testTemplate = json;
             dbWidget.metadata[miro.getClientId()].clientVisible = false;
 
-            miro.board.widgets.update(dbWidget);
+            await miro.board.widgets.update(dbWidget);
             console.log(`template:${testCodeTemplate.templateName} is updated successfully.`)
 
         }
@@ -157,8 +161,8 @@ namespace {{context}}.Tests
             templateName: "sample-template"
         }
     ]
-    
-    sampleTemplates.forEach(x=>repository.createOrReplaceTemplate(x))
+
+    sampleTemplates.forEach(x => repository.createOrReplaceTemplate(x))
 }
 
 
