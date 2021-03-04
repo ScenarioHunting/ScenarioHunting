@@ -46,6 +46,7 @@ export function createTestStepRecorder({ stepType
                 });
             });
         }, [notifyParent])
+        // }, [board, stepNavigator])
         const onValueChange = (index: number, event: React.ChangeEvent<HTMLInputElement>) => {
             props.step!.widgetData.properties[index].simplePropertyValue
                 = event.currentTarget.value;
