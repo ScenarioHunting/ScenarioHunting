@@ -24,8 +24,7 @@ export function createTestStepRecorder({ stepType
     , stepNavigator
 }: TestStepDependencies) {
     return function StepRecorder(props: TestStepProps) {
-        const notifyParent = (selectedWidget: SelectedWidget) =>
-            props.onStepSelection(selectedWidget)
+
         // props.onStepSelection({
         //     metadata: {
         //         widget: selectedWidget.widgetSnapshot
@@ -35,6 +34,8 @@ export function createTestStepRecorder({ stepType
         // })
 
         React.useEffect(() => {
+            const notifyParent = (selectedWidget: SelectedWidget) =>
+                props.onStepSelection(selectedWidget)
             alert(turn)
             board.unselectAll();
             stepNavigator.onTurn(turn, () => {
@@ -47,7 +48,8 @@ export function createTestStepRecorder({ stepType
                 });
             });
             // }, [notifyParent])
-        }, [board, stepNavigator])
+            // }, [board, stepNavigator])
+        }, [props])
         const onValueChange = (index: number, event: React.ChangeEvent<HTMLInputElement>) => {
             props.step!.widgetData.properties[index].simplePropertyValue
                 = event.currentTarget.value;

@@ -50,11 +50,14 @@ class templateRepository {
         console.log(`${widgets.length} widgets found for template: ${testCodeTemplate.templateName}`)
 
         var dbWidgets = widgets.filter(i => !isNullOrUndefined(i.metadata[miro.getClientId()].templateName));
-        var json = JSON.stringify({ templateName: testCodeTemplate.templateName, testTemplate: testCodeTemplate, role: role })
+        var json = {
+            templateName: testCodeTemplate.templateName,
+            testTemplate: testCodeTemplate, role: role
+        }
         console.log('JSONNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN:', json)
         if (dbWidgets.length == 0) {
             console.log("Creating template:", testCodeTemplate)
-            await miro.board.widgets.create({
+            var createdWidget = await miro.board.widgets.create({
                 "type": "sticker",
                 "text": testCodeTemplate.codeTemplate,
                 "metadata": {
@@ -67,10 +70,9 @@ class templateRepository {
                     "textAlign": "l"
                 },
                 "clientVisible": false
-            }).then(createdWidget => {
-                console.log(`template: ${testCodeTemplate.templateName} is created successfully`)
-                console.log(`template: ${testCodeTemplate.templateName} is created successfully in widget:`, createdWidget)
-            })
+            });
+            console.log(`template: ${testCodeTemplate.templateName} is created successfully`)
+            console.log(`template: ${testCodeTemplate.templateName} is created successfully in widget:`, createdWidget)
         }
         else {
             console.log("Updating template:", testCodeTemplate)
