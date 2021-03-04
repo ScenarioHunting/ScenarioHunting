@@ -68,7 +68,8 @@ class templateRepository {
                 },
                 "clientVisible": false
             });
-            console.log(`template: ${testCodeTemplate.templateName} is created successfully in widget: ${w}.`)
+            console.log(`template: ${testCodeTemplate.templateName} is created successfully`)
+            console.log(`template: ${testCodeTemplate.templateName} is created successfully in widget:`, w)
         }
         else {
             console.log("Updating template:", testCodeTemplate)
