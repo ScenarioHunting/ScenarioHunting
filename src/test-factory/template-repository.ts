@@ -40,28 +40,28 @@ class templateRepository {
             "metadata": {
                 [miro.getClientId()]: {
                     "role": role,
-                    "templateName": testCodeTemplate.templateName
-                    // "testTemplate": {
-                    //     "templateName": testCodeTemplate.templateName
-                    // }
+                    // "templateName": testCodeTemplate.templateName
+                    "testTemplate": {
+                        "templateName": testCodeTemplate.templateName
+                    }
                 }
             }
         });
         console.log(`${widgets.length} widgets found for template: ${testCodeTemplate.templateName}`)
 
         var dbWidgets = widgets.filter(i => !isNullOrUndefined(i.metadata[miro.getClientId()].templateName));
-        var json = {
+        var templateMetadata = {
             templateName: testCodeTemplate.templateName,
             testTemplate: testCodeTemplate, role: role
         }
-        console.log('JSONNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN:', json)
+        console.log('JSONNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN:', templateMetadata)
         if (dbWidgets.length == 0) {
             console.log("Creating template:", testCodeTemplate)
             var createdWidget = await miro.board.widgets.create({
                 "type": "sticker",
                 "text": testCodeTemplate.codeTemplate,
                 "metadata": {
-                    [miro.getClientId()]: json
+                    [miro.getClientId()]: templateMetadata
                 },
                 "capabilities": {
                     "editable": false
@@ -79,7 +79,7 @@ class templateRepository {
 
             var dbWidget = dbWidgets[0];
             dbWidget["test"] = testCodeTemplate.codeTemplate
-            dbWidget.metadata[miro.getClientId()].testTemplate = json;
+            dbWidget.metadata[miro.getClientId()].testTemplate = templateMetadata;
             dbWidget.metadata[miro.getClientId()].clientVisible = false;
 
             await miro.board.widgets.update(dbWidget);
@@ -92,10 +92,10 @@ class templateRepository {
             "metadata": {
                 [miro.getClientId()]: {
                     "role": role,
-                    "templateName": templateName,
-                    // "testTemplate": {
-                    //     "templateName": templateName
-                    // }
+                    // "templateName": templateName,
+                    "testTemplate": {
+                        "templateName": templateName
+                    }
                 }
             }
         });
