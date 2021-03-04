@@ -51,7 +51,6 @@ class templateRepository {
 
         var dbWidgets = widgets.filter(i => !isNullOrUndefined(i.metadata[miro.getClientId()].templateName));
         var templateMetadata = {
-            templateName: testCodeTemplate.templateName,
             testTemplate: testCodeTemplate, role: role
         }
         console.log('JSONNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN:', templateMetadata)
