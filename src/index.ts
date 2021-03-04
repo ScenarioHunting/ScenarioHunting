@@ -79,6 +79,7 @@ const applyReportToWidget = async (widgetId: string, vm: WhenTestResultsSummeryV
 	await singletonBoard.updateWidgetText(widgetId, newWidgetText)
 }
 let generateBoardSection = (content: any) => {
+	
 	console.log("GeneratingBoardBasedOn:", content)
 }
 let subscribeToServerEvents = (webSocketUrl: string) => {
