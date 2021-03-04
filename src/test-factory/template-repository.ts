@@ -40,7 +40,6 @@ class templateRepository {
             "metadata": {
                 [miro.getClientId()]: {
                     "role": role,
-                    // "templateName": testCodeTemplate.templateName
                     "testTemplate": {
                         "templateName": testCodeTemplate.templateName
                     }
@@ -53,10 +52,9 @@ class templateRepository {
         var templateMetadata = {
             testTemplate: testCodeTemplate, role: role
         }
-        console.log('JSONNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN:', templateMetadata)
         if (dbWidgets.length == 0) {
             console.log("Creating template:", testCodeTemplate)
-            var createdWidget = await miro.board.widgets.create({
+            await miro.board.widgets.create({
                 "type": "sticker",
                 "text": testCodeTemplate.codeTemplate,
                 "metadata": {
@@ -70,8 +68,7 @@ class templateRepository {
                 },
                 "clientVisible": false
             });
-            console.log(`template: ${testCodeTemplate.templateName} is created successfully`)
-            console.log(`template: ${testCodeTemplate.templateName} is created successfully in widget:`, createdWidget)
+            console.log(`template: ${testCodeTemplate.templateName} is created successfully.`)
         }
         else {
             console.log("Updating template:", testCodeTemplate)
@@ -91,7 +88,6 @@ class templateRepository {
             "metadata": {
                 [miro.getClientId()]: {
                     "role": role,
-                    // "templateName": templateName,
                     "testTemplate": {
                         "templateName": templateName
                     }
