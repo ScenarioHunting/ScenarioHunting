@@ -26,15 +26,16 @@ export function createTestStepRecorder({ stepType
     return function StepRecorder(props: TestStepProps) {
         const notifyParent = (selectedWidget: SelectedWidget) =>
             props.onStepSelection(selectedWidget)
-            // props.onStepSelection({
-            //     metadata: {
-            //         widget: selectedWidget.widgetSnapshot
-            //         , stepType: stepType
-            //     }
-            //     , data: selectedWidget.widgetData
-            // })
+        // props.onStepSelection({
+        //     metadata: {
+        //         widget: selectedWidget.widgetSnapshot
+        //         , stepType: stepType
+        //     }
+        //     , data: selectedWidget.widgetData
+        // })
 
         React.useEffect(() => {
+            alert(turn)
             board.unselectAll();
             stepNavigator.onTurn(turn, () => {
                 board.showNotification(selectionWaitingMessage);
