@@ -27,7 +27,7 @@ export const createTestRecorder = (board = singletonBoard
         if (!board) {
             //TODO: Implement guard
         }
-        
+
 
 
         // React.useEffect(() =>
@@ -49,15 +49,15 @@ export const createTestRecorder = (board = singletonBoard
             //     await 
             board.unselectAll()
                 .then(stepNavigator.start);
-                getTemplateRepository().then(repo => repo.getAllTemplateNames().then(x => {
-                    alert("d")
-                    if (availableTemplateNames.length == 0) {
-                        setAvailableTemplateNames(x)
-                        selectTemplateName(x[0])
-                    }
-                }))
+            getTemplateRepository().then(repo => repo.getAllTemplateNames().then(x => {
+                alert("d")
+                // if (availableTemplateNames.length == 0) {
+                setAvailableTemplateNames(x)
+                selectTemplateName(x[0])
+                // }
+            }))
             // })(board);
-        }, [availableTemplateNames.length]);
+        }, []);
         const updateGivens = (givenResults: IndexedStep[]) => {
             console.log("UPdating givens from test-recorder")
             recordGiven(givenResults);
