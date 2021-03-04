@@ -27,13 +27,7 @@ export const createTestRecorder = (board = singletonBoard
         if (!board) {
             //TODO: Implement guard
         }
-        React.useEffect(() => {
-            // (async (board: IBoard) => {
-            //     await 
-            board.unselectAll()
-                .then(stepNavigator.start);
-            // })(board);
-        }, [board]);
+        
 
 
         // React.useEffect(() =>
@@ -50,12 +44,20 @@ export const createTestRecorder = (board = singletonBoard
         const [sutName, recordSutName] = React.useState<string>("SutName");
         const [selectedTemplateName, selectTemplateName] = React.useState<string>("no template");
         const [availableTemplateNames, setAvailableTemplateNames] = React.useState<string[]>([]);
-        getTemplateRepository().then(repo => repo.getAllTemplateNames().then(x => {
-            if (availableTemplateNames.length == 0) {
-                setAvailableTemplateNames(x)
-                selectTemplateName(x[0])
-            }
-        }))
+        React.useEffect(() => {
+            // (async (board: IBoard) => {
+            //     await 
+            board.unselectAll()
+                .then(stepNavigator.start);
+                getTemplateRepository().then(repo => repo.getAllTemplateNames().then(x => {
+                    alert("d")
+                    if (availableTemplateNames.length == 0) {
+                        setAvailableTemplateNames(x)
+                        selectTemplateName(x[0])
+                    }
+                }))
+            // })(board);
+        }, [availableTemplateNames.length]);
         const updateGivens = (givenResults: IndexedStep[]) => {
             console.log("UPdating givens from test-recorder")
             recordGiven(givenResults);
@@ -165,10 +167,19 @@ export const ss = (board = singletonBoard
         React.useEffect(() => {
             // (async (board: IBoard) => {
             //     await 
+            alert('Effect')
             board.unselectAll()
                 .then(stepNavigator.start);
-            // })(board);
-        }, [board]);
+            // getTemplateRepository().then(repo => repo.getAllTemplateNames().then(x => {
+            //     // if (availableTemplateNames.length == 0) {
+            //     setAvailableTemplateNames(x)
+            //     alert(":")
+            //     // if (selectedTemplateName != x[0])
+            //     // selectTemplateName(x[0])
+            //     // }
+            // }))
+        }, []);
+
         const [givens, recordGiven] = React.useState<IndexedStep[]>([]);
         const [when, recordWhen] = React.useState<SelectedWidget>();
         const [then, recordThen] = React.useState<SelectedWidget>();
@@ -177,13 +188,7 @@ export const ss = (board = singletonBoard
         const [sutName, recordSutName] = React.useState<string>("SutName");
         const [selectedTemplateName, selectTemplateName] = React.useState<string>("no template");
         const [availableTemplateNames, setAvailableTemplateNames] = React.useState<string[]>([]);
-        getTemplateRepository().then(repo => repo.getAllTemplateNames().then(x => {
-            if (availableTemplateNames.length == 0) {
-                setAvailableTemplateNames(x)
-                alert(":")
-                selectTemplateName(x[0])
-            }
-        }))
+
 
         return <>
             YESSSS!
