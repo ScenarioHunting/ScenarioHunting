@@ -24,28 +24,16 @@ class templateRepository {
                 metadata: {
                     [miro.getClientId()]: {
                         role: role,
+
                     }
                 }
             }
         )
-        widgets = widgets
-            .filter(i => {
-                if (!i.metadata
-                    || !i.metadata[miro.getClientId()]
-                    || !i.metadata[miro.getClientId()]["testTemplate"]
-                    || !i.metadata[miro.getClientId()]["testTemplate"]["templateName"]
-                ) {
-                    // console.log('no test template!!!', i)
-                    return false
-                } else {
-                    console.log('template found')
-                    return true
-                }
-            })
-        if (widgets.length == 0) {
-            console.log('no widgets with role:' + role)
-        }
+
+
         return widgets
+            .filter(i => i.metadata[miro.getClientId()]["testTemplate"]
+                && i.metadata[miro.getClientId()]["testTemplate"]["templateName"])
             .map(w => {
                 console.log('template:' + w.metadata[miro.getClientId()]["testTemplate"]["templateName"] + "found!")
                 return w.metadata[miro.getClientId()]["testTemplate"]["templateName"]
