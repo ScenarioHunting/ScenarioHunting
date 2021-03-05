@@ -60,7 +60,8 @@ class templateRepository {
 
         // var dbWidgets = widgets.filter(i => !isNullOrUndefined(i.metadata[miro.getClientId()].templateName));
         var templateMetadata = {
-            testTemplate: testCodeTemplate, role: role
+            role: role,
+            testTemplate: testCodeTemplate
         }
         if (widgets.length == 0) {
             console.log("Creating template:", testCodeTemplate)
@@ -94,16 +95,14 @@ class templateRepository {
         }
     }
     private async findAllTemplateWidgets(): Promise<SDK.IWidget[]> {
-        var widgets = await miro.board.widgets.get(
-            {
-                metadata: {
-                    [miro.getClientId()]: {
-                        role: role,
+        var widgets = await miro.board.widgets.get({
+            metadata: {
+                [miro.getClientId()]: {
+                    role: role,
 
-                    }
                 }
             }
-        )
+        })
         return widgets
             .filter(i => i.metadata[miro.getClientId()]["testTemplate"]
                 && i.metadata[miro.getClientId()]["testTemplate"]["templateName"])
@@ -235,8 +234,10 @@ namespace {{context}}.Tests
             templateName: "sample-template2"
         },
     ]
-
-    sampleTemplates.forEach(async x => await repository.createOrReplaceTemplate(x))
+    for (var i = 0; i < sampleTemplates.length; i++) {
+        repository.createOrReplaceTemplate(sampleTemplates[i])
+    }
+    // sampleTemplates.forEach(async x => await repository.createOrReplaceTemplate(x))
 }
 
 
