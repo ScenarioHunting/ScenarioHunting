@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 
 import { isNullOrUndefined } from "./isNullOrUndefined";
+import { stderr } from "process";
 const role = "CRT.Templates";
 
 class templateRepository {
@@ -26,8 +27,11 @@ class templateRepository {
                 }
             }
         });
-        // var dbWidgets = widgets.filter(i => !isNullOrUndefined(i.metadata[miro.getClientId()].templateName));
-        return widgets.map(w => w.metadata[miro.getClientId()].templateName);
+        return widgets
+        .filter(i => !isNullOrUndefined(i.metadata[miro.getClientId()].testTemplate.templateName))
+        .map(w =>
+            (w.metadata[miro.getClientId()].testTemplate as testCodeTemplate)
+                .templateName);
     }
     public async removeTemplate(templateName: string) {
         var widget = await this.findWidgetByTemplateName(templateName)
@@ -100,8 +104,7 @@ class templateRepository {
     }
     public async getTemplateByName(templateName: string): Promise<testCodeTemplate> {
         var widget = await this.findWidgetByTemplateName(templateName)
-        var restoredTemplate = widget.metadata[miro.getClientId()].testTemplate;
-        return restoredTemplate;
+        return widget.metadata[miro.getClientId()].testTemplate;
     }
 }
 export type testCodeTemplate = {
