@@ -26,8 +26,8 @@ class templateRepository {
                 }
             }
         });
-        var dbWidgets = widgets.filter(i => !isNullOrUndefined(i.metadata[miro.getClientId()].templateName));
-        return dbWidgets.map(w => w.metadata[miro.getClientId()].templateName);
+        // var dbWidgets = widgets.filter(i => !isNullOrUndefined(i.metadata[miro.getClientId()].templateName));
+        return widgets.map(w => w.metadata[miro.getClientId()].templateName);
     }
     public async removeTemplate(templateName: string) {
         var widget = await this.findWidgetByTemplateName(templateName)
