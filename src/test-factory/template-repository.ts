@@ -39,7 +39,7 @@ class templateRepository {
             console.log("Creating template:", testCodeTemplate)
             const viewport = await miro.board.viewport.get()
             await miro.board.widgets.create({
-                type: "sticker",
+                type: "TEXT",
                 text: testCodeTemplate.codeTemplate,
                 metadata: {
                     [miro.getClientId()]: testCodeTemplate
@@ -50,8 +50,8 @@ class templateRepository {
                 style: {
                     textAlign: "l"
                 },
-                x: viewport.x - 20,
-                y: viewport.y - 20
+                x: viewport.x - 200,
+                y: viewport.y - 200
                 // clientVisible: false
             });
             console.log(`template: ${testCodeTemplate.templateName} is created successfully.`)
