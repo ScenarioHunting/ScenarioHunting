@@ -20,14 +20,17 @@ class templateRepository {
     // }
     public async getAllTemplateNames(): Promise<string[]> {
         var widgets = await miro.board.widgets.get(
-        //     {
-        //     metadata: {
-        //         [miro.getClientId()]: {
-        //             "role": role,
-        //         }
-        //     }
-        // }
+            //     {
+            //     metadata: {
+            //         [miro.getClientId()]: {
+            //             "role": role,
+            //         }
+            //     }
+            // }
         )
+        if (widgets.length == 0) {
+            console.log('no widgets with role:' + role)
+        }
         return widgets
             .filter(i => {
                 if (!i.metadata[miro.getClientId()]["testTemplate"]) {
