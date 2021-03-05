@@ -1,6 +1,6 @@
 import { singletonBoard, testResultReports } from "./global-dependency-container";
 import { WhenTestResultsSummeryViewModel, TestReportToSummery, WhenTestReportViewModel } from "./test-result-reports";
-import { createOrUpdateSampleTemplates } from "test-factory/template-repository";
+import { createOrUpdateSampleTemplates } from "./test-factory/template-repository";
 /* eslint-disable no-undef */
 // const icon24 = `<svg height="12" width="12">
 // <text x="0" y="12" fill="currentColor">T</text>
