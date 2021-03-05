@@ -1,6 +1,5 @@
 /* eslint-disable no-undef */
 
-import { isNullOrUndefined } from "./isNullOrUndefined";
 const role = "CRT.Templates";
 
 class templateRepository {
@@ -19,44 +18,45 @@ class templateRepository {
     //         }))
     // }
     public async getAllTemplateNames(): Promise<string[]> {
-        var widgets = await miro.board.widgets.get(
-            {
-                metadata: {
-                    [miro.getClientId()]: {
-                        role: role,
+        // var widgets = await miro.board.widgets.get(
+        //     {
+        //         metadata: {
+        //             [miro.getClientId()]: {
+        //                 role: role,
 
-                    }
-                }
-            }
-        )
-
-
+        //             }
+        //         }
+        //     }
+        // )
+        // widgets = widgets
+        //     .filter(i => i.metadata[miro.getClientId()]["testTemplate"]
+        //         && i.metadata[miro.getClientId()]["testTemplate"]["templateName"])
+        var widgets = await this.findAllTemplateWidgets()
         return widgets
-            .filter(i => i.metadata[miro.getClientId()]["testTemplate"]
-                && i.metadata[miro.getClientId()]["testTemplate"]["templateName"])
             .map(w => {
                 console.log('template:' + w.metadata[miro.getClientId()]["testTemplate"]["templateName"] + "found!")
                 return w.metadata[miro.getClientId()]["testTemplate"]["templateName"]
             });
     }
     public async removeTemplate(templateName: string) {
-        var widget = await this.findWidgetByTemplateName(templateName)
-        await miro.board.widgets.deleteById(widget.id)
+        var widgets = await this.findWidgetByTemplateName(templateName)
+        widgets.forEach(async widget => await miro.board.widgets.deleteById(widget.id))
     }
     public async createOrReplaceTemplate(testCodeTemplate: testCodeTemplate) {
         console.log('createOrReplaceTemplate:')
         console.log('finding widget for template:', testCodeTemplate.templateName)
-        var widgets = await miro.board.widgets.get({
-            metadata: {
-                [miro.getClientId()]: {
-                    "role": role,
-                    testTemplate: {
-                        templateName: testCodeTemplate.templateName
-                    }
-                }
-            }
-        });
-        console.log(`${widgets.length} widgets found for template: ${testCodeTemplate.templateName}`)
+        // var widgets = await miro.board.widgets.get({
+        //     metadata: {
+        //         [miro.getClientId()]: {
+        //             "role": role,
+        //             testTemplate: {
+        //                 templateName: testCodeTemplate.templateName
+        //             }
+        //         }
+        //     }
+        // });
+        var widgets = await this.findWidgetByTemplateName(testCodeTemplate.templateName)
+        console.log(`${widgets.length} widgets found for template with name: ${testCodeTemplate.templateName}`)
 
         // var dbWidgets = widgets.filter(i => !isNullOrUndefined(i.metadata[miro.getClientId()].templateName));
         var templateMetadata = {
@@ -93,24 +93,43 @@ class templateRepository {
 
         }
     }
-    private async findWidgetByTemplateName(templateName: string): Promise<SDK.IWidget> {
-        var widgets = await miro.board.widgets.get({
-            metadata: {
-                [miro.getClientId()]: {
-                    "role": role,
-                    testTemplate: {
-                        templateName: templateName
+    private async findAllTemplateWidgets(): Promise<SDK.IWidget[]> {
+        var widgets = await miro.board.widgets.get(
+            {
+                metadata: {
+                    [miro.getClientId()]: {
+                        role: role,
+
                     }
                 }
             }
-        });
-        if (widgets.length == 0 || isNullOrUndefined(widgets[0].metadata[miro.getClientId()].codeTemplate))
-            throw new Error("Widget not found for template:" + templateName);
-        return widgets[0]
+        )
+        return widgets
+            .filter(i => i.metadata[miro.getClientId()]["testTemplate"]
+                && i.metadata[miro.getClientId()]["testTemplate"]["templateName"])
+    }
+    private async findWidgetByTemplateName(templateName: string): Promise<SDK.IWidget[]> {
+        var widgets = await this.findAllTemplateWidgets()
+        return widgets.filter(w => w.metadata[miro.getClientId()]["testTemplate"]["templateName"] == templateName)
+        // var widgets = await miro.board.widgets.get({
+        //     metadata: {
+        //         [miro.getClientId()]: {
+        //             "role": role,
+        //             testTemplate: {
+        //                 templateName: templateName
+        //             }
+        //         }
+        //     }
+        // });
+        // if (widgets.length == 0 || isNullOrUndefined(widgets[0].metadata[miro.getClientId()].codeTemplate))
+        //     throw new Error("Widget not found for template:" + templateName);
+        // return widgets[0]
     }
     public async getTemplateByName(templateName: string): Promise<testCodeTemplate> {
-        var widget = await this.findWidgetByTemplateName(templateName)
-        return widget.metadata[miro.getClientId()].testTemplate;
+        var widgets = await this.findWidgetByTemplateName(templateName)
+        if (widgets.length == 0)
+            throw new Error("Widget not found for template:" + templateName);
+        return widgets[0].metadata[miro.getClientId()].testTemplate;
     }
 }
 export type testCodeTemplate = {
