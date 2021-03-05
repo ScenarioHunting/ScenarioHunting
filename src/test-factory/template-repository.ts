@@ -235,14 +235,17 @@ namespace {{context}}.Tests
         },
     ]
     for (var i = 0; i < sampleTemplates.length; i++) {
-        repository.createOrReplaceTemplate(sampleTemplates[i])
+        await repository.createOrReplaceTemplate(sampleTemplates[i])
     }
     // sampleTemplates.forEach(async x => await repository.createOrReplaceTemplate(x))
 }
 
 
 export async function getTemplateRepository(): Promise<templateRepository> {
-    var singletonInstance = new templateRepository()//Upfront instantiation to hide the widgets on init
+    return new templateRepository()
+}
+
+export async function createOrUpdateSampleTemplates() {
+    var singletonInstance = new templateRepository()
     await addSamplesToRepository(singletonInstance)
-    return singletonInstance
 }

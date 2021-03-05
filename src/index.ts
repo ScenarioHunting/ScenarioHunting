@@ -1,5 +1,6 @@
 import { singletonBoard, testResultReports } from "./global-dependency-container";
 import { WhenTestResultsSummeryViewModel, TestReportToSummery, WhenTestReportViewModel } from "./test-result-reports";
+import { createOrUpdateSampleTemplates } from "test-factory/template-repository";
 /* eslint-disable no-undef */
 // const icon24 = `<svg height="12" width="12">
 // <text x="0" y="12" fill="currentColor">T</text>
@@ -79,7 +80,7 @@ const applyReportToWidget = async (widgetId: string, vm: WhenTestResultsSummeryV
 	await singletonBoard.updateWidgetText(widgetId, newWidgetText)
 }
 let generateBoardSection = (content: any) => {
-	
+
 	console.log("GeneratingBoardBasedOn:", content)
 }
 let subscribeToServerEvents = (webSocketUrl: string) => {
@@ -173,5 +174,5 @@ miro.onReady(async () => {
 	})
 
 	// subscribeToServerEvents("ws://localhost:8080/ws")
-
+	createOrUpdateSampleTemplates()
 })
