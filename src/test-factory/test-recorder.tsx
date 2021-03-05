@@ -47,10 +47,12 @@ export const createTestRecorder = (board = singletonBoard
         React.useEffect(() => {
             board.unselectAll()
                 .then(stepNavigator.start);
-            getTemplateRepository().then(repo => repo.getAllTemplateNames().then(x => {
-                setAvailableTemplateNames(x)
-                selectTemplateName(x[0])
-            }))
+            getTemplateRepository().then(repo =>
+                console.log("Fetching template names to fill the drop down.")
+                repo.getAllTemplateNames().then(x => {
+                    setAvailableTemplateNames(x)
+                    selectTemplateName(x[0])
+                }))
         }, []);
         const updateGivens = (givenResults: IndexedStep[]) => {
             recordGiven(givenResults);
