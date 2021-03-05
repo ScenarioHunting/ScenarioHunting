@@ -8,7 +8,7 @@ class templateRepository {
         miro.board.widgets.get({
             metadata: {
                 [miro.getClientId()]: {
-                    "role": role,
+                    role: role,
                 }
             }
         }).then(widgets =>
@@ -76,7 +76,7 @@ class templateRepository {
             var dbWidget = widgets[0];
             dbWidget["test"] = testCodeTemplate.codeTemplate
             dbWidget.metadata[miro.getClientId()].testTemplate = templateMetadata;
-            dbWidget.metadata[miro.getClientId()].clientVisible = false;
+            // dbWidget.metadata[miro.getClientId()].clientVisible = false;
 
             await miro.board.widgets.update(dbWidget);
             console.log(`template:${testCodeTemplate.templateName} is updated successfully.`)
