@@ -6,7 +6,7 @@ const role = "CRT.Templates";
 class templateRepository {
     constructor() {
         miro.board.widgets.get({
-            "metadata": {
+            metadata: {
                 [miro.getClientId()]: {
                     "role": role,
                 }
@@ -20,9 +20,9 @@ class templateRepository {
     }
     public async getAllTemplateNames(): Promise<string[]> {
         var widgets = await miro.board.widgets.get({
-            "metadata": {
+            metadata: {
                 [miro.getClientId()]: {
-                    "role": role,
+                    role: role,
                 }
             }
         });
@@ -37,11 +37,11 @@ class templateRepository {
         console.log('createOrReplaceTemplate:')
         console.log('finding widget for template:', testCodeTemplate.templateName)
         var widgets = await miro.board.widgets.get({
-            "metadata": {
+            metadata: {
                 [miro.getClientId()]: {
-                    "role": role,
-                    "testTemplate": {
-                        "templateName": testCodeTemplate.templateName
+                    role: role,
+                    testTemplate: {
+                        templateName: testCodeTemplate.templateName
                     }
                 }
             }
@@ -55,18 +55,18 @@ class templateRepository {
         if (dbWidgets.length == 0) {
             console.log("Creating template:", testCodeTemplate)
             await miro.board.widgets.create({
-                "type": "sticker",
-                "text": testCodeTemplate.codeTemplate,
-                "metadata": {
+                type: "sticker",
+                text: testCodeTemplate.codeTemplate,
+                metadata: {
                     [miro.getClientId()]: templateMetadata
                 },
-                "capabilities": {
-                    "editable": false
+                capabilities: {
+                    editable: false
                 },
-                "style": {
-                    "textAlign": "l"
+                style: {
+                    textAlign: "l"
                 },
-                "clientVisible": false
+                // clientVisible: false
             });
             console.log(`template: ${testCodeTemplate.templateName} is created successfully.`)
         }
@@ -85,11 +85,11 @@ class templateRepository {
     }
     private async findWidgetByTemplateName(templateName: string): Promise<SDK.IWidget> {
         var widgets = await miro.board.widgets.get({
-            "metadata": {
+            metadata: {
                 [miro.getClientId()]: {
-                    "role": role,
-                    "testTemplate": {
-                        "templateName": templateName
+                    role: role,
+                    testTemplate: {
+                        templateName: templateName
                     }
                 }
             }
