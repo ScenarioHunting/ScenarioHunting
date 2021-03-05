@@ -38,8 +38,8 @@ class templateRepository {
                 }
             })
             .map(w => {
-                console.log('template:' + w.metadata[miro.getClientId()].templateName + "found!")
-                return w.metadata[miro.getClientId()].templateName
+                console.log('template:' + w.metadata[miro.getClientId()]["testTemplate"].templateName + "found!")
+                return w.metadata[miro.getClientId()]["testTemplate"].templateName
             });
     }
     public async removeTemplate(templateName: string) {
