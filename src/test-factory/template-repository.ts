@@ -33,8 +33,10 @@ class templateRepository {
         }
         return widgets
             .filter(i => {
-                if (!i.metadata[miro.getClientId()]["testTemplate"]) {
-                    console.log('no test template!!!', i)
+                if (!i.metadata
+                    || !i.metadata[miro.getClientId()]
+                    || !i.metadata[miro.getClientId()]["testTemplate"]) {
+                    // console.log('no test template!!!', i)
                     return false
                 } else {
                     console.log('template found')
