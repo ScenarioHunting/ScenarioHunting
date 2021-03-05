@@ -8,7 +8,7 @@ class templateRepository {
         miro.board.widgets.get({
             metadata: {
                 [miro.getClientId()]: {
-                    role: role,
+                    "role": role,
                 }
             }
         }).then(widgets =>
@@ -22,7 +22,7 @@ class templateRepository {
         var widgets = await miro.board.widgets.get({
             metadata: {
                 [miro.getClientId()]: {
-                    role: role,
+                    "role": role,
                 }
             }
         });
@@ -39,7 +39,7 @@ class templateRepository {
         var widgets = await miro.board.widgets.get({
             metadata: {
                 [miro.getClientId()]: {
-                    role: role,
+                    "role": role,
                     testTemplate: {
                         templateName: testCodeTemplate.templateName
                     }
@@ -87,7 +87,7 @@ class templateRepository {
         var widgets = await miro.board.widgets.get({
             metadata: {
                 [miro.getClientId()]: {
-                    role: role,
+                    "role": role,
                     testTemplate: {
                         templateName: templateName
                     }
