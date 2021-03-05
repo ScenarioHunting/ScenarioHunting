@@ -29,7 +29,7 @@ class templateRepository {
         });
         return widgets
             .filter(i => {
-                if (!isNullOrUndefined(i.metadata[miro.getClientId()]["testTemplate"])) {
+                if (!i.metadata[miro.getClientId()]["testTemplate"]) {
                     console.log('no test template!!!', i)
                     return false
                 } else {
