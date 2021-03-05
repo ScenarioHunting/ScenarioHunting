@@ -106,10 +106,10 @@ class templateRepository {
             }
         })
 
-        console.log("# of widgets contain role but have metadata is null:", widgets.filter(i => i.metadata.length))
-        console.log("# of widgets contain role but have metadata.clientId is null:", widgets.filter(i => i.metadata && i.metadata[miro.getClientId()]))
-        console.log("# of widgets contain role but have metadata.clientId.testTemplate is null:", widgets.filter(i => i.metadata && i.metadata[miro.getClientId()] && i.metadata[miro.getClientId()]["testTemplate"]))
-        console.log("# of widgets contain role but have metadata.clientId.testTemplate.templateName is null:", widgets.filter(i => i.metadata && i.metadata[miro.getClientId()] && i.metadata[miro.getClientId()]["testTemplate"] && i.metadata[miro.getClientId()]["testTemplate"]["templateName"]))
+        console.log("# of metadata is null:", widgets.filter(i => !i.metadata).length)
+        console.log("# of metadata.clientId is null:", widgets.filter(i => !i.metadata && i.metadata[miro.getClientId()]))
+        console.log("# of metadata.clientId.testTemplate is null:", widgets.filter(i => !i.metadata && i.metadata[miro.getClientId()] && i.metadata[miro.getClientId()]["testTemplate"]))
+        console.log("# of metadata.clientId.testTemplate.templateName is null:", widgets.filter(i => !i.metadata && i.metadata[miro.getClientId()] && i.metadata[miro.getClientId()]["testTemplate"] && i.metadata[miro.getClientId()]["testTemplate"]["templateName"]))
 
         return widgets
             .filter(i => i.metadata && i.metadata["3074457349056199734"]
