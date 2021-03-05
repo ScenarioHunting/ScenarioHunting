@@ -1,7 +1,4 @@
 /* eslint-disable no-undef */
-
-const role = "CRT.Templates";
-
 class templateRepository {
     // constructor() {
     //     miro.board.widgets.get({
@@ -18,19 +15,6 @@ class templateRepository {
     //         }))
     // }
     public async getAllTemplateNames(): Promise<string[]> {
-        // var widgets = await miro.board.widgets.get(
-        //     {
-        //         metadata: {
-        //             [miro.getClientId()]: {
-        //                 role: role,
-
-        //             }
-        //         }
-        //     }
-        // )
-        // widgets = widgets
-        //     .filter(i => i.metadata[miro.getClientId()]
-        //         && i.metadata[miro.getClientId()]["templateName"])
         var widgets = await this.findAllTemplateWidgets()
         return widgets
             .map(w => {
@@ -53,6 +37,7 @@ class templateRepository {
 
         if (widgets.length == 0) {
             console.log("Creating template:", testCodeTemplate)
+            const viewport = await miro.board.viewport.get()
             await miro.board.widgets.create({
                 type: "sticker",
                 text: testCodeTemplate.codeTemplate,
@@ -65,6 +50,8 @@ class templateRepository {
                 style: {
                     textAlign: "l"
                 },
+                x: viewport.x - 20,
+                y: viewport.y - 20
                 // clientVisible: false
             });
             console.log(`template: ${testCodeTemplate.templateName} is created successfully.`)
@@ -86,19 +73,8 @@ class templateRepository {
         var stat = (await miro.board.widgets.get()).filter(x => x.type == 'STICKER' && x["text"].includes('using'))
         console.log("# of widgets contain using in their text:", stat.length)
         var widgets = await miro.board.widgets.get()
-        //     {
-        //     metadata: {
-        //         [miro.getClientId()]: {
-        //             role: role,
 
-        //         }
-        //     }
-        // })
-
-        console.log("# of all:", widgets.length)
-        console.log("# of have metadata :", widgets.filter(i => i.metadata).length)
-        console.log("# of have metadata.clientId:", widgets.filter(i => i.metadata && i.metadata[miro.getClientId()]).length)
-        console.log("# of have metadata.clientId.templateName:", widgets.filter(i => i.metadata && i.metadata[miro.getClientId()] && i.metadata[miro.getClientId()] && i.metadata[miro.getClientId()]["templateName"]).length)
+        // console.log("# of widgets that have metadata.clientId.templateName:", widgets.filter(i => i.metadata && i.metadata[miro.getClientId()] && i.metadata[miro.getClientId()] && i.metadata[miro.getClientId()]["templateName"]).length)
 
         return widgets
             .filter(i => i.metadata && i.metadata["3074457349056199734"]
