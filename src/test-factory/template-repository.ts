@@ -36,7 +36,7 @@ class templateRepository {
                 if (!i.metadata
                     || !i.metadata[miro.getClientId()]
                     || !i.metadata[miro.getClientId()]["testTemplate"]
-                    || !i.metadata[miro.getClientId()]["testTemplate"].templateName
+                    || !i.metadata[miro.getClientId()]["testTemplate"]["templateName"]
                 ) {
                     // console.log('no test template!!!', i)
                     return false
@@ -46,8 +46,8 @@ class templateRepository {
                 }
             })
             .map(w => {
-                console.log('template:' + w.metadata[miro.getClientId()]["testTemplate"].templateName + "found!")
-                return w.metadata[miro.getClientId()]["testTemplate"].templateName
+                console.log('template:' + w.metadata[miro.getClientId()]["testTemplate"]["templateName"] + "found!")
+                return w.metadata[miro.getClientId()]["testTemplate"]["templateName"]
             });
     }
     public async removeTemplate(templateName: string) {

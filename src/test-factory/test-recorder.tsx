@@ -54,7 +54,7 @@ export const createTestRecorder = (board = singletonBoard
                     selectTemplateName(x[0])
                 }).catch(e => { throw e })
             })
-        }, []);
+        }, [board]);
         const updateGivens = (givenResults: IndexedStep[]) => {
             recordGiven(givenResults);
         };
