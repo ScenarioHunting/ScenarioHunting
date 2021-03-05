@@ -195,6 +195,6 @@ namespace {{context}}.Tests
 
 export async function getTemplateRepository(): Promise<templateRepository> {
     var singletonInstance = new templateRepository()//Upfront instantiation to hide the widgets on init
-    await addSamplesToRepository(singletonInstance)
+    // await addSamplesToRepository(singletonInstance)
     return singletonInstance
 }
