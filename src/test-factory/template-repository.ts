@@ -20,31 +20,31 @@ class templateRepository {
     // }
     public async getAllTemplateNames(): Promise<string[]> {
         var widgets = await miro.board.widgets.get(
-            //     {
-            //     metadata: {
-            //         [miro.getClientId()]: {
-            //             "role": role,
-            //         }
-            //     }
-            // }
+            {
+                metadata: {
+                    [miro.getClientId()]: {
+                        "role": role,
+                    }
+                }
+            }
         )
         if (widgets.length == 0) {
             console.log('no widgets with role:' + role)
         }
         return widgets
-            .filter(i => {
-                if (!i.metadata
-                    || !i.metadata[miro.getClientId()]
-                    || !i.metadata[miro.getClientId()]["testTemplate"]
-                    || !i.metadata[miro.getClientId()]["testTemplate"]["templateName"]
-                ) {
-                    // console.log('no test template!!!', i)
-                    return false
-                } else {
-                    console.log('template found')
-                    return true
-                }
-            })
+            // .filter(i => {
+            //     if (!i.metadata
+            //         || !i.metadata[miro.getClientId()]
+            //         || !i.metadata[miro.getClientId()]["testTemplate"]
+            //         || !i.metadata[miro.getClientId()]["testTemplate"]["templateName"]
+            //     ) {
+            //         // console.log('no test template!!!', i)
+            //         return false
+            //     } else {
+            //         console.log('template found')
+            //         return true
+            //     }
+            // })
             .map(w => {
                 console.log('template:' + w.metadata[miro.getClientId()]["testTemplate"]["templateName"] + "found!")
                 return w.metadata[miro.getClientId()]["testTemplate"]["templateName"]
