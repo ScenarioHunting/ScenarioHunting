@@ -1,7 +1,6 @@
 /* eslint-disable no-undef */
 
 import { isNullOrUndefined } from "./isNullOrUndefined";
-import { stderr } from "process";
 const role = "CRT.Templates";
 
 class templateRepository {
@@ -20,13 +19,15 @@ class templateRepository {
     //         }))
     // }
     public async getAllTemplateNames(): Promise<string[]> {
-        var widgets = await miro.board.widgets.get({
-            // metadata: {
-            //     [miro.getClientId()]: {
-            //         "role": role,
-            //     }
-            // }
-        });
+        var widgets = await miro.board.widgets.get(
+        //     {
+        //     metadata: {
+        //         [miro.getClientId()]: {
+        //             "role": role,
+        //         }
+        //     }
+        // }
+        )
         return widgets
             .filter(i => {
                 if (!i.metadata[miro.getClientId()]["testTemplate"]) {
