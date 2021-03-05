@@ -52,7 +52,7 @@ export const createTestRecorder = (board = singletonBoard
                 repo.getAllTemplateNames().then(x => {
                     setAvailableTemplateNames(x)
                     selectTemplateName(x[0])
-                })
+                }).catch(e => { throw e })
             })
         }, []);
         const updateGivens = (givenResults: IndexedStep[]) => {
