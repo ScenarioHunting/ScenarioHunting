@@ -21,11 +21,11 @@ class templateRepository {
     // }
     public async getAllTemplateNames(): Promise<string[]> {
         var widgets = await miro.board.widgets.get({
-            metadata: {
-                [miro.getClientId()]: {
-                    "role": role,
-                }
-            }
+            // metadata: {
+            //     [miro.getClientId()]: {
+            //         "role": role,
+            //     }
+            // }
         });
         return widgets
             .filter(i => {
