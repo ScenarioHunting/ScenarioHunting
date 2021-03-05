@@ -48,7 +48,6 @@ export const createTestRecorder = (board = singletonBoard
             board.unselectAll()
                 .then(stepNavigator.start);
             getTemplateRepository().then(repo => {
-                console.log("Fetching template names to fill the drop down.")
                 repo.getAllTemplateNames().then(x => {
                     setAvailableTemplateNames(x)
                     selectTemplateName(x[0])
