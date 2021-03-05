@@ -74,12 +74,12 @@ export async function Save(templateName: string, test: LocalTestCreationResult):
         console.log("Saving the template for test:", viewModel.testName)
 
         var testTemplateRepository = await getTemplateRepository()
-        var restoredTemplate = await testTemplateRepository.getTemplateByName(templateName)
-        console.log("restored template:", restoredTemplate)
-        var testCode = await applyTemplate(restoredTemplate.codeTemplate, viewModel)
-        var testFileName = await applyTemplate(restoredTemplate.templateName, viewModel)
+        var template = await testTemplateRepository.getTemplateByName(templateName)
+        console.log("restored template:", template)
+        var testCode = await applyTemplate(template.codeTemplate, viewModel)
+        var testFileName = await applyTemplate(template.templateName, viewModel)
         console.log("testCode:", testCode, "testFileName", testFileName)
-        saveAs(testFileName + restoredTemplate.testFileExtension, testCode)
+        saveAs(`${testFileName}.${template.testFileExtension}`, testCode)
 
         var requestBody = JSON.stringify(dto);
         const response = await fetch('http://localhost:6000/Tests',//TODO: read it from config file
