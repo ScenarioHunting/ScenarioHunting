@@ -28,10 +28,19 @@ class templateRepository {
             }
         });
         return widgets
-        .filter(i => !isNullOrUndefined(i.metadata[miro.getClientId()].testTemplate.templateName))
-        .map(w =>
-            (w.metadata[miro.getClientId()].testTemplate as testCodeTemplate)
-                .templateName);
+            .filter(i => {
+                if (!isNullOrUndefined(i.metadata[miro.getClientId()].testTemplate)) {
+                    console.log('no test template!!!')
+                    return false
+                } else {
+                    console.log('template found')
+                    return true
+                }
+            })
+            .map(w => {
+                console.log('template:' + w.metadata[miro.getClientId()].templateName + "found!")
+                return w.metadata[miro.getClientId()].templateName
+            });
     }
     public async removeTemplate(templateName: string) {
         var widget = await this.findWidgetByTemplateName(templateName)
