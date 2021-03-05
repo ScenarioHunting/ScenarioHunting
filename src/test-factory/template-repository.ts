@@ -48,11 +48,11 @@ class templateRepository {
         });
         console.log(`${widgets.length} widgets found for template: ${testCodeTemplate.templateName}`)
 
-        var dbWidgets = widgets.filter(i => !isNullOrUndefined(i.metadata[miro.getClientId()].templateName));
+        // var dbWidgets = widgets.filter(i => !isNullOrUndefined(i.metadata[miro.getClientId()].templateName));
         var templateMetadata = {
             testTemplate: testCodeTemplate, role: role
         }
-        if (dbWidgets.length == 0) {
+        if (widgets.length == 0) {
             console.log("Creating template:", testCodeTemplate)
             await miro.board.widgets.create({
                 type: "sticker",
@@ -73,7 +73,7 @@ class templateRepository {
         else {
             console.log("Updating template:", testCodeTemplate)
 
-            var dbWidget = dbWidgets[0];
+            var dbWidget = widgets[0];
             dbWidget["test"] = testCodeTemplate.codeTemplate
             dbWidget.metadata[miro.getClientId()].testTemplate = templateMetadata;
             dbWidget.metadata[miro.getClientId()].clientVisible = false;
