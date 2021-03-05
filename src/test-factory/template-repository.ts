@@ -19,8 +19,6 @@ class templateRepository {
     //         }))
     // }
     public async getAllTemplateNames(): Promise<string[]> {
-        console.log("Fetching template names to fill the drop down.")
-
         var widgets = await miro.board.widgets.get(
             //     {
             //     metadata: {
@@ -189,6 +187,6 @@ namespace {{context}}.Tests
 
 export async function getTemplateRepository(): Promise<templateRepository> {
     var singletonInstance = new templateRepository()//Upfront instantiation to hide the widgets on init
-    // await addSamplesToRepository(singletonInstance)
+    await addSamplesToRepository(singletonInstance)
     return singletonInstance
 }
