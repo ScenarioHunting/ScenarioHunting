@@ -4,20 +4,20 @@ import { isNullOrUndefined } from "./isNullOrUndefined";
 const role = "CRT.Templates";
 
 class templateRepository {
-    constructor() {
-        miro.board.widgets.get({
-            metadata: {
-                [miro.getClientId()]: {
-                    "role": role,
-                }
-            }
-        }).then(widgets =>
-            widgets.forEach(w => {
-                console.log(`Template :${w.metadata} is found.`)
-                w.clientVisible = false
-                miro.board.widgets.update(w).then(() => console.log("The template widgets are hidden."))
-            }))
-    }
+    // constructor() {
+    //     miro.board.widgets.get({
+    //         metadata: {
+    //             [miro.getClientId()]: {
+    //                 "role": role,
+    //             }
+    //         }
+    //     }).then(widgets =>
+    //         widgets.forEach(w => {
+    //             console.log(`Template :${w.metadata} is found.`)
+    //             w.clientVisible = false
+    //             miro.board.widgets.update(w).then(() => console.log("The template widgets are hidden."))
+    //         }))
+    // }
     public async getAllTemplateNames(): Promise<string[]> {
         var widgets = await miro.board.widgets.get({
             metadata: {
