@@ -19,6 +19,8 @@ class templateRepository {
     //         }))
     // }
     public async getAllTemplateNames(): Promise<string[]> {
+        console.log("Fetching template names to fill the drop down.")
+
         var widgets = await miro.board.widgets.get(
             //     {
             //     metadata: {
