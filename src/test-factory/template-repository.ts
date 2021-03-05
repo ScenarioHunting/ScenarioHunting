@@ -35,7 +35,9 @@ class templateRepository {
             .filter(i => {
                 if (!i.metadata
                     || !i.metadata[miro.getClientId()]
-                    || !i.metadata[miro.getClientId()]["testTemplate"]) {
+                    || !i.metadata[miro.getClientId()]["testTemplate"]
+                    || !i.metadata[miro.getClientId()]["testTemplate"].templateName
+                ) {
                     // console.log('no test template!!!', i)
                     return false
                 } else {
