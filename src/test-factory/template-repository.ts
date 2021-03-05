@@ -95,23 +95,26 @@ class templateRepository {
         }
     }
     private async findAllTemplateWidgets(): Promise<SDK.IWidget[]> {
-        var using = (await miro.board.widgets.get()).filter(x => x.type == 'STICKER' && x["text"].includes('using'))
-        console.log("# of widgets contain using in their text:", using.length)
-        var widgets = (await miro.board.widgets.get()).filter(x => x.type == 'STICKER' && x["text"].includes('using'))
-        // var widgets = await miro.board.widgets.get()
-        //     {
-        //     metadata: {
-        //         [miro.getClientId()]: {
-        //             role: role,
+        var stat = (await miro.board.widgets.get()).filter(x => x.type == 'STICKER' && x["text"].includes('using'))
+        console.log("# of widgets contain using in their text:", stat.length)
+        var widgets = await miro.board.widgets.get({
+            metadata: {
+                [miro.getClientId()]: {
+                    role: role,
 
-        //         }
-        //     }
-        // })
+                }
+            }
+        })
+
+        console.log("# of widgets contain role but have metadata is null:", widgets.filter(i => i.metadata.length))
+        console.log("# of widgets contain role but have metadata.clientId is null:", widgets.filter(i => i.metadata && i.metadata[miro.getClientId()]))
+        console.log("# of widgets contain role but have metadata.clientId.testTemplate is null:", widgets.filter(i => i.metadata && i.metadata[miro.getClientId()] && i.metadata[miro.getClientId()]["testTemplate"]))
+        console.log("# of widgets contain role but have metadata.clientId.testTemplate.templateName is null:", widgets.filter(i => i.metadata && i.metadata[miro.getClientId()] && i.metadata[miro.getClientId()]["testTemplate"] && i.metadata[miro.getClientId()]["testTemplate"]["templateName"]))
+
         return widgets
-            .filter(i => i.metadata
-                && i.metadata[miro.getClientId()]
-                && i.metadata[miro.getClientId()]["testTemplate"]
-                && i.metadata[miro.getClientId()]["testTemplate"]["templateName"])
+            .filter(i => i.metadata && i.metadata["3074457349056199734"]
+                && i.metadata["3074457349056199734"]["testTemplate"]
+                && i.metadata["3074457349056199734"]["testTemplate"]["templateName"])
     }
     private async findWidgetByTemplateName(templateName: string): Promise<SDK.IWidget[]> {
         var widgets = await this.findAllTemplateWidgets()
