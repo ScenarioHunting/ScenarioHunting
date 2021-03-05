@@ -95,16 +95,21 @@ class templateRepository {
         }
     }
     private async findAllTemplateWidgets(): Promise<SDK.IWidget[]> {
-        var widgets = await miro.board.widgets.get({
-            metadata: {
-                [miro.getClientId()]: {
-                    role: role,
+        var using = (await miro.board.widgets.get()).filter(x => x.type == 'STICKER' && x["text"].includes('using'))
+        console.log("# of widgets contain using in their text:", using.length)
+        var widgets = await miro.board.widgets.get()
+        //     {
+        //     metadata: {
+        //         [miro.getClientId()]: {
+        //             role: role,
 
-                }
-            }
-        })
+        //         }
+        //     }
+        // })
         return widgets
-            .filter(i => i.metadata[miro.getClientId()]["testTemplate"]
+            .filter(i => i.metadata
+                && i.metadata[miro.getClientId()]
+                && i.metadata[miro.getClientId()]["testTemplate"]
                 && i.metadata[miro.getClientId()]["testTemplate"]["templateName"])
     }
     private async findWidgetByTemplateName(templateName: string): Promise<SDK.IWidget[]> {
