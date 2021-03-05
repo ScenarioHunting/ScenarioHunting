@@ -186,15 +186,62 @@ namespace {{context}}.Tests
     }
 }`,
             templateName: "sample-template"
-        }
+        },
+        {
+            testFileNameTemplate: "{{testName}}2",
+            testFileExtension: "cs",
+            codeTemplate: `using StoryTest;
+using Vlerx.Es.Messaging;
+using Vlerx.Es.Persistence;
+using Vlerx.SampleContracts.{{sut}};
+using Vlerx.{{context}}.{{sut}};
+using Vlerx.{{context}}.{{sut}}.Commands;
+using Vlerx.{{context}}.Tests.StoryTests;
+using Xunit;
+
+namespace {{context}}.Tests
+{
+    {{#* inline "callConstructor"}}
+    new {{title}}({{#each properties}}"{{example}}"{{#skipLast}},{{/skipLast}}{{/each}}){{/inline}}
+
+    public class {{testName}} : IStorySpecification
+    {
+        public IDomainEvent[] Given
+        => new IDomainEvent[]{
+    {{#each givens}}
+        {{> callConstructor .}},
+    {{/each}}
+        };
+        public ICommand When
+        => {{> callConstructor when}};
+        public IDomainEvent[] Then
+        => new IDomainEvent[]{
+    {{#each thens}}
+        {{> callConstructor .}},
+    {{/each}}
+        };
+
+        public string Sut { get; } = nameof({{sut}});
+
+        [Fact]
+        public void Run()
+        => TestAdapter.Test(this
+                , setupUseCases: eventStore =>
+                        new[] {
+                        new {{sut}}UseCases(new Repository<{{sut}}.State>(eventStore))
+                        });
+    }
+}`,
+            templateName: "sample-template2"
+        },
     ]
 
-    sampleTemplates.forEach(x => repository.createOrReplaceTemplate(x))
+    sampleTemplates.forEach(async x => await repository.createOrReplaceTemplate(x))
 }
 
 
 export async function getTemplateRepository(): Promise<templateRepository> {
     var singletonInstance = new templateRepository()//Upfront instantiation to hide the widgets on init
-    // await addSamplesToRepository(singletonInstance)
+    await addSamplesToRepository(singletonInstance)
     return singletonInstance
 }
