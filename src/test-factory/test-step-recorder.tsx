@@ -36,7 +36,6 @@ export function createTestStepRecorder({ stepType
         React.useEffect(() => {
             const notifyParent = (selectedWidget: SelectedWidget) =>
                 props.onStepSelection(selectedWidget)
-            alert(turn)
             board.unselectAll();
             stepNavigator.onTurn(turn, () => {
                 board.showNotification(selectionWaitingMessage);

@@ -27,7 +27,6 @@ export let createGivenStepCollection =
 					setIsActive(true)
 					if (props.steps)
 						setIndexedSteps(props.steps)
-					alert('Given collection initiated')
 				})
 			}, [props.steps])
 			useWhatChanged([indexedSteps])
