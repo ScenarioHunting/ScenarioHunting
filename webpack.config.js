@@ -8,7 +8,7 @@ module.exports = {
 		mergeDuplicateChunks: true,
 		removeAvailableModules: true,
 		removeEmptyChunks: true,
-		flagIncludedChunks: true,		
+		flagIncludedChunks: true,
 	},
 	mode: 'production', // Tip! compile in 'production' mode before publish
 	// mode: 'development', // Tip! compile in 'production' mode before publish
@@ -62,6 +62,10 @@ module.exports = {
 		new HtmlWebPackPlugin({
 			template: "./src/sidebar.html",
 			filename: "./sidebar.html"
+		}),
+		new HtmlWebPackPlugin({
+			template: "./src/test-templates/monaco-editor.html",
+			filename: "./monaco-editor.html"
 		}),
 		// new webpack.optimize.DedupePlugin(), //dedupe similar code 
 		// new webpack.optimize.UglifyJsPlugin(), //minify everything
