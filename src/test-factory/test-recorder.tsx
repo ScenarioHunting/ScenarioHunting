@@ -29,15 +29,10 @@ export const createTestRecorder = (board = singletonBoard
             //TODO: Implement guard
         }
 
-
-
-
-
-
         const [givens, recordGiven] = useState<IndexedStep[]>([]);
         const [when, recordWhen] = useState<SelectedWidget>();
         const [then, recordThen] = useState<SelectedWidget>();
-        const [testName, recordTestName] = useState<string>("TestName");
+        const [testName, recordTestName] = useState<string>("");
         const [testContext, recordTestContext] = useState<string>("ServiceName");
         const [sutName, recordSutName] = useState<string>("SutName");
         const [selectedTemplateName, selectTemplateName] = useState<string>("no template");
@@ -53,12 +48,14 @@ export const createTestRecorder = (board = singletonBoard
                 }).catch(e => { throw e })
             })
         }, [])
-        
-        useEffect(() =>
-            recordTestName(testName == "" ?
-                when?.widgetData.type + '_' + then?.widgetData.type
-                : testName)
-            , [when, then, testName])
+
+
+        useEffect(() => {
+            if (testName == "") {
+                var defaultTestName = when?.widgetData.type + '_' + then?.widgetData.type
+                recordTestName(defaultTestName)
+            }
+        }, [then])
         const updateGivens = (givenResults: IndexedStep[]) => {
             recordGiven(givenResults);
         };
