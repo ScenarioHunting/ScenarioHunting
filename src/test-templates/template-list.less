@@ -1,0 +1,105 @@
+// In example styles shared between modal, library and sidebar extension points.
+// But you can you can use unique style for each extension point — just create new less file and import it in target extension point.
+.test-step-view-model-item {
+  // width: 20vw;
+  // height: 20vw;
+  // display: inline-block;
+  // margin: 5px;
+  // padding: 5px;
+  // overflow-wrap: break-word;
+  width: 18vw;
+
+height: 18vw;
+
+display: inline-block;
+
+margin: 1vw;
+
+padding: 1.2vw;
+
+overflow-wrap: break-word;
+
+font-size: 4.2vw;
+}
+.test-steps-view-model-item {
+  display: flex;
+  justify-content: flex-start;
+  
+}
+.test-item{
+  background-color: #d9d9d9;
+  padding:1.2vw;
+  margin-top: 1vw;
+}
+.test-item-header{
+  background-color: #d9d9d9;
+  padding-top: 3vw;
+  margin-top: 1vw;
+  padding: 1vw;
+  display: flex;
+
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+ 
+  /* Position the tooltip text - see examples below! */
+  position: absolute;
+  z-index: 1;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+.icon{
+  // .tooltip;
+  margin-left: 10px;
+  color:#6c6868
+}
+.icon-run-tests{
+    // display: inline-block;
+    // width: 1em;
+    // height: 1em;
+    // stroke-width: 0;
+    // stroke: currentColor;
+    // fill: currentColor;
+}
+.test-running-status{
+  margin-left: 10px;
+}
+.test-not-run{
+  .icon;
+}
+.test-running{
+  .icon;
+}
+.test-passed{
+  .icon;
+  color:green
+}
+.test-failed{
+  .icon;
+  color:red;
+}
+.test-skipped{
+  .icon;
+}
+.test-running-error{
+  .icon;
+  color:red;
+}
+//

@@ -5,6 +5,7 @@ import { Router, Link } from "@reach/router"
 import { TestExplorer } from "./test-explorer/test-explorer"
 import "./styles.less"
 import { navigate } from "@reach/router"
+import { TemplateList } from './test-templates/template-list';
 
 ReactDOM.render(
     // <TestRecorder />
@@ -13,10 +14,12 @@ ReactDOM.render(
         <nav>
             <Link to="/">New Test</Link> |{" "}
             <Link to="/test-explorer">Test Explorer</Link> |{" "}
+            <Link to="/template-list">Template List</Link>|{" "}
         </nav>
         <Router>
             <TestRecorder default path="/" />
             <TestExplorer path="test-explorer" />
+            <TemplateList path="template-list" />
         </Router>
     </>
     , document.getElementById('react-app')
