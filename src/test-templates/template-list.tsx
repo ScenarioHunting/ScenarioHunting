@@ -17,7 +17,7 @@ export const TemplateList = (props): JSX.Element => {
     function editTemplate(templateName: string) {
         console.log(templateName)
         // eslint-disable-next-line no-undef
-        miro.board.ui.openModal('./monaco-editor.html', { fullscreen: true })
+        miro.board.ui.openModal('./monaco-editor.html', { fullscreen: false })
     }
     function deleteTemplate(templateName: string) {
         console.log(templateName)
@@ -27,7 +27,7 @@ export const TemplateList = (props): JSX.Element => {
     return <>
         {templateNames.map(templateName =>
             <div key={templateName}>
-                templateName
+                {{ templateName }}
                 <button onClick={() => editTemplate(templateName)} > Edit</button>
                 <button onClick={() => deleteTemplate(templateName)} > Delete</button>
             </div>
