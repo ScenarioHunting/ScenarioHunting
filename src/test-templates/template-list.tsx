@@ -10,13 +10,14 @@ export const TemplateList = (props): JSX.Element => {
     const [templateNames, setAvailableTemplateNames] = useState<string[]>([]);
     useEffect(() => {
         getTemplateRepository().then(repo => {
-            repo.getAllTemplateNames().then(x => {
-                setAvailableTemplateNames(x)
+            repo.getAllTemplateNames().then(templateNames => {
+                setAvailableTemplateNames(templateNames)
             }).catch(e => { throw e })
         })
     }, []);
     function editTemplate(templateName: string) {
-        miro.board.ui.openModal('monaco-editor.html', { fullscreen: true })
+        console.log(templateName)
+        // miro.board.ui.openModal('monaco-editor.html', { fullscreen: true })
     }
     return <>
         {templateNames.map(templateName =>
