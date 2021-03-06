@@ -27,7 +27,7 @@ export const TemplateList = (props): JSX.Element => {
     return <>
         {templateNames.map(templateName =>
             <div key={templateName}>
-                {{ templateName }}
+                { templateName }
                 <button onClick={() => editTemplate(templateName)} > Edit</button>
                 <button onClick={() => deleteTemplate(templateName)} > Delete</button>
             </div>
