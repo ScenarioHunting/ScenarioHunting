@@ -2,7 +2,8 @@ const path = require('path')
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-	mode: 'development', // Tip! compile in 'production' mode before publish
+	mode: 'production', // Tip! compile in 'production' mode before publish
+	// mode: 'development', // Tip! compile in 'production' mode before publish
 
 	// Tip! Just delete not using files, but main.ts is required
 	entry: {

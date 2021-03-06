@@ -8,8 +8,6 @@ import { navigate } from "@reach/router"
 import { TemplateList } from './test-templates/template-list';
 
 ReactDOM.render(
-    // <TestRecorder />
-
     <>
         <nav>
             <Link to="/">New Test</Link> |{" "}
