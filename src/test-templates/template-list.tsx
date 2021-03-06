@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import * as React from 'react';
 import "./template-list.less"
 import { getTemplateRepository } from '../test-factory/template-repository';
@@ -17,12 +16,22 @@ export const TemplateList = (props): JSX.Element => {
     }, []);
     function editTemplate(templateName: string) {
         console.log(templateName)
-        // miro.board.ui.openModal('monaco-editor.html', { fullscreen: true })
+        // eslint-disable-next-line no-undef
+        miro.board.ui.openModal('./monaco-editor.html', { fullscreen: true })
+    }
+    function deleteTemplate(templateName: string) {
+        console.log(templateName)
+        //confirm
+        //delete
     }
     return <>
         {templateNames.map(templateName =>
-            <button key={templateName} onClick={() => editTemplate(templateName)} > templateName</button>)
-        }
+            <div key={templateName}>
+                templateName
+                <button onClick={() => editTemplate(templateName)} > Edit</button>
+                <button onClick={() => deleteTemplate(templateName)} > Delete</button>
+            </div>
+        )}
     </>
 
 }
