@@ -8,6 +8,7 @@ import { ExampleWidget, SelectedWidget } from 'board';
 import { Save, LocalTestCreationResult } from './test-recorder-http-service';
 import { singletonStepNavigator } from './local-dependency-container';
 import { getTemplateRepository } from './template-repository';
+import { useEffect, useState } from 'react';
 
 export type StepInfo = {
     type: string
@@ -30,21 +31,19 @@ export const createTestRecorder = (board = singletonBoard
 
 
 
-        // React.useEffect(() =>
-        //     recordTestName(testName == "" ?
-        //         when?.data.type + '_' + then?.data.type
-        //         : testName))
 
 
-        const [givens, recordGiven] = React.useState<IndexedStep[]>([]);
-        const [when, recordWhen] = React.useState<SelectedWidget>();
-        const [then, recordThen] = React.useState<SelectedWidget>();
-        const [testName, recordTestName] = React.useState<string>("TestName");
-        const [testContext, recordTestContext] = React.useState<string>("ServiceName");
-        const [sutName, recordSutName] = React.useState<string>("SutName");
-        const [selectedTemplateName, selectTemplateName] = React.useState<string>("no template");
-        const [availableTemplateNames, setAvailableTemplateNames] = React.useState<string[]>([]);
-        React.useEffect(() => {
+
+        const [givens, recordGiven] = useState<IndexedStep[]>([]);
+        const [when, recordWhen] = useState<SelectedWidget>();
+        const [then, recordThen] = useState<SelectedWidget>();
+        const [testName, recordTestName] = useState<string>("TestName");
+        const [testContext, recordTestContext] = useState<string>("ServiceName");
+        const [sutName, recordSutName] = useState<string>("SutName");
+        const [selectedTemplateName, selectTemplateName] = useState<string>("no template");
+        const [availableTemplateNames, setAvailableTemplateNames] = useState<string[]>([]);
+
+        useEffect(() => {
             board.unselectAll()
                 .then(stepNavigator.start);
             getTemplateRepository().then(repo => {
@@ -53,7 +52,13 @@ export const createTestRecorder = (board = singletonBoard
                     selectTemplateName(x[0])
                 }).catch(e => { throw e })
             })
-        }, [board]);
+        }, [])
+        
+        useEffect(() =>
+            recordTestName(testName == "" ?
+                when?.widgetData.type + '_' + then?.widgetData.type
+                : testName)
+            , [when, then, testName])
         const updateGivens = (givenResults: IndexedStep[]) => {
             recordGiven(givenResults);
         };
