@@ -49,19 +49,19 @@ export const createTestRecorder = (board = singletonBoard
             })
         }, [])
 
-        var isTestNameStale = React.useRef(true)
-        useEffect(() => {
-            if (testName != "") {
-                isTestNameStale.current = false
-                return
-            }
-            if (typeof when?.widgetData.type != 'undefined'
-                && typeof then?.widgetData.type != 'undefined'
-                && isTestNameStale.current) {
-                var defaultTestName = when?.widgetData.type + '_' + then?.widgetData.type
-                recordTestName(defaultTestName)
-            }
-        }, [when, then, testName, isTestNameStale])
+        // var isTestNameStale = React.useRef(true)
+        // useEffect(() => {
+        //     if (testName != "") {
+        //         isTestNameStale.current = false
+        //         return
+        //     }
+        //     if (typeof when?.widgetData.type != 'undefined'
+        //         && typeof then?.widgetData.type != 'undefined'
+        //         && isTestNameStale.current) {
+        //         var defaultTestName = when?.widgetData.type + '_' + then?.widgetData.type
+        //         recordTestName(defaultTestName)
+        //     }
+        // }, [when, then, testName, isTestNameStale])
         const updateGivens = (givenResults: IndexedStep[]) => {
             recordGiven(givenResults);
         };
