@@ -51,11 +51,15 @@ export const createTestRecorder = (board = singletonBoard
 
         var isTestNameStale = React.useRef(true)
         useEffect(() => {
-            if (testName == "" && isTestNameStale.current) {
+            if (testName == ""
+                && typeof when?.widgetData.type != 'undefined'
+                && typeof then?.widgetData.type != 'undefined'
+                && isTestNameStale.current) {
                 var defaultTestName = when?.widgetData.type + '_' + then?.widgetData.type
                 recordTestName(defaultTestName)
+            } else {
+                isTestNameStale.current = false
             }
-            isTestNameStale.current = false
         }, [when, then, testName])
         const updateGivens = (givenResults: IndexedStep[]) => {
             recordGiven(givenResults);
@@ -64,7 +68,7 @@ export const createTestRecorder = (board = singletonBoard
             recordWhen(when);
         };
         const updateThen = (then: SelectedWidget) => {
-            recordThen(then);
+            recordThen(then)
         };
         const showValidationError = (errorText: string) => {
             board.showNotification(errorText)
