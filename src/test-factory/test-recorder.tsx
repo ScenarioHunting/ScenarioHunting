@@ -49,13 +49,14 @@ export const createTestRecorder = (board = singletonBoard
             })
         }, [])
 
-
-        // useEffect(() => {
-        //     if (testName == "") {
-        //         var defaultTestName = when?.widgetData.type + '_' + then?.widgetData.type
-        //         recordTestName(defaultTestName)
-        //     }
-        // }, [when, then, testName])
+        var isTestNameStale = React.useRef(true)
+        useEffect(() => {
+            if (testName == "" && isTestNameStale.current) {
+                var defaultTestName = when?.widgetData.type + '_' + then?.widgetData.type
+                recordTestName(defaultTestName)
+            }
+            isTestNameStale.current = false
+        }, [when, then, testName])
         const updateGivens = (givenResults: IndexedStep[]) => {
             recordGiven(givenResults);
         };
@@ -63,10 +64,6 @@ export const createTestRecorder = (board = singletonBoard
             recordWhen(when);
         };
         const updateThen = (then: SelectedWidget) => {
-            if (testName == "") {
-                var defaultTestName = when?.widgetData.type + '_' + then?.widgetData.type
-                recordTestName(defaultTestName)
-            }
             recordThen(then);
         };
         const showValidationError = (errorText: string) => {
