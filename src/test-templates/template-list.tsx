@@ -26,7 +26,7 @@ export const TemplateList = (props): JSX.Element => {
     }
     return <>
         {templateNames.map(templateName =>
-            <div key={templateName}>
+            <div className="raw" key={templateName}>
                 <p onClick={() => editTemplate(templateName)} className="templateName" >
                     {templateName}
                 </p>
