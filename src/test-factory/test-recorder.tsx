@@ -141,8 +141,8 @@ export const createTestRecorder = (board = singletonBoard
 
                         <button className='save-button' onClick={saveAndRedirectToExplorer}>Save</button>
 
-                        <label className="test-name-label">Test Name:</label>
-                        <input type='text' className="test-name-input" value={testName} onChange={x => recordTestName(x.target.value)} placeholder="Test Name" />
+                        <label className="test-name-label">Scenario:</label>
+                        <input type='text' className="test-name-input" value={testName} onChange={x => recordTestName(x.target.value)} placeholder="Scenario" />
 
                         <label className="template-selector-label">Template:</label>
                         <select className="template-selector" value={selectedTemplateName}
