@@ -27,9 +27,15 @@ export const TemplateList = (props): JSX.Element => {
     return <>
         {templateNames.map(templateName =>
             <div key={templateName}>
-                { templateName }
-                <button onClick={() => editTemplate(templateName)} > Edit</button>
-                <button onClick={() => deleteTemplate(templateName)} > Delete</button>
+                <p onClick={() => editTemplate(templateName)} className="templateName" >
+                    {templateName}
+                </p>
+                <button onClick={() => deleteTemplate(templateName)} className="imageButton">
+                    <img alt="Delete" src="https://cdn1.iconfinder.com/data/icons/free-education-set/32/trash-512.png"
+                        className="imageInButton" />
+                </button>
+                {/* <button onClick={() => editTemplate(templateName)} > Edit</button>
+                <button onClick={() => deleteTemplate(templateName)} > Delete</button> */}
             </div>
         )}
     </>
