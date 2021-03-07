@@ -87,6 +87,7 @@
 }
 .test-form-details{
   display: grid;
+  row-gap: 10px;
   grid-template-columns:  1fr 1fr;
   grid-template-rows: auto auto auto auto;
   grid-template-areas: 
@@ -98,6 +99,7 @@
   padding: 10px 4px 4px 6px;
 }
 .given{
+
   grid-area: given;
 }
 .when{
@@ -106,9 +108,21 @@
 .then{
   grid-area: then;
 }
-
+input{
+  &:extend(.miro-input--primary all);
+  &:extend(.miro-input--small all);
+}
+select{
+  &:extend(.miro-select all);
+  &:extend(.miro-select--primary-bordered all);
+  &:extend(.miro-select--small all);
+}
 .test-name-label {
   grid-area: test-name-label;
+  padding-top: 8.7px;
+}
+.sut-label {
+  grid-area: sut-label;
   padding-top: 8.7px;
 }
 .test-context-label {
@@ -138,27 +152,28 @@
 }
 
 .save-button{
+  &:extend(miro-btn--small);
   grid-area: save-button;
-  display: block;
-    background-color: #4262FF;
-    border: none;
-    color: #FFF;
-    height: 50px;
-    box-sizing: border-box;
-    border-radius: 4px;
-    text-align: center;
-    font-size: 22px;
-    cursor: pointer;
+  // display: block;
+  //   background-color: #4262FF;
+  //   border: none;
+  //   color: #FFF;
+  //   height: 50px;
+  //   box-sizing: border-box;
+  //   border-radius: 4px;
+  //   text-align: center;
+  //   font-size: 22px;
+  //   cursor: pointer;
 }
 
 
 .input {
-  display: inline-block;
-  vertical-align: top;
-  border: 1px solid #CCC;
-  border-radius: 4px;
-  padding: 4px 4px 4px 6px;
-  box-sizing: content-box;
+  // display: inline-block;
+  // vertical-align: top;
+  // border: 1px solid #CCC;
+  // border-radius: 4px;
+  // padding: 4px 4px 4px 6px;
+  // box-sizing: content-box;
 }
 
 .step-content{
@@ -167,10 +182,11 @@
   // grid-template-rows: fr1;
 }
 .step-title{
+  &:extend(.miro-h1);
   display: flex; 
   justify-content: center;
   padding: 10px 0px 0px 0px;
-  font-weight: 550;
+  // font-weight: 550;
 }
 .step-data{
   padding: 20px;
@@ -207,17 +223,21 @@ h1 {
 //     padding: 0;
 // }
 .add-step-button {
-  display: block;
-  background: none;
-  border: 1px solid #090909;
-  color: #090909;
-  height: 30px;
-  box-sizing: border-box;
-  border-radius: 4px;
-  text-align: center;
-  font-size: 14px;
-  cursor: pointer;
-  margin-bottom: 20px;
+  &:extend(miro-btn);
+  &:extend(miro-btn--secondary);
+  &:extend(miro-btn--small);
+  
+  // display: block;
+  // background: none;
+  // border: 1px solid #090909;
+  // color: #090909;
+  // height: 30px;
+  // box-sizing: border-box;
+  // border-radius: 4px;
+  // text-align: center;
+  // font-size: 14px;
+  // cursor: pointer;
+  // margin-bottom: 20px;
 }
 
 .waiting-for-step{
