@@ -19,6 +19,7 @@ export let createGivenStepCollection =
 	(stepNavigator = singletonStepNavigator) =>
 		(props: GivenStepsProps) => {
 
+			// const [canAdd, setCanAdd] = React.useState<boolean>(false)
 			const [isActive, setIsActive] = React.useState<boolean>(false)
 			const [indexedSteps, setIndexedSteps] = React.useState<IndexedStep[]>([])
 
@@ -33,7 +34,7 @@ export let createGivenStepCollection =
 
 
 			let nextId: number = 1
-			let canAdd: boolean = false
+			let canAdd: boolean = true
 			const add = () => {
 				if (!canAdd || indexedSteps.length > 9)
 					return;
@@ -64,7 +65,6 @@ export let createGivenStepCollection =
 				setIndexedSteps([...updatedSteps])
 
 				props.onStepSelectionChange(updatedSteps)
-				console.log("onChange:", updatedSteps)
 			}
 			return (
 				<div>
