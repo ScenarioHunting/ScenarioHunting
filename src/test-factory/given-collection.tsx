@@ -33,13 +33,20 @@ export let createGivenStepCollection =
 
 
 			let nextId: number = 1
+			let canAdd: boolean = false
 			const add = () => {
+				if (!canAdd || indexedSteps.length > 9)
+					return;
 				// const data = indexedSteps;
 				// data.unshift({ index: nextId } as IndexedStep)
 				setIndexedSteps([{ index: nextId } as IndexedStep, ...indexedSteps])
 				nextId++;
+
+				canAdd = false
 			}
 			const onStepSelection = (updatedStep: SelectedWidget) => {
+				canAdd = true
+
 				// function replace<T>(arr: Array<T>, newItem: T, predicate: (old: T) => Boolean) {
 				// }
 				const replaceOldIfEqual = (oldStep: IndexedStep, updatedStep: SelectedWidget) => {
@@ -66,7 +73,7 @@ export let createGivenStepCollection =
 					{isActive &&
 						<>
 							{/* <h3>{options.selectionWaitingMessage}</h3> */}
-							<button className="add-step-button miro-btn miro-btn--small miro-btn--secondary"
+							<button className="add-step-button miro-btn miro-btn--small miro-btn--secondary" disabled={!isActive || canAdd || indexedSteps.length > 9}
 								onClick={add}>
 								+ Given
 							</button>
@@ -79,6 +86,9 @@ export let createGivenStepCollection =
 								step={data.step}
 								key={data.index}
 							/>)
+					}
+					{indexedSteps.length > 9 &&
+						<div className="status-text">More than 10 givens are not allowed</div>
 					}
 
 
