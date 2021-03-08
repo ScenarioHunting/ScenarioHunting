@@ -109,6 +109,7 @@
   grid-area: then;
 }
 input{
+  &:extend(.miro-input all);
   &:extend(.miro-input--primary all);
   &:extend(.miro-input--small all);
 }
@@ -152,6 +153,7 @@ select{
 }
 
 .save-button{
+  &:extend(miro-btn);
   &:extend(miro-btn--small);
   grid-area: save-button;
   // display: block;
