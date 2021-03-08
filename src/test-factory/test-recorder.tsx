@@ -8,7 +8,7 @@ import { ExampleWidget, SelectedWidget } from 'board';
 import { Save, LocalTestCreationResult } from './test-recorder-http-service';
 import { singletonStepNavigator } from './local-dependency-container';
 import { getTemplateRepository } from './template-repository';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 
 export type StepInfo = {
     type: string
@@ -32,12 +32,21 @@ export const createTestRecorder = (board = singletonBoard
         const [givens, recordGiven] = useState<IndexedStep[]>([]);
         const [when, recordWhen] = useState<SelectedWidget>();
         const [then, recordThen] = useState<SelectedWidget>();
-        const [scenario, recordScenario] = useState<string>("");
-        const [context, recordContext] = useState<string>("ServiceName");
-        const [subject, recordSubject] = useState<string>("SutName");
+        const [scenario, recordScenario] = useState<string>(" ");
+        const [context, recordContext] = useState<string>(" ");
+        const [subject, recordSubject] = useState<string>(" ");
         const [selectedTemplateName, selectTemplateName] = useState<string>("no template");
         const [availableTemplateNames, setAvailableTemplateNames] = useState<string[]>([]);
+        const [contextErrors, setContextErrors] = useState<string[]>([])
 
+        useCallback(() => {
+            if (context == "")
+                setContextErrors(["Context is required!"])
+            else if (context.length > 50)
+                setContextErrors(["Too long"])
+            else
+                setContextErrors([])
+        }, [context]);
         useEffect(() => {
             board.unselectAll()
                 .then(stepNavigator.start);
@@ -117,12 +126,13 @@ export const createTestRecorder = (board = singletonBoard
 
             await navigate('/test-explorer', { state: { newTest: viewModel } })
         };
+
         function getClassNamesForRequiredValue(value: string) {
             const classNames = "miro-input miro-input--small miro-input--primary"
             const invalidClassName = "miro-input-field--invalid"
-            if (value == "")
+            if (value.trim() == "")
                 return " " + classNames + " " + invalidClassName
-            return classNames + " miro-input--success"
+            return " " + classNames + " miro-input--success"
         }
         return (
             <div className="test-recorder">
@@ -147,6 +157,7 @@ export const createTestRecorder = (board = singletonBoard
                                 value={context} onChange={x => recordContext(x.target.value)}
                                 placeholder="Context"
                             />
+                            {contextErrors.length > 0 && <div className="status-text">Context is required</div>}
                             {/* {context == "" && <div className="status-text">Context is required</div>} */}
                         </div>
 
@@ -184,7 +195,7 @@ export const createTestRecorder = (board = singletonBoard
                             <button
                                 className='save-button save-button miro-btn miro-btn--primary miro-btn--small'
                                 onClick={saveAndRedirectToExplorer}
-                                disabled={scenario == "" || context == "" || subject == ""}>Save</button>
+                                disabled={scenario.trim() == "" || context.trim() == "" || subject.trim() == ""}>Save</button>
                         </div>
                     </div>
                 }
