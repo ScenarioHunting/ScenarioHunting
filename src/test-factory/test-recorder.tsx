@@ -134,18 +134,18 @@ export const createTestRecorder = (board = singletonBoard
                 {then &&
                     <div className="test-form-details">
                         <label className="test-context-label">Context:</label>
-                        <input type='text' className="test-context-input miro-input miro-input--small miro-input--primary" value={testContext} onChange={x => recordTestContext(x.target.value)} placeholder="Context" />
+                        <input type='text' className="test-context-input" value={testContext} onChange={x => recordTestContext(x.target.value)} placeholder="Context" />
 
                         <label className="sut-label">Subject:</label>
-                        <input type='text' className="sut-input miro-input miro-input--small miro-input--primary" value={sutName} onChange={x => recordSutName(x.target.value)} placeholder="Subject Under Test" />
+                        <input type='text' className="sut-input" value={sutName} onChange={x => recordSutName(x.target.value)} placeholder="Subject Under Test" />
 
                         <button className='save-button' onClick={saveAndRedirectToExplorer}>Save</button>
 
                         <label className="test-name-label">Scenario:</label>
-                        <input type='text' className="test-name-input miro-input miro-input--small miro-input--primary" value={testName} onChange={x => recordTestName(x.target.value)} placeholder="Scenario" />
+                        <input type='text' className="test-name-input" value={testName} onChange={x => recordTestName(x.target.value)} placeholder="Scenario" />
 
-                        <label className="template-selector-label miro-select miro-select--small miro-select--primary-bordered">Template:</label>
-                        <select className="template-selector " value={selectedTemplateName}
+                        <label className="template-selector-label">Template:</label>
+                        <select className="template-selector" value={selectedTemplateName}
                             onChange={(e) => selectTemplateName(e.target.value)}>
                             {availableTemplateNames.map((templateName) => (
                                 <option key={templateName} value={templateName}>
