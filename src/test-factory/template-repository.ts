@@ -101,7 +101,7 @@ export type testCodeTemplate = {
 async function addSamplesToRepository(repository: templateRepository) {
     const sampleTemplates: testCodeTemplate[] = [
         {
-            testFileNameTemplate: "{{testName}}",
+            testFileNameTemplate: "{{scenario}}",
             testFileExtension: "cs",
             codeTemplate: `using StoryTest;
 using Vlerx.Es.Messaging;
@@ -117,7 +117,7 @@ namespace {{context}}.Tests
     {{#* inline "callConstructor"}}
     new {{title}}({{#each properties}}"{{example}}"{{#skipLast}},{{/skipLast}}{{/each}}){{/inline}}
 
-    public class {{testName}} : IStorySpecification
+    public class {{scenario}} : IStorySpecification
     {
         public IDomainEvent[] Given
         => new IDomainEvent[]{
@@ -148,7 +148,7 @@ namespace {{context}}.Tests
             templateName: "sample-template"
         },
         {
-            testFileNameTemplate: "{{testName}}2",
+            testFileNameTemplate: "{{scenario}}2",
             testFileExtension: "cs",
             codeTemplate: `using StoryTest;
 using Vlerx.Es.Messaging;
@@ -164,7 +164,7 @@ namespace {{context}}.Tests
     {{#* inline "callConstructor"}}
     new {{title}}({{#each properties}}"{{example}}"{{#skipLast}},{{/skipLast}}{{/each}}){{/inline}}
 
-    public class {{testName}} : IStorySpecification
+    public class {{scenario}} : IStorySpecification
     {
         public IDomainEvent[] Given
         => new IDomainEvent[]{

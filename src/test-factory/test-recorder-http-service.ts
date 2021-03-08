@@ -71,7 +71,7 @@ export async function Save(templateName: string, test: LocalTestCreationResult):
     try {
         const dto = toDto(test)
         var viewModel = dtoToJsonSchema(dto)
-        console.log("Saving the template for test:", viewModel.testName)
+        console.log("Saving the template for test:", viewModel.scenario)
 
         var testTemplateRepository = await getTemplateRepository()
         var template = await testTemplateRepository.getTemplateByName(templateName)
@@ -125,7 +125,7 @@ function dtoToJsonSchema(dto: CreateTestDto) {
         thens: dto.test.thens.map(then => stepToJsonSchema(then.step)),
         sut: dto.testName,
         context: dto.context,
-        testName: dto.testName,
+        scenario: dto.testName,
     }
 }
 //********************** */
