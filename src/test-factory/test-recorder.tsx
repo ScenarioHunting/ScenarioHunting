@@ -121,8 +121,8 @@ export const createTestRecorder = (board = singletonBoard
             const classNames = "miro-input miro-input--small miro-input--primary"
             const invalidClassName = "miro-input-field--invalid"
             if (value == "")
-                return classNames + " " + invalidClassName
-            return classNames
+                return " " + classNames + " " + invalidClassName
+            return classNames + " miro-input--success"
         }
         return (
             <div className="test-recorder">
@@ -147,7 +147,7 @@ export const createTestRecorder = (board = singletonBoard
                                 value={context} onChange={x => recordContext(x.target.value)}
                                 placeholder="Context"
                             />
-                            {context == "" && <div className="status-text">Context is required</div>}
+                            {/* {context == "" && <div className="status-text">Context is required</div>} */}
                         </div>
 
                         <label className="sut-label">Subject:</label>
@@ -158,7 +158,7 @@ export const createTestRecorder = (board = singletonBoard
                                 value={subject}
                                 onChange={x => recordSubject(x.target.value)}
                                 placeholder="Subject Under Test" />
-                            {subject == "" && <div className="status-text">Subject is required</div>}
+                            {/* {subject == "" && <div className="status-text">Subject is required</div>} */}
                         </div>
 
                         <label className="test-name-label">Scenario:</label>
@@ -168,9 +168,9 @@ export const createTestRecorder = (board = singletonBoard
                                 className={"test-name-input" + getClassNamesForRequiredValue(scenario)}
                                 value={scenario} onChange={x => recordScenario(x.target.value)}
                                 placeholder="Scenario" />
-                            {scenario == "" && <div className="status-text">Scenario is required</div>}
+                            {/* {scenario == "" && <div className="status-text">Scenario is required</div>} */}
                         </div>
-                        
+
                         <div className="save-test miro-input-group miro-input-group--small">
                             {/* <label className="template-selector-label miro-select miro-select--small miro-select--primary-bordered">Template:</label> */}
                             <select className="template-selector miro-select miro-select--secondary-bordered miro-select--small" value={selectedTemplateName}
