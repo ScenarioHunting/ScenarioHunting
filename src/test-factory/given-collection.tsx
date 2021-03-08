@@ -44,9 +44,12 @@ export let createGivenStepCollection =
 				nextId++;
 
 				canAdd = false
+				console.log("add: can add=", canAdd)
+
 			}
 			const onStepSelection = (updatedStep: SelectedWidget) => {
 				canAdd = true
+				console.log("on next selection: can add=", canAdd)
 
 				// function replace<T>(arr: Array<T>, newItem: T, predicate: (old: T) => Boolean) {
 				// }
