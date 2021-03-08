@@ -117,6 +117,13 @@ export const createTestRecorder = (board = singletonBoard
 
             await navigate('/test-explorer', { state: { newTest: viewModel } })
         };
+        function getClassNamesForRequiredValue(value: string) {
+            const classNames = "miro-input miro-input--small miro-input--primary"
+            const invalidClassName = "miro-input-field--invalid"
+            if (value == "")
+                return classNames + " " + invalidClassName
+            return classNames
+        }
         return (
             <div className="test-recorder">
 
@@ -133,30 +140,37 @@ export const createTestRecorder = (board = singletonBoard
                 </div>
                 {then &&
                     <div className="test-form-details">
-
                         <label className="test-context-label">Context:</label>
-                        <input type='text'
-                            className="test-context-input miro-input miro-input--small miro-input--primary"
-                            value={context} onChange={x => recordContext(x.target.value)}
-                            placeholder="Context" />
-                        {context == "" && <div className="status-text">Context is required</div>}
+                        <div className="test-context-input miro-input-field miro-input-field--small miro-input-field--invalid">
+                            <input type='text'
+                                className={"test-context-input" + getClassNamesForRequiredValue(context)}
+                                value={context} onChange={x => recordContext(x.target.value)}
+                                placeholder="Context"
+                            />
+                            {context == "" && <div className="status-text">Context is required</div>}
+                        </div>
 
                         <label className="sut-label">Subject:</label>
-                        <input type='text'
-                            className="sut-input miro-input miro-input--small miro-input--primary"
-                            value={subject}
-                            onChange={x => recordSubject(x.target.value)}
-                            placeholder="Subject Under Test" />
-                        {subject == "" && <div className="status-text">Subject is required</div>}
 
+                        <div className="sut-input miro-input-field miro-input-field--small miro-input-field--invalid">
+                            <input type='text'
+                                className={"sut-input" + getClassNamesForRequiredValue(subject)}
+                                value={subject}
+                                onChange={x => recordSubject(x.target.value)}
+                                placeholder="Subject Under Test" />
+                            {subject == "" && <div className="status-text">Subject is required</div>}
+                        </div>
 
                         <label className="test-name-label">Scenario:</label>
-                        <input type='text'
-                         className="test-name-input miro-input miro-input--small miro-input--primary" 
-                         value={scenario} onChange={x => recordScenario(x.target.value)} 
-                         placeholder="Scenario" />
-                        {scenario == "" && <div className="status-text">Scenario is required</div>}
+                        <div className="test-name-input miro-input-field miro-input-field--small miro-input-field--invalid">
 
+                            <input type='text'
+                                className={"test-name-input" + getClassNamesForRequiredValue(scenario)}
+                                value={scenario} onChange={x => recordScenario(x.target.value)}
+                                placeholder="Scenario" />
+                            {scenario == "" && <div className="status-text">Scenario is required</div>}
+                        </div>
+                        
                         <div className="save-test miro-input-group miro-input-group--small">
                             {/* <label className="template-selector-label miro-select miro-select--small miro-select--primary-bordered">Template:</label> */}
                             <select className="template-selector miro-select miro-select--secondary-bordered miro-select--small" value={selectedTemplateName}
@@ -167,7 +181,10 @@ export const createTestRecorder = (board = singletonBoard
                                     </option>
                                 ))}
                             </select>
-                            <button className='save-button save-button miro-btn miro-btn--primary miro-btn--small' onClick={saveAndRedirectToExplorer}>Save</button>
+                            <button
+                                className='save-button save-button miro-btn miro-btn--primary miro-btn--small'
+                                onClick={saveAndRedirectToExplorer}
+                                disabled={scenario == "" || context == "" || subject == ""}>Save</button>
                         </div>
                     </div>
                 }
