@@ -71,7 +71,9 @@ export function createTestStepRecorder({ stepType
                                 {props.step?.widgetData.properties?.map((property, index) =>
                                     <div className="step-date-property" key={`${property}~${index}`}>
                                         <label className="property-label">{property.propertyName}</label>
-                                        <input readOnly={false} onChange={(e) => onValueChange(index, e)} className="property-input miro-input miro-input--small miro-input--primary" type="text" value={property.simplePropertyValue}></input>
+                                        <input readOnly={false} onChange={(e) => onValueChange(index, e)}
+                                            className="miro-input miro-input--small miro-input--primary property-input"
+                                            type="text" value={property.simplePropertyValue} disabled="disabled"></input>
                                     </div>
                                 )}
                             </div>
