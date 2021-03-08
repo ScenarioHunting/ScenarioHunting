@@ -19,7 +19,7 @@ export let createGivenStepCollection =
 	(stepNavigator = singletonStepNavigator) =>
 		(props: GivenStepsProps) => {
 
-			// const [canAdd, setCanAdd] = React.useState<boolean>(false)
+			const [canAdd, setCanAdd] = React.useState<boolean>(false)
 			const [isActive, setIsActive] = React.useState<boolean>(false)
 			const [indexedSteps, setIndexedSteps] = React.useState<IndexedStep[]>([])
 
@@ -34,7 +34,6 @@ export let createGivenStepCollection =
 
 
 			let nextId: number = 1
-			let canAdd: boolean = true
 			const add = () => {
 				if (!canAdd || indexedSteps.length > 9)
 					return;
@@ -43,12 +42,12 @@ export let createGivenStepCollection =
 				setIndexedSteps([{ index: nextId } as IndexedStep, ...indexedSteps])
 				nextId++;
 
-				canAdd = false
+				setCanAdd(false)
 				console.log("add: can add=", canAdd)
 
 			}
 			const onStepSelection = (updatedStep: SelectedWidget) => {
-				canAdd = true
+				setCanAdd(true)
 				console.log("on next selection: can add=", canAdd)
 
 				// function replace<T>(arr: Array<T>, newItem: T, predicate: (old: T) => Boolean) {

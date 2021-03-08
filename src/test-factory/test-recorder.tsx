@@ -32,9 +32,9 @@ export const createTestRecorder = (board = singletonBoard
         const [givens, recordGiven] = useState<IndexedStep[]>([]);
         const [when, recordWhen] = useState<SelectedWidget>();
         const [then, recordThen] = useState<SelectedWidget>();
-        const [testName, recordTestName] = useState<string>("");
-        const [testContext, recordTestContext] = useState<string>("ServiceName");
-        const [sutName, recordSutName] = useState<string>("SutName");
+        const [scenario, recordScenario] = useState<string>("");
+        const [context, recordContext] = useState<string>("ServiceName");
+        const [subject, recordSubject] = useState<string>("SutName");
         const [selectedTemplateName, selectTemplateName] = useState<string>("no template");
         const [availableTemplateNames, setAvailableTemplateNames] = useState<string[]>([]);
 
@@ -87,9 +87,9 @@ export const createTestRecorder = (board = singletonBoard
             }
             try {
                 await save(selectedTemplateName, {
-                    testContext,
-                    testName,
-                    sutName,
+                    testContext: context,
+                    testName: scenario,
+                    sutName: subject,
 
                     givens,
                     when,
@@ -107,9 +107,9 @@ export const createTestRecorder = (board = singletonBoard
                 }
             }
             var viewModel: ViewModel = {
-                testContext
-                , sutName
-                , testName
+                testContext: context
+                , sutName: subject
+                , testName: scenario
                 , givens: givens.map(step => toViewModel(step.step))
                 , when: toViewModel(when)
                 , then: toViewModel(then)
@@ -135,14 +135,27 @@ export const createTestRecorder = (board = singletonBoard
                     <div className="test-form-details">
 
                         <label className="test-context-label">Context:</label>
-                        <input type='text' className="test-context-input miro-input miro-input--small miro-input--primary" value={testContext} onChange={x => recordTestContext(x.target.value)} placeholder="Context" />
+                        <input type='text'
+                            className="test-context-input miro-input miro-input--small miro-input--primary"
+                            value={context} onChange={x => recordContext(x.target.value)}
+                            placeholder="Context" />
+                        {context == "" && <div className="status-text">Context is required</div>}
 
                         <label className="sut-label">Subject:</label>
-                        <input type='text' className="sut-input miro-input miro-input--small miro-input--primary" value={sutName} onChange={x => recordSutName(x.target.value)} placeholder="Subject Under Test" />
+                        <input type='text'
+                            className="sut-input miro-input miro-input--small miro-input--primary"
+                            value={subject}
+                            onChange={x => recordSubject(x.target.value)}
+                            placeholder="Subject Under Test" />
+                        {subject == "" && <div className="status-text">Subject is required</div>}
 
 
                         <label className="test-name-label">Scenario:</label>
-                        <input type='text' className="test-name-input miro-input miro-input--small miro-input--primary" value={testName} onChange={x => recordTestName(x.target.value)} placeholder="Scenario" />
+                        <input type='text'
+                         className="test-name-input miro-input miro-input--small miro-input--primary" 
+                         value={scenario} onChange={x => recordScenario(x.target.value)} 
+                         placeholder="Scenario" />
+                        {scenario == "" && <div className="status-text">Scenario is required</div>}
 
                         <div className="save-test miro-input-group miro-input-group--small">
                             {/* <label className="template-selector-label miro-select miro-select--small miro-select--primary-bordered">Template:</label> */}
