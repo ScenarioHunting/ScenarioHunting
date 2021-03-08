@@ -38,6 +38,7 @@ export const createTestRecorder = (board = singletonBoard
         const [selectedTemplateName, selectTemplateName] = useState<string>("no template");
         const [availableTemplateNames, setAvailableTemplateNames] = useState<string[]>([]);
         const [contextErrors, setContextErrors] = useState<string>("")
+        const [subjectErrors, setSubjectErrors] = useState<string>("")
 
         function changeContext(context: string) {
             if (context == "")
@@ -48,6 +49,11 @@ export const createTestRecorder = (board = singletonBoard
                 setContextErrors("")
             recordContext(context)
         }
+        React.useCallback(() => {
+            if (subject == "") {
+                setSubjectErrors("Subject under test is required!")
+            }
+        }, [subject])
         useEffect(() => {
             board.unselectAll()
                 .then(stepNavigator.start);
@@ -152,9 +158,9 @@ export const createTestRecorder = (board = singletonBoard
                 {then &&
                     <div className="test-form-details">
                         <label className="test-context-label">Context:</label>
-                        <div className="test-context-input miro-input-field miro-input-field--small miro-input-field--invalid">
+                        <div className={"test-context-input miro-input-field miro-input-field--small" + contextErrors == "" ? "miro-input-field--success" : "miro-input-field--invalid"}>
                             <input type='text'
-                                className={"test-context-input" + getClassNamesForRequiredValue(context)}
+                                className={"test-context-input miro-input miro-input--primary"}
                                 value={context} onChange={x => changeContext(x.target.value)}
                                 placeholder="Context"
                             />
@@ -164,17 +170,19 @@ export const createTestRecorder = (board = singletonBoard
 
                         <label className="sut-label">Subject:</label>
 
-                        <div className="sut-input miro-input-field miro-input-field--small miro-input-field--invalid">
+                        <div className="sut-input">
                             <input type='text'
                                 className={"sut-input" + getClassNamesForRequiredValue(subject)}
                                 value={subject}
                                 onChange={x => recordSubject(x.target.value)}
                                 placeholder="Subject Under Test" />
+                            <div className="status-text">{subjectErrors}</div>
+
                             {/* {subject == "" && <div className="status-text">Subject is required</div>} */}
                         </div>
 
                         <label className="test-name-label">Scenario:</label>
-                        <div className="test-name-input miro-input-field miro-input-field--small miro-input-field--invalid">
+                        <div className="test-name-input">
 
                             <input type='text'
                                 className={"test-name-input" + getClassNamesForRequiredValue(scenario)}

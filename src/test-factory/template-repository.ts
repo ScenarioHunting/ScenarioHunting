@@ -26,23 +26,23 @@ class templateRepository {
         var widgets = await this.findWidgetByTemplateName(templateName)
         widgets.forEach(async widget => await miro.board.widgets.deleteById(widget.id))
     }
-    public async createOrReplaceTemplate(testCodeTemplate: testCodeTemplate) {
+    public async createOrReplaceTemplate(template: textTemplate) {
         console.log('createOrReplaceTemplate:')
-        console.log('finding widget for template:', testCodeTemplate.templateName)
+        console.log('finding widget for template:', template.templateName)
 
-        var widgets = await this.findWidgetByTemplateName(testCodeTemplate.templateName)
-        console.log(`${widgets.length} widgets found for template with name: ${testCodeTemplate.templateName}`)
+        var widgets = await this.findWidgetByTemplateName(template.templateName)
+        console.log(`${widgets.length} widgets found for template with name: ${template.templateName}`)
 
         // var dbWidgets = widgets.filter(i => !isNullOrUndefined(i.metadata[miro.getClientId()].templateName));
 
         if (widgets.length == 0) {
-            console.log("Creating template:", testCodeTemplate)
+            console.log("Creating template:", template)
             const viewport = await miro.board.viewport.get()
             await miro.board.widgets.create({
                 type: "TEXT",
-                text: testCodeTemplate.codeTemplate,
+                text: template.contentTemplate,
                 metadata: {
-                    [miro.getClientId()]: testCodeTemplate
+                    [miro.getClientId()]: template
                 },
                 capabilities: {
                     editable: false
@@ -54,18 +54,18 @@ class templateRepository {
                 y: viewport.y - 200
                 // clientVisible: false
             });
-            console.log(`template: ${testCodeTemplate.templateName} is created successfully.`)
+            console.log(`template: ${template.templateName} is created successfully.`)
         }
         else {
-            console.log("Updating template:", testCodeTemplate)
+            console.log("Updating template:", template)
 
             var dbWidget = widgets[0];
-            dbWidget["test"] = testCodeTemplate.codeTemplate
-            dbWidget.metadata[miro.getClientId()] = testCodeTemplate;
+            // dbWidget["test"] = template.contentTemplate
+            dbWidget.metadata[miro.getClientId()] = template;
             // dbWidget.metadata[miro.getClientId()].clientVisible = false;
 
             await miro.board.widgets.update(dbWidget);
-            console.log(`template:${testCodeTemplate.templateName} is updated successfully.`)
+            console.log(`template:${template.templateName} is updated successfully.`)
 
         }
     }
@@ -85,25 +85,25 @@ class templateRepository {
         var widgets = await this.findAllTemplateWidgets()
         return widgets.filter(w => w.metadata[miro.getClientId()]["templateName"] == templateName)
     }
-    public async getTemplateByName(templateName: string): Promise<testCodeTemplate> {
+    public async getTemplateByName(templateName: string): Promise<textTemplate> {
         var widgets = await this.findWidgetByTemplateName(templateName)
         if (widgets.length == 0)
             throw new Error("Widget not found for template:" + templateName);
         return widgets[0].metadata[miro.getClientId()];
     }
 }
-export type testCodeTemplate = {
+export type textTemplate = {
     templateName: string,
-    codeTemplate: string,
-    testFileExtension: string,
-    testFileNameTemplate: string
+    contentTemplate: string,
+    fileNameTemplate: string
+    fileExtension: string,
 }
 async function addSamplesToRepository(repository: templateRepository) {
-    const sampleTemplates: testCodeTemplate[] = [
+    const sampleTemplates: textTemplate[] = [
         {
-            testFileNameTemplate: "{{scenario}}",
-            testFileExtension: "cs",
-            codeTemplate: `using StoryTest;
+            fileNameTemplate: "{{scenario}}",
+            fileExtension: "cs",
+            contentTemplate: `using StoryTest;
 using Vlerx.Es.Messaging;
 using Vlerx.Es.Persistence;
 using Vlerx.SampleContracts.{{sut}};
@@ -148,9 +148,9 @@ namespace {{context}}.Tests
             templateName: "sample-template"
         },
         {
-            testFileNameTemplate: "{{scenario}}2",
-            testFileExtension: "cs",
-            codeTemplate: `using StoryTest;
+            fileNameTemplate: "{{scenario}}2",
+            fileExtension: "cs",
+            contentTemplate: `using StoryTest;
 using Vlerx.Es.Messaging;
 using Vlerx.Es.Persistence;
 using Vlerx.SampleContracts.{{sut}};
