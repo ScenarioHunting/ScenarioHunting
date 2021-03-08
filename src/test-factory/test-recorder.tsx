@@ -98,7 +98,7 @@ export const createTestRecorder = (board = singletonBoard
         const notifyValidationError = (errorText: string) => {
             board.showNotification(errorText)
         }
-        var [canSave, setCanSave] = useState(false)
+        var [canSave, setCanSave] = useState(true)
         function validateContext() {
             var contextErrors = [getRequiredErrorsFor(context), getMaxLengthErrorsFor(context, 50)].flat()
             if (contextErrors.length > 0) {
@@ -209,7 +209,7 @@ export const createTestRecorder = (board = singletonBoard
                         <div className={"test-name-input miro-input-field miro-input-field--small" + scenarioErrors == "" ? "miro-input-field--success" : "miro-input-field--invalid"}>
 
                             <input type='text'
-                                className={"test-name-input"}
+                                className={"test-name-input  miro-input miro-input--primary"}
                                 value={scenario} onChange={x => recordScenario(x.target.value)}
                                 placeholder="Scenario" />
 
@@ -229,7 +229,7 @@ export const createTestRecorder = (board = singletonBoard
                         <label className="sut-label">Subject:</label>
                         <div className={"sut-input miro-input-field miro-input-field--small" + subjectErrors == "" ? "miro-input-field--success" : "miro-input-field--invalid"}>
                             <input type='text'
-                                className={"sut-input"}
+                                className={"sut-input  miro-input miro-input--primary"}
                                 value={subject}
                                 onChange={x => recordSubject(x.target.value)}
                                 placeholder="Subject Under Test" />
