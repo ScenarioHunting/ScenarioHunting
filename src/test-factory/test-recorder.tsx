@@ -168,6 +168,7 @@ export const createTestRecorder = (board = singletonBoard
                     widget: step.widgetSnapshot
                 }
             }
+            if (!when || !then) return
             var viewModel: ViewModel = {
                 testContext: context
                 , sutName: subject
@@ -203,7 +204,7 @@ export const createTestRecorder = (board = singletonBoard
                 </div>
                 {then &&
                     <div className="test-form-details">
-                        
+
                         <label className="test-name-label">Scenario:</label>
                         <div className={"test-name-input miro-input-field miro-input-field--small" + scenarioErrors == "" ? "miro-input-field--success" : "miro-input-field--invalid"}>
 
