@@ -158,7 +158,7 @@ export const createTestRecorder = (board = singletonBoard
                                 value={context} onChange={x => changeContext(x.target.value)}
                                 placeholder="Context"
                             />
-                            {contextErrors != "" && <div className="status-text">{contextErrors}</div>}
+                            <div className="status-text">{contextErrors}</div>
                             {/* {context == "" && <div className="status-text">Context is required</div>} */}
                         </div>
 
