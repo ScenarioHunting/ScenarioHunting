@@ -73,7 +73,8 @@ export function createTestStepRecorder({ stepType
                                         <label className="property-label">{property.propertyName}</label>
                                         <input readOnly={false} onChange={(e) => onValueChange(index, e)}
                                             className="miro-input miro-input--small miro-input--primary property-input"
-                                            type="text" value={property.simplePropertyValue} disabled="disabled"></input>
+                                            type="text" value={property.simplePropertyValue}
+                                            disabled={true}></input>
                                     </div>
                                 )}
                             </div>
