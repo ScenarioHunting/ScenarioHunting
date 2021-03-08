@@ -66,7 +66,7 @@ export let createGivenStepCollection =
 					{isActive &&
 						<>
 							{/* <h3>{options.selectionWaitingMessage}</h3> */}
-							<button className="add-step-button"
+							<button className="add-step-button miro-btn miro-btn--small miro-btn--secondary"
 								onClick={add}>
 								+ Given
 							</button>
