@@ -1,5 +1,6 @@
 const path = require('path')
 const HtmlWebPackPlugin = require("html-webpack-plugin");
+const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 
 module.exports = {
 	optimization: {
@@ -16,7 +17,8 @@ module.exports = {
 	// Tip! Just delete not using files, but main.ts is required
 	entry: {
 		index: './src/index.ts',
-		sidebar: './src/sidebar.tsx', // Example! It works with React.
+		sidebar: './src/sidebar.tsx', 
+		// editor: './src/test-templates/monaco-editor.ts',
 		modal: './src/modal.ts',
 	},
 	module: {
@@ -51,6 +53,7 @@ module.exports = {
 	},
 	output: {
 		filename: '[name].js',
+		// chunkFilename: '[id].chunk.js',
 		path: path.resolve(__dirname, 'dist'),
 		clean: true
 	},
@@ -67,6 +70,7 @@ module.exports = {
 			template: "./src/test-templates/monaco-editor.html",
 			filename: "./monaco-editor.html"
 		}),
+		// new MonacoWebpackPlugin(),
 		// new webpack.optimize.DedupePlugin(), //dedupe similar code 
 		// new webpack.optimize.UglifyJsPlugin(), //minify everything
 		// new webpack.optimize.AggressiveMergingPlugin()//Merge chunks 
