@@ -24,10 +24,13 @@ export function TemplateList(props): JSX.Element {
             .then(repository => {
                 // console.log(`All Template Names:`, repository.getAllTemplateNames())
 
-                const template = JSON.stringify(repository.getTemplateByName(templateName))
-                console.log(`Template: ${template} is here:`, template)
-                const queryString = `?templateName=${templateName}&templateContent=${template}`
-                miro.board.ui.openModal(`./monaco-editor.html${queryString}`, { fullscreen: false })
+                repository.getTemplateByName(templateName).then(template => {
+                    console.log(`Template: ${template} is here:`, template)
+                    const queryString = `?templateName=${templateName}&templateContent=${template}`
+                    miro.board.ui.openModal(`./monaco-editor.html${queryString}`, { fullscreen: false }).then(result =>
+                        console.log("Editor Modal Result:", result)
+                    )
+                })
             })
         // miro.board.ui.openModal(`./monaco-editor.html?templateName=${templateName}`, { fullscreen: false })
     }
