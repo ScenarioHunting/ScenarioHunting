@@ -30,7 +30,24 @@ export function TemplateList(props): JSX.Element {
         console.log("Template: " + templateName + " deleted.")
     }
     return <>
-        <button className="imageButton" style={{ height: "28px" }}>
+        <div className="raw" style={{ paddingBottom: "18px" }}>
+
+            <p className="templateName"></p>
+
+            <button className="imageButton">
+                <svg className="imageButton" viewBox="0 0 48 48">
+                    <g>
+                        <path d="M37,43c0,0.6-0.4,1-1,1H12c-0.6,0-1-0.4-1-1V5c0-0.6,0.4-1,1-1h13V2H12c-1.7,0-3,1.3-3,3v38c0,1.7,1.3,3,3,3h24   c1.7,0,3-1.3,3-3V16h-2V43z"></path>
+                        <polygon points="33,8 33,2 31,2 31,8 25,8 25,10 31,10 31,16 33,16 33,10 39,10 39,8  "></polygon>
+                        <rect height="2" width="10" x="17" y="19"></rect>
+                        <rect height="2" width="14" x="17" y="27"></rect>
+                        <rect height="2" width="10" x="17" y="35"></rect>
+                    </g>
+                </svg>
+            </button>
+
+        </div>
+        {/* <button className="imageButton" style={{ height: "28px" }}>
             <svg className="imageButton" viewBox="0 0 48 48">
                 <g>
                     <path d="M37,43c0,0.6-0.4,1-1,1H12c-0.6,0-1-0.4-1-1V5c0-0.6,0.4-1,1-1h13V2H12c-1.7,0-3,1.3-3,3v38c0,1.7,1.3,3,3,3h24   c1.7,0,3-1.3,3-3V16h-2V43z">
@@ -45,7 +62,7 @@ export function TemplateList(props): JSX.Element {
                     </rect>
                 </g>
             </svg>
-        </button>
+        </button> */}
         {templateNames.map(templateName =>
             <div className="raw" key={templateName}>
                 <p onClick={() => editTemplate(templateName)} className="templateName" >
