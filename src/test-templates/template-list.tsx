@@ -28,8 +28,11 @@ export function TemplateList(props): JSX.Element {
         if (!confirm(`You are about deleting the template: ${templateName}.\n Are you sure?`))
             return;
         getTemplateRepository()
-            .then(repository => repository.removeTemplate(templateName))
-        console.log("Template: " + templateName + " deleted.")
+            .then(repository => {
+                repository.removeTemplate(templateName)
+                setAvailableTemplateNames(templateNames.filter(t => t != templateName))
+                console.log("Template: " + templateName + " deleted.")
+            })
     }
     return <>
         <div className="raw" style={{ paddingBottom: "18px" }}>
