@@ -117,13 +117,14 @@ export const createTestRecorder = (board = singletonBoard
             }
             return true
         }
-
+        const forceUpdate = React.useReducer((bool) => !bool, true)[1];
         const saveAndRedirectToExplorer = async () => {
-            var isFormValid = validateContext(context)
-                && validateScenario(scenario)
+            var isFormValid = validateScenario(scenario)
+                && validateContext(context)
                 && validateSubject(subject)
                 && validateThen()
                 && validateWhen()
+            forceUpdate()
             if (!isFormValid)
                 return
 
