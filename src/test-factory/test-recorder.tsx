@@ -103,10 +103,7 @@ export const createTestRecorder = (board = singletonBoard
 
         function validateContext(context: string) {
             var contextErrors = [getRequiredErrorsFor(context), getMaxLengthErrorsFor(context, 50)].flat()
-            if (contextErrors.length > 0) {
-                setContextErrors(contextErrors)
-                setCanSave(false)
-            }
+            setContextErrors(contextErrors)
         }
         function changeContext(context: string) {
             validateContext(context)
@@ -117,10 +114,7 @@ export const createTestRecorder = (board = singletonBoard
 
         function validateScenario(scenario: string) {
             var scenarioErrors = [getRequiredErrorsFor(scenario), getMaxLengthErrorsFor(scenario, 50)].flat()
-            if (scenarioErrors.length > 0) {
-                setScenarioErrors(scenarioErrors)
-                setCanSave(false)
-            }
+            setScenarioErrors(scenarioErrors)
         }
         function changeScenario(scenario: string) {
             validateScenario(scenario)
@@ -130,10 +124,7 @@ export const createTestRecorder = (board = singletonBoard
 
         function validateSubject(subject: string) {
             var subjectErrors = [getRequiredErrorsFor(subject), getMaxLengthErrorsFor(subject, 50)].flat()
-            if (subjectErrors.length > 0) {
-                setSubjectErrors(subjectErrors)
-                setCanSave(false)
-            }
+            setSubjectErrors(subjectErrors)
         }
         function changeSubject(subject: string) {
             validateSubject(subject)
@@ -144,13 +135,11 @@ export const createTestRecorder = (board = singletonBoard
         function validateWhen() {
             if (!when) {
                 notifyValidationError('No when selections. Please save the test after selecting the when step.')
-                setCanSave(false)
             }
         }
         function validateThen() {
             if (!then) {
                 notifyValidationError('No then selections. Please save the test after selecting the then step.')
-                setCanSave(false)
             }
         }
         function validate() {
@@ -272,7 +261,9 @@ export const createTestRecorder = (board = singletonBoard
                             <button
                                 className='save-button save-button miro-btn miro-btn--primary miro-btn--small'
                                 onClick={saveAndRedirectToExplorer}
-                                disabled={scenario.trim() == "" || context.trim() == "" || subject.trim() == ""}>Save</button>
+                                disabled={[scenarioErrors, contextErrors, subjectErrors].flat().length > 0}
+                            >Save
+                            </button>
                         </div>
                     </div>
                 }
