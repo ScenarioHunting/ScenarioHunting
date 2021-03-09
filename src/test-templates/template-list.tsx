@@ -20,6 +20,8 @@ export function TemplateList(props): JSX.Element {
     function editTemplate(templateName: string) {
         console.log(templateName)
         // eslint-disable-next-line no-undef
+        getTemplateRepository()
+            .then(repository => miro.board.ui.openModal(`./monaco-editor.html?templateContent=${repository.getTemplateByName(templateName)}`, { fullscreen: false }))
         miro.board.ui.openModal(`./monaco-editor.html?templateName=${templateName}`, { fullscreen: false })
     }
     function deleteTemplate(templateName: string) {
