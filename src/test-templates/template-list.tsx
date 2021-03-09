@@ -22,6 +22,8 @@ export function TemplateList(props): JSX.Element {
         // eslint-disable-next-line no-undef
         getTemplateRepository()
             .then(repository => {
+                // console.log(`All Template Names:`, repository.getAllTemplateNames())
+
                 const template = JSON.stringify(repository.getTemplateByName(templateName))
                 console.log(`Template: ${template} is here:`, template)
                 const queryString = `?templateName=${templateName}&templateContent=${template}`

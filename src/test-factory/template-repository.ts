@@ -89,6 +89,7 @@ class templateRepository {
         var widgets = await this.findWidgetByTemplateName(templateName)
         if (widgets.length == 0)
             throw new Error("Widget not found for template:" + templateName);
+        console.log("Widgets found:", widgets)
         return widgets[0].metadata[miro.getClientId()];
     }
 }
