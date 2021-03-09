@@ -125,8 +125,15 @@ export const createTestRecorder = (board = singletonBoard
                 notifyValidationError('No then selections. Please save the test after selecting the then step.')
             }
         }
+        
         const saveAndRedirectToExplorer = async () => {
-
+            validateContext(context)
+            validateScenario(scenario)
+            validateSubject(subject)
+            validateThen()
+            validateWhen()
+            if([scenarioErrors, contextErrors, subjectErrors].flat().length > 0)
+                return
             try {
                 await save(selectedTemplateName, {
                     testContext: context,

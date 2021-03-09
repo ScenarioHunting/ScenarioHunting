@@ -31,10 +31,9 @@ ReactDOM.render(
                 </svg>
             </Link>
         </nav>
-        <svg width="292" height="1" viewBox="0 0 292 1" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg style={{ paddingLeft: "13px" }} width="292" height="1" viewBox="0 0 292 1" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect width="292" height="1" fill="#E1E0E7" />
         </svg>
-
         <Router>
             <TestRecorder default path="/" />
             <TestExplorer path="test-explorer" />

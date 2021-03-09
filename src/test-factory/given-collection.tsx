@@ -26,6 +26,7 @@ export let createGivenStepCollection =
 			React.useEffect(() => {
 				stepNavigator.onTurn(TestStepTurn.Given, () => {
 					setIsActive(true)
+					setCanAdd(true)
 					if (props.steps)
 						setIndexedSteps(props.steps)
 				})
@@ -44,8 +45,8 @@ export let createGivenStepCollection =
 
 				setCanAdd(false)
 				console.log("add: can add=", canAdd)
-
 			}
+
 			const onStepSelection = (updatedStep: SelectedWidget) => {
 				setCanAdd(true)
 				console.log("on next selection: can add=", canAdd)
@@ -75,7 +76,8 @@ export let createGivenStepCollection =
 					{isActive &&
 						<>
 							{/* <h3>{options.selectionWaitingMessage}</h3> */}
-							<button className="add-step-button miro-btn miro-btn--small miro-btn--secondary" disabled={!isActive || !canAdd || indexedSteps.length > 9}
+							<button className="add-step-button miro-btn miro-btn--small miro-btn--secondary"
+								disabled={!isActive || !canAdd || indexedSteps.length > 9}
 								onClick={add}>
 								+ Given
 							</button>
