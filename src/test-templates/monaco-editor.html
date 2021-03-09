@@ -18,7 +18,7 @@
             left: 0;
         }
     </style>
-    
+
 </head>
 
 <body>
@@ -27,6 +27,18 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/loader.min.js"></script>
     <script>
+        function getParameterByName(name, url = window.location.href) {
+            name = name.replace(/[\[\]]/g, '\\$&');
+            var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, ' '));
+        }
+        alert("templateName :" + getParameterByName("templateName"))
+    </script>
+    <script>
+
         require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs' } });
         window.MonacoEnvironment = { getWorkerUrl: () => proxy };
         let proxy = URL.createObjectURL(new Blob([`
@@ -160,7 +172,7 @@ namespace Vlerx.SampleService.Tests
                 scrollBeyondLastLine: false,
                 formatOnType: true//!important
             });
-            
+
             // editor.trigger(‘anyString’, 'editor.action.formatDocument'); 
             // console.log(monaco.editor.getModels())
             // editor.setModel(textModel)

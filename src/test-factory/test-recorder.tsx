@@ -41,19 +41,14 @@ export const createTestRecorder = (board = singletonBoard
         const [contextErrors, setContextErrors] = useState<string[]>([])
         const [subjectErrors, setSubjectErrors] = useState<string[]>([])
 
-        // const [isScenarioChanged, setIsScenarioChanged] = useState<boolean>(false)
-        // const [isContextChanged, setIsContextChanged] = useState<boolean>(false)
-        // const [isSubjectChanged, setIsSubjectChanged] = useState<boolean>(false)
 
-        // const [generalErrors, setGeneralErrors] = useState<string[]>([])
-
-        function getRequiredErrorsFor(context: string): string[] {
-            if (context == "")
+        function getRequiredErrorsFor(str: string): string[] {
+            if (str.trim() == "")
                 return ["Required!"]
             return []
         }
-        function getMaxLengthErrorsFor(context: string, maxLen: 50): string[] {
-            if (context.length > maxLen)
+        function getMaxLengthErrorsFor(str: string, maxLen: 50): string[] {
+            if (str.length > maxLen)
                 return ["Too long!"]
             return []
         }
@@ -68,15 +63,8 @@ export const createTestRecorder = (board = singletonBoard
             })
         }, [])
 
-        const updateGivens = (givenResults: IndexedStep[]) => {
-            recordGiven(givenResults);
-        };
-        const updateWhen = (when: SelectedWidget) => {
-            recordWhen(when);
-        };
-        const updateThen = (then: SelectedWidget) => {
-            recordThen(then)
-        };
+
+
         const notifyValidationError = (errorText: string) => {
             board.showNotification(errorText)
         }
@@ -89,7 +77,6 @@ export const createTestRecorder = (board = singletonBoard
         function changeContext(context: string) {
             validateContext(context)
             recordContext(context)
-            // setIsContextChanged(true)
         }
 
 
@@ -102,7 +89,6 @@ export const createTestRecorder = (board = singletonBoard
         function changeScenario(scenario: string) {
             validateScenario(scenario)
             recordScenario(scenario)
-            // setIsScenarioChanged(true)
         }
 
 
@@ -114,7 +100,6 @@ export const createTestRecorder = (board = singletonBoard
         function changeSubject(subject: string) {
             validateSubject(subject)
             recordSubject(subject)
-            // setIsSubjectChanged(true)
         }
 
 
@@ -141,7 +126,7 @@ export const createTestRecorder = (board = singletonBoard
                 && validateWhen()
             if (!isFormValid)
                 return
-                
+
             try {
                 await save(selectedTemplateName, {
                     testContext: context,
@@ -176,26 +161,19 @@ export const createTestRecorder = (board = singletonBoard
             await navigate('/test-explorer', { state: { newTest: viewModel } })
         };
 
-        // function getClassNamesForRequiredValue(value: string) {
-        //     const classNames = "miro-input miro-input--small miro-input--primary"
-        //     const invalidClassName = "miro-input-field--invalid"
-        //     if (value.trim() == "")
-        //         return " " + classNames + " " + invalidClassName
-        //     return " " + classNames + " miro-input--success"
-        // }
         return (
             <div className="test-recorder">
 
                 <div className="given">
-                    <Givens onStepSelectionChange={updateGivens} steps={givens} />
+                    <Givens onStepSelectionChange={recordGiven} steps={givens} />
                 </div >
 
                 <div className="when">
-                    <When onStepSelection={updateWhen} step={when} />
+                    <When onStepSelection={recordWhen} step={when} />
                 </div>
 
                 <div className="then">
-                    <Then onStepSelection={updateThen} step={then} />
+                    <Then onStepSelection={recordThen} step={then} />
                 </div>
                 {then &&
                     <div className="test-form-details">
@@ -228,14 +206,12 @@ export const createTestRecorder = (board = singletonBoard
                                 value={subject}
                                 onChange={x => changeSubject(x.target.value)}
                                 placeholder="Subject Under Test" />
-                            <div className="status-text">{subjectErrors}</div>
                             {subjectErrors.map(error => <div key={error} className="status-text">{error}</div>)}
                         </div>
 
 
 
                         <div className="save-test miro-input-group miro-input-group--small">
-                            {/* <label className="template-selector-label miro-select miro-select--small miro-select--primary-bordered">Template:</label> */}
                             <select className="template-selector miro-select miro-select--secondary-bordered miro-select--small" value={selectedTemplateName}
                                 onChange={(e) => selectTemplateName(e.target.value)}>
                                 {availableTemplateNames.map((templateName) => (
@@ -248,8 +224,7 @@ export const createTestRecorder = (board = singletonBoard
                                 className='save-button save-button miro-btn miro-btn--primary miro-btn--small'
                                 onClick={saveAndRedirectToExplorer}
                                 disabled={[scenarioErrors, contextErrors, subjectErrors].flat().length > 0}
-                            >Save
-                            </button>
+                            >Save</button>
                         </div>
                     </div>
                 }
