@@ -41,9 +41,9 @@ export const createTestRecorder = (board = singletonBoard
         const [contextErrors, setContextErrors] = useState<string[]>([])
         const [subjectErrors, setSubjectErrors] = useState<string[]>([])
 
-        const [isScenarioChanged, setIsScenarioChanged] = useState<boolean>(false)
-        const [isContextChanged, setIsContextChanged] = useState<boolean>(false)
-        const [isSubjectChanged, setIsSubjectChanged] = useState<boolean>(false)
+        // const [isScenarioChanged, setIsScenarioChanged] = useState<boolean>(false)
+        // const [isContextChanged, setIsContextChanged] = useState<boolean>(false)
+        // const [isSubjectChanged, setIsSubjectChanged] = useState<boolean>(false)
 
         // const [generalErrors, setGeneralErrors] = useState<string[]>([])
 
@@ -54,7 +54,7 @@ export const createTestRecorder = (board = singletonBoard
         }
         function getMaxLengthErrorsFor(context: string, maxLen: 50): string[] {
             if (context.length > maxLen)
-                return ["Too long"]
+                return ["Too long!"]
             return []
         }
         useEffect(() => {
@@ -88,7 +88,7 @@ export const createTestRecorder = (board = singletonBoard
         function changeContext(context: string) {
             validateContext(context)
             recordContext(context)
-            setIsContextChanged(true)
+            // setIsContextChanged(true)
         }
 
 
@@ -100,7 +100,7 @@ export const createTestRecorder = (board = singletonBoard
         function changeScenario(scenario: string) {
             validateScenario(scenario)
             recordScenario(scenario)
-            setIsScenarioChanged(true)
+            // setIsScenarioChanged(true)
         }
 
 
@@ -111,7 +111,7 @@ export const createTestRecorder = (board = singletonBoard
         function changeSubject(subject: string) {
             validateSubject(subject)
             recordSubject(subject)
-            setIsSubjectChanged(true)
+            // setIsSubjectChanged(true)
         }
 
 
@@ -186,7 +186,7 @@ export const createTestRecorder = (board = singletonBoard
                     <div className="test-form-details">
 
                         <label className="test-name-label">Scenario:</label>
-                        <div className={"test-name-input miro-input-field miro-input-field--small " + (isScenarioChanged ? "" : scenarioErrors.length == 0 ? "miro-input-field--success" : "miro-input-field--invalid")}>
+                        <div className={"test-name-input miro-input-field miro-input-field--small " + (scenarioErrors.length == 0 ? "" : "miro-input-field--invalid")}>
 
                             <input type='text'
                                 className={"test-name-input  miro-input miro-input--primary"}
@@ -197,7 +197,7 @@ export const createTestRecorder = (board = singletonBoard
                         </div>
 
                         <label className="test-context-label">Context:</label>
-                        <div className={"test-context-input miro-input-field miro-input-field--small " + (isContextChanged ? "" : contextErrors.length == 0 ? "miro-input-field--success" : "miro-input-field--invalid")}>
+                        <div className={"test-context-input miro-input-field miro-input-field--small " + (contextErrors.length == 0 ? "" : "miro-input-field--invalid")}>
                             <input type='text'
                                 className={"test-context-input miro-input miro-input--primary"}
                                 value={context} onChange={x => changeContext(x.target.value)}
@@ -207,7 +207,7 @@ export const createTestRecorder = (board = singletonBoard
                         </div>
 
                         <label className="sut-label">Subject:</label>
-                        <div className={"sut-input miro-input-field miro-input-field--small " + (isSubjectChanged ? "" : subjectErrors.length == 0 ? "miro-input-field--success" : "miro-input-field--invalid")}>
+                        <div className={"sut-input miro-input-field miro-input-field--small " + (subjectErrors.length == 0 ? "" : "miro-input-field--invalid")}>
                             <input type='text'
                                 className={"sut-input  miro-input miro-input--primary"}
                                 value={subject}
