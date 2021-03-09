@@ -86,6 +86,7 @@ export const createTestRecorder = (board = singletonBoard
         //         recordTestName(defaultTestName)
         //     }
         // }, [when, then, testName, isTestNameStale])
+       
         const updateGivens = (givenResults: IndexedStep[]) => {
             recordGiven(givenResults);
         };
@@ -106,6 +107,9 @@ export const createTestRecorder = (board = singletonBoard
                 setCanSave(false)
             }
         }
+        useEffect(()=>{
+            validateContext()
+        },[context])
         function validateSubject() {
             var scenarioErrors = [getRequiredErrorsFor(scenario), getMaxLengthErrorsFor(scenario, 50)].flat()
             if (scenarioErrors.length > 0) {
@@ -138,7 +142,6 @@ export const createTestRecorder = (board = singletonBoard
             validateScenario()
             validateSubject()
             validateContext()
-            return canSave
         }
         const saveAndRedirectToExplorer = async () => {
             validate()
@@ -206,7 +209,7 @@ export const createTestRecorder = (board = singletonBoard
                     <div className="test-form-details">
 
                         <label className="test-name-label">Scenario:</label>
-                        <div className={"test-name-input miro-input-field miro-input-field--small" + (scenarioErrors.length == 0 ? "miro-input-field--success" : "miro-input-field--invalid")}>
+                        <div className={"test-name-input miro-input-field miro-input-field--small " + (scenarioErrors.length == 0 ? "miro-input-field--success" : "miro-input-field--invalid")}>
 
                             <input type='text'
                                 className={"test-name-input  miro-input miro-input--primary"}
@@ -217,7 +220,7 @@ export const createTestRecorder = (board = singletonBoard
                         </div>
 
                         <label className="test-context-label">Context:</label>
-                        <div className={"test-context-input miro-input-field miro-input-field--small" + (contextErrors.length == 0 ? "miro-input-field--success" : "miro-input-field--invalid")}>
+                        <div className={"test-context-input miro-input-field miro-input-field--small " + (contextErrors.length == 0 ? "miro-input-field--success" : "miro-input-field--invalid")}>
                             <input type='text'
                                 className={"test-context-input miro-input miro-input--primary"}
                                 value={context} onChange={x => recordContext(x.target.value)}
@@ -227,7 +230,7 @@ export const createTestRecorder = (board = singletonBoard
                         </div>
 
                         <label className="sut-label">Subject:</label>
-                        <div className={"sut-input miro-input-field miro-input-field--small" + (subjectErrors.length == 0 ? "miro-input-field--success" : "miro-input-field--invalid")}>
+                        <div className={"sut-input miro-input-field miro-input-field--small " + (subjectErrors.length == 0 ? "miro-input-field--success" : "miro-input-field--invalid")}>
                             <input type='text'
                                 className={"sut-input  miro-input miro-input--primary"}
                                 value={subject}
