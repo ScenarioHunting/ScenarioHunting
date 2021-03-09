@@ -26,7 +26,7 @@ export function TemplateList(props): JSX.Element {
 
                 repository.getTemplateByName(templateName).then(template => {
                     console.log(`Template: ${template} is here:`, template)
-                    const queryString = `?templateName=${templateName}&templateContent=${template}`
+                    const queryString = `?templateName=${templateName}&templateContent=${JSON.stringify(template)}`
                     miro.board.ui.openModal(`./monaco-editor.html${queryString}`, { fullscreen: false }).then(result =>
                         console.log("Editor Modal Result:", result)
                     )
