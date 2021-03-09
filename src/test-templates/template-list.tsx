@@ -22,7 +22,9 @@ export function TemplateList(props): JSX.Element {
         // eslint-disable-next-line no-undef
         getTemplateRepository()
             .then(repository => {
-                const queryString = `?templateName=${templateName}&templateContent=${JSON.stringify(repository.getTemplateByName(templateName))}`
+                const template = JSON.stringify(repository.getTemplateByName(templateName))
+                console.log(`Template: ${template} is here:`, template)
+                const queryString = `?templateName=${templateName}&templateContent=${template}`
                 miro.board.ui.openModal(`./monaco-editor.html${queryString}`, { fullscreen: false })
             })
         // miro.board.ui.openModal(`./monaco-editor.html?templateName=${templateName}`, { fullscreen: false })
