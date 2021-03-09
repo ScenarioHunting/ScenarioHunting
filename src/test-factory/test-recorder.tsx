@@ -81,9 +81,10 @@ export const createTestRecorder = (board = singletonBoard
             board.showNotification(errorText)
         }
 
-        function validateContext(context: string) {
+        function validateContext(context: string): boolean {
             var contextErrors = [getRequiredErrorsFor(context), getMaxLengthErrorsFor(context, 50)].flat()
             setContextErrors(contextErrors)
+            return contextErrors.length == 0
         }
         function changeContext(context: string) {
             validateContext(context)
@@ -93,9 +94,10 @@ export const createTestRecorder = (board = singletonBoard
 
 
 
-        function validateScenario(scenario: string) {
+        function validateScenario(scenario: string): boolean {
             var scenarioErrors = [getRequiredErrorsFor(scenario), getMaxLengthErrorsFor(scenario, 50)].flat()
             setScenarioErrors(scenarioErrors)
+            return scenarioErrors.length == 0
         }
         function changeScenario(scenario: string) {
             validateScenario(scenario)
@@ -104,9 +106,10 @@ export const createTestRecorder = (board = singletonBoard
         }
 
 
-        function validateSubject(subject: string) {
+        function validateSubject(subject: string): boolean {
             var subjectErrors = [getRequiredErrorsFor(subject), getMaxLengthErrorsFor(subject, 50)].flat()
             setSubjectErrors(subjectErrors)
+            return subjectErrors.length == 0
         }
         function changeSubject(subject: string) {
             validateSubject(subject)
@@ -115,25 +118,30 @@ export const createTestRecorder = (board = singletonBoard
         }
 
 
-        function validateWhen() {
+        function validateWhen(): boolean {
             if (!when) {
                 notifyValidationError('No when selections. Please save the test after selecting the when step.')
+                return false
             }
+            return true
         }
-        function validateThen() {
+        function validateThen(): boolean {
             if (!then) {
                 notifyValidationError('No then selections. Please save the test after selecting the then step.')
+                return true
             }
+            return true
         }
-        
+
         const saveAndRedirectToExplorer = async () => {
-            validateContext(context)
-            validateScenario(scenario)
-            validateSubject(subject)
-            validateThen()
-            validateWhen()
-            if([scenarioErrors, contextErrors, subjectErrors].flat().length > 0)
+            var isFormValid = validateContext(context)
+                && validateScenario(scenario)
+                && validateSubject(subject)
+                && validateThen()
+                && validateWhen()
+            if (!isFormValid)
                 return
+                
             try {
                 await save(selectedTemplateName, {
                     testContext: context,
