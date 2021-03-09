@@ -21,8 +21,11 @@ export function TemplateList(props): JSX.Element {
         console.log(templateName)
         // eslint-disable-next-line no-undef
         getTemplateRepository()
-            .then(repository => miro.board.ui.openModal(`./monaco-editor.html?templateContent=${JSON.stringify(repository.getTemplateByName(templateName))}`, { fullscreen: false }))
-        miro.board.ui.openModal(`./monaco-editor.html?templateName=${templateName}`, { fullscreen: false })
+            .then(repository => {
+                const queryString = `?templateName=${templateName}&templateContent=${JSON.stringify(repository.getTemplateByName(templateName))}`
+                miro.board.ui.openModal(`./monaco-editor.html${queryString}`, { fullscreen: false })
+            })
+        // miro.board.ui.openModal(`./monaco-editor.html?templateName=${templateName}`, { fullscreen: false })
     }
     function deleteTemplate(templateName: string) {
         if (!confirm(`You are about deleting the template: ${templateName}.\n Are you sure?`))
