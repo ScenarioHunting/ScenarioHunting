@@ -1,3 +1,4 @@
+
 // var repository=require("templateRepository").getTemplateRepository()
 function getParameterByName(name, url = window.location.href) {
     name = name.replace(/[\[\]]/g, '\\$&');

@@ -34,7 +34,7 @@ function getParameterByName(name, url = window.location.href) {
     if (!results[2]) return '';
     return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }
-console.log("template obj:", getTemplateByName(getParameterByName("templateName")))
+console.log("template obj:", getTemplateRepository().getTemplateByName("templateName"))
 // alert("templateName :" + getParameterByName("templateName"))
 // alert("templateContent :" + getParameterByName("templateContent"))
 // console.log("templateContent :", getParameterByName("templateContent"))

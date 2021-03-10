@@ -3,17 +3,17 @@ const HtmlWebPackPlugin = require("html-webpack-plugin");
 // const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 
 module.exports = {
-	optimization: {
-		minimize: true,
-		emitOnErrors: true,
-		mergeDuplicateChunks: true,
-		removeAvailableModules: true,
-		removeEmptyChunks: true,
-		flagIncludedChunks: true,
-		// runtimeChunk: 'single',
-	},
-	mode: 'production', // Tip! compile in 'production' mode before publish
-	// mode: 'development', // Tip! compile in 'production' mode before publish
+	// optimization: {
+	// 	minimize: true,
+	// 	emitOnErrors: true,
+	// 	mergeDuplicateChunks: true,
+	// 	removeAvailableModules: true,
+	// 	removeEmptyChunks: true,
+	// 	flagIncludedChunks: true,
+	// 	// runtimeChunk: 'single',
+	// },
+	// mode: 'production', // Tip! compile in 'production' mode before publish
+	mode: 'development', // Tip! compile in 'production' mode before publish
 
 	// Tip! Just delete not using files, but main.ts is required
 	entry: {
@@ -23,6 +23,10 @@ module.exports = {
 			//To split this file in order to be able to access it by the template editor:
 			dependOn: 'templateRepository'
 		},
+		// editor: {
+		// 	import: './src/test-templates/monaco-editor.js',
+		// 	dependOn: 'templateRepository'
+		// },
 		//To split this file in order to be able to access it by the template editor:
 		templateRepository: './src/test-factory/template-repository.ts'
 
