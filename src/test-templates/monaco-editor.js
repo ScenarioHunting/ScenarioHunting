@@ -1,4 +1,4 @@
-var repository=require("../test-factory/template-repository").getTemplateRepository()
+// var repository=require("templateRepository").getTemplateRepository()
 function getParameterByName(name, url = window.location.href) {
     name = name.replace(/[\[\]]/g, '\\$&');
     var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
@@ -7,7 +7,7 @@ function getParameterByName(name, url = window.location.href) {
     if (!results[2]) return '';
     return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }
-console.log("template obj:", repository.getParameterByName(getParameterByName("templateName")))
+console.log("template obj:", getTemplateByName(getParameterByName("templateName")))
 // alert("templateName :" + getParameterByName("templateName"))
 // alert("templateContent :" + getParameterByName("templateContent"))
 // console.log("templateContent :", getParameterByName("templateContent"))
