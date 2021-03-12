@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <title>Template Editor</title>
     <script type="text/javascript" src="https://miro.com/app/static/sdk.1.1.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://miro.com/app/static/styles.1.0.css" />
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
     <link rel="stylesheet" data-name="vs/editor/editor.main"
@@ -32,18 +33,17 @@
 </head>
 
 <body>
+    <label for="fileNameTemplate">File name template:</label>
+    <input id="fileNameTemplate" placeholder="{{Scenario}}"></input>
+    <label for="fileExtension">File extension:</label>
+    <input id="fileExtension" placeholder="cs"></input>
     <button onclick="save()">Save</button>
-    <button onclick="close()" class="close-button">Close</button>
-    <p>File name template:</p>
-    <input id="fileNameTemplate"></input>
-    <p>File extension:</p>
-    <input id="fileExtension"></input>
     <div id="monaco-editor"></div>
     <!-- <div id="example-editor" style="background-color: chartreuse;"></div> -->
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/loader.min.js"></script>
     <script>
-            let templateContent = ""
+        let templateContent = ""
         let editor
         const templateName = getParameterByName("templateName")
 
@@ -168,7 +168,7 @@
                 value: templateContent,
                 language: 'csharp',
                 // language: 'csharp',
-                theme: 'vs-dark',
+                // theme: 'vs-dark',
                 // theme: 'monokai',
                 lineHeight: 20,
                 fontSize: 14,
