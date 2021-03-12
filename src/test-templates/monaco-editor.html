@@ -120,11 +120,11 @@
             // )
             var templateName = getParameterByName("templateName")
             var repository = await templateRepository.getTemplateRepository()
-            var templateContent = await repository.getTemplateByName(templateName)
-
+            var template = await repository.getTemplateByName(templateName)
+            console.log(template)
 
             let editor = monaco.editor.create(document.getElementById('monaco-editor'), {
-                value: templateContent,
+                value: template.contentTemplate,
                 language: 'csharp',
                 // language: 'csharp',
                 theme: 'vs-dark',
@@ -148,6 +148,8 @@
         // console.log("template obj:", getTemplateRepository())
 
     </script>
+    <button>Save</button>
+    <button>Exit</button>
 </body>
 
 </html>
