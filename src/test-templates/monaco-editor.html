@@ -43,6 +43,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/loader.min.js"></script>
     <script>
+            let templateContent = ""
         let editor
         const templateName = getParameterByName("templateName")
 
@@ -51,7 +52,7 @@
             // var template = await repository.getTemplateByName(templateName)
             const template = {
                 templateName: templateName,
-                contentTemplate: editor.value,
+                contentTemplate: editor.getValue(),
                 fileNameTemplate: document.getElementById('fileNameTemplate').value,
                 fileExtension: document.getElementById('fileExtension').value,
             }
@@ -154,7 +155,6 @@
             // )
 
             var templateName = getParameterByName("templateName")
-            let templateContent = ""
             if (templateName) {
                 var repository = await templateRepository.getTemplateRepository()
                 var template = await repository.getTemplateByName(templateName)
