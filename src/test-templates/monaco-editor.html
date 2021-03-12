@@ -49,12 +49,14 @@
         async function save() {
             var repository = await templateRepository.getTemplateRepository()
             // var template = await repository.getTemplateByName(templateName)
-            await repository.createOrReplaceTemplate({
+            const template = {
                 templateName: templateName,
                 contentTemplate: editor.value,
                 fileNameTemplate: document.getElementById('fileNameTemplate').value,
                 fileExtension: document.getElementById('fileExtension').value,
-            })
+            }
+            await repository.createOrReplaceTemplate(template)
+            console.log("Saving template:", template)
         }
         function close() {
             miro.board.ui.closeModal()
