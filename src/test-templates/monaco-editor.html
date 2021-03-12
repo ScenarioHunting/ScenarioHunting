@@ -45,8 +45,8 @@
             await repository.createOrReplaceTemplate({
                 templateName: templateName,
                 contentTemplate: editor.value,
-                fileNameTemplate: document.findElementById('fileNameTemplate').value,
-                fileExtension: document.findElementById('fileExtension').value,
+                fileNameTemplate: document.getElementById('fileNameTemplate').value,
+                fileExtension: document.getElementById('fileExtension').value,
             })
         }
         function exit() {
@@ -148,8 +148,8 @@
             var templateName = getParameterByName("templateName")
             var repository = await templateRepository.getTemplateRepository()
             var template = await repository.getTemplateByName(templateName)
-            document.findElementById('fileNameTemplate').value = template.fileNameTemplate
-            document.findElementById('fileExtension').value = template.fileExtension
+            document.getElementById('fileNameTemplate').value = template.fileNameTemplate
+            document.getElementById('fileExtension').value = template.fileExtension
             editor = monaco.editor.create(document.getElementById('monaco-editor'), {
                 // value: "template.contentTemplate,",
                 value: template.contentTemplate,
