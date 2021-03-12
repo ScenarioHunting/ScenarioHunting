@@ -108,7 +108,6 @@ const editorConfig = {
 		new HtmlWebPackPlugin({
 			template: "./src/test-templates/monaco-editor.html",
 			filename: "./monaco-editor.html",
-			excludeChunks: ['index', 'sidebar'],
 			chucks: ['templateRepository'],
 			inject: 'head',
 			scriptLoading: 'blocking'

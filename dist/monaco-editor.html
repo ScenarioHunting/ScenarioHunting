@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>monaco editor</title>
+    <title>Template Editor</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
     <link rel="stylesheet" data-name="vs/editor/editor.main"
         href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/editor/editor.main.min.css">
@@ -51,7 +51,7 @@
 `], { type: 'text/javascript' }));
 
 
-        require(["vs/editor/editor.main"], function () {
+        require(["vs/editor/editor.main"], async function () {
             // monaco.languages.registerDocumentFormattingEditProvider('csharp', {
             //     provideDocumentFormattingEdits: function (model, options, token) {
             //         return [
@@ -116,51 +116,13 @@
             //     "helloWorld()",
             //     "csharp"
             // )
+            var templateName = getParameterByName("templateName")
+            var repository = await templateRepository.getTemplateRepository()
+            var templateContent = await repository.getTemplateByName(templateName)
+
 
             let editor = monaco.editor.create(document.getElementById('monaco-editor'), {
-                value: `using StoryTest;
-using Vlerx.Es.Messaging;
-using Vlerx.Es.Persistence;
-using Vlerx.SampleContracts.{{Sut}};
-using Vlerx.SampleService.{{Sut}};
-using Vlerx.SampleService.{{Sut}}.Commands;
-using Vlerx.SampleService.Tests.StoryTests;
-using Xunit;
-
-namespace Vlerx.SampleService.Tests
-{
-    {{#* inline "callConstructor"}}
-    new {{title}}({{#each properties}}{{example}}{{#skipLast}},{{/skipLast}}{{/each}})
-    {{/inline}}
-
-    public class Rel : IStorySpecification
-    {
-        public IDomainEvent[] Given
-        => new IDomainEvent[]{
-    {{#each givens}}
-        {{> callConstructor .}},
-    {{/each}}
-        };
-        public ICommand When
-        => {{> callConstructor when}}
-        public IDomainEvent[] Then
-        => new IDomainEvent[]{
-    {{#each thens}}
-        {{> callConstructor .}},
-    {{/each}}
-        };
-
-        public string Sut { get; } = nameof({{Sut}});
-
-        [Fact]
-        public void Run()
-        => TestAdapter.Test(this
-                , setupUseCases: eventStore =>
-                     new[] {
-                        new {{Sut}}UseCases(new Repository<{{Sut}}.State>(eventStore))
-                     });
-    }
-}`,
+                value: templateContent,
                 language: 'csharp',
                 // language: 'csharp',
                 theme: 'vs-dark',
@@ -179,7 +141,7 @@ namespace Vlerx.SampleService.Tests
             // console.log(monaco.editor.getModels())
             // editor.setModel(textModel)
         });
-        console.log("cccccccccccccccccccccccccccccc:", templateRepository)
+        // console.log("cccccccccccccccccccccccccccccc:", templateRepository)
         // console.log("template obj:", getTemplateRepository().getTemplateByName("templateName"))
         // console.log("template obj:", getTemplateRepository())
 
