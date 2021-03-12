@@ -15,7 +15,9 @@ export function TemplateList(props): JSX.Element {
         })
     }
     useEffect(loadTemplateNames, []);
-
+    function addTemplate() {
+        miro.board.ui.openModal(`./monaco-editor.html`, { fullscreen: false })
+    }
 
     function editTemplate(templateName: string) {
         console.log(templateName)
@@ -27,9 +29,7 @@ export function TemplateList(props): JSX.Element {
                 repository.getTemplateByName(templateName).then(template => {
                     console.log(`Template: ${template} is here:`, template)
                     const queryString = `?templateName=${templateName}&templateContent=${JSON.stringify(template)}&templateContentObj=${template}`
-                    miro.board.ui.openModal(`./monaco-editor.html${queryString}`, { fullscreen: false }).then(result =>
-                        console.log("Editor Modal Result:", result)
-                    )
+                    miro.board.ui.openModal(`./monaco-editor.html${queryString}`, { fullscreen: false })
                 })
             })
         // miro.board.ui.openModal(`./monaco-editor.html?templateName=${templateName}`, { fullscreen: false })
@@ -49,7 +49,7 @@ export function TemplateList(props): JSX.Element {
 
             <p className="templateName"></p>
 
-            <button className="imageButton">
+            <button onClick={addTemplate} className="imageButton">
                 <svg fill="currentColor" fillRule="nonzero" className="imageButton" viewBox="0 0 48 48">
                     <g>
                         <path d="M37,43c0,0.6-0.4,1-1,1H12c-0.6,0-1-0.4-1-1V5c0-0.6,0.4-1,1-1h13V2H12c-1.7,0-3,1.3-3,3v38c0,1.7,1.3,3,3,3h24   c1.7,0,3-1.3,3-3V16h-2V43z"></path>

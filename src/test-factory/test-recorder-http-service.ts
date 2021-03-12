@@ -95,8 +95,10 @@ export async function Save(templateName: string, test: LocalTestCreationResult):
             return response.statusText
         // onError(response.statusText)
     }
-    catch (error) {
-        return error.toString()
+    catch (e) {
+        console.log("An error occurred while saving the test:", e)
+        throw e
+        // return error.toString()
         // onError(error)
     }
 
