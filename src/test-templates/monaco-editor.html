@@ -145,15 +145,18 @@
             //     "csharp"
             // )
 
-
             var templateName = getParameterByName("templateName")
-            var repository = await templateRepository.getTemplateRepository()
-            var template = await repository.getTemplateByName(templateName)
-            document.getElementById('fileNameTemplate').value = template.fileNameTemplate
-            document.getElementById('fileExtension').value = template.fileExtension
+            let templateContent = ""
+            if (templateName) {
+                var repository = await templateRepository.getTemplateRepository()
+                var template = await repository.getTemplateByName(templateName)
+                document.getElementById('fileNameTemplate').value = template.fileNameTemplate
+                document.getElementById('fileExtension').value = template.fileExtension
+                templateContent = template.templateContent
+            }
             editor = monaco.editor.create(document.getElementById('monaco-editor'), {
                 // value: "template.contentTemplate,",
-                value: template.contentTemplate,
+                value: contentTemplate,
                 language: 'csharp',
                 // language: 'csharp',
                 theme: 'vs-dark',
