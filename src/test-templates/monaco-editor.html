@@ -22,6 +22,10 @@
         body {
             background-color: rgb(31, 29, 32);
         }
+        input{
+            background-color: rgb(31, 29, 32);
+            color: white;
+        }
     </style>
 
 </head>
@@ -29,8 +33,9 @@
 <body>
     <button onclick="save()">Save</button>
     <button onclick="close()" class="close-button">Close</button>
-
+    <p>File name template:</p>
     <input id="fileNameTemplate"></input>
+    <p>File extension:</p>
     <input id="fileExtension"></input>
     <div id="monaco-editor"></div>
     <!-- <div id="example-editor" style="background-color: chartreuse;"></div> -->
@@ -153,7 +158,10 @@
                 document.getElementById('fileNameTemplate').value = template.fileNameTemplate
                 document.getElementById('fileExtension').value = template.fileExtension
                 templateContent = template.templateContent
+                // console.log("template content:",templateContent)
+                console.log("template content from if statement:", templateContent)
             }
+            console.log("template content:", templateContent)
             editor = monaco.editor.create(document.getElementById('monaco-editor'), {
                 // value: "template.contentTemplate,",
                 value: templateContent,
