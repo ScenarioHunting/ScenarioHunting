@@ -5,10 +5,12 @@
   "private": true,
   "scripts": {
     "watch": "npm run build && npm run start",
+    "prebuild": "npm run clean",
     "build": "webpack",
     "dev-server": "webpack-dev-server --open",
     "start": "node server.js",
-    "heroku-postbuild": "npm run build"
+    "heroku-postbuild": "npm run build",
+    "clean": "del-cli --force dist"
   },
   "keywords": [],
   "author": "",
@@ -22,6 +24,7 @@
     "@typescript-eslint/eslint-plugin": "^4.17.0",
     "@typescript-eslint/parser": "^4.17.0",
     "css-loader": "^5.1.1",
+    "del-cli": "^3.0.1",
     "eslint": "^7.21.0",
     "eslint-config-standard": "^16.0.2",
     "eslint-plugin-import": "^2.22.1",

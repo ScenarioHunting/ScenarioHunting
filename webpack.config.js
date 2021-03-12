@@ -1,19 +1,20 @@
 const path = require('path')
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 // const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
-
-module.exports = {
-	// optimization: {
-	// 	minimize: true,
-	// 	emitOnErrors: true,
-	// 	mergeDuplicateChunks: true,
-	// 	removeAvailableModules: true,
-	// 	removeEmptyChunks: true,
-	// 	flagIncludedChunks: true,
-	// 	// runtimeChunk: 'single',
-	// },
-	// mode: 'production', // Tip! compile in 'production' mode before publish
-	mode: 'development', // Tip! compile in 'production' mode before publish
+const templateRepositoryPath = './src/test-factory/template-repository.ts'
+const appConfig = {
+	name: 'app',
+	optimization: {
+		minimize: true,
+		emitOnErrors: true,
+		mergeDuplicateChunks: true,
+		removeAvailableModules: true,
+		removeEmptyChunks: true,
+		flagIncludedChunks: true,
+		// runtimeChunk: 'single',
+	},
+	mode: 'production', // Tip! compile in 'production' mode before publish
+	// mode: 'development', // Tip! compile in 'production' mode before publish
 
 	// Tip! Just delete not using files, but main.ts is required
 	entry: {
@@ -23,22 +24,13 @@ module.exports = {
 			//To split this file in order to be able to access it by the template editor:
 			dependOn: 'templateRepository'
 		},
-		// editor: {
-		// 	import: './src/test-templates/monaco-editor.js',
-		// 	dependOn: 'templateRepository'
-		// },
 		//To split this file in order to be able to access it by the template editor:
-		templateRepository: './src/test-factory/template-repository.ts'
-
-		// editor: './src/test-templates/monaco-editor.ts',
-		// modal: './src/modal.ts',
-
+		templateRepository: templateRepositoryPath
 	},
 	module: {
 		rules: [
 			{
 				test: /\.(ts|js)x?$/,
-				// test: /\.tsx?$/,
 				use: 'ts-loader',
 				exclude: /node_modules/
 			},
@@ -74,28 +66,54 @@ module.exports = {
 		filename: '[name].js',
 		// chunkFilename: '[id].chunk.js',
 		path: path.resolve(__dirname, 'dist'),
-		clean: true
+		// clean: true,
+		libraryTarget: 'var',
+		library: 'templateRepo'
 	},
 	plugins: [
 		new HtmlWebPackPlugin({
 			template: "./src/index.html",
 			filename: "./index.html",
-			excludeChunks: ['templateRepository']
+			excludeChunks: ['templateRepository'],
 		}),
 		new HtmlWebPackPlugin({
 			template: "./src/sidebar.html",
 			filename: "./sidebar.html",
 			excludeChunks: ['index']
 		}),
+	]
+}
+const editorConfig = {
+	name: 'editor',
+	mode: 'development', // Tip! compile in 'production' mode before publish
+	entry: {
+		templateRepository: templateRepositoryPath
+	},
+	module: {
+		rules: [
+			{
+				test: /\.(ts|js)x?$/,
+				use: 'ts-loader',
+				exclude: /node_modules/
+			},
+		]
+	},
+	output: {
+		path: path.resolve(__dirname, 'dist'),
+		filename: 'template-repository-lib.js',
+		libraryTarget: 'var',
+		library: 'templateRepository'
+	},
+	plugins: [
 		new HtmlWebPackPlugin({
 			template: "./src/test-templates/monaco-editor.html",
 			filename: "./monaco-editor.html",
-			excludeChunks: ['index', 'sidebar']
+			excludeChunks: ['index', 'sidebar'],
+			chucks: ['templateRepository'],
+			inject: 'head',
+			scriptLoading: 'blocking'
 		}),
-		// new MonacoWebpackPlugin(),
-		// new webpack.optimize.DedupePlugin(), //dedupe similar code 
-		// new webpack.optimize.UglifyJsPlugin(), //minify everything
-		// new webpack.optimize.AggressiveMergingPlugin()//Merge chunks 
-		// new webpack.DefinePlugin({"process.env.NODE_ENV":JSON.stringify("development")})
 	]
 }
+module.exports = [appConfig, editorConfig]
+module.exports.parallelism = 1;
