@@ -28,7 +28,8 @@
 
 <body>
     <button onclick="save()">Save</button>
-    <button>Exit</button>
+    <button onclick="close()" class="close-button">Close</button>
+
     <input id="fileNameTemplate"></input>
     <input id="fileExtension"></input>
     <div id="monaco-editor"></div>
@@ -38,7 +39,7 @@
     <script>
         let editor
         const templateName = getParameterByName("templateName")
-        
+
         async function save() {
             var repository = await templateRepository.getTemplateRepository()
             // var template = await repository.getTemplateByName(templateName)
@@ -49,7 +50,7 @@
                 fileExtension: document.getElementById('fileExtension').value,
             })
         }
-        function exit() {
+        function close() {
             miro.board.ui.closeModal()
         }
         // var repository=require("templateRepository").getTemplateRepository()
