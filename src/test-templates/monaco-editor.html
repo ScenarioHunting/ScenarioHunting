@@ -22,7 +22,8 @@
         body {
             background-color: rgb(31, 29, 32);
         }
-        input{
+
+        input {
             background-color: rgb(31, 29, 32);
             color: white;
         }
@@ -157,11 +158,9 @@
                 var template = await repository.getTemplateByName(templateName)
                 document.getElementById('fileNameTemplate').value = template.fileNameTemplate
                 document.getElementById('fileExtension').value = template.fileExtension
-                templateContent = template.templateContent
+                templateContent = template.contentTemplate
                 // console.log("template content:",templateContent)
-                console.log("template content from if statement:", templateContent)
             }
-            console.log("template content:", templateContent)
             editor = monaco.editor.create(document.getElementById('monaco-editor'), {
                 // value: "template.contentTemplate,",
                 value: templateContent,
