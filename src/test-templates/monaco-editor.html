@@ -219,7 +219,6 @@
                 // console.log("template content:",templateContent)
             }
             editor = monaco.editor.create(document.getElementById('monaco-editor'), {
-                // value: "template.contentTemplate,",
                 value: templateContent,
                 // language: 'csharp',
                 // theme: 'vs-dark',
@@ -242,7 +241,7 @@
                 ts: 'typescript',
             }
             const model = monaco.editor.createModel(
-                editor.value,
+                templateContent,
                 'csharp')
 
             editor.setModel(model)
