@@ -16,7 +16,7 @@ export function TemplateList(props): JSX.Element {
     }
     useEffect(loadTemplateNames, []);
     function addTemplate() {
-        miro.board.ui.openModal(`./monaco-editor.html`, { fullscreen: false })
+        miro.board.ui.openModal(`./monaco-editor.html`, {width:940, fullscreen: false })
     }
 
     function editTemplate(templateName: string) {
