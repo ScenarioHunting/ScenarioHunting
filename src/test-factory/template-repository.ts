@@ -26,12 +26,12 @@ class templateRepository {
         var widgets = await this.findWidgetByTemplateName(templateName)
         widgets.forEach(async widget => await miro.board.widgets.deleteById(widget.id))
     }
-    public async createOrReplaceTemplate(templateName: string, template: textTemplate) {
+    public async createOrReplaceTemplate(originalTemplateName: string, template: textTemplate) {
         console.log('createOrReplaceTemplate:')
-        console.log('finding widget for template:', template.templateName)
+        console.log('finding widget for template:', originalTemplateName)
 
-        var widgets = await this.findWidgetByTemplateName(template.templateName)
-        console.log(`${widgets.length} widgets found for template with name: ${template.templateName}`)
+        var widgets = await this.findWidgetByTemplateName(originalTemplateName)
+        console.log(`${widgets.length} widgets found for template with name: ${originalTemplateName}`)
 
         // var dbWidgets = widgets.filter(i => !isNullOrUndefined(i.metadata[miro.getClientId()].templateName));
 
