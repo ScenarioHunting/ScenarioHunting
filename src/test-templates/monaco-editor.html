@@ -98,7 +98,7 @@
         function close() {
             miro.board.ui.closeModal()
         }
-        
+
         let templateContent = ""
         let editor
         const originalTemplateName = getParameterByName("templateName")
@@ -113,10 +113,10 @@
                 fileExtension: document.getElementById('fileExtension').value,
             }
             await repository.createOrReplaceTemplate(originalTemplateName, template)
-            await showNotification(`${template.name} saved.`)
+            await showNotification(`${template.templateName} saved.`)
             close()
         }
-        
+
         // var repository=require("templateRepository").getTemplateRepository()
         function getParameterByName(name, url = window.location.href) {
             name = name.replace(/[\[\]]/g, '\\$&');
@@ -221,7 +221,7 @@
             editor = monaco.editor.create(document.getElementById('monaco-editor'), {
                 // value: "template.contentTemplate,",
                 value: templateContent,
-                language: 'csharp',
+                // language: 'csharp',
                 // language: 'csharp',
                 // theme: 'vs-dark',
                 // theme: 'monokai',
@@ -234,6 +234,19 @@
                 scrollBeyondLastLine: false,
                 formatOnType: true//!important
             });
+            const fileTypes = {
+                css: 'css',
+                js: 'javascript',
+                json: 'json',
+                md: 'markdown',
+                mjs: 'javascript',
+                ts: 'typescript',
+            }
+            const model = monaco.editor.createModel(
+                value,
+                'csharp')
+
+            editor.setModel(model)
 
             // editor.trigger(‘anyString’, 'editor.action.formatDocument'); 
             // console.log(monaco.editor.getModels())
