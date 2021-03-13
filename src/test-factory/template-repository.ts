@@ -26,7 +26,7 @@ class templateRepository {
         var widgets = await this.findWidgetByTemplateName(templateName)
         widgets.forEach(async widget => await miro.board.widgets.deleteById(widget.id))
     }
-    public async createOrReplaceTemplate(template: textTemplate) {
+    public async createOrReplaceTemplate(templateName: string, template: textTemplate) {
         console.log('createOrReplaceTemplate:')
         console.log('finding widget for template:', template.templateName)
 
@@ -200,7 +200,7 @@ namespace {{context}}.Tests
         },
     ]
     for (var i = 0; i < sampleTemplates.length; i++) {
-        await repository.createOrReplaceTemplate(sampleTemplates[i])
+        await repository.createOrReplaceTemplate(sampleTemplates[i].templateName, sampleTemplates[i])
     }
     // sampleTemplates.forEach(async x => await repository.createOrReplaceTemplate(x))
 }

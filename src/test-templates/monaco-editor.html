@@ -21,7 +21,7 @@
         } */
         #monaco-editor {
             position: absolute;
-            top: 0;
+            top: 83px;
             bottom: 0;
             left: 0;
             /* background-color: rgb(31, 29, 32); */
@@ -29,20 +29,24 @@
         }
 
         .side-panel {
-            margin: 15px;
+            display: flex;
+            margin-left: 36px;
+            margin-top: 20px;
+            /* margin: 15px;
             right: 0px;
             position: absolute;
             top: 0px;
             bottom: 0px;
+            background-color: white; */
         }
 
         .input-field {
             padding-top: 15px;
         }
 
-        .save-button {
+        /* .save-button {
             width: 205px;
-        }
+        } */
 
         /* body {
             background-color: rgb(31, 29, 32);
@@ -60,17 +64,21 @@
 
     <div id="monaco-editor"></div>
     <div class="side-panel">
-        <div class="input-field miro-input-field miro-input-field--small ">
-            <label for="fileNameTemplate">File name template:</label>
-            <input class="miro-input miro-input--primary" id="fileNameTemplate" placeholder="{{scenario}}"></input>
-        </div>
 
-        <div class="input-field miro-input-field miro-input-field--small ">
-            <label for="fileExtension">File extension:</label>
+        <label for="fileNameTemplate">File name template:</label>
+        <div class="miro-input-group miro-input-group--small">
+            <input class="miro-input miro-input--primary" id="fileNameTemplate" placeholder="{{scenario}}"></input>
             <input class="miro-input miro-input--primary" id="fileExtension" placeholder="cs"></input>
         </div>
 
-        <button class="save-button miro-btn miro-btn--primary miro-btn--small" onclick="save()">Save</button>
+
+        <label for="templateName">Template Name:</label>
+        <div class="miro-input-group miro-input-group--small">
+            <input class="miro-input miro-input--primary" id="templateName"
+                placeholder="payment-unit-test">new-template</input>
+            <button class="save-button miro-btn miro-btn--primary miro-btn--small" onclick="save()">Save</button>
+        </div>
+
     </div>
     <!-- <div id="example-editor" style="background-color: chartreuse;"></div> -->
 
@@ -78,13 +86,14 @@
     <script>
         let templateContent = ""
         let editor
-        const templateName = getParameterByName("templateName")
+        const originalTemplateName = getParameterByName("templateName")
+        document.getElementById("templateName").value = originalTemplateName
 
         async function save() {
             var repository = await templateRepository.getTemplateRepository()
             // var template = await repository.getTemplateByName(templateName)
             const template = {
-                templateName: templateName,
+                templateName: document.getElementById("templateName").value,
                 contentTemplate: editor.getValue(),
                 fileNameTemplate: document.getElementById('fileNameTemplate').value,
                 fileExtension: document.getElementById('fileExtension').value,
@@ -187,10 +196,10 @@
             //     "csharp"
             // )
 
-            var templateName = getParameterByName("templateName")
-            if (templateName) {
+            // var templateName = getParameterByName("templateName")
+            if (originalTemplateName) {
                 var repository = await templateRepository.getTemplateRepository()
-                var template = await repository.getTemplateByName(templateName)
+                var template = await repository.getTemplateByName(originalTemplateName)
                 document.getElementById('fileNameTemplate').value = template.fileNameTemplate
                 document.getElementById('fileExtension').value = template.fileExtension
                 templateContent = template.contentTemplate
