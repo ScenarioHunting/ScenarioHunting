@@ -40,6 +40,10 @@
             background-color: white; */
         }
 
+        .file-extension-input {
+            width: 50px;
+        }
+
         .input-field {
             padding-top: 15px;
         }
@@ -65,17 +69,17 @@
     <div id="monaco-editor"></div>
     <div class="side-panel">
 
-        <label for="fileNameTemplate">File name template:</label>
+        <!-- <label for="fileNameTemplate">File name template:</label> -->
         <div class="miro-input-group miro-input-group--small">
             <input class="miro-input miro-input--primary" id="fileNameTemplate" placeholder="{{scenario}}"></input>
-            <input class="miro-input miro-input--primary" id="fileExtension" placeholder="cs"></input>
+            <input class="file-extension-input miro-input miro-input--primary" id="fileExtension"
+                placeholder="cs"></input>
         </div>
 
 
-        <label for="templateName">Template Name:</label>
+        <!-- <label for="templateName">Template Name:</label> -->
         <div class="miro-input-group miro-input-group--small">
-            <input class="miro-input miro-input--primary" id="templateName"
-                placeholder="payment-unit-test">new-template</input>
+            <input class="miro-input miro-input--primary" id="templateName" placeholder="payment-unit-test"></input>
             <button class="save-button miro-btn miro-btn--primary miro-btn--small" onclick="save()">Save</button>
         </div>
 
