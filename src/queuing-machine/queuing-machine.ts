@@ -1,6 +1,11 @@
 /* eslint-disable no-unused-vars */
 export class QueuingMachine<T> {
-    constructor(private sortedTokens: T[]) { }
+    constructor(private sortedTokens: T[]) {
+        if (!sortedTokens || sortedTokens.length == 0) {
+            console.error("No sorted tokens.");
+            throw "No sorted tokens."
+        }
+    }
     onTurn = (token: T, whatToDo: () => void) => {
         console.log(token, 'registered, func:', whatToDo)
         this.tasks[this.sortedTokens.indexOf(token)] = whatToDo;

@@ -16,9 +16,11 @@ export function TemplateList(props): JSX.Element {
     }
     useEffect(loadTemplateNames, []);
     function addTemplate() {
-        miro.board.ui.openModal(`./monaco-editor.html`, {width:940, fullscreen: false })
+        miro.board.ui.openModal(`./monaco-editor.html`, { width: 940, fullscreen: false })
     }
-
+    function openModal(url: string): Promise<any> {
+        return miro.board.ui.openModal(url, { fullscreen: false })
+    }
     function editTemplate(templateName: string) {
         console.log(templateName)
         // eslint-disable-next-line no-undef
@@ -29,7 +31,8 @@ export function TemplateList(props): JSX.Element {
                 repository.getTemplateByName(templateName).then(template => {
                     console.log(`Template: ${template} is here:`, template)
                     const queryString = `?templateName=${templateName}&templateContent=${JSON.stringify(template)}&templateContentObj=${template}`
-                    miro.board.ui.openModal(`./monaco-editor.html${queryString}`, { fullscreen: false })
+                    openModal(`./monaco-editor.html${queryString}`)
+                        .then(() => loadTemplateNames())
                 })
             })
         // miro.board.ui.openModal(`./monaco-editor.html?templateName=${templateName}`, { fullscreen: false })

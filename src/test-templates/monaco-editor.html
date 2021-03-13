@@ -92,11 +92,17 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/loader.min.js"></script>
     <script>
+        function showNotification(message) {
+            return miro.showNotification(message)
+        }
+        function close() {
+            miro.board.ui.closeModal()
+        }
+        
         let templateContent = ""
         let editor
         const originalTemplateName = getParameterByName("templateName")
         document.getElementById("templateName").value = originalTemplateName
-
         async function save() {
             var repository = await templateRepository.getTemplateRepository()
             // var template = await repository.getTemplateByName(templateName)
@@ -107,11 +113,10 @@
                 fileExtension: document.getElementById('fileExtension').value,
             }
             await repository.createOrReplaceTemplate(originalTemplateName, template)
-            await miro.showNotification("Saved.")
+            await showNotification(`${template.name} saved.`)
+            close()
         }
-        function close() {
-            miro.board.ui.closeModal()
-        }
+        
         // var repository=require("templateRepository").getTemplateRepository()
         function getParameterByName(name, url = window.location.href) {
             name = name.replace(/[\[\]]/g, '\\$&');
