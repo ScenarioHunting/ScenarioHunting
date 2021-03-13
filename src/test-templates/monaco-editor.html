@@ -106,7 +106,7 @@
                 fileNameTemplate: document.getElementById('fileNameTemplate').value,
                 fileExtension: document.getElementById('fileExtension').value,
             }
-            await repository.createOrReplaceTemplate(template)
+            await repository.createOrReplaceTemplate(originalTemplateName, template)
             await miro.showNotification("Saved.")
         }
         function close() {
