@@ -21,17 +21,19 @@
         } */
         #monaco-editor {
             position: absolute;
-            top: 83px;
+            top: 55px;
             bottom: 0;
             left: 0;
             /* background-color: rgb(31, 29, 32); */
-            width: 705px;
+            /* width: 705px; */
         }
 
         .side-panel {
             display: flex;
             margin-left: 36px;
-            margin-top: 20px;
+            margin-top: 9px;
+            justify-content: space-between;
+            margin-right: 36px;
             /* margin: 15px;
             right: 0px;
             position: absolute;
@@ -66,7 +68,6 @@
 
 <body>
 
-    <div id="monaco-editor"></div>
     <div class="side-panel">
 
         <!-- <label for="fileNameTemplate">File name template:</label> -->
@@ -84,6 +85,8 @@
         </div>
 
     </div>
+    <div id="monaco-editor"></div>
+
     <!-- <div id="example-editor" style="background-color: chartreuse;"></div> -->
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/loader.min.js"></script>
@@ -103,7 +106,7 @@
                 fileExtension: document.getElementById('fileExtension').value,
             }
             await repository.createOrReplaceTemplate(template)
-            console.log("Saving template:", template)
+            await miro.showNotification("Saved.")
         }
         function close() {
             miro.board.ui.closeModal()
