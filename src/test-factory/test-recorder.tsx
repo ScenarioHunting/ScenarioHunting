@@ -222,7 +222,7 @@ export const createTestRecorder = (board = singletonBoard
                                 ))}
                             </select>
                             <button
-                                className='save-button save-button miro-btn miro-btn--primary miro-btn--small'
+                                className='save-button miro-btn miro-btn--primary miro-btn--small'
                                 onClick={saveAndRedirectToExplorer}
                                 disabled={[scenarioErrors, contextErrors, subjectErrors].flat().length > 0}
                             >Save</button>

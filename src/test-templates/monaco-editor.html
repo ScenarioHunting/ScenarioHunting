@@ -11,33 +11,64 @@
     <link rel="stylesheet" data-name="vs/editor/editor.main"
         href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/editor/editor.main.min.css">
     <style type="text/css" media="screen">
-        #monaco-editor {
+        /* #monaco-editor {
             position: absolute;
             top: 45px;
             right: 0;
             bottom: 0;
             left: 0;
             background-color: rgb(31, 29, 32);
+        } */
+        #monaco-editor {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            background-color: rgb(31, 29, 32);
+            width: 700px;
         }
 
-        body {
+        #sidePanel {
+            margin: 15px;
+            right: 0px;
+            position: absolute;
+            top: 0px;
+            bottom: 0px;
+        }
+
+        #input-field {
+            padding-top: 15px;
+        }
+
+        #save-button {
+            width: 205px;
+        }
+
+        /* body {
             background-color: rgb(31, 29, 32);
         }
 
         input {
             background-color: rgb(31, 29, 32);
             color: white;
-        }
+        } */
     </style>
 
 </head>
 
 <body>
-    <label for="fileNameTemplate">File name template:</label>
-    <input id="fileNameTemplate" placeholder="{{Scenario}}"></input>
-    <label for="fileExtension">File extension:</label>
-    <input id="fileExtension" placeholder="cs"></input>
-    <button onclick="save()">Save</button>
+    <div class="sidePanel">
+        <div class="input-field miro-input-field miro-input-field--small ">
+            <label for="fileNameTemplate">File name template:</label>
+            <input class="miro-input miro-input--primary" id="fileNameTemplate" placeholder="{{scenario}}"></input>
+        </div>
+
+        <div class="input-field miro-input-field miro-input-field--small ">
+            <label for="fileExtension">File extension:</label>
+            <input class="miro-input miro-input--primary" id="fileExtension" placeholder="cs"></input>
+        </div>
+
+        <button class="save-button miro-btn miro-btn--primary miro-btn--small" onclick="save()">Save</button>
+    </div>
     <div id="monaco-editor"></div>
     <!-- <div id="example-editor" style="background-color: chartreuse;"></div> -->
 
