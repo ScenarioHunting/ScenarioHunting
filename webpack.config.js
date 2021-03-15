@@ -87,7 +87,13 @@ const editorConfig = {
 	name: 'editor',
 	mode: 'development', // Tip! compile in 'production' mode before publish
 	entry: {
-		templateRepository: templateRepositoryPath
+		// monacoEditor: {
+		// 	import: './src/test-templates/monaco-editor.ts',
+		// 	// dependOn: 'templateRepositoryLib'
+		// },
+		monacoLanguage: './src/test-templates/monaco-languages.js',
+		templateRepositoryLib: templateRepositoryPath,
+
 	},
 	module: {
 		rules: [
@@ -100,7 +106,9 @@ const editorConfig = {
 	},
 	output: {
 		path: path.resolve(__dirname, 'dist'),
-		filename: 'template-repository-lib.js',
+		chunkFilename: '[id].chunk.js',
+
+		// filename: 'template-repository-lib.js',
 		libraryTarget: 'var',
 		library: 'templateRepository'
 	},
@@ -112,6 +120,7 @@ const editorConfig = {
 			inject: 'head',
 			scriptLoading: 'blocking'
 		}),
+		// new MonacoWebpackPlugin()
 	]
 }
 module.exports = [appConfig, editorConfig]

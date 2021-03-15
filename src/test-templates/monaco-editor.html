@@ -11,14 +11,6 @@
     <link rel="stylesheet" data-name="vs/editor/editor.main"
         href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/editor/editor.main.min.css">
     <style type="text/css" media="screen">
-        /* #monaco-editor {
-            position: absolute;
-            top: 45px;
-            right: 0;
-            bottom: 0;
-            left: 0;
-            background-color: rgb(31, 29, 32);
-        } */
         #monaco-editor {
             position: absolute;
             top: 55px;
@@ -29,7 +21,7 @@
             /* width: 705px; */
         }
 
-        .side-panel {
+        .file-name-options-panel {
             display: flex;
             margin-left: 36px;
             margin-top: 9px;
@@ -70,7 +62,7 @@
 <body>
     <div id="monaco-editor"></div>
 
-    <div class="side-panel">
+    <div class="file-name-options-panel">
 
         <!-- <label for="fileNameTemplate">File name template:</label> -->
         <div class="miro-input-group miro-input-group--small">
@@ -126,12 +118,6 @@
             if (!results[2]) return '';
             return decodeURIComponent(results[2].replace(/\+/g, ' '));
         }
-        // console.log("cccccccccccccccccccccccccccccc:", templateRepository)
-        // console.log("template obj:", getTemplateRepository().getTemplateByName("templateName"))
-        // alert("templateName :" + getParameterByName("templateName"))
-        // alert("templateContent :" + getParameterByName("templateContent"))
-        // console.log("templateContent :", getParameterByName("templateContent"))
-        // console.log("templateContentObj :", getParameterByName("templateContentObj"))
 
         require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs' } });
         window.MonacoEnvironment = { getWorkerUrl: () => proxy };
@@ -143,73 +129,10 @@
 `], { type: 'text/javascript' }));
 
 
+        
         require(["vs/editor/editor.main"], async function () {
-            // monaco.languages.registerDocumentFormattingEditProvider('csharp', {
-            //     provideDocumentFormattingEdits: function (model, options, token) {
-            //         return [
-            //             {
-            //                 range: {
-            //                     startLineNumber: 1,
-            //                     startColumn: 1,
-            //                     endLineNumber: 1,
-            //                     endColumn: 1
-            //                 },
-            //                 text: 'a'
-            //             }
-            //         ];
-            //     }
-            // });
-            // monaco.languages.typescript.javascriptDefaults.setCompilerOptions({
-            //     allowNonTsExtensions: true
-            // });
-            // monaco.languages.typescript.javascriptDefaults.setCompilerOptions(
-            //     {
-            //         noLib: true,
-            //         allowNonTsExtensions: true
-            //     });
-            // monaco.languages.typescript.javascriptDefaults.setEagerModelSync(true)
-            // monaco.languages.registerCompletionItemProvider('CustomExpressionLanguage', {
-            //     provideCompletionItems: () => {
-            //         if (!items || items.length <= 0)
-            //             return { suggestions: [] };
+           
 
-            //         window.varSuggestions = items.map(function (x) {
-            //             const one = {
-            //                 label: x.Value,
-            //                 kind: monaco.languages.CompletionItemKind.Keyword,
-            //                 insertText: `Col("${x.Key}")`,
-            //                 insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet
-            //             };
-            //             return one;
-            //         });
-
-            //         window.pythonSuggestions = window.pythonMathMethods.map((x) => {
-            //             var item = {
-            //                 label: x.label,
-            //                 kind: monaco.languages.CompletionItemKind.Funcion,
-            //                 insertText: `${x.label}${x.arguments}`,
-            //                 documentation: x.documentation,
-            //                 insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet
-            //             };
-            //             return item;
-            //         });
-
-            //         window.suggestions = window.varSuggestions.concat(window.pythonSuggestions);
-            //         return { suggestions: window.suggestions };
-            //     }
-            // });
-
-            // const defModel = monaco.editor.createModel(
-            //     "var helloWorld = \"Hello World!\";",
-            //     "csharp"
-            // )
-
-            // const textModel = monaco.editor.createModel(
-            //     "helloWorld()",
-            //     "csharp"
-            // )
-
-            // var templateName = getParameterByName("templateName")
             if (originalTemplateName) {
                 var repository = await templateRepository.getTemplateRepository()
                 var template = await repository.getTemplateByName(originalTemplateName)
@@ -221,7 +144,7 @@
             editor = monaco.editor.create(document.getElementById('monaco-editor'), {
                 value: templateContent,
                 language: 'handlebars',
-                // theme: 'vs-dark',
+                theme: 'vs-dark',
                 // theme: 'monokai',
                 lineHeight: 20,
                 fontSize: 14,
@@ -585,10 +508,6 @@
 
             editor.setModel(model)
         }
-        // console.log("cccccccccccccccccccccccccccccc:", templateRepository)
-        // console.log("template obj:", getTemplateRepository().getTemplateByName("templateName"))
-        // console.log("template obj:", getTemplateRepository())
-
     </script>
 
 </body>
@@ -616,3 +535,15 @@ https://github.com/kataras/go-template -->
 https://github.com/aymerick/raymond#quick-start -->
 
 <!-- https://github.com/microsoft/monaco-editor/issues/833 -->
+
+<!-- Custom language 
+    https://microsoft.github.io/monaco-editor/monarch.html -->
+
+<!-- Custom suggestions (based on json schema...) 
+    https://microsoft.github.io/monaco-editor/playground.html#extending-language-services-completion-provider-example 
+https://github.com/Microsoft/monaco-editor/issues/38-->
+<!-- Handlebars json suggestions:
+     https://github.com/microsoft/monaco-editor/issues/1731 -->
+
+<!--Event storming example
+     https://medium.com/capital-one-tech/event-storming-decomposing-the-monolith-to-kick-start-your-microservice-architecture-acb8695a6e61 -->
