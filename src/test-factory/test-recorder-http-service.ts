@@ -125,7 +125,7 @@ function dtoToJsonSchema(dto: CreateTestDto) {
         givens: dto.test.givens.map(given => stepToJsonSchema(given.step)),
         when: stepToJsonSchema(dto.test.when),
         thens: dto.test.thens.map(then => stepToJsonSchema(then.step)),
-        sut: dto.testName,
+        sut: dto.test.sut,
         context: dto.context,
         scenario: dto.testName,
     }
