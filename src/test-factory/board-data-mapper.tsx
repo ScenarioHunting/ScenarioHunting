@@ -3,16 +3,21 @@ type StepDataProperty = {
     propertyName: string
     simplePropertyValue: string
 }
-export async function convertWidgetToStepData(exampleWidgetText: string
+export async function convertWidgetToStepData(
+    abstractionWidgetText: string
+    , exampleWidgetText: string
     // // eslint-disable-next-line no-unused-vars
     // , succeed: (data: StepData) => void
     // eslint-disable-next-line no-unused-vars
 ): Promise<StepDataDto> {
 
-    const chunks = exampleWidgetText.split('\n')
-    let type = chunks.shift()
+    let type = abstractionWidgetText.split('\n').shift()
     if (!type) {
         return Promise.reject("Unknown text format.")
+    }
+    const chunks = exampleWidgetText.split('\n')
+    if (chunks[0] == type) {
+        chunks.shift()
     }
     // const value = chunks
     const toCamelCase = (str: string) =>

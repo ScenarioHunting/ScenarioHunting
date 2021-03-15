@@ -125,6 +125,7 @@ export type ExampleWidget = {
     id: string
     // type: string
     style: CSSProperties
+    abstractionText: string
     exampleText: string
     abstractionWidget: SDK.IWidget
     exampleWidget: SDK.IWidget
@@ -184,7 +185,6 @@ async function convertToDto(widget: SDK.IWidget): Promise<SelectedWidget> {
     console.log('Selection dto initiated.', dto)
 
     dto.style = getWidgetStyle(dto.abstractionWidget)
-
     try {
         const getPlainText = (originalText: string): string =>
             originalText.split('</p><p>').join('\n')
@@ -193,16 +193,18 @@ async function convertToDto(widget: SDK.IWidget): Promise<SelectedWidget> {
                 .replace('&#43;', '+')
 
         dto.exampleText = getPlainText(await getWidgetText(widget))
+        dto.abstractionText = getPlainText(await getWidgetText(dto.abstractionWidget))
+
     }
     catch (e) {
         return Promise.reject('The widget ' + JSON.stringify(widget) + ' does not have any text.')
     }
 
 
-    console.log('Widget text converted by board.:', dto.exampleText)
+    console.log('Widget text converted by board:', dto.exampleText)
 
     try {
-        var data = await mapToStepData(dto.exampleText)
+        var data = await mapToStepData(dto.abstractionText, dto.exampleText)
         const step = {
             widgetSnapshot: dto
             , widgetData: data
