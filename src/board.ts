@@ -183,7 +183,7 @@ async function convertToDto(widget: SDK.IWidget): Promise<SelectedWidget> {
     //
     console.log('Selection dto initiated.', dto)
 
-    dto.style = getWidgetStyle(widget)
+    dto.style = getWidgetStyle(dto.abstractionWidget)
 
     try {
         const getPlainText = (originalText: string): string =>
