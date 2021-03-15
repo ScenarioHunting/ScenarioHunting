@@ -143,7 +143,7 @@ async function getTheStartingWidget(arrow: SDK.ILineWidget): Promise<SDK.IWidget
 async function getIncomingArrows(exampleWidget: SDK.IWidget): Promise<SDK.ILineWidget[]> {
     return (await (await miro.board.widgets.get({ type: "LINE", endWidgetId: exampleWidget.id }))
         .map(line => line as SDK.ILineWidget))
-        .filter(line => line.style.lineEndStyle != 0)
+        .filter(line => line.style.lineEndStyle != miro.enums.lineArrowheadStyle.NONE)
 }
 async function getAbstractionWidgetFor(exampleWidget: SDK.IWidget): Promise<SDK.IWidget> {
     const incomingArrows = await getIncomingArrows(exampleWidget)
@@ -186,13 +186,13 @@ async function convertToDto(widget: SDK.IWidget): Promise<SelectedWidget> {
     dto.style = getWidgetStyle(widget)
 
     try {
-        const purifyWidgetText = (originalText: string): string =>
+        const getPlainText = (originalText: string): string =>
             originalText.split('</p><p>').join('\n')
                 .replace('<p>', '')
                 .replace('</p>', '')
                 .replace('&#43;', '+')
 
-        dto.exampleText = purifyWidgetText(await getWidgetText(widget))
+        dto.exampleText = getPlainText(await getWidgetText(widget))
     }
     catch (e) {
         return Promise.reject('The widget ' + JSON.stringify(widget) + ' does not have any text.')
