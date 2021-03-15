@@ -144,7 +144,8 @@ async function getTheStartingWidget(arrow: SDK.ILineWidget): Promise<SDK.IWidget
 async function getIncomingArrows(exampleWidget: SDK.IWidget): Promise<SDK.ILineWidget[]> {
     return (await (await miro.board.widgets.get({ type: "LINE", endWidgetId: exampleWidget.id }))
         .map(line => line as SDK.ILineWidget))
-        .filter(line => line.style.lineEndStyle != miro.enums.lineArrowheadStyle.NONE)
+        .filter(line => line.captions.map(caption => caption.text.toLowerCase()).includes("example")
+            && line.style.lineEndStyle != miro.enums.lineArrowheadStyle.NONE)
 }
 async function getAbstractionWidgetFor(exampleWidget: SDK.IWidget): Promise<SDK.IWidget> {
     const incomingArrows = await getIncomingArrows(exampleWidget)
