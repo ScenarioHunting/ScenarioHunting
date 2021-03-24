@@ -34,7 +34,7 @@ export function SelectableText(props: {
             >Select</button>
             <input type='text'
                 className={"miro-input miro-input--primary"}
-                value={value} onChange={onChange}
+                value={value} onChange={x=>onChange(x.target.value)}
                 placeholder={props.placeholder} />
 
             {props.errors.map(error => <div key={error} className="status-text">{error}</div>)}

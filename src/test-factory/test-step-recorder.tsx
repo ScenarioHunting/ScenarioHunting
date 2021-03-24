@@ -32,12 +32,14 @@ export function createTestStepRecorder({ stepType
         //     }
         //     , data: selectedWidget.widgetData
         // })
+        const [isActive, setIsActive] = React.useState<boolean>(false)
 
         React.useEffect(() => {
             const notifyParent = (selectedWidget: SelectedWidget) =>
                 props.onStepSelection(selectedWidget)
             board.unselectAll();
             stepNavigator.onTurn(turn, () => {
+                setIsActive(true)
                 board.showNotification(selectionWaitingMessage);
                 console.log('Waiting...')
                 board.onNextSingleSelection(selectedWidget => {
@@ -59,7 +61,7 @@ export function createTestStepRecorder({ stepType
         // }
 
         return (
-            <div className="test-step" >
+            <div className="test-step" style={{ display: isActive ? 'initial' : 'none' }}>
                 <h1 className="step-type">{stepType} </h1>
                 {
                     (!props.step?.widgetData) ? <div className="waiting-for-step"> <h1 >?</h1> </div> :
