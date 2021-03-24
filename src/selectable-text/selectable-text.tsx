@@ -14,7 +14,7 @@ export function SelectableText(props: {
     function onChange(newValue) {
         setValue(newValue)
         props.onChange(newValue)
-        // props.value = newValue
+        props.value = newValue
     }
     function onClick() {
         console.log('Waiting...')
