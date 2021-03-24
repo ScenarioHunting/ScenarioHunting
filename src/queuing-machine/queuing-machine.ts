@@ -13,7 +13,7 @@ export class QueuingMachine<T> {
         //     this.start()
         // }
     }
-    nextTurn = (token: T) => {
+    done = (token: T) => {
         console.log('Remaining tasks:', this.tasks)
         console.log('Shifting.')
         //TODO: defence

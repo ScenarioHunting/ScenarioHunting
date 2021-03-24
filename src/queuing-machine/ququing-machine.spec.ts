@@ -21,11 +21,11 @@ describe('', function () {
             firstTurnHit.should.eq(true)
         })
     })
-    it('',function(){
+    it('calls the second listener as the first one is done',function(){
         const tokenOrder = theories[0]
         let subject = new QueuingMachine(tokenOrder)
         subject.onTurn(tokenOrder[0], function () {
-            subject.nextTurn(tokenOrder[0])
+            subject.done(tokenOrder[0])
         })
         
         let turnHit = false

@@ -5,8 +5,8 @@ import { TestStepTurn } from "../test-factory/test-step-turn";
 import { singletonStepNavigator } from "../test-factory/local-dependency-container";
 
 const board: IBoard = singletonBoard
-const turn = TestStepTurn.Subject
-const stepNavigator = singletonStepNavigator
+const myTurn = TestStepTurn.Subject
+const queue = singletonStepNavigator
 export function SelectableText(props: {
     value: string,
     placeholder: string,
@@ -36,13 +36,13 @@ export function SelectableText(props: {
     }
     React.useEffect(() => {
         board.unselectAll();
-        stepNavigator.onTurn(turn, () => {
+        queue.onTurn(myTurn, () => {
             setIsActive(true)
             console.log('Waiting...')
             board.onNextSingleSelection(selectedWidget => {
-                console.log(turn, 'Done...')
+                console.log(myTurn, 'Done...')
                 onChange(selectedWidget.widgetData.type)
-                stepNavigator.nextTurn(turn);
+                queue.done(myTurn)
             });
         });
     }, [])
@@ -51,12 +51,12 @@ export function SelectableText(props: {
             <h3 style={{ color: isActive ? 'inherit' : '#c3c2cf' }} >{props.title}</h3>
             <div style={{ display: isActive ? 'block' : 'none' }} className={props.className + " input-group miro-input-group miro-input-group--small " + (props.errors.length == 0 ? "" : "miro-input-group--invalid")}>
                 <button
-                    className='full-width miro-btn miro-btn--primary miro-btn--small'
+                    className='miro-btn miro-btn--primary miro-btn--small'
                     onClick={onClick}
                     disabled={props.clickDisabled}
                 >Select</button>
                 <input type='text'
-                    className="miro-input miro-input--primary"
+                    className="full-width miro-input miro-input--primary"
                     value={value} onChange={x => onChange(x.target.value)}
                     placeholder={props.placeholder} />
 

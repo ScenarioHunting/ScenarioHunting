@@ -46,7 +46,7 @@ export function createTestStepRecorder({ stepType
                 board.onNextSingleSelection(selectedWidget => {
                     console.log(turn, 'Done...')
                     notifyParent(selectedWidget);
-                    stepNavigator.nextTurn();
+                    stepNavigator.done(turn);
                 });
             });
         }, [])
