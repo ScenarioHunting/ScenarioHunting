@@ -165,18 +165,18 @@ export const createTestRecorder = (board = singletonBoard
         return (
             <div className="test-recorder">
 
-                <div className="given">
+                {when &&<div className="given">
                     <Givens onStepSelectionChange={recordGiven} steps={givens} />
-                </div >
+                </div >}
 
-                <div className="when">
+                {then && <div className="when">
                     <When onStepSelection={recordWhen} step={when} />
-                </div>
+                </div>}
 
                 <div className="then">
                     <Then onStepSelection={recordThen} step={then} />
                 </div>
-                {then &&
+                {when &&
                     <div className="test-form-details ">
 
                         <label className="test-name-label">Scenario:</label>
