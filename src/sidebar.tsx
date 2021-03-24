@@ -5,7 +5,7 @@ import { Router, Link } from "@reach/router"
 import { TestExplorer } from "./test-explorer/test-explorer"
 import "./styles.less"
 import { navigate } from "@reach/router"
-import { TemplateList } from './test-templates/template-list';
+import { TemplateList } from './template-processing/template-list';
 
 ReactDOM.render(
     <>

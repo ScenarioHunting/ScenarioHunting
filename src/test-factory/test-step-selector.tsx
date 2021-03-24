@@ -1,4 +1,4 @@
-import './test-step-recorder.less';
+import './test-step-selector.less';
 import * as React from 'react';
 import { IBoard, SelectedWidget } from 'board';
 import { IQueuingMachine } from "../queuing-machine/iqueuing-machine";
@@ -64,7 +64,7 @@ export function createTestStepRecorder({ stepType
             <div className="test-step" >
                 <h1 className="step-type">{stepType} </h1>
                 {
-                    (!props.step?.widgetData) ? <div className="waiting-for-step" style={{ display: isActive ? 'initial' : 'none' }}> <h1 >?</h1> </div> :
+                    (!props.step?.widgetData) ? <div className="waiting-for-step" style={{ display: isActive ? 'block' : 'none' }}> <h1 >?</h1> </div> :
 
                         <div style={props.step?.widgetSnapshot.style} className="step-content">
                             <span className="step-title">{props.step?.widgetData.type}</span>

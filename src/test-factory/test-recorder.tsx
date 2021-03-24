@@ -7,7 +7,7 @@ import { navigate } from "@reach/router"
 import { ExampleWidget, SelectedWidget } from 'board';
 import { Save, LocalTestCreationResult } from './test-recorder-http-service';
 import { singletonStepNavigator } from './local-dependency-container';
-import { getTemplateRepository } from './template-repository';
+import { getTemplateRepository } from '../template-processing/template-repository';
 import { useEffect, useState } from 'react';
 import { SelectableText } from '../selectable-text/selectable-text';
 

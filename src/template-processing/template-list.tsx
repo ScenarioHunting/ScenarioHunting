@@ -1,6 +1,6 @@
 import * as React from 'react';
 import "./template-list.less"
-import { getTemplateRepository } from '../test-factory/template-repository';
+import { getTemplateRepository } from './template-repository';
 import { useState, useEffect } from "react";
 
 export function TemplateList(props): JSX.Element {

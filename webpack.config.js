@@ -1,7 +1,7 @@
 const path = require('path')
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 // const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
-const templateRepositoryPath = './src/test-factory/template-repository.ts'
+const templateRepositoryPath = './src/template-processing/template-repository.ts'
 const appConfig = {
 	name: 'app',
 	optimization: {
@@ -52,7 +52,7 @@ const appConfig = {
 				]
 			},
 			{
-				test: '/src/test-templates/monaco-editor.js',
+				test: '/src/template-processing/monaco-editor.js',
 				use: [
 					'file-loader',
 				]
@@ -88,10 +88,10 @@ const editorConfig = {
 	mode: 'development', // Tip! compile in 'production' mode before publish
 	entry: {
 		// monacoEditor: {
-		// 	import: './src/test-templates/monaco-editor.ts',
+		// 	import: './src/template-processing/monaco-editor.ts',
 		// 	// dependOn: 'templateRepositoryLib'
 		// },
-		monacoLanguage: './src/test-templates/monaco-languages.js',
+		monacoLanguage: './src/template-processing/monaco-languages.js',
 		templateRepositoryLib: templateRepositoryPath,
 
 	},
@@ -114,7 +114,7 @@ const editorConfig = {
 	},
 	plugins: [
 		new HtmlWebPackPlugin({
-			template: "./src/test-templates/monaco-editor.html",
+			template: "./src/template-processing/monaco-editor.html",
 			filename: "./monaco-editor.html",
 			chucks: ['templateRepository'],
 			inject: 'head',
