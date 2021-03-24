@@ -9,6 +9,7 @@ import { Save, LocalTestCreationResult } from './test-recorder-http-service';
 import { singletonStepNavigator } from './local-dependency-container';
 import { getTemplateRepository } from './template-repository';
 import { useEffect, useState } from 'react';
+import { SelectableText } from 'selectable-text/selectable-text';
 
 export type StepInfo = {
     type: string
@@ -165,11 +166,11 @@ export const createTestRecorder = (board = singletonBoard
         return (
             <div className="test-recorder">
 
-                <div className="given" style={{ visibility: when ? 'visible' : 'hidden' }}>
+                <div className="given" style={{ display: when ? 'initial' : 'none' }}>
                     <Givens onStepSelectionChange={recordGiven} steps={givens} />
                 </div >
 
-                 <div className="when" style={{ visibility: then ? 'visible' : 'hidden' }}>
+                <div className="when" style={{ display: then ? 'initial' : 'none' }}>
                     <When onStepSelection={recordWhen} step={when} />
                 </div>
 
@@ -179,8 +180,16 @@ export const createTestRecorder = (board = singletonBoard
                 {when &&
                     <div className="test-form-details ">
 
-                        <label className="test-name-label">Scenario:</label>
-                        <div className={"scenario-input miro-input-group miro-input-group--small" + (scenarioErrors.length == 0 ? "" : "miro-input-field--invalid")}>
+                        {/* <label className="test-name-label">Scenario:</label> */}
+                        <SelectableText 
+                            value={scenario} 
+                            placeholder="Scenario"
+                            className={"scenario-input"}
+                            disabled={[scenarioErrors, contextErrors, subjectErrors].flat().length > 0}
+                            onChange={x => changeScenario(x.target.value)}
+                            errors={scenarioErrors}
+                        />
+                        {/* <div className={"scenario-input miro-input-group miro-input-group--small" + (scenarioErrors.length == 0 ? "" : "miro-input-field--invalid")}>
                             <button
                                 className='save-button miro-btn miro-btn--primary miro-btn--small'
                                 onClick={saveAndRedirectToExplorer}
@@ -192,7 +201,7 @@ export const createTestRecorder = (board = singletonBoard
                                 placeholder="Scenario" />
 
                             {scenarioErrors.map(error => <div key={error} className="status-text">{error}</div>)}
-                        </div>
+                        </div> */}
 
                         <label className="test-context-label">Context:</label>
                         <div className={"test-context-input miro-input-field miro-input-field--small " + (contextErrors.length == 0 ? "" : "miro-input-field--invalid")}>
