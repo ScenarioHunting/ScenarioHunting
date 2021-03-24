@@ -27,21 +27,26 @@ export function SelectableText(props: {
     //     setErrors(errors)
     //     return errors.length == 0
     // }
-
+    var isInSelectMode = false
     function onChange(newValue) {
         //TODO: unsubscribe from board.selection
         setErrors(props.validate(newValue))
         setValue(newValue)
         props.onChange(newValue)
-        queue.done(props.turn)
+
+        if (isInSelectMode) {
+            queue.done(props.turn)
+            isInSelectMode = false
+        }
     }
 
-    function onClick() {
+    function select() {
         console.log('Waiting...')
         board.unselectAll()
         board.onNextSingleSelection((selectedWidget: SelectedWidget) => {
             onChange(selectedWidget.widgetData.type)
             console.log(props.value + ' selected')
+            isInSelectMode=true
         });
     }
     React.useEffect(() => {
@@ -49,12 +54,13 @@ export function SelectableText(props: {
         queue.onTurn(props.turn, () => {
             setIsActive(true)
             console.log('Waiting...')
-            board.onNextSingleSelection(selectedWidget => {
-                console.log(props.turn, 'Done...')
-                onChange(selectedWidget.widgetData.type)
-            });
+            select()
+            // board.onNextSingleSelection(selectedWidget => {
+            //     console.log(props.turn, 'Done...')
+            //     onChange(selectedWidget.widgetData.type)
+            // });
         });
-    }, [])
+    }, [isInSelectMode, props.turn])
 
 
 
@@ -65,7 +71,7 @@ export function SelectableText(props: {
             <div style={{ display: isActive ? 'flex' : 'none' }} className={props.className + " input-group miro-input-group miro-input-group--small " + (errors.length == 0 ? "" : "miro-input-group--invalid")}>
                 <button
                     className='miro-btn miro-btn--primary miro-btn--small'
-                    onClick={onClick}
+                    onClick={select}
                 // disabled={props.clickDisabled}
                 >Select</button>
                 <input type='text'
