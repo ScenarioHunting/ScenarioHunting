@@ -66,7 +66,7 @@
     "then then"
     "scenario-input scenario-input"
     "test-context-label test-context-input"
-    "sut-label sut-input"
+    "sut-label subject-input"
     "template-selector-label template-selector"
     "save-button save-button";
 }
@@ -88,13 +88,13 @@
 .test-form-details{
   display: grid;
   row-gap: 10px;
-  grid-template-columns:  1fr 1fr;
+  grid-template-columns:  1fr;
   grid-template-rows: auto auto auto auto;
   grid-template-areas: 
-    "scenario-input scenario-input"
-    "test-context-label test-context-input"
-    "sut-label sut-input"
-    "save-test save-test";
+    "scenario-input"
+    "test-context-input"
+    "subject-input"
+    "save-test";
     // "template-selector-label template-selector"
   padding: 10px 0px 4px 0px;
 }
@@ -147,9 +147,9 @@ select{
   .input;
   grid-area: test-context-input;
 }
-.sut-input {
+.subject-input {
   .input;
-  grid-area: sut-input;
+  grid-area: subject-input;
 }
 .template-selector {
   .input;

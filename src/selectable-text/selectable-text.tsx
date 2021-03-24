@@ -5,7 +5,7 @@ const board: IBoard = singletonBoard
 export function SelectableText(props: {
     value: string,
     placeholder: string,
-    disabled: boolean,
+    clickDisabled: boolean,
     // eslint-disable-next-line no-unused-vars
     onChange: (value:string) => void,
     errors: string[],
@@ -30,7 +30,7 @@ export function SelectableText(props: {
             <button
                 className='miro-btn miro-btn--primary miro-btn--small'
                 onClick={onClick}
-                disabled={props.disabled}
+                disabled={props.clickDisabled}
             >Select</button>
             <input type='text'
                 className={"miro-input miro-input--primary"}

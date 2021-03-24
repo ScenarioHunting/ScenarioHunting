@@ -166,26 +166,26 @@ export const createTestRecorder = (board = singletonBoard
         return (
             <div className="test-recorder">
 
-                <div className="given" style={{ display: when ? 'initial' : 'none' }}>
+                <div className="given">
                     <Givens onStepSelectionChange={recordGiven} steps={givens} />
                 </div >
 
-                <div className="when" style={{ display: then ? 'initial' : 'none' }}>
+                <div className="when">
                     <When onStepSelection={recordWhen} step={when} />
                 </div>
 
                 <div className="then">
                     <Then onStepSelection={recordThen} step={then} />
                 </div>
-                {when &&
+                {when && then &&
                     <div className="test-form-details ">
 
                         {/* <label className="test-name-label">Scenario:</label> */}
-                        <SelectableText 
-                            value={scenario} 
+                        <SelectableText
+                            value={scenario}
                             placeholder="Scenario"
                             className={"scenario-input"}
-                            disabled={[scenarioErrors, contextErrors, subjectErrors].flat().length > 0}
+                            clickDisabled={[contextErrors, subjectErrors].flat().length > 0}
                             onChange={x => changeScenario(x)}
                             errors={scenarioErrors}
                         />
@@ -202,26 +202,40 @@ export const createTestRecorder = (board = singletonBoard
 
                             {scenarioErrors.map(error => <div key={error} className="status-text">{error}</div>)}
                         </div> */}
-
-                        <label className="test-context-label">Context:</label>
-                        <div className={"test-context-input miro-input-field miro-input-field--small " + (contextErrors.length == 0 ? "" : "miro-input-field--invalid")}>
+                        <SelectableText
+                            value={context}
+                            placeholder="Context"
+                            className={"test-context-input"}
+                            clickDisabled={[contextErrors, subjectErrors].flat().length > 0}
+                            onChange={x => changeContext(x)}
+                            errors={contextErrors}
+                        />
+                        {/* <label className="test-context-label">Context:</label> */}
+                        {/* <div className={"test-context-input miro-input-field miro-input-field--small " + (contextErrors.length == 0 ? "" : "miro-input-field--invalid")}>
                             <input type='text'
                                 className={"test-context-input miro-input miro-input--primary"}
                                 value={context} onChange={x => changeContext(x.target.value)}
                                 placeholder="Context"
                             />
                             {contextErrors.map(error => <div key={error} className="status-text">{error}</div>)}
-                        </div>
-
-                        <label className="sut-label">Subject:</label>
-                        <div className={"sut-input miro-input-field miro-input-field--small " + (subjectErrors.length == 0 ? "" : "miro-input-field--invalid")}>
+                        </div> */}
+                        <SelectableText
+                            value={scenario}
+                            placeholder="Subject Under Test"
+                            className={"subject-input"}
+                            clickDisabled={[contextErrors, subjectErrors].flat().length > 0}
+                            onChange={x => changeSubject(x)}
+                            errors={subjectErrors}
+                        />
+                        {/* <label className="sut-label">Subject:</label> */}
+                        {/* <div className={"subject-input miro-input-field miro-input-field--small " + (subjectErrors.length == 0 ? "" : "miro-input-field--invalid")}>
                             <input type='text'
-                                className={"sut-input  miro-input miro-input--primary"}
+                                className={"subject-input  miro-input miro-input--primary"}
                                 value={subject}
                                 onChange={x => changeSubject(x.target.value)}
                                 placeholder="Subject Under Test" />
                             {subjectErrors.map(error => <div key={error} className="status-text">{error}</div>)}
-                        </div>
+                        </div> */}
 
 
 

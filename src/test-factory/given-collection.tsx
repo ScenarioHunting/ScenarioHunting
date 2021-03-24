@@ -70,7 +70,7 @@ export let createGivenStepCollection =
 				props.onStepSelectionChange(updatedSteps)
 			}
 			return (
-				<div>
+				<div style={{ display: isActive ? 'initial' : 'none' }}>
 					<h1>Given({indexedSteps.length})</h1>
 
 					{isActive &&
