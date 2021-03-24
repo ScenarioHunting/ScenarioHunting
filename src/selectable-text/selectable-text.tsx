@@ -1,5 +1,7 @@
 import * as React from "react";
-
+import { IBoard, SelectedWidget } from 'board';
+import { singletonBoard } from "global-dependency-container";
+const board: IBoard = singletonBoard
 export function SelectableText(props: {
     value: string,
     placeholder: string,
@@ -9,10 +11,14 @@ export function SelectableText(props: {
     className: string
 }) {
     function onClick() {
-        alert('Clicked')
+        console.log('Waiting...')
+        board.onNextSingleSelection((selectedWidget: SelectedWidget) => {
+            props.value = selectedWidget.widgetData.type
+            console.log(props.value + ' selected')
+        });
     }
     return (
-        <div className={props.className + "miro-input-group miro-input-group--small" + (props.errors.length == 0 ? "" : "miro-input-field--invalid")}>
+        <div className={props.className + " miro-input-group miro-input-group--small" + (props.errors.length == 0 ? "" : "miro-input-group--invalid")}>
             <button
                 className='miro-btn miro-btn--primary miro-btn--small'
                 onClick={onClick}
