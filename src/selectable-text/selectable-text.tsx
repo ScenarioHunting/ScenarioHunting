@@ -24,20 +24,21 @@ export function SelectableText(props: {
             console.log(props.value + ' selected')
         });
     }
-
     return (
-        <div className={props.className + " input-group miro-input-group miro-input-group--small " + (props.errors.length == 0 ? "" : "miro-input-group--invalid")}>
-            <button
-                className='full-width miro-btn miro-btn--primary miro-btn--small'
-                onClick={onClick}
-                disabled={props.clickDisabled}
-            >Select</button>
-            <input type='text'
-                className="miro-input miro-input--primary"
-                value={value} onChange={x => onChange(x.target.value)}
-                placeholder={props.placeholder} />
+        <div className={"miro-input-field " + (props.errors.length == 0 ? "" : "miro-input-field--invalid")}>
+            <div className={props.className + " input-group miro-input-group miro-input-group--small " + (props.errors.length == 0 ? "" : "miro-input-group--invalid")}>
+                <button
+                    className='full-width miro-btn miro-btn--primary miro-btn--small'
+                    onClick={onClick}
+                    disabled={props.clickDisabled}
+                >Select</button>
+                <input type='text'
+                    className="miro-input miro-input--primary"
+                    value={value} onChange={x => onChange(x.target.value)}
+                    placeholder={props.placeholder} />
 
-            {props.errors.map(error => <div key={error} className="status-text">{error}</div>)}
+                {props.errors.map(error => <div key={error} className="status-text">{error}</div>)}
+            </div>
         </div>
     )
 }
