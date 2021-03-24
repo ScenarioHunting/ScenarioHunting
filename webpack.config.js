@@ -13,8 +13,8 @@ const appConfig = {
 		flagIncludedChunks: true,
 		// runtimeChunk: 'single',
 	},
-	// mode: 'production', // Tip! compile in 'production' mode before publish
-	mode: 'development', // Tip! compile in 'production' mode before publish
+	mode: 'production', // Tip! compile in 'production' mode before publish
+	// mode: 'development', // Tip! compile in 'production' mode before publish
 
 	// Tip! Just delete not using files, but main.ts is required
 	entry: {
@@ -85,7 +85,8 @@ const appConfig = {
 }
 const editorConfig = {
 	name: 'editor',
-	mode: 'development', // Tip! compile in 'production' mode before publish
+	mode: 'production', // Tip! compile in 'production' mode before publish
+	// mode: 'development', // Tip! compile in 'production' mode before publish
 	entry: {
 		// monacoEditor: {
 		// 	import: './src/template-processing/monaco-editor.ts',
