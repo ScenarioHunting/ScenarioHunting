@@ -1,6 +1,6 @@
 import * as React from "react";
 import { IBoard, SelectedWidget } from 'board';
-import { singletonBoard } from "global-dependency-container";
+import { singletonBoard } from "../global-dependency-container";
 const board: IBoard = singletonBoard
 export function SelectableText(props: {
     value: string,
