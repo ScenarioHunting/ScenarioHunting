@@ -66,7 +66,7 @@ export function createTestStepRecorder({ stepType
                 {
                     (!props.step?.widgetData) ? <div className="waiting-for-step" style={{ display: isActive ? 'block' : 'none' }}> <h1 >?</h1> </div> :
 
-                        <div style={props.step?.widgetSnapshot.style} className="step-content">
+                        <div style={props.step?.widgetSnapshot.style}>
                             <span className="step-title">{props.step?.widgetData.type}</span>
 
                             <div className="step-data">
