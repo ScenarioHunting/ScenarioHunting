@@ -33,7 +33,7 @@ export function SelectableText(props: {
                 disabled={props.clickDisabled}
             >Select</button>
             <input type='text'
-                className={"miro-input miro-input--primary"}
+                className="full-width miro-input miro-input--primary"
                 value={value} onChange={x => onChange(x.target.value)}
                 placeholder={props.placeholder} />
 

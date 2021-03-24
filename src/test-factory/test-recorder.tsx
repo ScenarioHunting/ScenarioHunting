@@ -207,7 +207,7 @@ export const createTestRecorder = (board = singletonBoard
 
 
 
-                        <div className="input-group miro-input-group miro-input-group--small">
+                        <div className="full-width input-group miro-input-group miro-input-group--small">
                             <select className="template-selector miro-select miro-select--secondary-bordered miro-select--small" value={selectedTemplateName}
                                 onChange={(e) => selectTemplateName(e.target.value)}>
                                 {availableTemplateNames.map((templateName) => (
@@ -217,7 +217,7 @@ export const createTestRecorder = (board = singletonBoard
                                 ))}
                             </select>
                             <button
-                                className='full-width miro-btn miro-btn--primary miro-btn--small'
+                                className='miro-btn miro-btn--primary miro-btn--small'
                                 onClick={saveAndRedirectToExplorer}
                                 disabled={[scenarioErrors, contextErrors, subjectErrors].flat().length > 0}
                             >Save</button>
