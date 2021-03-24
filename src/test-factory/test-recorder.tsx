@@ -39,9 +39,6 @@ export const createTestRecorder = (board = singletonBoard
         const [subject, recordSubject] = useState<string>("");
         const [selectedTemplateName, selectTemplateName] = useState<string>("no template");
         const [availableTemplateNames, setAvailableTemplateNames] = useState<string[]>([]);
-        const [scenarioErrors, setScenarioErrors] = useState<string[]>([])
-        const [contextErrors, setContextErrors] = useState<string[]>([])
-        const [subjectErrors, setSubjectErrors] = useState<string[]>([])
 
 
         function getRequiredErrorsFor(str: string): string[] {
@@ -71,10 +68,12 @@ export const createTestRecorder = (board = singletonBoard
             board.showNotification(errorText)
         }
 
-        function validateContext(context: string): boolean {
-            var contextErrors = [getRequiredErrorsFor(context), getMaxLengthErrorsFor(context, 50)].flat()
-            setContextErrors(contextErrors)
-            return contextErrors.length == 0
+        function validateContext(context: string): string[] {
+            return [
+                getRequiredErrorsFor(context),
+                getMaxLengthErrorsFor(context, 50)
+            ].flat()
+
         }
         function changeContext(context: string) {
             validateContext(context)
@@ -83,10 +82,11 @@ export const createTestRecorder = (board = singletonBoard
 
 
 
-        function validateScenario(scenario: string): boolean {
-            var scenarioErrors = [getRequiredErrorsFor(scenario), getMaxLengthErrorsFor(scenario, 50)].flat()
-            setScenarioErrors(scenarioErrors)
-            return scenarioErrors.length == 0
+        function validateScenario(scenario: string): string[] {
+            return [
+                getRequiredErrorsFor(scenario),
+                getMaxLengthErrorsFor(scenario, 50)
+            ].flat()
         }
         function changeScenario(scenario: string) {
             validateScenario(scenario)
@@ -94,10 +94,11 @@ export const createTestRecorder = (board = singletonBoard
         }
 
 
-        function validateSubject(subject: string): boolean {
-            var subjectErrors = [getRequiredErrorsFor(subject), getMaxLengthErrorsFor(subject, 50)].flat()
-            setSubjectErrors(subjectErrors)
-            return subjectErrors.length == 0
+        function validateSubject(subject: string): string[] {
+            return [
+                getRequiredErrorsFor(subject),
+                getMaxLengthErrorsFor(subject, 50)
+            ].flat()
         }
         function changeSubject(subject: string) {
             validateSubject(subject)
@@ -176,34 +177,37 @@ export const createTestRecorder = (board = singletonBoard
                             turn={TestStepTurn.Subject}
                             title="Subject"
                             placeholder="Subject Under Test"
+
                             value={scenario}
                             className={"subject-input"}
                             onChange={x => changeSubject(x)}
-                            errors={subjectErrors}
+                            validate={validateSubject}
                         />
                         <SelectableText
                             turn={TestStepTurn.Context}
                             title="Context"
                             placeholder="Context"
+
                             value={context}
                             className={"test-context-input"}
                             onChange={x => changeContext(x)}
-                            errors={contextErrors}
+                            validate={validateContext}
                         />
                         <SelectableText
                             turn={TestStepTurn.Scenario}
                             title="Scenario"
                             placeholder="Scenario"
+
                             value={scenario}
                             className={"scenario-input"}
                             onChange={x => changeScenario(x)}
-                            errors={scenarioErrors}
+                            validate={validateScenario}
                         />
 
 
 
                         <div className="full-width input-group miro-input-group miro-input-group--small">
-                            <select className="template-selector miro-select miro-select--secondary-bordered miro-select--small" value={selectedTemplateName}
+                            <select className="miro-select miro-select--secondary-bordered miro-select--small" value={selectedTemplateName}
                                 onChange={(e) => selectTemplateName(e.target.value)}>
                                 {availableTemplateNames.map((templateName) => (
                                     <option key={templateName} value={templateName}>
@@ -214,7 +218,7 @@ export const createTestRecorder = (board = singletonBoard
                             <button
                                 className='miro-btn miro-btn--primary miro-btn--small'
                                 onClick={saveAndRedirectToExplorer}
-                                disabled={[scenarioErrors, contextErrors, subjectErrors].flat().length > 0}
+                                // disabled={[errors].flat().length > 0}
                             >Save</button>
                         </div>
                     </div>

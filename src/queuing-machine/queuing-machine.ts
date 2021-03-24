@@ -17,7 +17,7 @@ export class QueuingMachine<T> {
         console.log('Remaining tasks:', this.tasks)
         console.log('Shifting.')
         //TODO: defence
-        var task = this.tasks[this.sortedTokens.indexOf(token)]
+        var task = this.tasks[this.sortedTokens.indexOf(token)+1]
         // var f = this.tasks.find(task)
         if (task) {
             task()
