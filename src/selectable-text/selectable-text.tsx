@@ -10,13 +10,20 @@ export function SelectableText(props: {
     errors: string[],
     className: string
 }) {
+    const [value, setValue] = React.useState(props.value)
+    function onChange(newValue) {
+        setValue(newValue)
+        props.onChange(newValue)
+        // props.value = newValue
+    }
     function onClick() {
         console.log('Waiting...')
         board.onNextSingleSelection((selectedWidget: SelectedWidget) => {
-            props.value = selectedWidget.widgetData.type
+            onChange(selectedWidget.widgetData.type)
             console.log(props.value + ' selected')
         });
     }
+
     return (
         <div className={props.className + " miro-input-group miro-input-group--small" + (props.errors.length == 0 ? "" : "miro-input-group--invalid")}>
             <button
@@ -26,7 +33,7 @@ export function SelectableText(props: {
             >Select</button>
             <input type='text'
                 className={"miro-input miro-input--primary"}
-                value={props.value} onChange={props.onChange}
+                value={value} onChange={onChange}
                 placeholder={props.placeholder} />
 
             {props.errors.map(error => <div key={error} className="status-text">{error}</div>)}
