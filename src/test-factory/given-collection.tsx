@@ -70,13 +70,15 @@ export let createGivenStepCollection =
 				props.onStepSelectionChange(updatedSteps)
 			}
 			return (
-				<div style={{ display: isActive ? 'initial' : 'none' }}>
+				<div >
 					<h1>Given({indexedSteps.length})</h1>
 
 					{isActive &&
 						<>
 							{/* <h3>{options.selectionWaitingMessage}</h3> */}
-							<button className="add-step-button miro-btn miro-btn--small miro-btn--secondary"
+							<button
+								style={{ display: isActive ? 'initial' : 'none' }}
+								className="add-step-button miro-btn miro-btn--small miro-btn--secondary"
 								disabled={!isActive || !canAdd || indexedSteps.length > 9}
 								onClick={add}>
 								+ Given

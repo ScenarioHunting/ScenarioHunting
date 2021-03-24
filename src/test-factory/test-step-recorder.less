@@ -91,9 +91,9 @@
   grid-template-columns:  1fr;
   grid-template-rows: auto auto auto auto;
   grid-template-areas: 
-    "scenario-input"
-    "test-context-input"
     "subject-input"
+    "test-context-input"
+    "scenario-input"
     "save-test";
     // "template-selector-label template-selector"
   padding: 10px 0px 4px 0px;
@@ -154,6 +154,9 @@ select{
 .template-selector {
   .input;
   grid-area: template-selector;
+  width: 100%;
+}
+.full-width{
   width: 100%;
 }
 .template-selector-label{

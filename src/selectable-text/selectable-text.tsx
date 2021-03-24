@@ -26,7 +26,7 @@ export function SelectableText(props: {
     }
 
     return (
-        <div className={props.className + " miro-input-group miro-input-group--small" + (props.errors.length == 0 ? "" : "miro-input-group--invalid")}>
+        <div className={props.className + " full-width miro-input-group miro-input-group--small " + (props.errors.length == 0 ? "" : "miro-input-group--invalid")}>
             <button
                 className='miro-btn miro-btn--primary miro-btn--small'
                 onClick={onClick}
@@ -34,7 +34,7 @@ export function SelectableText(props: {
             >Select</button>
             <input type='text'
                 className={"miro-input miro-input--primary"}
-                value={value} onChange={x=>onChange(x.target.value)}
+                value={value} onChange={x => onChange(x.target.value)}
                 placeholder={props.placeholder} />
 
             {props.errors.map(error => <div key={error} className="status-text">{error}</div>)}

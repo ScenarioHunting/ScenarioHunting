@@ -61,12 +61,15 @@ export function createTestStepRecorder({ stepType
         // }
 
         return (
-            <div className="test-step" style={{ display: isActive ? 'initial' : 'none' }}>
+            <div className="test-step" >
                 <h1 className="step-type">{stepType} </h1>
                 {
-                    (!props.step?.widgetData) ? <div className="waiting-for-step"> <h1 >?</h1> </div> :
-
-                        <div style={props.step?.widgetSnapshot.style} className="step-content">
+                    <div style={{ display: isActive ? 'initial' : 'none' }}>
+                        (!props.step?.widgetData)
+                        ?
+                        <div className="waiting-for-step" style={props.step?.widgetSnapshot.style}> <h1 >?</h1> </div>
+                        :
+                        <div className="step-content">
                             <span className="step-title">{props.step?.widgetData.type}</span>
 
                             <div className="step-data">
@@ -80,11 +83,8 @@ export function createTestStepRecorder({ stepType
                                     </div>
                                 )}
                             </div>
-                            {/* <br />
-                {props.data && <button
-                    onClick={makeExample.bind(this)}>Make an Example</button>
-                } */}
                         </div>
+                    </div>
                 }
             </div >
         );

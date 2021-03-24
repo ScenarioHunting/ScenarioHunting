@@ -226,6 +226,9 @@ function getWidgetText(widget: SDK.IWidget): Promise<string> {
     if ("text" in widget)
         return widget["text"];
 
+    if ("title" in widget)
+        return widget["title"]
+
     if ("captions" in widget
         && widget["captions"]
         && widget["captions"][0]

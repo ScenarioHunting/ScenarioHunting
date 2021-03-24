@@ -180,45 +180,6 @@ export const createTestRecorder = (board = singletonBoard
                 {when && then &&
                     <div className="test-form-details ">
 
-                        {/* <label className="test-name-label">Scenario:</label> */}
-                        <SelectableText
-                            value={scenario}
-                            placeholder="Scenario"
-                            className={"scenario-input"}
-                            clickDisabled={[contextErrors, subjectErrors].flat().length > 0}
-                            onChange={x => changeScenario(x)}
-                            errors={scenarioErrors}
-                        />
-                        {/* <div className={"scenario-input miro-input-group miro-input-group--small" + (scenarioErrors.length == 0 ? "" : "miro-input-field--invalid")}>
-                            <button
-                                className='save-button miro-btn miro-btn--primary miro-btn--small'
-                                onClick={saveAndRedirectToExplorer}
-                                disabled={[scenarioErrors, contextErrors, subjectErrors].flat().length > 0}
-                            >Select</button>
-                            <input type='text'
-                                className={"scenario-input  miro-input miro-input--primary"}
-                                value={scenario} onChange={x => changeScenario(x.target.value)}
-                                placeholder="Scenario" />
-
-                            {scenarioErrors.map(error => <div key={error} className="status-text">{error}</div>)}
-                        </div> */}
-                        <SelectableText
-                            value={context}
-                            placeholder="Context"
-                            className={"test-context-input"}
-                            clickDisabled={[contextErrors, subjectErrors].flat().length > 0}
-                            onChange={x => changeContext(x)}
-                            errors={contextErrors}
-                        />
-                        {/* <label className="test-context-label">Context:</label> */}
-                        {/* <div className={"test-context-input miro-input-field miro-input-field--small " + (contextErrors.length == 0 ? "" : "miro-input-field--invalid")}>
-                            <input type='text'
-                                className={"test-context-input miro-input miro-input--primary"}
-                                value={context} onChange={x => changeContext(x.target.value)}
-                                placeholder="Context"
-                            />
-                            {contextErrors.map(error => <div key={error} className="status-text">{error}</div>)}
-                        </div> */}
                         <SelectableText
                             value={scenario}
                             placeholder="Subject Under Test"
@@ -227,15 +188,22 @@ export const createTestRecorder = (board = singletonBoard
                             onChange={x => changeSubject(x)}
                             errors={subjectErrors}
                         />
-                        {/* <label className="sut-label">Subject:</label> */}
-                        {/* <div className={"subject-input miro-input-field miro-input-field--small " + (subjectErrors.length == 0 ? "" : "miro-input-field--invalid")}>
-                            <input type='text'
-                                className={"subject-input  miro-input miro-input--primary"}
-                                value={subject}
-                                onChange={x => changeSubject(x.target.value)}
-                                placeholder="Subject Under Test" />
-                            {subjectErrors.map(error => <div key={error} className="status-text">{error}</div>)}
-                        </div> */}
+                        <SelectableText
+                            value={context}
+                            placeholder="Context"
+                            className={"test-context-input"}
+                            clickDisabled={[contextErrors, subjectErrors].flat().length > 0}
+                            onChange={x => changeContext(x)}
+                            errors={contextErrors}
+                        />
+                        <SelectableText
+                            value={scenario}
+                            placeholder="Scenario"
+                            className={"scenario-input"}
+                            clickDisabled={[contextErrors, subjectErrors].flat().length > 0}
+                            onChange={x => changeScenario(x)}
+                            errors={scenarioErrors}
+                        />
 
 
 
