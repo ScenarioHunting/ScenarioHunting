@@ -1,259 +1,64 @@
-/*!**********************!*\
-  !*** ./src/board.ts ***!
-  \**********************/
-
-/*!*************************!*\
-  !*** ./src/sidebar.tsx ***!
-  \*************************/
-
-/*!*************************!*\
-  !*** ./src/styles.less ***!
-  \*************************/
-
-/*!***********************************!*\
-  !*** ./node_modules/gud/index.js ***!
-  \***********************************/
-
-/*!************************************!*\
-  !*** ./src/test-result-reports.ts ***!
-  \************************************/
-
-/*!*************************************!*\
-  !*** ./node_modules/react/index.js ***!
-  \*************************************/
-
-/*!***************************************!*\
-  !*** ./src/test-factory/then-step.ts ***!
-  \***************************************/
-
-/*!***************************************!*\
-  !*** ./src/test-factory/when-step.ts ***!
-  \***************************************/
-
-/*!****************************************!*\
-  !*** ./node_modules/react-is/index.js ***!
-  \****************************************/
-
-/*!****************************************!*\
-  !*** ./src/test-factory/given-step.ts ***!
-  \****************************************/
-
-/*!*****************************************!*\
-  !*** ./node_modules/react-dom/index.js ***!
-  \*****************************************/
-
-/*!*****************************************!*\
-  !*** ./node_modules/scheduler/index.js ***!
-  \*****************************************/
-
-/*!*****************************************!*\
-  !*** ./node_modules/warning/warning.js ***!
-  \*****************************************/
-
-/*!******************************************!*\
-  !*** ./node_modules/prop-types/index.js ***!
-  \******************************************/
-
-/*!******************************************!*\
-  !*** ./src/test-explorer/test-status.ts ***!
-  \******************************************/
-
-/*!*******************************************!*\
-  !*** ./node_modules/invariant/browser.js ***!
-  \*******************************************/
-
-/*!*******************************************!*\
-  !*** ./node_modules/scheduler/tracing.js ***!
-  \*******************************************/
-
-/*!*******************************************!*\
-  !*** ./src/test-explorer/test-result.tsx ***!
-  \*******************************************/
-
-/*!********************************************!*\
-  !*** ./src/global-dependency-container.ts ***!
-  \********************************************/
-
-/*!********************************************!*\
-  !*** ./src/test-factory/test-recorder.tsx ***!
-  \********************************************/
-
-/*!*********************************************!*\
-  !*** ./node_modules/object-assign/index.js ***!
-  \*********************************************/
-
-/*!*********************************************!*\
-  !*** ./src/test-explorer/test-explorer.tsx ***!
-  \*********************************************/
-
-/*!*********************************************!*\
-  !*** ./src/test-factory/test-recorder.less ***!
-  \*********************************************/
-
-/*!*********************************************!*\
-  !*** ./src/test-factory/test-step-turn.tsx ***!
-  \*********************************************/
-
-/*!**********************************************!*\
-  !*** ./src/test-explorer/test-explorer.less ***!
-  \**********************************************/
-
-/*!***********************************************!*\
-  !*** ./src/test-factory/given-collection.tsx ***!
-  \***********************************************/
-
-/*!***********************************************!*\
-  !*** ./src/test-factory/isNullOrUndefined.ts ***!
-  \***********************************************/
-
-/*!************************************************!*\
-  !*** ./node_modules/@reach/router/es/index.js ***!
-  \************************************************/
-
-/*!************************************************!*\
-  !*** ./src/queuing-machine/queuing-machine.ts ***!
-  \************************************************/
-
-/*!************************************************!*\
-  !*** ./src/test-factory/board-data-mapper.tsx ***!
-  \************************************************/
-
-/*!*************************************************!*\
-  !*** ./src/selectable-text/selectable-text.tsx ***!
-  \*************************************************/
-
-/*!*************************************************!*\
-  !*** ./src/test-factory/test-step-selector.tsx ***!
-  \*************************************************/
-
-/*!**************************************************!*\
-  !*** ./src/test-explorer/test-explorer-item.tsx ***!
-  \**************************************************/
-
-/*!**************************************************!*\
-  !*** ./src/test-factory/test-step-selector.less ***!
-  \**************************************************/
-
-/*!***************************************************!*\
-  !*** ./node_modules/prop-types/checkPropTypes.js ***!
-  \***************************************************/
-
-/*!***************************************************!*\
-  !*** ./src/template-processing/template-list.tsx ***!
-  \***************************************************/
-
-/*!***************************************************!*\
-  !*** ./src/test-factory/test-recording-config.ts ***!
-  \***************************************************/
-
-/*!****************************************************!*\
-  !*** ./node_modules/@reach/router/es/lib/utils.js ***!
-  \****************************************************/
-
-/*!****************************************************!*\
-  !*** ./node_modules/handlebars/dist/handlebars.js ***!
-  \****************************************************/
-
-/*!****************************************************!*\
-  !*** ./src/template-processing/template-list.less ***!
-  \****************************************************/
-
-/*!*****************************************************!*\
-  !*** ./node_modules/css-loader/dist/runtime/api.js ***!
-  \*****************************************************/
-
-/*!*****************************************************!*\
-  !*** ./node_modules/react/cjs/react.development.js ***!
-  \*****************************************************/
-
-/*!******************************************************!*\
-  !*** ./node_modules/@reach/router/es/lib/history.js ***!
-  \******************************************************/
-
-/*!********************************************************!*\
-  !*** ./node_modules/create-react-context/lib/index.js ***!
-  \********************************************************/
-
-/*!********************************************************!*\
-  !*** ./src/test-factory/local-dependency-container.ts ***!
-  \********************************************************/
-
-/*!********************************************************!*\
-  !*** ./src/test-factory/test-recorder-http-service.ts ***!
-  \********************************************************/
-
-/*!**********************************************************!*\
-  !*** ./src/queuing-machine/immediate-queuing-machine.ts ***!
-  \**********************************************************/
-
-/*!***********************************************************!*\
-  !*** ./node_modules/react-is/cjs/react-is.development.js ***!
-  \***********************************************************/
-
-/*!************************************************************!*\
-  !*** ./node_modules/prop-types/factoryWithTypeCheckers.js ***!
-  \************************************************************/
-
-/*!*************************************************************!*\
-  !*** ./node_modules/prop-types/lib/ReactPropTypesSecret.js ***!
-  \*************************************************************/
-
-/*!*************************************************************!*\
-  !*** ./node_modules/react-dom/cjs/react-dom.development.js ***!
-  \*************************************************************/
-
-/*!*************************************************************!*\
-  !*** ./node_modules/scheduler/cjs/scheduler.development.js ***!
-  \*************************************************************/
-
-/*!*****************************************************************!*\
-  !*** ./node_modules/@fortawesome/react-fontawesome/index.es.js ***!
-  \*****************************************************************/
-
-/*!*****************************************************************!*\
-  !*** ./node_modules/create-react-context/lib/implementation.js ***!
-  \*****************************************************************/
-
-/*!********************************************************************!*\
-  !*** ./node_modules/@fortawesome/fontawesome-svg-core/index.es.js ***!
-  \********************************************************************/
-
-/*!********************************************************************!*\
-  !*** ./node_modules/@fortawesome/free-solid-svg-icons/index.es.js ***!
-  \********************************************************************/
-
-/*!*********************************************************************!*\
-  !*** ./node_modules/scheduler/cjs/scheduler-tracing.development.js ***!
-  \*********************************************************************/
-
-/*!****************************************************************************!*\
-  !*** ./node_modules/react-lifecycles-compat/react-lifecycles-compat.es.js ***!
-  \****************************************************************************/
-
-/*!****************************************************************************!*\
-  !*** ./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js ***!
-  \****************************************************************************/
-
-/*!************************************************************************************!*\
-  !*** ./node_modules/@simbathesailor/use-what-changed/dist/use-what-changed.esm.js ***!
-  \************************************************************************************/
-
-/*!******************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js!./node_modules/less-loader/dist/cjs.js!./src/styles.less ***!
-  \******************************************************************************************************/
-
-/*!**************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js!./node_modules/less-loader/dist/cjs.js!./src/test-factory/test-recorder.less ***!
-  \**************************************************************************************************************************/
-
-/*!***************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js!./node_modules/less-loader/dist/cjs.js!./src/test-explorer/test-explorer.less ***!
-  \***************************************************************************************************************************/
-
-/*!*******************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js!./node_modules/less-loader/dist/cjs.js!./src/test-factory/test-step-selector.less ***!
-  \*******************************************************************************************************************************/
-
-/*!*********************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js!./node_modules/less-loader/dist/cjs.js!./src/template-processing/template-list.less ***!
-  \*********************************************************************************************************************************/
+/*
+object-assign
+(c) Sindre Sorhus
+@license MIT
+*/
+
+/*!
+ * Font Awesome Free 5.15.2 by @fontawesome - https://fontawesome.com
+ * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
+ */
+
+/** @license React v0.20.1
+ * scheduler.production.min.js
+ *
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+/** @license React v17.0.1
+ * react-dom.production.min.js
+ *
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+/** @license React v17.0.1
+ * react.production.min.js
+ *
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+/**!
+
+ @license
+ handlebars v4.7.7
+
+Copyright (C) 2011-2019 by Yehuda Katz
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+*/

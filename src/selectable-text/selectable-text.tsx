@@ -35,7 +35,7 @@ export function SelectableText(props: {
         props.onChange(newValue)
 
         // if (isInSelectMode) {
-            queue.done(props.turn)
+        queue.done(props.turn)
         //     isInSelectMode = false
         // }
     }
@@ -60,7 +60,8 @@ export function SelectableText(props: {
             //     onChange(selectedWidget.widgetData.type)
             // });
         });
-    }, [isInSelectMode, props.turn])
+    }, [props.turn])
+    // }, [isInSelectMode, props.turn])
 
 
 
