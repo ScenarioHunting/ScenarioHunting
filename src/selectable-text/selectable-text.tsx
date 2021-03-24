@@ -66,7 +66,7 @@ export function SelectableText(props: {
 
 
     return (
-        <>
+        <div>
             <div style={{ display: isActive ? 'flex' : 'none' }} className={"miro-input-field " + (errors.length == 0 ? "" : "miro-input-field--invalid")}>
                 <h3 style={{ color: isActive ? 'inherit' : '#c3c2cf' }} >{props.title}</h3>
                 <div className={props.className + " input-group miro-input-group miro-input-group--small " + (errors.length == 0 ? "" : "miro-input-group--invalid")}>
@@ -83,6 +83,6 @@ export function SelectableText(props: {
                     {errors.map(error => <div key={error} className="status-text">{error}</div>)}
                 </div>
             </div>
-        </>
+        </div>
     )
 }
