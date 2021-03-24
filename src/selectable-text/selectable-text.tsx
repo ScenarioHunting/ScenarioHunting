@@ -27,24 +27,24 @@ export function SelectableText(props: {
     //     setErrors(errors)
     //     return errors.length == 0
     // }
-    var isInSelectMode = false
+    // var isInSelectMode = true
     function onChange(newValue) {
         //TODO: unsubscribe from board.selection
         setErrors(props.validate(newValue))
         setValue(newValue)
         props.onChange(newValue)
 
-        if (isInSelectMode) {
+        // if (isInSelectMode) {
             queue.done(props.turn)
-            isInSelectMode = false
-        }
+        //     isInSelectMode = false
+        // }
     }
 
     function select() {
         console.log('Waiting...')
         board.unselectAll()
         board.onNextSingleSelection((selectedWidget: SelectedWidget) => {
-            isInSelectMode=true
+            // isInSelectMode = true
             onChange(selectedWidget.widgetData.type)
             console.log(props.value + ' selected')
         });
@@ -66,7 +66,7 @@ export function SelectableText(props: {
 
 
     return (
-        <div  className={"miro-input-field " + (errors.length == 0 ? "" : "miro-input-field--invalid")}>
+        <div className={"miro-input-field " + (errors.length == 0 ? "" : "miro-input-field--invalid")}>
             <h3 style={{ color: isActive ? 'inherit' : '#c3c2cf' }} >{props.title}</h3>
             <div style={{ display: isActive ? 'flex' : 'none' }} className={props.className + " input-group miro-input-group miro-input-group--small " + (errors.length == 0 ? "" : "miro-input-group--invalid")}>
                 <button
