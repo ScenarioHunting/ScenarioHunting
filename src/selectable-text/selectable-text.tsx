@@ -26,7 +26,7 @@ export function SelectableText(props: {
     }
 
     return (
-        <div className={props.className + " full-width miro-input-group miro-input-group--small " + (props.errors.length == 0 ? "" : "miro-input-group--invalid")}>
+        <div className={props.className + " input-group miro-input-group miro-input-group--small " + (props.errors.length == 0 ? "" : "miro-input-group--invalid")}>
             <button
                 className='miro-btn miro-btn--primary miro-btn--small'
                 onClick={onClick}

@@ -1,47 +1,16 @@
 
-.save-test{
-  grid-area: save-test;
-}
-// .given{
-//   grid-area: given;
-// }
-// .when{
-//   grid-area: when;
-// }
-// .then{
-//   grid-area: then;
-// }
-
-.scenario-input {
-  grid-area: scenario-input;
-}
-.test-context-input {
-  grid-area: test-context-input;
-}
-.subject-input {
-  grid-area: subject-input;
-}
-.template-selector {
-  grid-area: template-selector;
+.input-group{
   width: 100%;
+  padding-top: 5px;
 }
-.full-width{
-  width: 100%;
-}
-.save-button{
-  grid-area: save-button;
-}
-
 
 ////////////////////////////////////////////////////Step:
 .waiting-for-step{
   text-align:center;
-  // border-radius: 20px;
   border-style: solid;
 }
 
 .step-title{
-  &:extend(.miro-h1);
   display: flex; 
   justify-content: center;
   padding: 10px 0px 0px 0px;
@@ -49,7 +18,7 @@
 .step-data{
   padding: 20px;
 }
-.step-date-property{
+.step-data-property{
   display:grid;
   grid-template-columns:  1fr 1fr;
 }
@@ -59,16 +28,4 @@
 .property-input{
   height: 26px !important;
   width: 100%;
-}
-test-form-details{
-  display: grid;
-  row-gap: 10px;
-  grid-template-columns:  1fr;
-  grid-template-rows: auto auto auto auto;
-  grid-template-areas: 
-    "subject-input"
-    "test-context-input"
-    "scenario-input"
-    "save-test";
-  padding: 10px 0px 4px 0px;
 }
