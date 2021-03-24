@@ -9,7 +9,8 @@ export function SelectableText(props: {
     // eslint-disable-next-line no-unused-vars
     onChange: (value: string) => void,
     errors: string[],
-    className: string
+    className: string,
+    title:string,
 }) {
     const [value, setValue] = React.useState(props.value)
     function onChange(newValue) {
@@ -26,6 +27,7 @@ export function SelectableText(props: {
     }
     return (
         <div className={"miro-input-field " + (props.errors.length == 0 ? "" : "miro-input-field--invalid")}>
+            <h3>{props.title}</h3>
             <div className={props.className + " input-group miro-input-group miro-input-group--small " + (props.errors.length == 0 ? "" : "miro-input-group--invalid")}>
                 <button
                     className='full-width miro-btn miro-btn--primary miro-btn--small'

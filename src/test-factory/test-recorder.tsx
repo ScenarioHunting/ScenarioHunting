@@ -181,6 +181,7 @@ export const createTestRecorder = (board = singletonBoard
                     <div className="test-form-details">
 
                         <SelectableText
+                            title="Subject"
                             value={scenario}
                             placeholder="Subject Under Test"
                             className={"subject-input"}
@@ -189,6 +190,7 @@ export const createTestRecorder = (board = singletonBoard
                             errors={subjectErrors}
                         />
                         <SelectableText
+                            title="Context"
                             value={context}
                             placeholder="Context"
                             className={"test-context-input"}
@@ -197,6 +199,7 @@ export const createTestRecorder = (board = singletonBoard
                             errors={contextErrors}
                         />
                         <SelectableText
+                            title="Scenario"
                             value={scenario}
                             placeholder="Scenario"
                             className={"scenario-input"}
