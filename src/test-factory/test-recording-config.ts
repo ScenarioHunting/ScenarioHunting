@@ -5,9 +5,9 @@ export default new class TestRecordingConfig {
         TestStepTurn.Then,
         TestStepTurn.When,
         TestStepTurn.Given,
-        // TestStepTurn.Subject,
-        // TestStepTurn.Context,
-        // TestStepTurn.Scenario,
+        TestStepTurn.Subject,
+        TestStepTurn.Context,
+        TestStepTurn.Scenario,
     ]
     // stepRecordingOrder = [TestStepTurn.When, TestStepTurn.Then, TestStepTurn.Given];
 }
