@@ -11,10 +11,15 @@ export class QueuingMachine<T extends string> {
         this.tasks[token] = whatToDo;
     }
     done = (token: T) => {
-        console.log('Remaining tasks:', this.tasks)
-        console.log('Shifting.')
         //TODO: defence
-        var task = this.tasks[this.sortedTokens[this.sortedTokens.indexOf(token) + 1]]
+        console.log('Remaining tasks:', this.tasks)
+        if (!this.sortedTokens.includes(token))
+            return
+        console.log('Shifting.')
+
+        const nextIndex = this.sortedTokens.indexOf(token) + 1
+        const nextToken = this.sortedTokens[nextIndex]
+        const task = this.tasks[nextToken]
         if (task) {
             task()
             delete this.tasks[token]

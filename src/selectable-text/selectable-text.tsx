@@ -44,9 +44,9 @@ export function SelectableText(props: {
         console.log('Waiting...')
         board.unselectAll()
         board.onNextSingleSelection((selectedWidget: SelectedWidget) => {
+            isInSelectMode=true
             onChange(selectedWidget.widgetData.type)
             console.log(props.value + ' selected')
-            isInSelectMode=true
         });
     }
     React.useEffect(() => {
