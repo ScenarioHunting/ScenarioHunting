@@ -2,10 +2,11 @@
 // eslint-disable-next-line no-unused-vars
 const should = require('chai').should()
 
+import { waitForDebugger } from "inspector";
 import { QueuingMachine } from "./queuing-machine";
 describe('', function () {
     const theories: any[][] = [
-        [1, 2, 3],
+        // [1, 2, 3],
         ['one', 'two', 'three'],
     ]
     theories.forEach((tokenOrder) => {
@@ -22,29 +23,33 @@ describe('', function () {
         })
     })
     it('calls the second listener as the first one is done', function () {
-        const tokenOrder = theories[0]
-        let subject = new QueuingMachine(tokenOrder)
-        subject.onTurn(tokenOrder[0]
-            , () => subject.done(tokenOrder[0]))
+        theories.forEach(tokenOrder => {
+            let subject = new QueuingMachine(tokenOrder)
+            subject.onTurn(tokenOrder[0]
+                , () => subject.done(tokenOrder[0]))
 
-        let turnHit = false
-        subject.onTurn(tokenOrder[1], function () {
-            turnHit = true
+                
+            let turnHit = false
+            subject.onTurn(tokenOrder[1], function () {
+                turnHit = true
+            })
+            subject.start()
+            
+
+            turnHit.should.eq(true)
         })
-        subject.start()
-
-        turnHit.should.eq(true)
-
     })
-    theories.forEach(tokenOrder => {
-        let subject = new QueuingMachine(tokenOrder)
+    it('2222222222222', () => {
+        theories.forEach(tokenOrder => {
+            let subject = new QueuingMachine(tokenOrder)
 
-        let turnHit = false
-        subject.onTurn(tokenOrder[1], function () {
-            turnHit = true
+            let turnHit = false
+            subject.onTurn(tokenOrder[1], function () {
+                turnHit = true
+            })
+            subject.done(tokenOrder[0])
+
+            turnHit.should.eq(true)
         })
-        subject.done(tokenOrder[0])
-
-        turnHit.should.eq(true)
     })
 })
