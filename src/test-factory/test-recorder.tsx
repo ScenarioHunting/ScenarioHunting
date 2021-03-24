@@ -9,7 +9,7 @@ import { Save, LocalTestCreationResult } from './test-recorder-http-service';
 import { singletonStepNavigator } from './local-dependency-container';
 import { getTemplateRepository } from './template-repository';
 import { useEffect, useState } from 'react';
-import { SelectableText } from 'selectable-text/selectable-text';
+import { SelectableText } from '../selectable-text/selectable-text';
 
 export type StepInfo = {
     type: string
