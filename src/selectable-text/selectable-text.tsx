@@ -42,7 +42,7 @@ export function SelectableText(props: {
             board.onNextSingleSelection(selectedWidget => {
                 console.log(turn, 'Done...')
                 onChange(selectedWidget.widgetData.type)
-                stepNavigator.nextTurn();
+                stepNavigator.nextTurn(turn);
             });
         });
     }, [])

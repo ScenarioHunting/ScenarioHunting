@@ -13,11 +13,19 @@ export class QueuingMachine<T> {
         //     this.start()
         // }
     }
-    nextTurn = () => {
+    nextTurn = (token: T) => {
         console.log('Remaining tasks:', this.tasks)
         console.log('Shifting.')
-        this.tasks.shift()!();
+        //TODO: defence
+        var task = this.tasks[this.sortedTokens.indexOf(token)]
+        // var f = this.tasks.find(task)
+        if (task) {
+            task()
+            const index = this.tasks.indexOf(task, 0)
+            this.tasks.splice(index, 1)
+        }
+        // this.tasks.shift()!();
     }
-    start = () => this.nextTurn();
+    start = () => this.tasks.shift()!();
     private tasks: (() => void)[] = [];
 }
