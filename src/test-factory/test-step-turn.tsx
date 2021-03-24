@@ -2,5 +2,8 @@
 export enum TestStepTurn {
     Then = 'Then',
     When = 'When',
-    Given = 'Given'
+    Given = 'Given',
+    Subject = 'Subject',
+    Context = 'Context',
+    Scenario = 'Scenario'
 }

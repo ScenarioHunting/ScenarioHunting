@@ -63,7 +63,7 @@ export function createTestStepRecorder({ stepType
 
         return (
             <div className="test-step" >
-                <h3 style={{ color: isActive ? 'inherit' : '#c3c2cf' }} className="step-type">{stepType} </h3>
+                <h3 style={{ color: isActive ? 'inherit' : '#c3c2cf' }}>{stepType} </h3>
                 {
                     (!props.step?.widgetData) ? <div className="waiting-for-step" style={{ display: isActive ? 'block' : 'none' }}> <h1 >?</h1> </div> :
 
