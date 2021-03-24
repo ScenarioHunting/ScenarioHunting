@@ -1,7 +1,7 @@
 import * as React from "react";
 import { IBoard, SelectedWidget } from 'board';
 import { singletonBoard } from "../global-dependency-container";
-import { TestStepTurn } from "test-factory/test-step-turn";
+import { TestStepTurn } from "../test-factory/test-step-turn";
 import { singletonStepNavigator } from "../test-factory/local-dependency-container";
 
 const board: IBoard = singletonBoard
