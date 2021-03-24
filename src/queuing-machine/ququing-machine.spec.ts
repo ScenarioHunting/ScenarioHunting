@@ -24,7 +24,21 @@ describe('', function () {
     it('calls the second listener as the first one is done', function () {
         const tokenOrder = theories[0]
         let subject = new QueuingMachine(tokenOrder)
-        
+        subject.onTurn(tokenOrder[0]
+            , () => subject.done(tokenOrder[0]))
+
+        let turnHit = false
+        subject.onTurn(tokenOrder[1], function () {
+            turnHit = true
+        })
+        subject.start()
+
+        turnHit.should.eq(true)
+
+    })
+    theories.forEach(tokenOrder => {
+        let subject = new QueuingMachine(tokenOrder)
+
         let turnHit = false
         subject.onTurn(tokenOrder[1], function () {
             turnHit = true
@@ -32,6 +46,5 @@ describe('', function () {
         subject.done(tokenOrder[0])
 
         turnHit.should.eq(true)
-
     })
 })
