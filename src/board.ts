@@ -238,6 +238,8 @@ function setWidgetText(widget: SDK.IWidget, text: string): Promise<SDK.IWidget> 
     const anyWidget = widget as any
     if ("text" in widget)
         anyWidget["text"] = text;
+    else if ("title" in widget)
+        anyWidget["title"] = text
     else if ("captions" in widget)
         anyWidget["captions"][0]["text"] = text
     else

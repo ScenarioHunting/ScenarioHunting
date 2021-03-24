@@ -7,7 +7,7 @@ export function SelectableText(props: {
     placeholder: string,
     clickDisabled: boolean,
     // eslint-disable-next-line no-unused-vars
-    onChange: (value:string) => void,
+    onChange: (value: string) => void,
     errors: string[],
     className: string
 }) {
@@ -15,10 +15,10 @@ export function SelectableText(props: {
     function onChange(newValue) {
         setValue(newValue)
         props.onChange(newValue)
-        props.value = newValue
     }
     function onClick() {
         console.log('Waiting...')
+        board.unselectAll()
         board.onNextSingleSelection((selectedWidget: SelectedWidget) => {
             onChange(selectedWidget.widgetData.type)
             console.log(props.value + ' selected')
