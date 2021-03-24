@@ -7,7 +7,7 @@ export class QueuingMachine<T> {
         }
     }
     onTurn = (token: T, whatToDo: () => void) => {
-        console.log(token, 'registered, func:', whatToDo)
+        console.log(token, 'Function registered to queue:', whatToDo)
         this.tasks[this.sortedTokens.indexOf(token)] = whatToDo;
         // if(this.tasks.length == this.sortedTokens.length){
         //     this.start()

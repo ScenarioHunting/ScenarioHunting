@@ -165,13 +165,13 @@ export const createTestRecorder = (board = singletonBoard
         return (
             <div className="test-recorder">
 
-                {when &&<div className="given">
+                <div className="given" style={{ visibility: when ? 'visible' : 'hidden' }}>
                     <Givens onStepSelectionChange={recordGiven} steps={givens} />
-                </div >}
+                </div >
 
-                {then && <div className="when">
+                 <div className="when" style={{ visibility: then ? 'visible' : 'hidden' }}>
                     <When onStepSelection={recordWhen} step={when} />
-                </div>}
+                </div>
 
                 <div className="then">
                     <Then onStepSelection={recordThen} step={then} />
