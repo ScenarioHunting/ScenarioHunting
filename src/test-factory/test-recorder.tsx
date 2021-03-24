@@ -177,13 +177,17 @@ export const createTestRecorder = (board = singletonBoard
                     <Then onStepSelection={recordThen} step={then} />
                 </div>
                 {then &&
-                    <div className="test-form-details">
+                    <div className="test-form-details ">
 
                         <label className="test-name-label">Scenario:</label>
-                        <div className={"test-name-input miro-input-field miro-input-field--small " + (scenarioErrors.length == 0 ? "" : "miro-input-field--invalid")}>
-
+                        <div className={"scenario-input miro-input-group miro-input-group--small" + (scenarioErrors.length == 0 ? "" : "miro-input-field--invalid")}>
+                            <button
+                                className='save-button miro-btn miro-btn--primary miro-btn--small'
+                                onClick={saveAndRedirectToExplorer}
+                                disabled={[scenarioErrors, contextErrors, subjectErrors].flat().length > 0}
+                            >Select</button>
                             <input type='text'
-                                className={"test-name-input  miro-input miro-input--primary"}
+                                className={"scenario-input  miro-input miro-input--primary"}
                                 value={scenario} onChange={x => changeScenario(x.target.value)}
                                 placeholder="Scenario" />
 

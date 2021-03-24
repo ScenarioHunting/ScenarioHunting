@@ -15,9 +15,9 @@ export async function convertWidgetToStepData(
     if (!type) {
         return Promise.reject("Unknown text format.")
     }
-    const chunks = exampleWidgetText.split('\n')
-    if (chunks[0] == type) {
-        chunks.shift()
+    const rows = exampleWidgetText.split('\n')
+    if (rows[0] == type) {
+        rows.shift()
     }
     // const value = chunks
     const toCamelCase = (str: string) =>
@@ -31,7 +31,7 @@ export async function convertWidgetToStepData(
     const convert = (p: string[]): StepDataProperty => {
         return { propertyName: toCamelCase(p[0]), simplePropertyValue: p[1].trim() }
     }
-    const example: StepDataProperty[] = chunks
+    const example: StepDataProperty[] = rows
         .map(p => p.split(":"))
         .map(convert);
     // const example = Object.fromEntries(value)

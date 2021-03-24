@@ -75,11 +75,17 @@ export async function Save(templateName: string, test: LocalTestCreationResult):
 
         var testTemplateRepository = await getTemplateRepository()
         var template = await testTemplateRepository.getTemplateByName(templateName)
-        console.log("restored template:", template)
-        var testCode = await applyTemplate(template.contentTemplate, viewModel)
-        var testFileName = await applyTemplate(template.fileNameTemplate, viewModel)
-        console.log("testCode:", testCode, "testFileName", testFileName)
-        saveAs(`${testFileName}.${template.fileExtension}`, testCode)
+        console.log("template loaded:", template)
+        try {
+            var testCode = applyTemplate(template.contentTemplate, viewModel)
+            var testFileName = applyTemplate(template.fileNameTemplate, viewModel)
+            console.log("testCode:", testCode, "testFileName", testFileName)
+            saveAs(`${testFileName}.${template.fileExtension}`, testCode)
+        } catch (e) {
+            //TODO: show the error to the user explicitly to help him to fix the bug in the template
+            console.error("Error while generating code. Probable template bug.", e)
+            throw e
+        }
 
         var requestBody = JSON.stringify(dto);
         const response = await fetch('http://localhost:6000/Tests',//TODO: read it from config file
@@ -132,7 +138,7 @@ function dtoToJsonSchema(dto: CreateTestDto) {
 }
 //********************** */
 
-async function applyTemplate(template: string, testSchema): Promise<string> {
+function applyTemplate(template: string, testSchema): string {
 
     Handlebars.registerHelper('skipLast', function (options) {
         if (options.data.last) {
