@@ -178,7 +178,7 @@ export const createTestRecorder = (board = singletonBoard
                     <Then onStepSelection={recordThen} step={then} />
                 </div>
                 {when && then &&
-                    <div className="test-form-details ">
+                    <div className="test-form-details">
 
                         <SelectableText
                             value={scenario}

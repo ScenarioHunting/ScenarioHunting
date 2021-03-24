@@ -28,12 +28,12 @@ export function SelectableText(props: {
     return (
         <div className={props.className + " input-group miro-input-group miro-input-group--small " + (props.errors.length == 0 ? "" : "miro-input-group--invalid")}>
             <button
-                className='miro-btn miro-btn--primary miro-btn--small'
+                className='full-width miro-btn miro-btn--primary miro-btn--small'
                 onClick={onClick}
                 disabled={props.clickDisabled}
             >Select</button>
             <input type='text'
-                className="full-width miro-input miro-input--primary"
+                className="miro-input miro-input--primary"
                 value={value} onChange={x => onChange(x.target.value)}
                 placeholder={props.placeholder} />
 
