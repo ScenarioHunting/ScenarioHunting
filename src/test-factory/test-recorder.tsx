@@ -11,6 +11,7 @@ import { getTemplateRepository } from '../template-processing/template-repositor
 import { useEffect, useState } from 'react';
 import { SelectableText } from '../selectable-text/selectable-text';
 import './test-recorder.less'
+import { TestStepTurn } from './test-step-turn';
 export type StepInfo = {
     type: string
     widget: ExampleWidget
@@ -168,33 +169,33 @@ export const createTestRecorder = (board = singletonBoard
                 <Givens onStepSelectionChange={recordGiven} steps={givens} />
                 <When onStepSelection={recordWhen} step={when} />
                 <Then onStepSelection={recordThen} step={then} />
-                {when && then &&
+                {//when && then &&
                     <div className="test-form-details">
 
                         <SelectableText
+                            turn={TestStepTurn.Subject}
                             title="Subject"
-                            value={scenario}
                             placeholder="Subject Under Test"
+                            value={scenario}
                             className={"subject-input"}
-                            clickDisabled={[contextErrors, subjectErrors].flat().length > 0}
                             onChange={x => changeSubject(x)}
                             errors={subjectErrors}
                         />
                         <SelectableText
+                            turn={TestStepTurn.Context}
                             title="Context"
-                            value={context}
                             placeholder="Context"
+                            value={context}
                             className={"test-context-input"}
-                            clickDisabled={[contextErrors, subjectErrors].flat().length > 0}
                             onChange={x => changeContext(x)}
                             errors={contextErrors}
                         />
                         <SelectableText
+                            turn={TestStepTurn.Scenario}
                             title="Scenario"
-                            value={scenario}
                             placeholder="Scenario"
+                            value={scenario}
                             className={"scenario-input"}
-                            clickDisabled={[contextErrors, subjectErrors].flat().length > 0}
                             onChange={x => changeScenario(x)}
                             errors={scenarioErrors}
                         />

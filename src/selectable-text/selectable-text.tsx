@@ -5,12 +5,12 @@ import { TestStepTurn } from "../test-factory/test-step-turn";
 import { singletonStepNavigator } from "../test-factory/local-dependency-container";
 
 const board: IBoard = singletonBoard
-const myTurn = TestStepTurn.Subject
+// const turn = TestStepTurn.Subject
 const queue = singletonStepNavigator
 export function SelectableText(props: {
     value: string,
     placeholder: string,
-    clickDisabled: boolean,
+    turn: TestStepTurn,
     // eslint-disable-next-line no-unused-vars
     onChange: (value: string) => void,
     errors: string[],
@@ -36,13 +36,13 @@ export function SelectableText(props: {
     }
     React.useEffect(() => {
         board.unselectAll();
-        queue.onTurn(myTurn, () => {
+        queue.onTurn(props.turn, () => {
             setIsActive(true)
             console.log('Waiting...')
             board.onNextSingleSelection(selectedWidget => {
-                console.log(myTurn, 'Done...')
+                console.log(props.turn, 'Done...')
                 onChange(selectedWidget.widgetData.type)
-                queue.done(myTurn)
+                queue.done(props.turn)
             });
         });
     }, [])
@@ -53,7 +53,7 @@ export function SelectableText(props: {
                 <button
                     className='miro-btn miro-btn--primary miro-btn--small'
                     onClick={onClick}
-                    disabled={props.clickDisabled}
+                    // disabled={props.clickDisabled}
                 >Select</button>
                 <input type='text'
                     className="full-width miro-input miro-input--primary"
