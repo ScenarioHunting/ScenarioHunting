@@ -6,7 +6,8 @@ export function SelectableText(props: {
     value: string,
     placeholder: string,
     disabled: boolean,
-    onChange: React.ChangeEventHandler<HTMLInputElement>,
+    // eslint-disable-next-line no-unused-vars
+    onChange: (value:string) => void,
     errors: string[],
     className: string
 }) {

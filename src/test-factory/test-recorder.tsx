@@ -186,7 +186,7 @@ export const createTestRecorder = (board = singletonBoard
                             placeholder="Scenario"
                             className={"scenario-input"}
                             disabled={[scenarioErrors, contextErrors, subjectErrors].flat().length > 0}
-                            onChange={x => changeScenario(x.target.value)}
+                            onChange={x => changeScenario(x)}
                             errors={scenarioErrors}
                         />
                         {/* <div className={"scenario-input miro-input-group miro-input-group--small" + (scenarioErrors.length == 0 ? "" : "miro-input-field--invalid")}>
