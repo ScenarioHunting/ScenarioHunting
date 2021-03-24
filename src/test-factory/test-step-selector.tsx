@@ -3,6 +3,7 @@ import * as React from 'react';
 import { IBoard, SelectedWidget } from 'board';
 import { IQueuingMachine } from "../queuing-machine/iqueuing-machine";
 import { TestStepTurn } from './test-step-turn';
+
 export class TestStepDependencies {
     stepType: string
     selectionWaitingMessage: string
@@ -67,7 +68,7 @@ export function createTestStepRecorder({ stepType
                     (!props.step?.widgetData) ? <div className="waiting-for-step" style={{ display: isActive ? 'block' : 'none' }}> <h1 >?</h1> </div> :
 
                         <div style={props.step?.widgetSnapshot.style}>
-                            <span className="step-title">{props.step?.widgetData.type}</span>
+                            <span style={{ color: isActive ? 'inherit' : '#c3c2cf' }} className="step-title">{props.step?.widgetData.type}</span>
 
                             <div className="step-data">
                                 {props.step?.widgetData.properties?.map((property, index) =>

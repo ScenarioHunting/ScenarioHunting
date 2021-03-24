@@ -10,7 +10,7 @@ import { singletonStepNavigator } from './local-dependency-container';
 import { getTemplateRepository } from '../template-processing/template-repository';
 import { useEffect, useState } from 'react';
 import { SelectableText } from '../selectable-text/selectable-text';
-
+import './test-recorder.less'
 export type StepInfo = {
     type: string
     widget: ExampleWidget
