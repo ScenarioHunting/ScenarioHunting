@@ -67,11 +67,12 @@ export function createTestStepRecorder({ stepType
                 {/* <h3 style={{ color: isActive ? 'inherit' : '#c3c2cf' }}>{stepType} </h3> */}
                 <button
                     className="image-button miro-btn miro-btn--secondary miro-btn--small"
-                    style={{ display: "flex", padding: '9px', width: '94px' }}>
-                    <svg style={{ flex: '0 0 20px' }} fill={isActive ? 'inherit' : '#c3c2cf'} width="20px" viewBox="0 0 24 24">
+                    style={{ display: "flex", padding: '9px', width: '94px' }}
+                    disabled={!isActive}>
+                    <svg style={{ flex: '0 0 20px' }} width="20px" viewBox="0 0 24 24">
                         <path d="M1.7,8.2l4.9,3.5L0.3,18c-0.4,0.4-0.4,1,0,1.4l4.2,4.2c0.4,0.4,1,0.4,1.4,0l6.4-6.4l3.5,5L24,0L1.7,8.2z M15.1,17.3L12.8,14  l-7.5,7.5l-2.8-2.8l7.5-7.5L6.7,8.9l13.6-5.1L15.1,17.3z" ></path>
                     </svg>
-                    <h3 style={{ color: isActive ? 'inherit' : '#c3c2cf', margin: '0px', flex: '0 0 auto' }}>
+                    <h3 style={{ margin: '0px', flex: '0 0 auto' }}>
                         {stepType}
                     </h3>
                 </button>
