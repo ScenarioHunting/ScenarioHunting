@@ -169,40 +169,32 @@ export const createTestRecorder = (board = singletonBoard
             <div className="test-recorder">
                 <Givens onStepSelectionChange={recordGiven} steps={givens} />
                 <When onStepSelection={recordWhen} step={when} />
+                
+                <SelectableText
+                    turn={TestStepTurn.Subject}
+                    title="Subject"
 
-                <fieldset>
-                    <legend>
-                        <SelectableText
-                            turn={TestStepTurn.Context}
-                            title="Context"
-                            placeholder="Context"
-
-                            value={context}
-                            className={"test-context-input"}
-                            onChange={x => changeContext(x)}
-                            validate={validateContext}
-                        />
-                    </legend>
-
-                    <SelectableText
-                        turn={TestStepTurn.Subject}
-                        title="Subject"
-                        placeholder="Subject Under Test"
-
-                        value={scenario}
-                        className={"subject-input"}
-                        onChange={x => changeSubject(x)}
-                        validate={validateSubject}
-                    />
-                </fieldset>
+                    value={scenario}
+                    className={"subject-input"}
+                    onChange={x => changeSubject(x)}
+                    validate={validateSubject}
+                />
 
                 <Then onStepSelection={recordThen} step={then} />
 
+                <SelectableText
+                    turn={TestStepTurn.Context}
+                    title="Context"
+
+                    value={context}
+                    className={"test-context-input"}
+                    onChange={x => changeContext(x)}
+                    validate={validateContext}
+                />
 
                 <SelectableText
                     turn={TestStepTurn.Scenario}
                     title="Scenario"
-                    placeholder="Scenario"
 
                     value={scenario}
                     className={"scenario-input"}
