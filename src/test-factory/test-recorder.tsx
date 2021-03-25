@@ -169,7 +169,7 @@ export const createTestRecorder = (board = singletonBoard
             <div className="test-recorder">
                 <Givens onStepSelectionChange={recordGiven} steps={givens} />
                 <When onStepSelection={recordWhen} step={when} />
-                
+
                 <SelectableText
                     turn={TestStepTurn.Subject}
                     title="Subject"
@@ -203,22 +203,23 @@ export const createTestRecorder = (board = singletonBoard
                 />
 
 
-
-                <div className="save full-width input-group miro-input-group miro-input-group--small">
-                    <select className="miro-select miro-select--secondary-bordered miro-select--small" value={selectedTemplateName}
-                        onChange={(e) => selectTemplateName(e.target.value)}>
-                        {availableTemplateNames.map((templateName) => (
-                            <option key={templateName} value={templateName}>
-                                {templateName}
-                            </option>
-                        ))}
-                    </select>
-                    <button
-                        className='miro-btn miro-btn--primary miro-btn--small'
-                        onClick={saveAndRedirectToExplorer}
-                    // disabled={[errors].flat().length > 0}
-                    >Save</button>
-                </div>
+                {scenario &&
+                    <div className="save full-width input-group miro-input-group miro-input-group--small">
+                        <select className="miro-select miro-select--secondary-bordered miro-select--small" value={selectedTemplateName}
+                            onChange={(e) => selectTemplateName(e.target.value)}>
+                            {availableTemplateNames.map((templateName) => (
+                                <option key={templateName} value={templateName}>
+                                    {templateName}
+                                </option>
+                            ))}
+                        </select>
+                        <button
+                            className='miro-btn miro-btn--primary miro-btn--small'
+                            onClick={saveAndRedirectToExplorer}
+                        // disabled={[errors].flat().length > 0}
+                        >Save</button>
+                    </div>
+                }
 
 
             </div>
