@@ -3,7 +3,6 @@ import * as React from 'react';
 import { IBoard, SelectedWidget } from 'board';
 import { IQueuingMachine } from "../queuing-machine/iqueuing-machine";
 import { TestStepTurn } from './test-step-turn';
-import { inherits } from 'util';
 
 export class TestStepDependencies {
     stepType: string
