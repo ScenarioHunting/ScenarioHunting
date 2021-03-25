@@ -70,6 +70,8 @@ export class Board implements IBoard {
         await miro.board.widgets.update([widget])
     }
     // eslint-disable-next-line no-unused-vars
+    private previousListener: (selections: any) => Promise<void>
+    // eslint-disable-next-line no-unused-vars
     onNextSingleSelection(succeed: (selected: SelectedWidget) => void) {
         //TODO: Guard 
         console.log("Waiting for the next single selection!")
@@ -102,7 +104,9 @@ export class Board implements IBoard {
                 })
                 .catch(console.log)
         }
-        miro.removeListener("SELECTION_UPDATED",()=>{})
+        if (this.previousListener)
+            miro.removeListener("SELECTION_UPDATED", this.previousListener)
+        this.previousListener = select
         return miro.addListener("SELECTION_UPDATED", select)
     }
 
