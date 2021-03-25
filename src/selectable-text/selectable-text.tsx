@@ -34,7 +34,6 @@ export function SelectableText(props: {
         board.onNextSingleSelection((selectedWidget: SelectedWidget) => {
             console.log(props.turn, 'Selected...')
             onChange(selectedWidget.widgetData.type)
-            
             console.log(props.value + ' selected')
         });
     }
