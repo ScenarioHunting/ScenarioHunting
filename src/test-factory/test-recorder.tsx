@@ -180,7 +180,7 @@ export const createTestRecorder = (board = singletonBoard
                     validate={validateSubject}
                 />
                 <Then onStepSelection={recordThen} step={then} />
-                <div className="test-form-details">
+                {/* <div className="test-form-details"> */}
 
 
                     <SelectableText
@@ -221,7 +221,7 @@ export const createTestRecorder = (board = singletonBoard
                         // disabled={[errors].flat().length > 0}
                         >Save</button>
                     </div>
-                </div>
+                {/* </div> */}
 
 
             </div>
