@@ -169,60 +169,60 @@ export const createTestRecorder = (board = singletonBoard
             <div className="test-recorder">
                 <Givens onStepSelectionChange={recordGiven} steps={givens} />
                 <When onStepSelection={recordWhen} step={when} />
+                <SelectableText
+                    turn={TestStepTurn.Subject}
+                    title="Subject"
+                    placeholder="Subject Under Test"
+
+                    value={scenario}
+                    className={"subject-input"}
+                    onChange={x => changeSubject(x)}
+                    validate={validateSubject}
+                />
                 <Then onStepSelection={recordThen} step={then} />
-                {//when && then &&
-                    <div className="test-form-details">
+                <div className="test-form-details">
 
-                        <SelectableText
-                            turn={TestStepTurn.Subject}
-                            title="Subject"
-                            placeholder="Subject Under Test"
 
-                            value={scenario}
-                            className={"subject-input"}
-                            onChange={x => changeSubject(x)}
-                            validate={validateSubject}
-                        />
-                        <SelectableText
-                            turn={TestStepTurn.Context}
-                            title="Context"
-                            placeholder="Context"
+                    <SelectableText
+                        turn={TestStepTurn.Context}
+                        title="Context"
+                        placeholder="Context"
 
-                            value={context}
-                            className={"test-context-input"}
-                            onChange={x => changeContext(x)}
-                            validate={validateContext}
-                        />
-                        <SelectableText
-                            turn={TestStepTurn.Scenario}
-                            title="Scenario"
-                            placeholder="Scenario"
+                        value={context}
+                        className={"test-context-input"}
+                        onChange={x => changeContext(x)}
+                        validate={validateContext}
+                    />
+                    <SelectableText
+                        turn={TestStepTurn.Scenario}
+                        title="Scenario"
+                        placeholder="Scenario"
 
-                            value={scenario}
-                            className={"scenario-input"}
-                            onChange={x => changeScenario(x)}
-                            validate={validateScenario}
-                        />
+                        value={scenario}
+                        className={"scenario-input"}
+                        onChange={x => changeScenario(x)}
+                        validate={validateScenario}
+                    />
 
 
 
-                        <div className="save full-width input-group miro-input-group miro-input-group--small">
-                            <select className="miro-select miro-select--secondary-bordered miro-select--small" value={selectedTemplateName}
-                                onChange={(e) => selectTemplateName(e.target.value)}>
-                                {availableTemplateNames.map((templateName) => (
-                                    <option key={templateName} value={templateName}>
-                                        {templateName}
-                                    </option>
-                                ))}
-                            </select>
-                            <button
-                                className='miro-btn miro-btn--primary miro-btn--small'
-                                onClick={saveAndRedirectToExplorer}
-                                // disabled={[errors].flat().length > 0}
-                            >Save</button>
-                        </div>
+                    <div className="save full-width input-group miro-input-group miro-input-group--small">
+                        <select className="miro-select miro-select--secondary-bordered miro-select--small" value={selectedTemplateName}
+                            onChange={(e) => selectTemplateName(e.target.value)}>
+                            {availableTemplateNames.map((templateName) => (
+                                <option key={templateName} value={templateName}>
+                                    {templateName}
+                                </option>
+                            ))}
+                        </select>
+                        <button
+                            className='miro-btn miro-btn--primary miro-btn--small'
+                            onClick={saveAndRedirectToExplorer}
+                        // disabled={[errors].flat().length > 0}
+                        >Save</button>
                     </div>
-                }
+                </div>
+
 
             </div>
         );
