@@ -67,7 +67,7 @@ export function SelectableText(props: {
 
 
     return (
-        <div style={{ display: isActive ? 'flex' : 'none' }}
+        <div style={{ display: isActive ? 'block' : 'none' }}
             className={"miro-input-field " + (errors.length == 0 ? "" : "miro-input-field--invalid")}>
 
             <h3 style={{ color: isActive ? 'inherit' : '#c3c2cf' }} >{props.title}</h3>
@@ -84,7 +84,7 @@ export function SelectableText(props: {
 
             </div>
             {errors.map(error => <div key={error} className="status-text">{error}</div>)}
-            
+
         </div>
     )
 }

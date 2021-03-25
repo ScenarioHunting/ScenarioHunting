@@ -102,6 +102,7 @@ export class Board implements IBoard {
                 })
                 .catch(console.log)
         }
+        miro.removeListener("SELECTION_UPDATED",()=>{})
         return miro.addListener("SELECTION_UPDATED", select)
     }
 
