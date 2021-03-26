@@ -19,7 +19,7 @@
   padding-top: 7.9px;
 }
 .property-value{
+  overflow: hidden;
   height: 26px !important;
   width: 100%;
-  overflow: hidden;
 }
