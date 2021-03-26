@@ -1,4 +1,4 @@
-import style from './test-recorder.css'
+import styles from './test-recorder.css'
 import './test-recorder.css'
 import { singletonBoard } from '../global-dependency-container';
 import * as React from 'react';
@@ -167,7 +167,7 @@ export const createTestRecorder = (board = singletonBoard
         };
 
         return (
-            <div className="test-recorder">
+            <div className={styles["test-recorder"]}>
                 <Givens onStepSelectionChange={recordGiven} steps={givens} />
                 <When onStepSelection={recordWhen} step={when} />
 
@@ -176,7 +176,7 @@ export const createTestRecorder = (board = singletonBoard
                     title="Subject"
 
                     value={scenario}
-                    className={"subject-input"}
+                    className={styles["subject-input"]}
                     onChange={x => changeSubject(x)}
                     validate={validateSubject}
                 />
@@ -188,7 +188,7 @@ export const createTestRecorder = (board = singletonBoard
                     title="Context"
 
                     value={context}
-                    className={"test-context-input"}
+                    className={styles["test-context-input"]}
                     onChange={x => changeContext(x)}
                     validate={validateContext}
                 />
@@ -198,14 +198,15 @@ export const createTestRecorder = (board = singletonBoard
                     title="Scenario"
 
                     value={scenario}
-                    className={"scenario-input"}
+                    className={styles["scenario-input"]}
                     onChange={x => changeScenario(x)}
                     validate={validateScenario}
                 />
 
 
                 {scenario &&
-                    <div className="save full-width input-group miro-input-group miro-input-group--small">
+                    <div className={styles["save"] + styles['full-width'] +
+                        " input-group miro-input-group miro-input-group--small"}>
                         <select className="miro-select miro-select--secondary-bordered miro-select--small" value={selectedTemplateName}
                             onChange={(e) => selectTemplateName(e.target.value)}>
                             {availableTemplateNames.map((templateName) => (

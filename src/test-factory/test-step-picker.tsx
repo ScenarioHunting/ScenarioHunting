@@ -1,4 +1,4 @@
-import './test-step-picker.css';
+import styles from './test-step-picker.css';
 import * as React from 'react';
 import { IBoard, SelectedWidget } from 'board';
 import { IQueuingMachine } from "../queuing-machine/iqueuing-machine";
@@ -45,18 +45,19 @@ export function createTestStepRecorder({ stepType
                 select()
             });
         }, [])
-     
-        
+
+
         const onValueChange = (index: number, event: React.ChangeEvent<HTMLInputElement>) => {
             props.step!.widgetData.properties[index].simplePropertyValue
                 = event.currentTarget.value;
         }
 
         return (
-            <div className="test-step">
+            <div className={styles["test-step"]}>
                 {/* <h3 style={{ color: isActive ? 'inherit' : '#c3c2cf' }}>{stepType} </h3> */}
                 <button onClick={select}
-                    className="image-button miro-btn miro-btn--secondary miro-btn--small"
+                    className={styles["image-button"]
+                        + " miro-btn miro-btn--secondary miro-btn--small"}
                     style={{ display: "flex", padding: '0px', width: '94px' }}
                     disabled={!isActive}>
                     <svg style={{ flex: '0 0 20px' }} width="20px" viewBox="0 0 24 24">
@@ -67,17 +68,18 @@ export function createTestStepRecorder({ stepType
                     </h3>
                 </button>
                 {
-                    (!props.step?.widgetData) ? <div className="waiting-for-step" style={{ display: isActive ? 'block' : 'none' }}> <h1 >?</h1> </div> :
+                    (!props.step?.widgetData) ? <div className={styles["waiting-for-step"]} style={{ display: isActive ? 'block' : 'none' }}> <h1 >?</h1> </div> :
 
                         <div style={props.step?.widgetSnapshot.style}>
-                            <span className="step-title">{props.step?.widgetData.type}</span>
+                            <span className={styles["step-title"]}>{props.step?.widgetData.type}</span>
 
-                            <div className="step-data">
+                            <div className={styles["step-data"]}>
                                 {props.step?.widgetData.properties?.map((property, index) =>
-                                    <div className="step-data-property" key={`${property}~${index}`}>
-                                        <label className="property-label">{property.propertyName}</label>
+                                    <div className={styles["step-data-property"]} key={`${property}~${index}`}>
+                                        <label className={styles["property-label"]}>{property.propertyName}</label>
                                         <input readOnly={false} onChange={(e) => onValueChange(index, e)}
-                                            className="miro-input miro-input--small miro-input--primary property-input"
+                                            className={styles["property-input"]
+                                                + "miro-input miro-input--small miro-input--primary"}
                                             type="text" value={property.simplePropertyValue}
                                             disabled={true}></input>
                                     </div>
