@@ -1,10 +1,10 @@
+import './given-collection.module.css'
 import { singletonStepNavigator } from './local-dependency-container';
 import * as React from 'react'
 import { TestStepTurn } from "./test-step-turn";
 import { useWhatChanged } from "@simbathesailor/use-what-changed";
 import { GivenStep } from './given-step';
 import { SelectedWidget } from 'board';
-// import './given-collection.module.css'
 
 export type IndexedStep = {
 	index: number

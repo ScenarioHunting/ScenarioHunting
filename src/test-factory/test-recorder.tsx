@@ -1,3 +1,4 @@
+import './test-recorder.css'
 import { singletonBoard } from '../global-dependency-container';
 import * as React from 'react';
 import { Givens, IndexedStep } from './given-collection';
@@ -10,7 +11,6 @@ import { singletonStepNavigator } from './local-dependency-container';
 import { getTemplateRepository } from '../template-processing/template-repository';
 import { useEffect, useState } from 'react';
 import { SelectableText } from '../selectable-text/selectable-text';
-// import './test-recorder.css'
 import { TestStepTurn } from './test-step-turn';
 export type StepInfo = {
     type: string
