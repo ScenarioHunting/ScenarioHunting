@@ -8,17 +8,18 @@
   justify-content: center;
   padding: 10px 0px 0px 0px;
 }
-.step-data{
-  padding: 20px;
-}
-.step-data-property{
+.step-data-properties{
   display:grid;
   grid-template-columns:  1fr 1fr;
 }
-.property-label{
+.key-value-row{
+  padding: 20px;
+}
+.property-key{
   padding-top: 7.9px;
 }
-.property-input{
+.property-value{
   height: 26px !important;
   width: 100%;
+  overflow: hidden;
 }
