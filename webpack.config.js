@@ -13,10 +13,9 @@ const appConfig = {
 		flagIncludedChunks: true,
 		// runtimeChunk: 'single',
 	},
-	mode: 'production', // Tip! compile in 'production' mode before publish
-	// mode: 'development', // Tip! compile in 'production' mode before publish
+	mode: 'production',
+	// mode: 'development',
 
-	// Tip! Just delete not using files, but main.ts is required
 	entry: {
 		index: './src/index.ts',
 		sidebar: {
@@ -39,6 +38,7 @@ const appConfig = {
 				use: [{
 					loader: "style-loader"
 				},
+				{ loader: "css-modules-typescript-loader" },
 				{
 					loader: "css-loader",
 
@@ -70,7 +70,7 @@ const appConfig = {
 		]
 	},
 	resolve: {
-		extensions: ['.tsx', '.ts','css', '.js', '.svg']
+		extensions: ['.tsx', '.ts', 'css', '.js', '.svg']
 	},
 	output: {
 		filename: '[name].js',
@@ -95,8 +95,8 @@ const appConfig = {
 }
 const editorConfig = {
 	name: 'editor',
-	mode: 'production', // Tip! compile in 'production' mode before publish
-	// mode: 'development', // Tip! compile in 'production' mode before publish
+	mode: 'production',
+	// mode: 'development',
 	entry: {
 		// monacoEditor: {
 		// 	import: './src/template-processing/monaco-editor.ts',

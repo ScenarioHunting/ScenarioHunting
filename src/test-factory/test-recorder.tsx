@@ -1,3 +1,4 @@
+import style from './test-recorder.css'
 import './test-recorder.css'
 import { singletonBoard } from '../global-dependency-container';
 import * as React from 'react';
