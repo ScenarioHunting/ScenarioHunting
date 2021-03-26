@@ -35,12 +35,20 @@ const appConfig = {
 				exclude: /node_modules/
 			},
 			{
-				test: /\.less$/,
+				test: /\.css|.less$/,
 				use: [{
 					loader: "style-loader"
-				}, {
-					loader: "css-loader"
-				}, {
+				},
+				{
+					loader: "css-loader",
+					options: {
+						importLoaders: 1,
+						modules: {
+							localIdentName: '[name]__[local]___[hash:base64:5]'
+						}
+					}
+				},
+				{
 					loader: "less-loader"
 				}],
 				exclude: /node_modules/

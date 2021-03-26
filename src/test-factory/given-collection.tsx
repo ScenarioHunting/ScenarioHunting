@@ -4,7 +4,7 @@ import { TestStepTurn } from "./test-step-turn";
 import { useWhatChanged } from "@simbathesailor/use-what-changed";
 import { GivenStep } from './given-step';
 import { SelectedWidget } from 'board';
-
+import './given-collection.module.css'
 
 export type IndexedStep = {
 	index: number
@@ -87,7 +87,7 @@ export let createGivenStepCollection =
 							<path d="M1.7,8.2l4.9,3.5L0.3,18c-0.4,0.4-0.4,1,0,1.4l4.2,4.2c0.4,0.4,1,0.4,1.4,0l6.4-6.4l3.5,5L24,0L1.7,8.2z M15.1,17.3L12.8,14  l-7.5,7.5l-2.8-2.8l7.5-7.5L6.7,8.9l13.6-5.1L15.1,17.3z" ></path>
 						</svg>
 						<h3 style={{ margin: '0px', flex: '0 0 auto', marginTop: '10px' }}>
-							+ Given({indexedSteps.length})
+							Given({indexedSteps.length})
 						</h3>
 					</button>
 
