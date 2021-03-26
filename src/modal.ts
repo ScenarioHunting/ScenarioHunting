@@ -1,4 +1,4 @@
-require('./styles.less')
+require('./styles.css')
 
 let closeButton = document.querySelector('.close-button')!
 closeButton.addEventListener('click', () => {

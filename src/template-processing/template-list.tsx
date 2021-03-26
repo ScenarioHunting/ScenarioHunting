@@ -1,5 +1,5 @@
 import * as React from 'react';
-import "./template-list.less"
+import "./template-list.css"
 import { getTemplateRepository } from './template-repository';
 import { useState, useEffect } from "react";
 

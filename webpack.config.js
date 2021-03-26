@@ -35,22 +35,24 @@ const appConfig = {
 				exclude: /node_modules/
 			},
 			{
-				test: /\.css|.less$/,
+				test: /\.css$/,
 				use: [{
 					loader: "style-loader"
 				},
 				{
 					loader: "css-loader",
-					options: {
-						importLoaders: 1,
-						modules: {
-							localIdentName: '[name]__[local]___[hash:base64:5]'
-						}
-					}
+
+					// options: {
+					// 	importLoaders: 1,
+					// 	modules: {
+					// 		localIdentName: '[name]__[local]___[hash:base64:5]'
+					// 	}
+					// }
 				},
-				{
-					loader: "less-loader"
-				}],
+					// {
+					// 	loader: "less-loader"
+					// }
+				],
 				exclude: /node_modules/
 			},
 			{
@@ -68,7 +70,7 @@ const appConfig = {
 		]
 	},
 	resolve: {
-		extensions: ['.tsx', '.ts', '.js', '.less', '.css', '.svg']
+		extensions: ['.tsx', '.ts','css', '.js', '.svg']
 	},
 	output: {
 		filename: '[name].js',

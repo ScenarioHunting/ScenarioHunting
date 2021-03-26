@@ -1,4 +1,4 @@
-import './test-step-picker.less';
+// import './test-step-picker.css';
 import * as React from 'react';
 import { IBoard, SelectedWidget } from 'board';
 import { IQueuingMachine } from "../queuing-machine/iqueuing-machine";
