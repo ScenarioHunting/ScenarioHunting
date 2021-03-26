@@ -1,4 +1,4 @@
-import { createTestStepRecorder } from "./test-step-selector";
+import { createTestStepRecorder } from "./test-step-picker";
 import { TestStepTurn } from "./test-step-turn";
 import { singletonBoard } from "../global-dependency-container";
 import { singletonStepNavigator } from "./local-dependency-container";

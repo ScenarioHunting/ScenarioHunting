@@ -1,4 +1,4 @@
-import './test-step-selector.less';
+import './test-step-picker.less';
 import * as React from 'react';
 import { IBoard, SelectedWidget } from 'board';
 import { IQueuingMachine } from "../queuing-machine/iqueuing-machine";
@@ -26,13 +26,6 @@ export function createTestStepRecorder({ stepType
 }: TestStepDependencies) {
     return function StepRecorder(props: TestStepProps) {
 
-        // props.onStepSelection({
-        //     metadata: {
-        //         widget: selectedWidget.widgetSnapshot
-        //         , stepType: stepType
-        //     }
-        //     , data: selectedWidget.widgetData
-        // })
         const [isActive, setIsActive] = React.useState<boolean>(false)
         function select() {
             console.log('Waiting...')
@@ -52,19 +45,15 @@ export function createTestStepRecorder({ stepType
                 select()
             });
         }, [])
-        // }, [notifyParent])
-        // }, [board, stepNavigator])
-        // }, [props])
+     
+        
         const onValueChange = (index: number, event: React.ChangeEvent<HTMLInputElement>) => {
             props.step!.widgetData.properties[index].simplePropertyValue
                 = event.currentTarget.value;
         }
-        // const makeExample=()=> {
-        //     board.openModal('../modal.html')
-        // }
 
         return (
-            <div className="test-step" >
+            <div className="test-step">
                 {/* <h3 style={{ color: isActive ? 'inherit' : '#c3c2cf' }}>{stepType} </h3> */}
                 <button onClick={select}
                     className="image-button miro-btn miro-btn--secondary miro-btn--small"
