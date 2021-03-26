@@ -42,12 +42,12 @@ const appConfig = {
 				{
 					loader: "css-loader",
 
-					// options: {
-					// 	importLoaders: 1,
-					// 	modules: {
-					// 		localIdentName: '[name]__[local]___[hash:base64:5]'
-					// 	}
-					// }
+					options: {
+						importLoaders: 1,
+						modules: {
+							localIdentName: '[name]__[local]___[hash:base64:5]'
+						}
+					}
 				},
 					// {
 					// 	loader: "less-loader"

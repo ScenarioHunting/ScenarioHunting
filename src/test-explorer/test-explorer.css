@@ -1,12 +1,4 @@
-// In example styles shared between modal, library and sidebar extension points.
-// But you can you can use unique style for each extension point — just create new less file and import it in target extension point.
 .test-step-view-model-item {
-  // width: 20vw;
-  // height: 20vw;
-  // display: inline-block;
-  // margin: 5px;
-  // padding: 5px;
-  // overflow-wrap: break-word;
   width: 18vw;
 
 height: 18vw;
@@ -66,40 +58,33 @@ font-size: 4.2vw;
   visibility: visible;
 }
 .icon{
-  // .tooltip;
   margin-left: 10px;
   color:#6c6868
 }
 .icon-run-tests{
-    // display: inline-block;
-    // width: 1em;
-    // height: 1em;
-    // stroke-width: 0;
-    // stroke: currentColor;
-    // fill: currentColor;
+    
 }
 .test-running-status{
   margin-left: 10px;
 }
 .test-not-run{
-  .icon;
+  /* .icon; */
 }
 .test-running{
-  .icon;
+  /* .icon; */
 }
 .test-passed{
-  .icon;
+  /* .icon; */
   color:green
 }
 .test-failed{
-  .icon;
+  /* .icon; */
   color:red;
 }
 .test-skipped{
-  .icon;
+  /* .icon; */
 }
 .test-running-error{
-  .icon;
+  /* .icon; */
   color:red;
 }
-//
