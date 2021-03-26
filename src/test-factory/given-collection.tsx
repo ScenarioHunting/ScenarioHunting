@@ -1,4 +1,4 @@
-import './given-collection.module.css'
+import styles from './given-collection.module.css'
 import { singletonStepNavigator } from './local-dependency-container';
 import * as React from 'react'
 import { TestStepTurn } from "./test-step-turn";
@@ -80,7 +80,8 @@ export let createGivenStepCollection =
 						+ Given
 					</button> */}
 					<button onClick={add}
-						className="image-button miro-btn miro-btn--secondary miro-btn--small"
+						className={styles["image-button"] +
+							" miro-btn miro-btn--secondary miro-btn--small"}
 						style={{ display: "flex", padding: '0px', width: '94px' }}
 						disabled={!isActive || !canAdd || indexedSteps.length > 9}>
 						<svg style={{ flex: '0 0 20px' }} width="20px" viewBox="0 0 24 24">
@@ -100,7 +101,7 @@ export let createGivenStepCollection =
 							/>)
 					}
 					{indexedSteps.length > 9 &&
-						<div className="status-text">More than 10 givens are not allowed</div>
+						<div className={styles["status-text"]}>More than 10 givens are not allowed</div>
 					}
 
 

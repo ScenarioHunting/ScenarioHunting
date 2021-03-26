@@ -1,11 +1,9 @@
 import styles from './test-recorder.css'
-import './test-recorder.css'
 import { singletonBoard } from '../global-dependency-container';
 import * as React from 'react';
 import { Givens, IndexedStep } from './given-collection';
 import { WhenStep as When } from './when-step';
 import { ThenStep as Then } from './then-step';
-import { navigate } from "@reach/router"
 import { ExampleWidget, SelectedWidget } from 'board';
 import { Save, LocalTestCreationResult } from './test-recorder-http-service';
 import { singletonStepNavigator } from './local-dependency-container';
@@ -16,14 +14,6 @@ import { TestStepTurn } from './test-step-turn';
 export type StepInfo = {
     type: string
     widget: ExampleWidget
-}
-export type ViewModel = {
-    givens: StepInfo[]
-    when: StepInfo
-    then: StepInfo
-    testName: string
-    testContext: string
-    sutName: string
 }
 export const createTestRecorder = (board = singletonBoard
     , stepNavigator = singletonStepNavigator
@@ -146,24 +136,6 @@ export const createTestRecorder = (board = singletonBoard
             } catch {
                 board.showNotification('Test creation error try again later.\n')
             }
-
-            const toViewModel = (step: SelectedWidget): StepInfo => {
-                return {
-                    type: step.widgetData.type,
-                    widget: step.widgetSnapshot
-                }
-            }
-            if (!when || !then) return
-            var viewModel: ViewModel = {
-                testContext: context
-                , sutName: subject
-                , testName: scenario
-                , givens: givens.map(step => toViewModel(step.step))
-                , when: toViewModel(when)
-                , then: toViewModel(then)
-            }
-
-            await navigate('/test-explorer', { state: { newTest: viewModel } })
         };
 
         return (
