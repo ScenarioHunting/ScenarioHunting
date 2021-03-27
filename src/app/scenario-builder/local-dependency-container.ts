@@ -1,6 +1,6 @@
-import { QueuingMachine } from "../queuing-machine/queuing-machine";
+import { QueuingMachine } from "../../lib/queuing-machine/queuing-machine";
 import TestRecordingConfig from "./scenario-builder-config";
-import { ImmediateQueuingMachine } from "../queuing-machine/immediate-queuing-machine";
+import { ImmediateQueuingMachine } from "../../lib/queuing-machine/immediate-queuing-machine";
 import { TestStepTurn } from "./step-picker/scenario-step-turn";
 
 export let singletonStepNavigator = new QueuingMachine(TestRecordingConfig.stepRecordingOrder)

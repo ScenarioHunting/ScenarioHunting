@@ -2,7 +2,7 @@ import sharedStyles from './scenario-step-shared.styles.css'
 import styles from './scenario-step-picker.style.css';
 import * as React from 'react';
 import { IBoard, SelectedWidget } from 'board';
-import { IQueuingMachine } from "../../queuing-machine/iqueuing-machine";
+import { IQueuingMachine } from "../../../lib/queuing-machine/iqueuing-machine";
 import { TestStepTurn } from './scenario-step-turn';
 
 export class TestStepDependencies {

@@ -1,5 +1,5 @@
 import styles from './scenario-builder.style.css'
-import { singletonBoard } from '../global-dependency-container';
+import { singletonBoard } from '../../global-dependency-container';
 import * as React from 'react';
 import { Givens, IndexedStep } from './given-collection.component';
 import { WhenStep as When } from './when-step';

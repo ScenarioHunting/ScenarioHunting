@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
-import { convertWidgetToStepData as mapToStepData } from "./scenario-builder/board-data-mapper";
+import { convertWidgetToStepData as mapToStepData } from "./app/scenario-builder/board-data-mapper";
 import { CSSProperties } from "react";
-import { StepDataDto } from "scenario-builder/dto";
+import { StepDataDto } from "app/scenario-builder/dto";
 export interface IBoard {
     // eslint-disable-next-line no-unused-vars
     updateWidgetText(widgetId: string, newWidgetText: string): Promise<void>;
