@@ -4,11 +4,11 @@
   "description": "",
   "private": true,
   "scripts": {
-    "watch": "npm run build && npm run start",
+    "watch": "nodemon --exec npm start --config nodemon.json",
     "prebuild": "npm run clean",
     "build": "webpack",
     "dev-server": "webpack-dev-server --open",
-    "start": "node server.js",
+    "start": "npm run build && node server.js",
     "heroku-postbuild": "npm run build",
     "clean": "del-cli --force dist",
     "test": "mocha --require ts-node/register --require esm src/**/*.spec.ts",

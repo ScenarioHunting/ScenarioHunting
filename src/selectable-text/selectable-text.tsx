@@ -73,6 +73,7 @@ export function SelectableText(props: {
                     </svg>
                     <h4 className={sharedStyles["image-button-text"]}>
                         {props.title}
+                        
                     </h4>
                 </button>
 
