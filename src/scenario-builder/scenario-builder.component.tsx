@@ -9,7 +9,7 @@ import { Save, LocalTestCreationResult } from './scenario-builder.service';
 import { singletonStepNavigator } from './local-dependency-container';
 import { getTemplateRepository } from '../template-processing/template-repository';
 import { useEffect, useState } from 'react';
-import { SelectableText } from '../selectable-text/title-picker.component';
+import { SelectableText } from './title-picker/title-picker.component';
 import { TestStepTurn } from './step-picker/scenario-step-turn';
 export type StepInfo = {
     type: string

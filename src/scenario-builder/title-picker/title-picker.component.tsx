@@ -1,9 +1,9 @@
-import sharedStyles from '../scenario-builder/step-picker/scenario-step-shared.styles.css'
+import sharedStyles from '../step-picker/scenario-step-shared.styles.css'
 import * as React from "react";
 import { IBoard, SelectedWidget } from 'board';
-import { singletonBoard } from "../global-dependency-container";
-import { TestStepTurn } from "../scenario-builder/step-picker/scenario-step-turn";
-import { singletonStepNavigator } from "../scenario-builder/local-dependency-container";
+import { singletonBoard } from "../../global-dependency-container";
+import { TestStepTurn } from "../step-picker/scenario-step-turn";
+import { singletonStepNavigator } from "../local-dependency-container";
 
 const board: IBoard = singletonBoard
 // const turn = TestStepTurn.Subject

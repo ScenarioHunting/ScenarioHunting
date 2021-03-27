@@ -66,47 +66,34 @@ function saveAs(fileName: string, data: string) {
         window.navigator.msSaveBlob(blob, fileName);
     }
 }
-// export async function Save(templateName: string, test: LocalTestCreationResult): Promise<string> {
 export async function Save(templateName: string, test: LocalTestCreationResult): Promise<string> {
+    const dto = toDto(test)
+    var viewModel = dtoToJsonSchema(dto)
+    console.log("Saving the template for test:", viewModel.scenario)
     try {
-        const dto = toDto(test)
-        var viewModel = dtoToJsonSchema(dto)
-        console.log("Saving the template for test:", viewModel.scenario)
 
         var testTemplateRepository = await getTemplateRepository()
         var template = await testTemplateRepository.getTemplateByName(templateName)
-        console.log("template loaded:", template)
-        try {
-            var testCode = applyTemplate(template.contentTemplate, viewModel)
-            var testFileName = applyTemplate(template.fileNameTemplate, viewModel)
-            console.log("testCode:", testCode, "testFileName", testFileName)
-            saveAs(`${testFileName}.${template.fileExtension}`, testCode)
-        } catch (e) {
-            //TODO: show the error to the user explicitly to help him to fix the bug in the template
-            console.error("Error while generating code. Probable template bug.", e)
-            throw e
-        }
-
-        var requestBody = JSON.stringify(dto);
-        const response = await fetch('http://localhost:6000/Tests',//TODO: read it from config file
-            {
-                headers: { 'Content-Type': 'application/json' },
-                method: 'POST',
-                body: requestBody
-            });
-        if (response.ok)
-            return 'Test created successfully.'
-        // onSuccess()
-        else
-            return response.statusText
-        // onError(response.statusText)
+        console.log("template loaded:", templateName)
     }
     catch (e) {
-        console.log("An error occurred while saving the test:", e)
-        throw e
-        // return error.toString()
-        // onError(error)
+        console.log("An error occurred while loading the template:", e)
+        return e.toString()
     }
+
+    try {
+        var testCode = applyTemplate(template.contentTemplate, viewModel)
+        var testFileName = applyTemplate(template.fileNameTemplate, viewModel)
+        console.log("testCode:", testCode, "testFileName", testFileName)
+        saveAs(`${testFileName}.${template.fileExtension}`, testCode)
+    } catch (e) {
+        //TODO: show the error to the user explicitly to help him to fix the bug in the template
+        console.error("Error while generating code. Probable template bug.", e)
+        return e.toString()
+    }
+
+    return 'Test created successfully.'
+
 
 }
 
