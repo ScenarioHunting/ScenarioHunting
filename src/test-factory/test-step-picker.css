@@ -2,7 +2,9 @@
   text-align:center;
   border-style: solid;
 }
-
+.step{
+  margin-top: 20px;
+}
 .step-title{
   display: flex; 
   justify-content: center;

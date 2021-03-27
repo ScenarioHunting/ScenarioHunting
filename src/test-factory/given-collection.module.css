@@ -1,5 +1,12 @@
 .image-button{
     display: "flex";
-    padding: '0px';
     width: '94px';
+    padding: '0px';
+    padding-top: 10px;
+}
+.image-button>h4{
+    height: 16px;
+}
+.image-button>h4{
+    margin: 0px;
 }
