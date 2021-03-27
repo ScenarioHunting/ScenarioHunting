@@ -1,4 +1,5 @@
-import styles from './given-collection.module.css'
+import sharedStyles from './step-styles.css'
+import styles from './given-collection.css'
 import { singletonStepNavigator } from './local-dependency-container';
 import * as React from 'react'
 import { TestStepTurn } from "./test-step-turn";
@@ -80,16 +81,15 @@ export let createGivenStepCollection =
 						+ Given
 					</button> */}
 					<button onClick={add}
-						className={styles["image-button"] +
+						className={sharedStyles["image-button"] +
 							" miro-btn miro-btn--secondary miro-btn--small"}
-						style={{ display: "flex", padding: '0px', width: '94px' }}
 						disabled={!isActive || !canAdd || indexedSteps.length > 9}>
-						<svg style={{ flex: '0 0 20px' }} width="20px" viewBox="0 0 24 24">
+						<svg className={sharedStyles["image-button-image"]} width="20px" viewBox="0 0 24 24">
 							<path d="M1.7,8.2l4.9,3.5L0.3,18c-0.4,0.4-0.4,1,0,1.4l4.2,4.2c0.4,0.4,1,0.4,1.4,0l6.4-6.4l3.5,5L24,0L1.7,8.2z M15.1,17.3L12.8,14  l-7.5,7.5l-2.8-2.8l7.5-7.5L6.7,8.9l13.6-5.1L15.1,17.3z" ></path>
 						</svg>
-						<h3 style={{ margin: '0px', flex: '0 0 auto', marginTop: '10px' }}>
+						<h4 className={sharedStyles["image-button-text"]}>
 							Given({indexedSteps.length})
-						</h3>
+						</h4>
 					</button>
 
 					{
@@ -101,7 +101,7 @@ export let createGivenStepCollection =
 							/>)
 					}
 					{indexedSteps.length > 9 &&
-						<div className={styles["status-text"]}>More than 10 givens are not allowed</div>
+						<div className={sharedStyles["status-text"]}>More than 10 givens are not allowed</div>
 					}
 
 

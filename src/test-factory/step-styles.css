@@ -1,0 +1,12 @@
+.image-button{
+    display: flex;
+    width: 94px;
+    padding: 0px;
+    padding-top: 10px;
+}
+.image-button-image{
+    height: 16px;
+}
+.image-button-text{
+    margin: 0px;
+}
