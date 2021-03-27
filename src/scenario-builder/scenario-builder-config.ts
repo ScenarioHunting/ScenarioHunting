@@ -1,4 +1,4 @@
-import { TestStepTurn } from "./test-step-turn";
+import { TestStepTurn } from "./step-picker/scenario-step-turn";
 
 export default new class TestRecordingConfig {
     stepRecordingOrder = [

@@ -1,6 +1,6 @@
-import { TestStepTurn } from "./test-step-turn";
+import { TestStepTurn } from "./step-picker/scenario-step-turn";
 import { singletonBoard } from "../global-dependency-container";
-import { createTestStepRecorder } from "./test-step-picker";
+import { createTestStepRecorder } from "./step-picker/scenario-step-picker.component";
 import { singletonImmediateStepNavigator } from "./local-dependency-container";
 
 export let GivenStep = createTestStepRecorder({

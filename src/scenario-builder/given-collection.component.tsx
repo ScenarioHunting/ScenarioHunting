@@ -1,8 +1,8 @@
-import sharedStyles from './step-styles.css'
-import styles from './given-collection.css'
+import sharedStyles from './step-picker/scenario-step-shared.styles.css'
+import styles from './given-collection.style.css'
 import { singletonStepNavigator } from './local-dependency-container';
 import * as React from 'react'
-import { TestStepTurn } from "./test-step-turn";
+import { TestStepTurn } from "./step-picker/scenario-step-turn";
 import { useWhatChanged } from "@simbathesailor/use-what-changed";
 import { GivenStep } from './given-step';
 import { SelectedWidget } from 'board';

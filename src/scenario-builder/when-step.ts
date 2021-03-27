@@ -1,5 +1,5 @@
-import { createTestStepRecorder } from "./test-step-picker";
-import { TestStepTurn } from "./test-step-turn";
+import { createTestStepRecorder } from "./step-picker/scenario-step-picker.component";
+import { TestStepTurn } from "./step-picker/scenario-step-turn";
 import { singletonBoard } from "../global-dependency-container";
 import { singletonStepNavigator } from "./local-dependency-container";
 

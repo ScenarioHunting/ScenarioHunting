@@ -1,7 +1,7 @@
 import styles from "./sidebar.css"
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { TestRecorder } from './test-factory/test-recorder';
+import { TestRecorder } from './scenario-builder/scenario-builder.component';
 import { Router, Link } from "@reach/router"
 import { navigate } from "@reach/router"
 import { TemplateList } from './template-processing/template-list';

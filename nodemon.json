@@ -1,7 +1,7 @@
 {
     "verbose": true,
     "watch": "src",
-    "ext":"ts,tsx.js,css,html",
+    "ext":"ts tsx js css html",
     "ignore": [
         "*.spec.*", 
         "*.d.ts",

@@ -1,16 +1,16 @@
-import styles from './test-recorder.css'
+import styles from './scenario-builder.style.css'
 import { singletonBoard } from '../global-dependency-container';
 import * as React from 'react';
-import { Givens, IndexedStep } from './given-collection';
+import { Givens, IndexedStep } from './given-collection.component';
 import { WhenStep as When } from './when-step';
 import { ThenStep as Then } from './then-step';
 import { ExampleWidget, SelectedWidget } from 'board';
-import { Save, LocalTestCreationResult } from './test-recorder-http-service';
+import { Save, LocalTestCreationResult } from './scenario-builder.service';
 import { singletonStepNavigator } from './local-dependency-container';
 import { getTemplateRepository } from '../template-processing/template-repository';
 import { useEffect, useState } from 'react';
-import { SelectableText } from '../selectable-text/selectable-text';
-import { TestStepTurn } from './test-step-turn';
+import { SelectableText } from '../selectable-text/title-picker.component';
+import { TestStepTurn } from './step-picker/scenario-step-turn';
 export type StepInfo = {
     type: string
     widget: ExampleWidget

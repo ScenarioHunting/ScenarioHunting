@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import { IndexedStep } from "./given-collection"
+import { IndexedStep } from "./given-collection.component"
 import { CreateTestDto, IndexedStepDataDto, StepDataDto } from "./dto"
 import { SelectedWidget } from "board"
 import Handlebars from "handlebars/dist/handlebars.js"
