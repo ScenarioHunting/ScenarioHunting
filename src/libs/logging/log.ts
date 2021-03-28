@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 interface iLogger {
     log(message?: any, ...optionalParams: any[]): void;
     info(message?: any, ...optionalParams: any[]): void;
@@ -5,13 +6,13 @@ interface iLogger {
     error(message?: any, ...optionalParams: any[]): void;
 }
 
-class noLog implements iLogger {
+class noLog {
     log = () => { }
     info = () => { }
     warn = () => { }
     error = () => { }
 }
 
-export const log: iLogger = console//new noLog()
+export const log: iLogger = new noLog()
 
 
