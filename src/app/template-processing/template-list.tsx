@@ -4,7 +4,8 @@ import styles from './template-list.css'
 import * as React from 'react';
 import { getTemplateRepository } from './template-repository';
 import { useState, useEffect } from "react";
-import { log } from '../../libs/logging/log';
+import { log } from '../../global-dependency-container';
+// import { log } from '../../logging/log';
 
 export function TemplateList(props): JSX.Element {
 

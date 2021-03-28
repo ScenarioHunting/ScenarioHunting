@@ -5,7 +5,7 @@ import { SelectedWidget } from "board"
 import { getTemplateRepository } from "../template-processing/template-repository"
 import { isNullOrUndefined } from "./isNullOrUndefined"
 import { compileTemplate } from "../template-processing/template-compiler"
-import { log } from "../../libs/logging/log"
+import { log } from "../../global-dependency-container";
 
 const toDto = ({ testContext
     , testName

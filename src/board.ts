@@ -2,7 +2,8 @@
 import { convertWidgetToStepData as mapToStepData } from "./app/scenario-builder/board-data-mapper";
 import { CSSProperties } from "react";
 import { StepDataDto } from "app/scenario-builder/dto";
-import { log } from "./libs/logging/log";
+import { log } from "./global-dependency-container";
+// import { log } from "./libs/logging/log";
 export interface IBoard {
     // eslint-disable-next-line no-unused-vars
     updateWidgetText(widgetId: string, newWidgetText: string): Promise<void>;

@@ -1,4 +1,5 @@
-import { log } from "../logging/log";
+// import { log } from "../logging/log";
+import { log } from "../../global-dependency-container";
 import { IQueuingMachine } from "./iqueuing-machine";
 
 /* eslint-disable no-unused-vars */

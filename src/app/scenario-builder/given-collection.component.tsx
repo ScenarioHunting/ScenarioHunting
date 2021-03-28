@@ -7,7 +7,7 @@ import { TestStepTurn } from "./step-picker/scenario-step-turn";
 import { useWhatChanged } from "@simbathesailor/use-what-changed";
 import { GivenStep } from './given-step';
 import { SelectedWidget } from 'board';
-import { log } from '../../libs/logging/log';
+import { log } from '../../global-dependency-container';
 
 export type IndexedStep = {
 	index: number
