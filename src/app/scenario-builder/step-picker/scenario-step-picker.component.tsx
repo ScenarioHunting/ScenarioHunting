@@ -1,7 +1,7 @@
 import sharedStyles from './scenario-step-shared.styles.css'
 import styles from './scenario-step-picker.style.css';
 import * as React from 'react';
-import { IBoard, SelectedWidget } from 'miro-board';
+import { IBoard, SelectedStep } from 'miro-board';
 import { IQueuingMachine } from "../../../libs/queuing-machine/iqueuing-machine";
 import { TestStepTurn } from './scenario-step-turn';
 import { log } from "../../../global-dependency-container";
@@ -17,8 +17,8 @@ export class TestStepDependencies {
 
 export class TestStepProps {
     // eslint-disable-next-line no-unused-vars
-    onStepSelection: (stepResult: SelectedWidget) => void
-    step?: SelectedWidget
+    onStepSelection: (stepResult: SelectedStep) => void
+    step?: SelectedStep
 }
 
 export function createTestStepRecorder({ stepType
@@ -34,7 +34,7 @@ export function createTestStepRecorder({ stepType
             log.log('Waiting...')
             board.unselectAll()
             board.showNotification(selectionWaitingMessage);
-            board.onNextSingleSelection((selectedWidget: SelectedWidget) => {
+            board.onNextSingleSelection((selectedWidget: SelectedStep) => {
                 log.log(turn, 'Selected...')
                 props.onStepSelection(selectedWidget)
                 stepNavigator.done(turn)
@@ -51,7 +51,7 @@ export function createTestStepRecorder({ stepType
 
 
         const onValueChange = (index: number, event: React.ChangeEvent<HTMLInputElement>) => {
-            props.step!.widgetData.properties[index].simplePropertyValue
+            props.step!.stepSchema.properties[index].example
                 = event.currentTarget.value;
         }
 
@@ -72,21 +72,22 @@ export function createTestStepRecorder({ stepType
                     </h4>
                 </button>
                 {
-                    (!props.step?.widgetData) ? <div className={styles["waiting-for-step"]} style={{ display: isActive ? 'block' : 'none' }}> <h1 >?</h1> </div> :
+                    (!props.step?.stepSchema) ? <div className={styles["waiting-for-step"]} style={{ display: isActive ? 'block' : 'none' }}> <h1 >?</h1> </div> :
 
                         <div style={props.step?.widgetSnapshot.style}>
-                            <span className={styles["step-title"]}>{props.step?.widgetData.type}</span>
+                            <span className={styles["step-title"]}>{props.step?.stepSchema.type}</span>
 
                             <div className={styles["key-value-row"]}>
-                                {props.step?.widgetData.properties?.map((property, index) =>
-                                    <div className={styles["step-data-properties"]} key={`${property}~${index}`}>
-                                        <label className={styles["property-key"]}>{property.propertyName}</label>
-                                        <input readOnly={false} onChange={(e) => onValueChange(index, e)}
-                                            className={styles["property-value"]
-                                                + "miro-input miro-input--small miro-input--primary"}
-                                            type="text" value={property.simplePropertyValue}
-                                            disabled={true}></input>
-                                    </div>
+                                {Object.entries(props.step?.stepSchema.properties)?.map(
+                                    ([title, property], index) =>
+                                        <div className={styles["step-data-properties"]} key={`${property}~${index}`}>
+                                            <label className={styles["property-key"]}>{title}</label>
+                                            <input readOnly={false} onChange={(e) => onValueChange(index, e)}
+                                                className={styles["property-value"]
+                                                    + "miro-input miro-input--small miro-input--primary"}
+                                                type="text" value={property.example}
+                                                disabled={true}></input>
+                                        </div>
                                 )}
                             </div>
                         </div>

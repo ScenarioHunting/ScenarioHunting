@@ -1,58 +1,10 @@
 /* eslint-disable no-undef */
-import { IndexedStep } from "./given-collection.component"
-import { CreateTestDto, IndexedStepDataDto, StepDataDto } from "./dto"
-import { SelectedWidget } from "miro-board"
 import { getTemplateRepository } from "../template-processing/template-repository"
 import { isNullOrUndefined } from "./isNullOrUndefined"
 import { compileTemplate } from "../template-processing/template-compiler"
 import { log } from "../../global-dependency-container";
-import { properties, spec,step } from "app/spec"
+import { spec } from "app/spec";
 
-const toDto = ({ testContext
-    , testName
-    , sutName
-
-    , givens
-    , when
-    , then }: LocalTestCreationResult): CreateTestDto => {
-
-    return {
-        context: testContext,
-        testName: testName,
-        test: {
-            givens: givens.map(indexedStep => {
-                return {
-                    step: indexedStep.step.widgetData,
-                    // step: {
-                    //     type: indexedStep.step.data.type,
-                    //     properties: indexedStep.step.data.properties.map(p => p as StepDataPropertyDto)
-                    // },
-                    index: indexedStep.index
-                } as IndexedStepDataDto
-            }),
-            when: when.widgetData,
-            thens: [{ step: then.widgetData, index: 0 } as IndexedStepDataDto],
-            sut: sutName,
-        },
-        metadata: {
-            contents: JSON.stringify({
-                given: givens.map(given => { given.step.widgetSnapshot, given.index }),
-                when: when.widgetSnapshot,
-                then: [{ step: then.widgetSnapshot, index: 0 }]
-            })
-        }
-    }
-}
-
-export type LocalTestCreationResult = {
-    testContext: string
-    , testName: string
-    , sutName: string
-
-    , givens: IndexedStep[]
-    , when: SelectedWidget
-    , then: SelectedWidget
-}
 function saveAs(fileName: string, data: string) {
     log.log(`Saving as: file Name: ${fileName} content: ${JSON.stringify(data)}`)
     var blob = new Blob([data], { type: "text/plain;charset=utf-8" });
@@ -68,9 +20,8 @@ function saveAs(fileName: string, data: string) {
         window.navigator.msSaveBlob(blob, fileName);
     }
 }
-export async function Save(templateName: string, test: LocalTestCreationResult): Promise<string> {
-    const dto = toDto(test)
-    var viewModel = dtoToJsonSchema(dto)
+export async function Save(templateName: string, viewModel: spec): Promise<string> {
+    
     log.log("Saving the template for test:", viewModel.scenario)
     try {
 
@@ -97,31 +48,4 @@ export async function Save(templateName: string, test: LocalTestCreationResult):
     return 'Test created successfully.'
 
 
-}
-
-function dtoToJsonSchema(dto: CreateTestDto): spec {
-    function stepToJsonSchema(step: StepDataDto): step {
-        var props: properties = {}
-        step.properties.forEach(p => {
-            props[p.propertyName] = {
-                type: "string",
-                description: p.propertyName,
-                example: p.simplePropertyValue
-            }
-        })
-        return {
-            $schema: "http://json-schema.org/draft-07/schema#",
-            title: step.type,
-            type: "object",
-            properties: props
-        }
-    }
-    return {
-        givens: dto.test.givens.map(given => stepToJsonSchema(given.step)),
-        when: stepToJsonSchema(dto.test.when),
-        thens: dto.test.thens.map(then => stepToJsonSchema(then.step)),
-        sut: dto.test.sut,
-        context: dto.context,
-        scenario: dto.testName,
-    }
 }

@@ -1,6 +1,6 @@
 import sharedStyles from '../step-picker/scenario-step-shared.styles.css'
 import * as React from "react";
-import { IBoard, SelectedWidget } from 'miro-board';
+import { IBoard, SelectedStep } from 'miro-board';
 import { log, singletonBoard } from "../../../global-dependency-container";
 import { TestStepTurn } from "../step-picker/scenario-step-turn";
 import { singletonStepNavigator } from "../local-dependency-container";
@@ -23,7 +23,7 @@ export function SelectableText(props: {
     const [isActive, setIsActive] = React.useState<boolean>(false)
     const [errors, setErrors] = React.useState<string[]>([])
 
-    function onChange(newValue) {
+    function onChange(newValue: string) {
         setErrors(props.validate(newValue))
         setValue(newValue)
         props.onChange(newValue)
@@ -33,9 +33,9 @@ export function SelectableText(props: {
     function select() {
         log.log('Waiting...')
         board.unselectAll()
-        board.onNextSingleSelection((selectedWidget: SelectedWidget) => {
+        board.onNextSingleSelection((selectedWidget: SelectedStep) => {
             log.log(props.turn, 'Selected...')
-            onChange(selectedWidget.widgetData.type)
+            onChange(selectedWidget.stepSchema.type)
             log.log(props.value + ' selected')
         });
     }

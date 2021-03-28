@@ -6,17 +6,17 @@ import * as React from 'react'
 import { TestStepTurn } from "./step-picker/scenario-step-turn";
 import { useWhatChanged } from "@simbathesailor/use-what-changed";
 import { GivenStep } from './given-step';
-import { SelectedWidget } from 'miro-board';
+import { SelectedStep } from 'miro-board';
 import { log } from '../../global-dependency-container';
 
-export type IndexedStep = {
+export type OrderedSelectedStep = {
 	index: number
-	step: SelectedWidget
+	step: SelectedStep
 }
 export type GivenStepsProps = {
 	// eslint-disable-next-line no-unused-vars
-	onStepSelectionChange: (stepResults: IndexedStep[]) => void
-	steps?: IndexedStep[]
+	onStepSelectionChange: (stepResults: OrderedSelectedStep[]) => void
+	steps?: OrderedSelectedStep[]
 }
 export let createGivenStepCollection =
 	(stepNavigator = singletonStepNavigator) =>
@@ -24,7 +24,7 @@ export let createGivenStepCollection =
 
 			const [canAdd, setCanAdd] = React.useState<boolean>(false)
 			const [isActive, setIsActive] = React.useState<boolean>(false)
-			const [indexedSteps, setIndexedSteps] = React.useState<IndexedStep[]>([])
+			const [indexedSteps, setIndexedSteps] = React.useState<OrderedSelectedStep[]>([])
 
 			React.useEffect(() => {
 				stepNavigator.onTurn(TestStepTurn.Given, () => {
@@ -43,30 +43,31 @@ export let createGivenStepCollection =
 					return;
 				// const data = indexedSteps;
 				// data.unshift({ index: nextId } as IndexedStep)
-				setIndexedSteps([{ index: nextId } as IndexedStep, ...indexedSteps])
+				setIndexedSteps([{ index: nextId } as OrderedSelectedStep, ...indexedSteps])
 				nextId++;
 
 				setCanAdd(false)
 				log.log("add: can add=", canAdd)
 			}
 
-			const onStepSelection = (updatedStep: SelectedWidget) => {
+			const onStepSelection = (updatedStep: SelectedStep) => {
 				setCanAdd(true)
-				log.log("on next selection: can add=", canAdd)
+				log.log("New given selection: can add=", canAdd)
 
 				// function replace<T>(arr: Array<T>, newItem: T, predicate: (old: T) => Boolean) {
 				// }
-				const replaceOldIfEqual = (oldStep: IndexedStep, updatedStep: SelectedWidget) => {
+				const replaceOldIfEqual = (oldStep: OrderedSelectedStep, updatedStep: SelectedStep) => {
 
 					const oldEqualsNew: boolean = oldStep.step == undefined
 						|| oldStep.step.widgetSnapshot.id === updatedStep.widgetSnapshot.id
 
 					return oldEqualsNew
-						? { step: updatedStep, index: oldStep.index } as IndexedStep
+						? { step: updatedStep, index: oldStep.index } as OrderedSelectedStep
 						: oldStep
 				}
 
-				const updatedSteps = indexedSteps.map(oldStep => replaceOldIfEqual(oldStep, updatedStep))
+				const updatedSteps = indexedSteps.map(oldStep =>
+					replaceOldIfEqual(oldStep, updatedStep))
 
 				setIndexedSteps([...updatedSteps])
 

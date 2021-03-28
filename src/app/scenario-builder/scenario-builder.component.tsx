@@ -1,19 +1,20 @@
 import styles from './scenario-builder.style.css'
 import { singletonBoard } from '../../global-dependency-container';
 import * as React from 'react';
-import { Givens, IndexedStep } from './given-collection.component';
+import { Givens, OrderedSelectedStep } from './given-collection.component';
 import { WhenStep as When } from './when-step';
 import { ThenStep as Then } from './then-step';
-import { ExampleWidget, SelectedWidget } from 'miro-board';
-import { Save, LocalTestCreationResult } from './scenario-builder.service';
+import { WidgetSnapshot, SelectedStep } from 'miro-board';
+import { Save } from './scenario-builder.service';
 import { singletonStepNavigator } from './local-dependency-container';
 import { getTemplateRepository } from '../template-processing/template-repository';
 import { useEffect, useState } from 'react';
 import { SelectableText } from './title-picker/title-picker.component';
 import { TestStepTurn } from './step-picker/scenario-step-turn';
+import { spec } from 'app/spec';
 export type StepInfo = {
     type: string
-    widget: ExampleWidget
+    widget: WidgetSnapshot
 }
 export const createTestRecorder = (board = singletonBoard
     , stepNavigator = singletonStepNavigator
@@ -22,9 +23,9 @@ export const createTestRecorder = (board = singletonBoard
             //TODO: Implement guard
         }
 
-        const [givens, recordGiven] = useState<IndexedStep[]>([]);
-        const [when, recordWhen] = useState<SelectedWidget>();
-        const [then, recordThen] = useState<SelectedWidget>();
+        const [givens, recordGiven] = useState<OrderedSelectedStep[]>([]);
+        const [when, recordWhen] = useState<SelectedStep>();
+        const [then, recordThen] = useState<SelectedStep>();
         const [scenario, recordScenario] = useState<string>("");
         const [context, recordContext] = useState<string>("");
         const [subject, recordSubject] = useState<string>("");
@@ -122,16 +123,16 @@ export const createTestRecorder = (board = singletonBoard
             if (!isFormValid)
                 return
 
+            var viewModel = {
+                sut: subject,
+                context: context,
+                scenario: scenario,
+                givens: givens.map(given => given.step.stepSchema),
+                when: when?.stepSchema,
+                thens: [then?.stepSchema],
+            } as spec
             try {
-                await save(selectedTemplateName, {
-                    testContext: context,
-                    testName: scenario,
-                    sutName: subject,
-
-                    givens,
-                    when,
-                    then
-                } as LocalTestCreationResult)
+                await save(selectedTemplateName, viewModel)
                 board.showNotification('Test created successfully.')
             } catch {
                 board.showNotification('Test creation error try again later.\n')

@@ -1,15 +1,16 @@
-import { StepDataDto } from './dto';
-type StepDataProperty = {
-    propertyName: string
-    simplePropertyValue: string
-}
-export async function convertWidgetToStepData(
+import { properties, stepSchema } from 'app/spec';
+const toCamelCase = (str: string) =>
+    str.trim()//.toLowerCase()
+        .replace(/([^A-Z0-9]+)(.)/ig,
+            function () {
+                return arguments[2].toUpperCase();
+            }
+        )
+
+export async function extractStepSchema(
     abstractionWidgetText: string
     , exampleWidgetText: string
-    // // eslint-disable-next-line no-unused-vars
-    // , succeed: (data: StepData) => void
-    // eslint-disable-next-line no-unused-vars
-): Promise<StepDataDto> {
+): Promise<stepSchema> {
 
     let type = abstractionWidgetText.split('\n').shift()
     if (!type) {
@@ -19,22 +20,22 @@ export async function convertWidgetToStepData(
     if (rows[0] == type) {
         rows.shift()
     }
-    // const value = chunks
-    const toCamelCase = (str: string) =>
-        str.trim()//.toLowerCase()
-            .replace(/([^A-Z0-9]+)(.)/ig,
-                function () {
-                    return arguments[2].toUpperCase();
-                }
-            )
+
     type = toCamelCase(type!)
-    const convert = (p: string[]): StepDataProperty => {
-        return { propertyName: toCamelCase(p[0]), simplePropertyValue: p[1].trim() }
-    }
-    const example: StepDataProperty[] = rows
-        .map(p => p.split(":"))
-        .map(convert);
-    // const example = Object.fromEntries(value)
-    // succeed({ type, properties: example })
-    return Promise.resolve({ type, properties: example })
+
+    var props: properties = {}
+    rows.map(p => p.split(":")).forEach(p => {
+        props[toCamelCase(p[0])] = {
+            type: "string",
+            description: toCamelCase(p[0]),
+            example: p[1].trim()
+        }
+    })
+
+    return Promise.resolve({
+        $schema: "http://json-schema.org/draft-07/schema#",
+        type: 'object',
+        title: type,
+        properties: props,
+    })
 }

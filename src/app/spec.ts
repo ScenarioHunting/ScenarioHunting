@@ -5,7 +5,7 @@ export type properties = {
         example: any
     }
 }
-export type step = {
+export type stepSchema = {
     $schema: "http://json-schema.org/draft-07/schema#",
     title: string,
     type: string,
@@ -15,7 +15,7 @@ export type spec = {
     scenario: string,
     context: string,
     sut: string,
-    givens: step[],
-    when: step,
-    thens: step[],
+    givens: stepSchema[],
+    when: stepSchema,
+    thens: stepSchema[],
 }

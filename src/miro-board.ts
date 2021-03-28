@@ -1,8 +1,8 @@
 /* eslint-disable no-undef */
-import { convertWidgetToStepData as mapToStepData } from "./app/scenario-builder/board-data-mapper";
+import { extractStepSchema } from "./app/scenario-builder/board-data-mapper";
 import { CSSProperties } from "react";
-import { StepDataDto } from "app/scenario-builder/dto";
 import { log } from "./global-dependency-container";
+import { stepSchema } from "app/spec";
 // import { log } from "./libs/logging/log";
 export interface IBoard {
     // eslint-disable-next-line no-unused-vars
@@ -10,14 +10,14 @@ export interface IBoard {
     // eslint-disable-next-line no-unused-vars
     getWidgetText(widgetId: string): Promise<string>
     // eslint-disable-next-line no-unused-vars
-    onNextSingleSelection(succeed: (selected: SelectedWidget) => void)
+    onNextSingleSelection(succeed: (selected: SelectedStep) => void)
     // eslint-disable-next-line no-unused-vars
     interceptPossibleTextEdit(updateText: (widgetId: string, updatedWidget: string) => Promise<string>)
     unselectAll: () => Promise<void>
     // eslint-disable-next-line no-unused-vars
     showNotification: (message: string) => Promise<void>
     // eslint-disable-next-line no-unused-vars
-    zoomTo: (widget: ExampleWidget) => any
+    zoomTo: (widget: WidgetSnapshot) => any
 }
 export class Board implements IBoard {
 
@@ -74,7 +74,7 @@ export class Board implements IBoard {
     // eslint-disable-next-line no-unused-vars
     private previousListener: (selections: any) => Promise<void>
     // eslint-disable-next-line no-unused-vars
-    onNextSingleSelection(succeed: (selected: SelectedWidget) => void) {
+    onNextSingleSelection(succeed: (selected: SelectedStep) => void) {
         //TODO: Guard 
         log.log("Waiting for the next single selection!")
         const select = async (selections) => {
@@ -94,13 +94,13 @@ export class Board implements IBoard {
             var widget = (await miro.board.widgets.get({ id: widgets[0].id }))[0];
             log.log("Converting the widget")
 
-            convertToDto(widget)
-                .then(dto => {
+            extractSchemaFrom(widget)
+                .then(selected => {
                     // if (typeof dto == 'string')
                     //     logger.log(dto)
                     // else {
-                    log.log(dto)
-                    succeed(dto)
+                    log.log("Selected:", selected)
+                    succeed(selected)
                     miro.removeListener("SELECTION_UPDATED", select)
                     // }
                 })
@@ -121,14 +121,14 @@ export class Board implements IBoard {
     showNotification = (message: string) =>
         miro.showNotification(message)
 
-    zoomTo = (widget: ExampleWidget) =>
+    zoomTo = (widget: WidgetSnapshot) =>
         miro.board.viewport.zoomToObject(widget.id, true)
 
     // static async captureSingleItemSelections(widgets, succeed, fail) {
     //     // miro.board.widgets.sel
     // }
 }
-export type ExampleWidget = {
+export type WidgetSnapshot = {
     id: string
     // type: string
     style: CSSProperties
@@ -137,9 +137,9 @@ export type ExampleWidget = {
     abstractionWidget: SDK.IWidget
     exampleWidget: SDK.IWidget
 }
-export type SelectedWidget = {
-    widgetSnapshot: ExampleWidget
-    widgetData: StepDataDto
+export type SelectedStep = {
+    widgetSnapshot: WidgetSnapshot
+    stepSchema: stepSchema
 }
 
 async function getTheStartingWidget(arrow: SDK.ILineWidget): Promise<SDK.IWidget> {
@@ -181,18 +181,18 @@ function getWidgetStyle(widget: SDK.IWidget): CSSProperties {
     }
     return style
 }
-async function convertToDto(widget: SDK.IWidget): Promise<SelectedWidget> {
-    var dto = {
+async function extractSchemaFrom(widget: SDK.IWidget): Promise<SelectedStep> {
+    var snapshot = {
         id: widget.id,
         // type: widget.type,
         exampleWidget: widget,
-    } as ExampleWidget
+    } as WidgetSnapshot
 
-    dto.abstractionWidget = await getAbstractionWidgetFor(dto.exampleWidget)
+    snapshot.abstractionWidget = await getAbstractionWidgetFor(snapshot.exampleWidget)
     //
-    log.log('Selection dto initiated.', dto)
+    log.log('Selection dto initiated.', snapshot)
 
-    dto.style = getWidgetStyle(dto.abstractionWidget)
+    snapshot.style = getWidgetStyle(snapshot.abstractionWidget)
     try {
         const getPlainText = (originalText: string): string =>
             originalText.split('</p><p>').join('\n')
@@ -200,8 +200,8 @@ async function convertToDto(widget: SDK.IWidget): Promise<SelectedWidget> {
                 .replace('</p>', '')
                 .replace('&#43;', '+')
 
-        dto.exampleText = getPlainText(await getWidgetText(widget))
-        dto.abstractionText = getPlainText(await getWidgetText(dto.abstractionWidget))
+        snapshot.exampleText = getPlainText(await getWidgetText(widget))
+        snapshot.abstractionText = getPlainText(await getWidgetText(snapshot.abstractionWidget))
 
     }
     catch (e) {
@@ -209,19 +209,18 @@ async function convertToDto(widget: SDK.IWidget): Promise<SelectedWidget> {
     }
 
 
-    log.log('Widget text converted by board:', dto.exampleText)
+    log.log('Widget text converted by board:', snapshot.exampleText)
 
     try {
-        var data = await mapToStepData(dto.abstractionText, dto.exampleText)
         const step = {
-            widgetSnapshot: dto
-            , widgetData: data
-        } as SelectedWidget
+            widgetSnapshot: snapshot
+            , stepSchema: await extractStepSchema(snapshot.abstractionText, snapshot.exampleText)
+        } as SelectedStep
 
         return step
     }
     catch (e) {
-        miro.showNotification(e)
+        console.error(e)
         return Promise.reject(e)
     }
 }
