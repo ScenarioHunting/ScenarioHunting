@@ -1,11 +1,12 @@
 /* eslint-disable no-undef */
 import { IndexedStep } from "./given-collection.component"
 import { CreateTestDto, IndexedStepDataDto, StepDataDto } from "./dto"
-import { SelectedWidget } from "board"
+import { SelectedWidget } from "miro-board"
 import { getTemplateRepository } from "../template-processing/template-repository"
 import { isNullOrUndefined } from "./isNullOrUndefined"
 import { compileTemplate } from "../template-processing/template-compiler"
 import { log } from "../../global-dependency-container";
+import { properties, spec,step } from "app/spec"
 
 const toDto = ({ testContext
     , testName
@@ -98,9 +99,9 @@ export async function Save(templateName: string, test: LocalTestCreationResult):
 
 }
 
-function dtoToJsonSchema(dto: CreateTestDto) {
-    function stepToJsonSchema(step: StepDataDto) {
-        var props = {}
+function dtoToJsonSchema(dto: CreateTestDto): spec {
+    function stepToJsonSchema(step: StepDataDto): step {
+        var props: properties = {}
         step.properties.forEach(p => {
             props[p.propertyName] = {
                 type: "string",

@@ -1,6 +1,6 @@
 import sharedStyles from '../step-picker/scenario-step-shared.styles.css'
 import * as React from "react";
-import { IBoard, SelectedWidget } from 'board';
+import { IBoard, SelectedWidget } from 'miro-board';
 import { log, singletonBoard } from "../../../global-dependency-container";
 import { TestStepTurn } from "../step-picker/scenario-step-turn";
 import { singletonStepNavigator } from "../local-dependency-container";

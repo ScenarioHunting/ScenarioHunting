@@ -84,14 +84,15 @@ class templateRepository {
     private async findAllTemplateWidgets(): Promise<SDK.ITextWidget[]> {
         // var stat = (await miro.board.widgets.get()).filter(x => x.type == 'TEXT' && x["text"].includes('using'))
         // logger.log("# of widgets contain using in their text:", stat.length)
-        var widgets = await miro.board.widgets.get({ type: 'TEXT' }) as SDK.ITextWidget[]
+        var widgets = await miro.board.widgets.get()
 
         // logger.log("# of widgets that have metadata.clientId.templateName:", widgets.filter(i => i.metadata && i.metadata[miro.getClientId()] && i.metadata[miro.getClientId()] && i.metadata[miro.getClientId()]["templateName"]).length)
 
         return widgets
-            .filter(i => i.metadata && i.metadata[miro.getClientId()]
+            .filter(i => i.type == 'TEXT'
+                && i.metadata && i.metadata[miro.getClientId()]
                 && i.metadata[miro.getClientId()]
-                && i.metadata[miro.getClientId()]["templateName"])
+                && i.metadata[miro.getClientId()]["templateName"]) as SDK.ITextWidget[]
     }
     private filterWidgetsByTemplateName(widgets: SDK.ITextWidget[], templateName): SDK.ITextWidget[] {
         return widgets.filter(w => w.metadata[miro.getClientId()]["templateName"] == templateName)

@@ -4,7 +4,7 @@ import * as React from 'react';
 import { Givens, IndexedStep } from './given-collection.component';
 import { WhenStep as When } from './when-step';
 import { ThenStep as Then } from './then-step';
-import { ExampleWidget, SelectedWidget } from 'board';
+import { ExampleWidget, SelectedWidget } from 'miro-board';
 import { Save, LocalTestCreationResult } from './scenario-builder.service';
 import { singletonStepNavigator } from './local-dependency-container';
 import { getTemplateRepository } from '../template-processing/template-repository';
