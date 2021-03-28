@@ -5,6 +5,7 @@ import { SelectedWidget } from "board"
 import { getTemplateRepository } from "../template-processing/template-repository"
 import { isNullOrUndefined } from "./isNullOrUndefined"
 import { compileTemplate } from "../template-processing/template-compiler"
+import { logger } from "libs/logging/console"
 
 const toDto = ({ testContext
     , testName
@@ -52,7 +53,7 @@ export type LocalTestCreationResult = {
     , then: SelectedWidget
 }
 function saveAs(fileName: string, data: string) {
-    console.log(`Saving as: file Name: ${fileName} content: ${JSON.stringify(data)}`)
+    logger.log(`Saving as: file Name: ${fileName} content: ${JSON.stringify(data)}`)
     var blob = new Blob([data], { type: "text/plain;charset=utf-8" });
     if (isNullOrUndefined(window.navigator.msSaveOrOpenBlob)) {
         var elem = window.document.createElement('a');
@@ -69,26 +70,26 @@ function saveAs(fileName: string, data: string) {
 export async function Save(templateName: string, test: LocalTestCreationResult): Promise<string> {
     const dto = toDto(test)
     var viewModel = dtoToJsonSchema(dto)
-    console.log("Saving the template for test:", viewModel.scenario)
+    logger.log("Saving the template for test:", viewModel.scenario)
     try {
 
         var testTemplateRepository = await getTemplateRepository()
         var template = await testTemplateRepository.getTemplateByName(templateName)
-        console.log("template loaded:", templateName)
+        logger.log("template loaded:", templateName)
     }
     catch (e) {
-        console.log("An error occurred while loading the template:", e)
+        logger.log("An error occurred while loading the template:", e)
         return e.toString()
     }
 
     try {
         var testCode = compileTemplate(template.contentTemplate, viewModel)
         var testFileName = compileTemplate(template.fileNameTemplate, viewModel)
-        console.log("compiled testCode:", testCode, "testFileName", testFileName)
+        logger.log("compiled testCode:", testCode, "testFileName", testFileName)
         saveAs(`${testFileName}.${template.fileExtension}`, testCode)
     } catch (e) {
         //TODO: show the error to the user explicitly to help him to fix the bug in the template
-        console.error("Error while generating code. Probable template bug.", e)
+        logger.error("Error while generating code. Probable template bug.", e)
         return e.toString()
     }
 

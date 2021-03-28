@@ -18,6 +18,6 @@ class consoleLog implements iLogger {
     error = console.error.apply
 }
 
-export const log: iLogger = new noLog()
+export const logger: iLogger = new noLog()
 
 

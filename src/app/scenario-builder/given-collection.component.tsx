@@ -6,6 +6,7 @@ import { TestStepTurn } from "./step-picker/scenario-step-turn";
 import { useWhatChanged } from "@simbathesailor/use-what-changed";
 import { GivenStep } from './given-step';
 import { SelectedWidget } from 'board';
+import { logger } from 'libs/logging/console';
 
 export type IndexedStep = {
 	index: number
@@ -45,12 +46,12 @@ export let createGivenStepCollection =
 				nextId++;
 
 				setCanAdd(false)
-				console.log("add: can add=", canAdd)
+				logger.log("add: can add=", canAdd)
 			}
 
 			const onStepSelection = (updatedStep: SelectedWidget) => {
 				setCanAdd(true)
-				console.log("on next selection: can add=", canAdd)
+				logger.log("on next selection: can add=", canAdd)
 
 				// function replace<T>(arr: Array<T>, newItem: T, predicate: (old: T) => Boolean) {
 				// }

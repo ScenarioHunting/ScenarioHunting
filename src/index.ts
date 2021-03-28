@@ -1,6 +1,7 @@
 import { singletonBoard, testResultReports } from "./global-dependency-container";
 import { WhenTestResultsSummeryViewModel, TestReportToSummery, WhenTestReportViewModel } from "./test-result-reports";
 import { createOrUpdateSampleTemplates } from "./app/template-processing/template-repository";
+import { logger } from "libs/logging/console";
 /* eslint-disable no-undef */
 // const icon24 = `<svg height="12" width="12">
 // <text x="0" y="12" fill="currentColor">T</text>
@@ -23,10 +24,10 @@ const underlineIcon = '<line x1="22" y1="22" x2="00" y2="22" stroke="currentColo
 // 	// if (widgets.length != 1)
 // 	// 	return
 // 	// const sourceWidget = widgets[0]
-// 	console.log("SOURCE!!!!!!!!!!!!!!", sourceWidget)
+// 	logger.log("SOURCE!!!!!!!!!!!!!!", sourceWidget)
 
 // 	const exampleWidget = await miro.board.widgets.create({ type: sourceWidget.type, bounds: { x: sourceWidget.bounds.x, y: sourceWidget.bounds.y } });
-// 	console.log("EXAMPLE!!!!!!!!!!!!!!", exampleWidget)
+// 	logger.log("EXAMPLE!!!!!!!!!!!!!!", exampleWidget)
 
 // 	// //let result = await miro.board.selection.get();
 // 	// let result = widgets;
@@ -85,7 +86,7 @@ const applyReportToWidget = async (widgetId: string, vm: WhenTestResultsSummeryV
 }
 let generateBoardSection = (content: any) => {
 
-	console.log("GeneratingBoardBasedOn:", content)
+	logger.log("GeneratingBoardBasedOn:", content)
 }
 let subscribeToServerEvents = (webSocketUrl: string) => {
 	let ws = new WebSocket(webSocketUrl)
@@ -96,15 +97,15 @@ let subscribeToServerEvents = (webSocketUrl: string) => {
 				clearInterval(reconnectionTimer)
 			}
 			catch (e) {
-				console.log(e)
+				logger.log(e)
 			}
 		}, 1000)
 	}
 	ws.onopen = function () {
-		console.log("Websocket connection opened");
+		logger.log("Websocket connection opened");
 	}
 	ws.onclose = function () {
-		console.log("Web socket closed, trying to reconnect.");
+		logger.log("Web socket closed, trying to reconnect.");
 		connect()
 		// ws = null;
 	}
@@ -113,24 +114,24 @@ let subscribeToServerEvents = (webSocketUrl: string) => {
 			var content = evt.data.content
 			generateBoardSection(content)
 		}
-		console.log("Summery: " + evt.data);
+		logger.log("Summery: " + evt.data);
 		var message: { id: string, testReport: WhenTestReportViewModel } = JSON.parse(evt.data)
 		const summery = TestReportToSummery(message.testReport)
-		console.log("Summery: " + JSON.stringify(summery));
+		logger.log("Summery: " + JSON.stringify(summery));
 
-		applyReportToWidget(message.id, summery).catch(console.log)
+		applyReportToWidget(message.id, summery).catch(logger.log)
 		// const widget = miro.board.widgets.get({ id: evt.data.id })
 
 	}
 	ws.onerror = function (evt) {
-		console.log("ERROR: " + evt);
+		logger.log("ERROR: " + evt);
 		connect()
 	}
 }
 miro.onReady(async () => {
 
 
-	// console.log("Client Id:", miro.getClientId())3074457349056199734
+	// logger.log("Client Id:", miro.getClientId())3074457349056199734
 	// .............................................3074457349056199734
 
 	await singletonBoard.interceptPossibleTextEdit(attachReportToWidgetByWidgetId)

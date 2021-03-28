@@ -1,3 +1,5 @@
+import { logger } from "libs/logging/console";
+
 /* eslint-disable no-undef */
 class templateRepository {
     // constructor() {
@@ -9,16 +11,16 @@ class templateRepository {
     //         }
     //     }).then(widgets =>
     //         widgets.forEach(w => {
-    //             console.log(`Template :${w.metadata} is found.`)
+    //             logger.log(`Template :${w.metadata} is found.`)
     //             w.clientVisible = false
-    //             miro.board.widgets.update(w).then(() => console.log("The template widgets are hidden."))
+    //             miro.board.widgets.update(w).then(() => logger.log("The template widgets are hidden."))
     //         }))
     // }
     public async getAllTemplateNames(): Promise<string[]> {
         var widgets = await this.findAllTemplateWidgets()
         return widgets
             .map(w => {
-                console.log('template:' + w.metadata[miro.getClientId()]["templateName"] + "found!")
+                logger.log('template:' + w.metadata[miro.getClientId()]["templateName"] + "found!")
                 return w.metadata[miro.getClientId()]["templateName"]
             });
     }
@@ -27,8 +29,8 @@ class templateRepository {
         widgets.forEach(async widget => await miro.board.widgets.deleteById(widget.id))
     }
     public async createOrReplaceTemplate(originalTemplateName: string, template: textTemplate) {
-        console.log('createOrReplaceTemplate:')
-        console.log('finding widget for template:', originalTemplateName)
+        logger.log('createOrReplaceTemplate:')
+        logger.log('finding widget for template:', originalTemplateName)
         var widgets = await this.findAllTemplateWidgets()
         var x: number;
         var y: number;
@@ -42,12 +44,12 @@ class templateRepository {
             y = viewport.y - 200
         }
         widgets = this.filterWidgetsByTemplateName(widgets, originalTemplateName)
-        console.log(`${widgets.length} widgets found for template with name: ${originalTemplateName}`)
+        logger.log(`${widgets.length} widgets found for template with name: ${originalTemplateName}`)
 
         // var dbWidgets = widgets.filter(i => !isNullOrUndefined(i.metadata[miro.getClientId()].templateName));
 
         if (widgets.length == 0) {
-            console.log("Creating template:", template)
+            logger.log("Creating template:", template)
             await miro.board.widgets.create({
                 type: "TEXT",
                 text: template.contentTemplate,
@@ -64,10 +66,10 @@ class templateRepository {
                 y: y,
                 // clientVisible: false
             });
-            console.log(`template: ${template.templateName} is created successfully.`)
+            logger.log(`template: ${template.templateName} is created successfully.`)
         }
         else {
-            console.log("Updating template:", template)
+            logger.log("Updating template:", template)
 
             var dbWidget = widgets[0];
             // dbWidget["test"] = template.contentTemplate
@@ -75,16 +77,16 @@ class templateRepository {
             // dbWidget.metadata[miro.getClientId()].clientVisible = false;
 
             await miro.board.widgets.update(dbWidget);
-            console.log(`template:${template.templateName} is updated successfully.`)
+            logger.log(`template:${template.templateName} is updated successfully.`)
 
         }
     }
     private async findAllTemplateWidgets(): Promise<SDK.ITextWidget[]> {
         // var stat = (await miro.board.widgets.get()).filter(x => x.type == 'TEXT' && x["text"].includes('using'))
-        // console.log("# of widgets contain using in their text:", stat.length)
+        // logger.log("# of widgets contain using in their text:", stat.length)
         var widgets = await miro.board.widgets.get({ type: 'TEXT' }) as SDK.ITextWidget[]
 
-        // console.log("# of widgets that have metadata.clientId.templateName:", widgets.filter(i => i.metadata && i.metadata[miro.getClientId()] && i.metadata[miro.getClientId()] && i.metadata[miro.getClientId()]["templateName"]).length)
+        // logger.log("# of widgets that have metadata.clientId.templateName:", widgets.filter(i => i.metadata && i.metadata[miro.getClientId()] && i.metadata[miro.getClientId()] && i.metadata[miro.getClientId()]["templateName"]).length)
 
         return widgets
             .filter(i => i.metadata && i.metadata[miro.getClientId()]
@@ -103,10 +105,10 @@ class templateRepository {
         var widgets = await this.findWidgetByTemplateName(templateName)
         if (widgets.length == 0)
             throw new Error("Widget not found for template:" + templateName);
-        console.log("Widgets found:", widgets)
+        logger.log("Widgets found:", widgets)
         var template = widgets[0].metadata[miro.getClientId()];
-        console.log("Corresponding metadata:", widgets[0].metadata[miro.getClientId()])
-        console.log("Corresponding template:", template)
+        logger.log("Corresponding metadata:", widgets[0].metadata[miro.getClientId()])
+        logger.log("Corresponding template:", template)
         return template
     }
 }

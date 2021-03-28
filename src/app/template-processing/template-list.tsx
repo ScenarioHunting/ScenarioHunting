@@ -2,6 +2,7 @@ import styles from './template-list.css'
 import * as React from 'react';
 import { getTemplateRepository } from './template-repository';
 import { useState, useEffect } from "react";
+import { logger } from 'libs/logging/console';
 
 export function TemplateList(props): JSX.Element {
 
@@ -22,14 +23,14 @@ export function TemplateList(props): JSX.Element {
         return miro.board.ui.openModal(url, { fullscreen: false })
     }
     function editTemplate(templateName: string) {
-        console.log(templateName)
+        logger.log(templateName)
         // eslint-disable-next-line no-undef
         getTemplateRepository()
             .then(repository => {
-                // console.log(`All Template Names:`, repository.getAllTemplateNames())
+                // logger.log(`All Template Names:`, repository.getAllTemplateNames())
 
                 repository.getTemplateByName(templateName).then(template => {
-                    console.log(`Template: ${template} is here:`, template)
+                    logger.log(`Template: ${template} is here:`, template)
                     const queryString = `?templateName=${templateName}&templateContent=${JSON.stringify(template)}&templateContentObj=${template}`
                     openModal(`./monaco-editor.html${queryString}`)
                         .then(() => loadTemplateNames())
@@ -44,7 +45,7 @@ export function TemplateList(props): JSX.Element {
             .then(repository => {
                 repository.removeTemplate(templateName)
                 setAvailableTemplateNames(templateNames.filter(t => t != templateName))
-                console.log("Template: " + templateName + " deleted.")
+                logger.log("Template: " + templateName + " deleted.")
             })
     }
     return <>
