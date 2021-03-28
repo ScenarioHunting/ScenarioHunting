@@ -1,4 +1,5 @@
 import Handlebars from "handlebars/dist/handlebars.js"
+
 Handlebars.registerHelper('skipLast', function (options) {
     if (options.data.last) {
         return options.inverse()
@@ -6,6 +7,8 @@ Handlebars.registerHelper('skipLast', function (options) {
         return options.fn()
     }
 })
+
+
 
 export function compileTemplate(template: string, testSchema): string {
 

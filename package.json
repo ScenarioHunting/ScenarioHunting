@@ -1,7 +1,7 @@
 {
-  "name": "context-reflective-test-generator",
+  "name": "scenario-picker",
   "version": "1.0.0",
-  "description": "",
+  "description": "Helps to pick scenarios from modeling artifacts, and generate custom based on them",
   "private": true,
   "scripts": {
     "watch": "nodemon --exec 'npm run build && npm start' --config nodemon.json",

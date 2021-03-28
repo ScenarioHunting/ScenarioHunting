@@ -29,15 +29,25 @@ class templateRepository {
     public async createOrReplaceTemplate(originalTemplateName: string, template: textTemplate) {
         console.log('createOrReplaceTemplate:')
         console.log('finding widget for template:', originalTemplateName)
-
-        var widgets = await this.findWidgetByTemplateName(originalTemplateName)
+        var widgets = await this.findAllTemplateWidgets()
+        var x: number;
+        var y: number;
+        if (widgets.length > 0) {
+            const firstWidget = widgets[0]
+            x = firstWidget.x
+            y = firstWidget.y
+        } else {
+            const viewport = await miro.board.viewport.get()
+            x = viewport.x - 200
+            y = viewport.y - 200
+        }
+        widgets = this.filterWidgetsByTemplateName(widgets, originalTemplateName)
         console.log(`${widgets.length} widgets found for template with name: ${originalTemplateName}`)
 
         // var dbWidgets = widgets.filter(i => !isNullOrUndefined(i.metadata[miro.getClientId()].templateName));
 
         if (widgets.length == 0) {
             console.log("Creating template:", template)
-            const viewport = await miro.board.viewport.get()
             await miro.board.widgets.create({
                 type: "TEXT",
                 text: template.contentTemplate,
@@ -50,8 +60,8 @@ class templateRepository {
                 style: {
                     textAlign: "l"
                 },
-                x: viewport.x - 200,
-                y: viewport.y - 200
+                x: x,
+                y: y,
                 // clientVisible: false
             });
             console.log(`template: ${template.templateName} is created successfully.`)
@@ -69,21 +79,25 @@ class templateRepository {
 
         }
     }
-    private async findAllTemplateWidgets(): Promise<SDK.IWidget[]> {
-        var stat = (await miro.board.widgets.get()).filter(x => x.type == 'STICKER' && x["text"].includes('using'))
-        console.log("# of widgets contain using in their text:", stat.length)
-        var widgets = await miro.board.widgets.get()
+    private async findAllTemplateWidgets(): Promise<SDK.ITextWidget[]> {
+        // var stat = (await miro.board.widgets.get()).filter(x => x.type == 'TEXT' && x["text"].includes('using'))
+        // console.log("# of widgets contain using in their text:", stat.length)
+        var widgets = await miro.board.widgets.get({ type: 'TEXT' }) as SDK.ITextWidget[]
 
         // console.log("# of widgets that have metadata.clientId.templateName:", widgets.filter(i => i.metadata && i.metadata[miro.getClientId()] && i.metadata[miro.getClientId()] && i.metadata[miro.getClientId()]["templateName"]).length)
 
         return widgets
-            .filter(i => i.metadata && i.metadata["3074457349056199734"]
-                && i.metadata["3074457349056199734"]
-                && i.metadata["3074457349056199734"]["templateName"])
+            .filter(i => i.metadata && i.metadata[miro.getClientId()]
+                && i.metadata[miro.getClientId()]
+                && i.metadata[miro.getClientId()]["templateName"])
+    }
+    private filterWidgetsByTemplateName(widgets: SDK.ITextWidget[], templateName): SDK.ITextWidget[] {
+        return widgets.filter(w => w.metadata[miro.getClientId()]["templateName"] == templateName)
     }
     private async findWidgetByTemplateName(templateName: string): Promise<SDK.IWidget[]> {
-        var widgets = await this.findAllTemplateWidgets()
-        return widgets.filter(w => w.metadata[miro.getClientId()]["templateName"] == templateName)
+        return this.filterWidgetsByTemplateName(
+            await this.findAllTemplateWidgets()
+            , templateName)
     }
     public async getTemplateByName(templateName: string): Promise<textTemplate> {
         var widgets = await this.findWidgetByTemplateName(templateName)
