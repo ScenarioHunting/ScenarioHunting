@@ -35,7 +35,7 @@ export function SelectableText(props: {
         board.unselectAll()
         board.onNextSingleSelection((selectedWidget: SelectedStep) => {
             log.log(props.turn, 'Selected...')
-            onChange(selectedWidget.stepSchema.type)
+            onChange(selectedWidget.stepSchema.title)
             log.log(props.value + ' selected')
         });
     }

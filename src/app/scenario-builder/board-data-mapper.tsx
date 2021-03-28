@@ -25,9 +25,10 @@ export async function extractStepSchema(
 
     var props: properties = {}
     rows.map(p => p.split(":")).forEach(p => {
-        props[toCamelCase(p[0])] = {
+        const propertyName = toCamelCase(p[0])
+        props[propertyName] = {
             type: "string",
-            description: toCamelCase(p[0]),
+            description: propertyName,
             example: p[1].trim()
         }
     })

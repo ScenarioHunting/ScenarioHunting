@@ -75,7 +75,7 @@ export function createTestStepRecorder({ stepType
                     (!props.step?.stepSchema) ? <div className={styles["waiting-for-step"]} style={{ display: isActive ? 'block' : 'none' }}> <h1 >?</h1> </div> :
 
                         <div style={props.step?.widgetSnapshot.style}>
-                            <span className={styles["step-title"]}>{props.step?.stepSchema.type}</span>
+                            <span className={styles["step-title"]}>{props.step?.stepSchema.title}</span>
 
                             <div className={styles["key-value-row"]}>
                                 {Object.entries(props.step?.stepSchema.properties)?.map(
