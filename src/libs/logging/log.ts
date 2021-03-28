@@ -1,4 +1,3 @@
-import { env } from "process"
 
 /* eslint-disable no-unused-vars */
 interface iLogger {
@@ -16,7 +15,7 @@ class noLog {
 }
 
 export let log: iLogger
-if (env.mod == 'production') {
+if (process.env.mod == 'production') {
     log = new noLog()
 }
 else {
