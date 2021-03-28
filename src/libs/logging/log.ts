@@ -13,6 +13,6 @@ class noLog {
     error = () => { }
 }
 
-export const log: iLogger = new noLog()
+export const log: iLogger = console//new noLog()
 
 
