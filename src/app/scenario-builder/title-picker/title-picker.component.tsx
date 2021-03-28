@@ -4,7 +4,7 @@ import { IBoard, SelectedWidget } from 'board';
 import { singletonBoard } from "../../../global-dependency-container";
 import { TestStepTurn } from "../step-picker/scenario-step-turn";
 import { singletonStepNavigator } from "../local-dependency-container";
-import { logger } from 'libs/logging/console';
+import { log } from '../../../libs/logging/log';
 
 const board: IBoard = singletonBoard
 // const turn = TestStepTurn.Subject
@@ -31,12 +31,12 @@ export function SelectableText(props: {
     }
 
     function select() {
-        logger.log('Waiting...')
+        log.log('Waiting...')
         board.unselectAll()
         board.onNextSingleSelection((selectedWidget: SelectedWidget) => {
-            logger.log(props.turn, 'Selected...')
+            log.log(props.turn, 'Selected...')
             onChange(selectedWidget.widgetData.type)
-            logger.log(props.value + ' selected')
+            log.log(props.value + ' selected')
         });
     }
     React.useEffect(() => {
@@ -44,7 +44,7 @@ export function SelectableText(props: {
         board.unselectAll();
         queue.onTurn(props.turn, () => {
             setIsActive(true)
-            logger.log('Waiting...')
+            log.log('Waiting...')
             select()
         });
     }, [props.turn])

@@ -1,7 +1,7 @@
 import { singletonBoard, testResultReports } from "./global-dependency-container";
 import { WhenTestResultsSummeryViewModel, TestReportToSummery, WhenTestReportViewModel } from "./test-result-reports";
 import { createOrUpdateSampleTemplates } from "./app/template-processing/template-repository";
-import { logger } from "libs/logging/console";
+import { log } from "./libs/logging/log";
 /* eslint-disable no-undef */
 // const icon24 = `<svg height="12" width="12">
 // <text x="0" y="12" fill="currentColor">T</text>
@@ -86,7 +86,7 @@ const applyReportToWidget = async (widgetId: string, vm: WhenTestResultsSummeryV
 }
 let generateBoardSection = (content: any) => {
 
-	logger.log("GeneratingBoardBasedOn:", content)
+	log.log("GeneratingBoardBasedOn:", content)
 }
 let subscribeToServerEvents = (webSocketUrl: string) => {
 	let ws = new WebSocket(webSocketUrl)
@@ -97,15 +97,15 @@ let subscribeToServerEvents = (webSocketUrl: string) => {
 				clearInterval(reconnectionTimer)
 			}
 			catch (e) {
-				logger.log(e)
+				log.log(e)
 			}
 		}, 1000)
 	}
 	ws.onopen = function () {
-		logger.log("Websocket connection opened");
+		log.log("Websocket connection opened");
 	}
 	ws.onclose = function () {
-		logger.log("Web socket closed, trying to reconnect.");
+		log.log("Web socket closed, trying to reconnect.");
 		connect()
 		// ws = null;
 	}
@@ -114,17 +114,17 @@ let subscribeToServerEvents = (webSocketUrl: string) => {
 			var content = evt.data.content
 			generateBoardSection(content)
 		}
-		logger.log("Summery: " + evt.data);
+		log.log("Summery: " + evt.data);
 		var message: { id: string, testReport: WhenTestReportViewModel } = JSON.parse(evt.data)
 		const summery = TestReportToSummery(message.testReport)
-		logger.log("Summery: " + JSON.stringify(summery));
+		log.log("Summery: " + JSON.stringify(summery));
 
-		applyReportToWidget(message.id, summery).catch(logger.log)
+		applyReportToWidget(message.id, summery).catch(log.log)
 		// const widget = miro.board.widgets.get({ id: evt.data.id })
 
 	}
 	ws.onerror = function (evt) {
-		logger.log("ERROR: " + evt);
+		log.log("ERROR: " + evt);
 		connect()
 	}
 }

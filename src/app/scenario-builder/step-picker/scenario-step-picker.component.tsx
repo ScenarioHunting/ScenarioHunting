@@ -4,7 +4,7 @@ import * as React from 'react';
 import { IBoard, SelectedWidget } from 'board';
 import { IQueuingMachine } from "../../../libs/queuing-machine/iqueuing-machine";
 import { TestStepTurn } from './scenario-step-turn';
-import { logger } from 'libs/logging/console';
+import { log } from '../../../libs/logging/log';
 
 export class TestStepDependencies {
     stepType: string
@@ -30,11 +30,11 @@ export function createTestStepRecorder({ stepType
 
         const [isActive, setIsActive] = React.useState<boolean>(false)
         function select() {
-            logger.log('Waiting...')
+            log.log('Waiting...')
             board.unselectAll()
             board.showNotification(selectionWaitingMessage);
             board.onNextSingleSelection((selectedWidget: SelectedWidget) => {
-                logger.log(turn, 'Selected...')
+                log.log(turn, 'Selected...')
                 props.onStepSelection(selectedWidget)
                 stepNavigator.done(turn)
             });
@@ -43,7 +43,7 @@ export function createTestStepRecorder({ stepType
             board.unselectAll();
             stepNavigator.onTurn(turn, () => {
                 setIsActive(true)
-                logger.log('Waiting...')
+                log.log('Waiting...')
                 select()
             });
         }, [])

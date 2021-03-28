@@ -2,7 +2,7 @@
 import { convertWidgetToStepData as mapToStepData } from "./app/scenario-builder/board-data-mapper";
 import { CSSProperties } from "react";
 import { StepDataDto } from "app/scenario-builder/dto";
-import { logger } from "libs/logging/console";
+import { log } from "./libs/logging/log";
 export interface IBoard {
     // eslint-disable-next-line no-unused-vars
     updateWidgetText(widgetId: string, newWidgetText: string): Promise<void>;
@@ -61,7 +61,7 @@ export class Board implements IBoard {
     }
     // eslint-disable-next-line no-unused-vars
     async getWidgetText(widgetId: string): Promise<string> {
-        logger.log("Finding widget by id:" + widgetId)
+        log.log("Finding widget by id:" + widgetId)
         var widget = (await miro.board.widgets.get({ id: widgetId }))[0];
         return await getWidgetText(widget)
     }
@@ -75,35 +75,35 @@ export class Board implements IBoard {
     // eslint-disable-next-line no-unused-vars
     onNextSingleSelection(succeed: (selected: SelectedWidget) => void) {
         //TODO: Guard 
-        logger.log("Waiting for the next single selection!")
+        log.log("Waiting for the next single selection!")
         const select = async (selections) => {
             var widgets = selections.data;
 
             if (widgets.length == 0)
                 return;
 
-            logger.log("Selected.")
+            log.log("Selected.")
 
             if (widgets.length > 1) {
-                logger.log(`${widgets.length} items are selected. Only a single one can be selected.`)
+                log.log(`${widgets.length} items are selected. Only a single one can be selected.`)
                 return
             }
 
-            logger.log("Getting the widget.")
+            log.log("Getting the widget.")
             var widget = (await miro.board.widgets.get({ id: widgets[0].id }))[0];
-            logger.log("Converting the widget")
+            log.log("Converting the widget")
 
             convertToDto(widget)
                 .then(dto => {
                     // if (typeof dto == 'string')
                     //     logger.log(dto)
                     // else {
-                    logger.log(dto)
+                    log.log(dto)
                     succeed(dto)
                     miro.removeListener("SELECTION_UPDATED", select)
                     // }
                 })
-                .catch(logger.log)
+                .catch(log.log)
         }
         if (this.previousListener)
             miro.removeListener("SELECTION_UPDATED", this.previousListener)
@@ -172,10 +172,10 @@ async function getAbstractionWidgetFor(exampleWidget: SDK.IWidget): Promise<SDK.
 function getWidgetStyle(widget: SDK.IWidget): CSSProperties {
     const style = {} as CSSProperties
     if (widget["style"] && widget["style"]["backgroundColor"]) {
-        logger.log('Setting style:', widget["style"]["backgroundColor"])
+        log.log('Setting style:', widget["style"]["backgroundColor"])
         style.backgroundColor = widget["style"]["backgroundColor"]
     } else if (widget["style"] && widget["style"]["stickerBackgroundColor"]) {
-        logger.log('Setting style:', widget["style"]["stickerBackgroundColor"])
+        log.log('Setting style:', widget["style"]["stickerBackgroundColor"])
         style.backgroundColor = widget["style"]["stickerBackgroundColor"]
     }
     return style
@@ -189,7 +189,7 @@ async function convertToDto(widget: SDK.IWidget): Promise<SelectedWidget> {
 
     dto.abstractionWidget = await getAbstractionWidgetFor(dto.exampleWidget)
     //
-    logger.log('Selection dto initiated.', dto)
+    log.log('Selection dto initiated.', dto)
 
     dto.style = getWidgetStyle(dto.abstractionWidget)
     try {
@@ -208,7 +208,7 @@ async function convertToDto(widget: SDK.IWidget): Promise<SelectedWidget> {
     }
 
 
-    logger.log('Widget text converted by board:', dto.exampleText)
+    log.log('Widget text converted by board:', dto.exampleText)
 
     try {
         var data = await mapToStepData(dto.abstractionText, dto.exampleText)

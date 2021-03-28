@@ -1,24 +1,24 @@
-import { logger } from "libs/logging/console";
+import { log } from "../logging/log";
 import { IQueuingMachine } from "./iqueuing-machine";
 
 /* eslint-disable no-unused-vars */
 export class QueuingMachine<T extends string> implements IQueuingMachine<T>{
     constructor(private sortedTokens: T[]) {
         if (!sortedTokens || sortedTokens.length == 0) {
-            logger.error("No sorted tokens.");
+            log.error("No sorted tokens.");
             throw "No sorted tokens."
         }
     }
     onTurn = (token: T, whatToDo: () => void) => {
-        logger.log(token, 'Function registered to queue:', whatToDo)
+        log.log(token, 'Function registered to queue:', whatToDo)
         this.tasks[token] = whatToDo;
     }
     done = (token: T) => {
         //TODO: defence
-        logger.log('Remaining tasks:', this.tasks)
+        log.log('Remaining tasks:', this.tasks)
         if (!this.sortedTokens.includes(token))
             return
-        logger.log('Shifting.')
+        log.log('Shifting.')
 
         const nextIndex = this.sortedTokens.indexOf(token) + 1
         const nextToken = this.sortedTokens[nextIndex]

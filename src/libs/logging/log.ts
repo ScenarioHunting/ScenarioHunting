@@ -11,13 +11,7 @@ class noLog implements iLogger {
     warn = () => { }
     error = () => { }
 }
-class consoleLog implements iLogger {
-    log = console.log.apply
-    info = console.info.apply
-    warn = console.warn.apply
-    error = console.error.apply
-}
 
-export const logger: iLogger = new noLog()
+export const log: iLogger = console//new noLog()
 
 

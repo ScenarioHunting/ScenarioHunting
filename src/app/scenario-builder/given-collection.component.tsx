@@ -1,4 +1,5 @@
 import sharedStyles from './step-picker/scenario-step-shared.styles.css'
+// eslint-disable-next-line no-unused-vars
 import styles from './given-collection.style.css'
 import { singletonStepNavigator } from './local-dependency-container';
 import * as React from 'react'
@@ -6,7 +7,7 @@ import { TestStepTurn } from "./step-picker/scenario-step-turn";
 import { useWhatChanged } from "@simbathesailor/use-what-changed";
 import { GivenStep } from './given-step';
 import { SelectedWidget } from 'board';
-import { logger } from 'libs/logging/console';
+import { log } from '../../libs/logging/log';
 
 export type IndexedStep = {
 	index: number
@@ -46,12 +47,12 @@ export let createGivenStepCollection =
 				nextId++;
 
 				setCanAdd(false)
-				logger.log("add: can add=", canAdd)
+				log.log("add: can add=", canAdd)
 			}
 
 			const onStepSelection = (updatedStep: SelectedWidget) => {
 				setCanAdd(true)
-				logger.log("on next selection: can add=", canAdd)
+				log.log("on next selection: can add=", canAdd)
 
 				// function replace<T>(arr: Array<T>, newItem: T, predicate: (old: T) => Boolean) {
 				// }

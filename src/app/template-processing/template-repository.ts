@@ -1,5 +1,5 @@
-import { logger } from "libs/logging/console";
-
+// import { log } from '../../libs/logging/log';
+const log = console
 /* eslint-disable no-undef */
 class templateRepository {
     // constructor() {
@@ -20,7 +20,7 @@ class templateRepository {
         var widgets = await this.findAllTemplateWidgets()
         return widgets
             .map(w => {
-                logger.log('template:' + w.metadata[miro.getClientId()]["templateName"] + "found!")
+                log.log('template:' + w.metadata[miro.getClientId()]["templateName"] + "found!")
                 return w.metadata[miro.getClientId()]["templateName"]
             });
     }
@@ -29,8 +29,8 @@ class templateRepository {
         widgets.forEach(async widget => await miro.board.widgets.deleteById(widget.id))
     }
     public async createOrReplaceTemplate(originalTemplateName: string, template: textTemplate) {
-        logger.log('createOrReplaceTemplate:')
-        logger.log('finding widget for template:', originalTemplateName)
+        log.log('createOrReplaceTemplate:')
+        log.log('finding widget for template:', originalTemplateName)
         var widgets = await this.findAllTemplateWidgets()
         var x: number;
         var y: number;
@@ -44,12 +44,12 @@ class templateRepository {
             y = viewport.y - 200
         }
         widgets = this.filterWidgetsByTemplateName(widgets, originalTemplateName)
-        logger.log(`${widgets.length} widgets found for template with name: ${originalTemplateName}`)
+        log.log(`${widgets.length} widgets found for template with name: ${originalTemplateName}`)
 
         // var dbWidgets = widgets.filter(i => !isNullOrUndefined(i.metadata[miro.getClientId()].templateName));
 
         if (widgets.length == 0) {
-            logger.log("Creating template:", template)
+            log.log("Creating template:", template)
             await miro.board.widgets.create({
                 type: "TEXT",
                 text: template.contentTemplate,
@@ -66,10 +66,10 @@ class templateRepository {
                 y: y,
                 // clientVisible: false
             });
-            logger.log(`template: ${template.templateName} is created successfully.`)
+            log.log(`template: ${template.templateName} is created successfully.`)
         }
         else {
-            logger.log("Updating template:", template)
+            log.log("Updating template:", template)
 
             var dbWidget = widgets[0];
             // dbWidget["test"] = template.contentTemplate
@@ -77,7 +77,7 @@ class templateRepository {
             // dbWidget.metadata[miro.getClientId()].clientVisible = false;
 
             await miro.board.widgets.update(dbWidget);
-            logger.log(`template:${template.templateName} is updated successfully.`)
+            log.log(`template:${template.templateName} is updated successfully.`)
 
         }
     }
@@ -105,10 +105,10 @@ class templateRepository {
         var widgets = await this.findWidgetByTemplateName(templateName)
         if (widgets.length == 0)
             throw new Error("Widget not found for template:" + templateName);
-        logger.log("Widgets found:", widgets)
+        log.log("Widgets found:", widgets)
         var template = widgets[0].metadata[miro.getClientId()];
-        logger.log("Corresponding metadata:", widgets[0].metadata[miro.getClientId()])
-        logger.log("Corresponding template:", template)
+        log.log("Corresponding metadata:", widgets[0].metadata[miro.getClientId()])
+        log.log("Corresponding template:", template)
         return template
     }
 }
