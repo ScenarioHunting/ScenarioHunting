@@ -13,8 +13,8 @@ const appConfig = {
 		flagIncludedChunks: true,
 		// runtimeChunk: 'single',
 	},
-	mode: 'production',
-	// mode: 'development',
+	// mode: 'production',
+	mode: 'development',
 
 	entry: {
 		index: './src/index.ts',
@@ -95,8 +95,8 @@ const appConfig = {
 }
 const editorConfig = {
 	name: 'editor',
-	mode: 'production',
-	// mode: 'development',
+	// mode: 'production',
+	mode: 'development',
 	entry: {
 		// monacoEditor: {
 		// 	import: './src/template-processing/monaco-editor.ts',
