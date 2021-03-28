@@ -104,7 +104,7 @@ const editorConfig = {
 		// },
 		monacoLanguage: './src/app/template-processing/monaco-languages.js',
 		templateRepositoryLib: templateRepositoryPath,
-		log:'./src/libs/logging/log.ts'
+
 	},
 	module: {
 		rules: [
@@ -121,7 +121,7 @@ const editorConfig = {
 
 		// filename: 'template-repository-lib.js',
 		libraryTarget: 'var',
-		library: 'templateRepository',
+		library: 'templateRepository'
 	},
 	plugins: [
 		new HtmlWebPackPlugin({
