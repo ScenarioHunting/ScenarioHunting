@@ -1,4 +1,4 @@
-import styles from "./sidebar.css"
+import styles from "./sidebar.style.css"
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { TestRecorder } from './app/scenario-builder/scenario-builder.component';

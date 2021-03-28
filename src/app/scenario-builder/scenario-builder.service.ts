@@ -2,9 +2,9 @@
 import { IndexedStep } from "./given-collection.component"
 import { CreateTestDto, IndexedStepDataDto, StepDataDto } from "./dto"
 import { SelectedWidget } from "board"
-import Handlebars from "handlebars/dist/handlebars.js"
 import { getTemplateRepository } from "../template-processing/template-repository"
 import { isNullOrUndefined } from "./isNullOrUndefined"
+import { compileTemplate } from "../template-processing/template-compiler"
 
 const toDto = ({ testContext
     , testName
@@ -82,9 +82,9 @@ export async function Save(templateName: string, test: LocalTestCreationResult):
     }
 
     try {
-        var testCode = applyTemplate(template.contentTemplate, viewModel)
-        var testFileName = applyTemplate(template.fileNameTemplate, viewModel)
-        console.log("testCode:", testCode, "testFileName", testFileName)
+        var testCode = compileTemplate(template.contentTemplate, viewModel)
+        var testFileName = compileTemplate(template.fileNameTemplate, viewModel)
+        console.log("compiled testCode:", testCode, "testFileName", testFileName)
         saveAs(`${testFileName}.${template.fileExtension}`, testCode)
     } catch (e) {
         //TODO: show the error to the user explicitly to help him to fix the bug in the template
@@ -122,22 +122,4 @@ function dtoToJsonSchema(dto: CreateTestDto) {
         context: dto.context,
         scenario: dto.testName,
     }
-}
-//********************** */
-
-function applyTemplate(template: string, testSchema): string {
-
-    Handlebars.registerHelper('skipLast', function (options) {
-        if (options.data.last) {
-            return options.inverse()
-        } else {
-            return options.fn()
-        }
-    })
-
-
-    var compiledTemplate = Handlebars.compile(template);
-
-    //TODO: validate: the test must have When and Then at least.
-    return compiledTemplate(testSchema)
 }

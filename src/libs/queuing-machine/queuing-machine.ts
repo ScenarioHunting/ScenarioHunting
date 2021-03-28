@@ -1,5 +1,7 @@
+import { IQueuingMachine } from "./iqueuing-machine";
+
 /* eslint-disable no-unused-vars */
-export class QueuingMachine<T extends string> {
+export class QueuingMachine<T extends string> implements IQueuingMachine<T>{
     constructor(private sortedTokens: T[]) {
         if (!sortedTokens || sortedTokens.length == 0) {
             console.error("No sorted tokens.");
