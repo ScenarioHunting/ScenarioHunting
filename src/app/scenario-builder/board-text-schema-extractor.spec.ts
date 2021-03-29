@@ -132,6 +132,14 @@ describe('how the schema becomes extracted from text', function () {
         })
         schema.properties.first_name_is_separated_by_redundant_underlines.should.not.undefined
     })
+    xit('it splits camel case phrases in property names by _', async () => {
+        const schema = await extractStepSchema({
+            abstractionWidgetText: `person`,
+            exampleWidgetText: `person
+                               firstName`
+        })
+        schema.properties.first_name.should.not.undefined
+    })
     it('it does not change property names with words that are separated by _ already', async () => {
         const schema = await extractStepSchema({
             abstractionWidgetText: `person`,
