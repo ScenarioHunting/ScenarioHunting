@@ -11,7 +11,7 @@
     "start": "node server.js",
     "heroku-postbuild": "npm run build",
     "clean": "del-cli --force dist",
-    "test": "mocha --require ts-node/register/transpile-only --require esm src/**/*.spec.ts",
+    "test": "mocha --config .mocharc.json",
     "coverage": "nyc -r lcov -e .ts -x \"*.test.ts\" npm run test"
   },
   "keywords": [],
