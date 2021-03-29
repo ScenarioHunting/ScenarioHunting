@@ -4,7 +4,7 @@ import * as React from 'react';
 import { Givens, OrderedSelectedStep } from './given-collection.component';
 import { WhenStep as When } from './when-step';
 import { ThenStep as Then } from './then-step';
-import { WidgetSnapshot, SelectedStep } from 'miro-board';
+import { SelectedStep } from 'miro-board';
 import { Save } from './scenario-builder.service';
 import { singletonStepNavigator } from './local-dependency-container';
 import { getTemplateRepository } from '../template-processing/template-repository';
@@ -12,10 +12,8 @@ import { useEffect, useState } from 'react';
 import { SelectableText } from './title-picker/title-picker.component';
 import { TestStepTurn } from './step-picker/scenario-step-turn';
 import { spec } from 'app/spec';
-export type StepInfo = {
-    type: string
-    widget: WidgetSnapshot
-}
+
+
 export const createTestRecorder = (board = singletonBoard
     , stepNavigator = singletonStepNavigator
     , save = Save): React.FC<any> => () => {

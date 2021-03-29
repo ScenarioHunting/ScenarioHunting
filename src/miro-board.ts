@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import { extractStepSchema } from "./app/scenario-builder/board-data-mapper";
+import { extractStepSchema } from "./app/scenario-builder/board-text-schema-extractor";
 import { CSSProperties } from "react";
 import { log } from "./global-dependency-container";
 import { stepSchema } from "app/spec";
@@ -49,7 +49,7 @@ export class Board implements IBoard {
             }
             this.previouslySelectedWidgets.forEach(async item => {
                 let widget = (await miro.board.widgets.get({ id: item.id }))[0];
-                const originalWidgetText = await getWidgetText(widget)
+                const originalWidgetText = await extractWidgetText(widget)
                 const newText = await updateText(widget.id, originalWidgetText)
                 widget = await setWidgetText(widget, newText)
                 if (newText != originalWidgetText)
@@ -64,7 +64,7 @@ export class Board implements IBoard {
     async getWidgetText(widgetId: string): Promise<string> {
         log.log("Finding widget by id:" + widgetId)
         var widget = (await miro.board.widgets.get({ id: widgetId }))[0];
-        return await getWidgetText(widget)
+        return await extractWidgetText(widget)
     }
     async updateWidgetText(widgetId: string, newWidgetText: string): Promise<void> {
         let widget = (await miro.board.widgets.get({ id: widgetId }))[0];
@@ -124,13 +124,9 @@ export class Board implements IBoard {
     zoomTo = (widget: WidgetSnapshot) =>
         miro.board.viewport.zoomToObject(widget.id, true)
 
-    // static async captureSingleItemSelections(widgets, succeed, fail) {
-    //     // miro.board.widgets.sel
-    // }
 }
-export type WidgetSnapshot = {
+type WidgetSnapshot = {
     id: string
-    // type: string
     style: CSSProperties
     abstractionText: string
     exampleText: string
@@ -181,11 +177,11 @@ function getWidgetStyle(widget: SDK.IWidget): CSSProperties {
     }
     return style
 }
-async function extractSchemaFrom(widget: SDK.IWidget): Promise<SelectedStep> {
+async function extractSchemaFrom(exampleWidget: SDK.IWidget): Promise<SelectedStep> {
     var snapshot = {
-        id: widget.id,
+        id: exampleWidget.id,
         // type: widget.type,
-        exampleWidget: widget,
+        exampleWidget: exampleWidget,
     } as WidgetSnapshot
 
     snapshot.abstractionWidget = await getAbstractionWidgetFor(snapshot.exampleWidget)
@@ -200,22 +196,25 @@ async function extractSchemaFrom(widget: SDK.IWidget): Promise<SelectedStep> {
                 .replace('</p>', '')
                 .replace('&#43;', '+')
 
-        snapshot.exampleText = getPlainText(await getWidgetText(widget))
-        snapshot.abstractionText = getPlainText(await getWidgetText(snapshot.abstractionWidget))
+        snapshot.exampleText = getPlainText(await extractWidgetText(exampleWidget))
+        snapshot.abstractionText = getPlainText(await extractWidgetText(snapshot.abstractionWidget))
 
     }
     catch (e) {
-        return Promise.reject('The widget ' + JSON.stringify(widget) + ' does not have any text.')
+        return Promise.reject('The widget ' + JSON.stringify(exampleWidget) + ' does not have any text.')
     }
 
 
     log.log('Widget text converted by board:', snapshot.exampleText)
 
     try {
-        const step = {
+        const step: SelectedStep = {
             widgetSnapshot: snapshot
-            , stepSchema: await extractStepSchema(snapshot.abstractionText, snapshot.exampleText)
-        } as SelectedStep
+            , stepSchema: await extractStepSchema({
+                abstractionWidgetText: snapshot.abstractionText,
+                exampleWidgetText: snapshot.exampleText
+            })
+        }
 
         return step
     }
@@ -224,7 +223,7 @@ async function extractSchemaFrom(widget: SDK.IWidget): Promise<SelectedStep> {
         return Promise.reject(e)
     }
 }
-function getWidgetText(widget: SDK.IWidget): Promise<string> {
+function extractWidgetText(widget: SDK.IWidget): Promise<string> {
 
     if (!widget)
         return Promise.reject("Cannot get the widget text. The widget is undefined.")
