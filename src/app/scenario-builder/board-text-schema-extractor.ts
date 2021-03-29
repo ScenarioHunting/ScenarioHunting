@@ -2,7 +2,9 @@ import { properties, stepSchema } from 'app/spec';
 
 const toSnakeCase = (str: string) => str.trim()
     .replace(/(([^A-Z0-9]+)(.)?)/ig, '_$1')
-    .replace(/\s+/g, '')
+    .replace(/-/g, '')
+    .replace(/\s/g, '')
+    .replace(/_+/g, '_')
 
 
 const removeStartingDash = (str: string): string =>

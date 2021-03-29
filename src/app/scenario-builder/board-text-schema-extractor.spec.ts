@@ -108,12 +108,37 @@ describe('how the schema becomes extracted from text', function () {
         })
         schema.title.should.eq('person')
     })
-    it('it replaces spaces between property names with _',async () => {
+    it('it replaces spaces in property names with _', async () => {
         const schema = await extractStepSchema({
             abstractionWidgetText: `person`,
             exampleWidgetText: `person
                             first name is separated by space`
         })
         schema.properties.first_name_is_separated_by_space.should.not.undefined
+    })
+    it('it replaces - in property names with _', async () => {
+        const schema = await extractStepSchema({
+            abstractionWidgetText: `person`,
+            exampleWidgetText: `person
+                            first-name-is-separated-by-dash`
+        })
+        schema.properties.first_name_is_separated_by_dash.should.not.undefined
+    })
+    it('it replaces redundant _s in property names with  a single_', async () => {
+        const schema = await extractStepSchema({
+            abstractionWidgetText: `person`,
+            exampleWidgetText: `person
+                            first__name_____is__________separated___by_redundant_underlines`
+        })
+        schema.properties.first_name_is_separated_by_redundant_underlines.should.not.undefined
+    })
+    it('it does not change property names with words that are separated by _ already', async () => {
+        const schema = await extractStepSchema({
+            abstractionWidgetText: `person`,
+            exampleWidgetText: `person
+                            first_name_is_separated_by_underline`
+        })
+        console.log(schema.properties)
+        schema.properties.first_name_is_separated_by_underline.should.not.undefined
     })
 })
