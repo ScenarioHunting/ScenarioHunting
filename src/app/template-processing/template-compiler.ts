@@ -1,5 +1,5 @@
 import Handlebars from "handlebars/dist/handlebars.js"
-import { templateFunctions } from "./template-functions";
+import { stringHelpers } from "../../libs/string-helpers";
 
 
 Handlebars.registerHelper('skipLast', (options) =>
@@ -8,7 +8,7 @@ Handlebars.registerHelper('skipLast', (options) =>
         : options.fn()
 )
 
-Object.entries(templateFunctions).map(([name, fn]) => Handlebars.registerHelper(name, fn))
+Object.entries(stringHelpers).map(([name, fn]) => Handlebars.registerHelper(name, fn))
 
 
 

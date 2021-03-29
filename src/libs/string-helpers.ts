@@ -1,15 +1,15 @@
-export const templateFunctions = {
-    camelCase(str: string) {
+export const stringHelpers = {
+    sneakToCamelCase(str: string) {
         return str.replace(/_./g, x => x[1].toUpperCase())
     },
-    pascalCase(str: string) {
+    sneakToPascalCase(str: string) {
         return str.replace(/(^|_)./g, str => str.toUpperCase())
             .replace(/_*/g, '')
     },
-    kebabCase(str: string) {
+    sneakToKebabCase(str: string) {
         return str.replace(/_/g, '-')
     },
-    spaceCase(str: string) {
+    sneakToSpaceCase(str: string) {
         return str.replace(/_/g, ' ')
     },
     capitalize(str: string) {
