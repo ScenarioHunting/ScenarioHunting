@@ -1,12 +1,15 @@
 import Handlebars from "handlebars/dist/handlebars.js"
+import { templateFunctions } from "./template-functions";
 
-Handlebars.registerHelper('skipLast', function (options) {
-    if (options.data.last) {
-        return options.inverse()
-    } else {
-        return options.fn()
-    }
-})
+
+Handlebars.registerHelper('skipLast', (options) =>
+    options.data.last
+        ? options.inverse()
+        : options.fn()
+)
+
+Object.entries(templateFunctions).map(([name, fn]) => Handlebars.registerHelper(name, fn))
+
 
 
 
