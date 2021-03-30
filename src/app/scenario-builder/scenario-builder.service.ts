@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import { getTemplateRepository } from "../template-processing/template-repository"
-import { isNullOrUndefined } from "./isNullOrUndefined"
+import { isNullOrUndefined } from "../../libs/isNullOrUndefined"
 import { compileTemplate } from "../template-processing/template-compiler"
 import { log } from "../../global-dependency-container";
 import { spec } from "app/spec";

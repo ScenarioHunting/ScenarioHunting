@@ -34,4 +34,10 @@ describe('string helpers', function () {
 
             .should.eq('The first letter was originally small')
     )
+    it('converts objects to json', () => {
+
+        stringHelpers.json({ some: 'object' })
+
+            .should.eq(`{"some":"object"}`)
+    })
 })

@@ -5,6 +5,7 @@ const toSnakeCase = (str: string) => str.trim()
     .replace(/-/g, '')
     .replace(/\s/g, '')
     .replace(/_+/g, '_')
+    .toLowerCase()
 
 
 const removeStartingDash = (str: string): string =>

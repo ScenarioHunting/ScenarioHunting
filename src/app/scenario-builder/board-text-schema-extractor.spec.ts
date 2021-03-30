@@ -146,7 +146,14 @@ describe('how the schema becomes extracted from text', function () {
             exampleWidgetText: `person
                             first_name_is_separated_by_underline`
         })
-        console.log(schema.properties)
         schema.properties.first_name_is_separated_by_underline.should.not.undefined
+    })
+    it('it de-capitalizes title',async ()=>{
+        const schema = await extractStepSchema({
+            abstractionWidgetText: `De_Capitalize_Me`,
+            exampleWidgetText: `De_Capitalize_Me
+                            first_name_is_separated_by_underline`
+        })
+        schema.title.should.eq('de_capitalize_me')
     })
 })

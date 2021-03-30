@@ -6,7 +6,7 @@ import { WhenStep as When } from './when-step';
 import { ThenStep as Then } from './then-step';
 import { SelectedStep } from 'miro-board';
 import { Save } from './scenario-builder.service';
-import { singletonStepNavigator } from './local-dependency-container';
+import { queueingMachine } from './local-dependency-container';
 import { getTemplateRepository } from '../template-processing/template-repository';
 import { useEffect, useState } from 'react';
 import { SelectableText } from './title-picker/title-picker.component';
@@ -15,7 +15,7 @@ import { spec } from 'app/spec';
 
 
 export const createTestRecorder = (board = singletonBoard
-    , stepNavigator = singletonStepNavigator
+    , stepNavigator = queueingMachine
     , save = Save): React.FC<any> => () => {
         if (!board) {
             //TODO: Implement guard

@@ -3,12 +3,12 @@ import * as React from "react";
 import { IBoard, SelectedStep } from 'miro-board';
 import { log, singletonBoard } from "../../../global-dependency-container";
 import { TestStepTurn } from "../step-picker/scenario-step-turn";
-import { singletonStepNavigator } from "../local-dependency-container";
+import { queueingMachine } from "../local-dependency-container";
 // import { log } from '../../../libs/logging/log';
 
 const board: IBoard = singletonBoard
 // const turn = TestStepTurn.Subject
-const queue = singletonStepNavigator
+const queue = queueingMachine
 export function SelectableText(props: {
     value: string,
     turn: TestStepTurn,

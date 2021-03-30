@@ -14,5 +14,8 @@ export const stringHelpers = {
     },
     capitalize(str: string) {
         return str.charAt(0).toUpperCase() + str.slice(1)
+    },
+    json(obj: any): string {
+        return JSON.stringify(obj)
     }
 }
