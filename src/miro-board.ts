@@ -17,7 +17,6 @@ export interface IBoard {
     // eslint-disable-next-line no-unused-vars
     showNotification: (message: string) => Promise<void>
     // eslint-disable-next-line no-unused-vars
-    zoomTo: (widget: WidgetSnapshot) => any
 }
 export class Board implements IBoard {
 
@@ -128,10 +127,10 @@ export class Board implements IBoard {
 type WidgetSnapshot = {
     id: string
     style: CSSProperties
-    abstractionText: string
-    exampleText: string
-    abstractionWidget: SDK.IWidget
-    exampleWidget: SDK.IWidget
+    // abstractionText: string
+    // exampleText: string
+    // abstractionWidget: SDK.IWidget
+    // exampleWidget: SDK.IWidget
 }
 export type SelectedStep = {
     widgetSnapshot: WidgetSnapshot
@@ -181,14 +180,16 @@ async function extractSchemaFrom(exampleWidget: SDK.IWidget): Promise<SelectedSt
     var snapshot = {
         id: exampleWidget.id,
         // type: widget.type,
-        exampleWidget: exampleWidget,
     } as WidgetSnapshot
 
-    snapshot.abstractionWidget = await getAbstractionWidgetFor(snapshot.exampleWidget)
+    const abstractionWidget = await getAbstractionWidgetFor(exampleWidget)
     //
     log.log('Selection dto initiated.', snapshot)
 
-    snapshot.style = getWidgetStyle(snapshot.abstractionWidget)
+    snapshot.style = getWidgetStyle(abstractionWidget)
+    let exampleText: string
+    let abstractionText: string
+
     try {
         const getPlainText = (originalText: string): string =>
             originalText.split('</p><p>').join('\n')
@@ -196,8 +197,8 @@ async function extractSchemaFrom(exampleWidget: SDK.IWidget): Promise<SelectedSt
                 .replace('</p>', '')
                 .replace('&#43;', '+')
 
-        snapshot.exampleText = getPlainText(await extractWidgetText(exampleWidget))
-        snapshot.abstractionText = getPlainText(await extractWidgetText(snapshot.abstractionWidget))
+        exampleText = getPlainText(await extractWidgetText(exampleWidget))
+        abstractionText = getPlainText(await extractWidgetText(abstractionWidget))
 
     }
     catch (e) {
@@ -205,14 +206,14 @@ async function extractSchemaFrom(exampleWidget: SDK.IWidget): Promise<SelectedSt
     }
 
 
-    log.log('Widget text converted by board:', snapshot.exampleText)
+    log.log('Widget text converted by board:', exampleText)
 
     try {
         const step: SelectedStep = {
             widgetSnapshot: snapshot
             , stepSchema: await extractStepSchema({
-                abstractionWidgetText: snapshot.abstractionText,
-                exampleWidgetText: snapshot.exampleText
+                abstractionWidgetText: abstractionText,
+                exampleWidgetText: exampleText
             })
         }
 
