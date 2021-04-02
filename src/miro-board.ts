@@ -2,22 +2,9 @@
 import { extractStepSchema } from "./app/scenario-builder/board-text-schema-extractor";
 import { CSSProperties } from "react";
 import { log } from "./global-dependency-container";
-import { stepSchema } from "app/spec";
+import { IBoard, SelectedStep, WidgetSnapshot } from "app/iboard";
 // import { log } from "./libs/logging/log";
-export interface IBoard {
-    // eslint-disable-next-line no-unused-vars
-    updateWidgetText(widgetId: string, newWidgetText: string): Promise<void>;
-    // eslint-disable-next-line no-unused-vars
-    getWidgetText(widgetId: string): Promise<string>
-    // eslint-disable-next-line no-unused-vars
-    onNextSingleSelection(succeed: (selected: SelectedStep) => void)
-    // eslint-disable-next-line no-unused-vars
-    interceptPossibleTextEdit(updateText: (widgetId: string, updatedWidget: string) => Promise<string>)
-    unselectAll: () => Promise<void>
-    // eslint-disable-next-line no-unused-vars
-    showNotification: (message: string) => Promise<void>
-    // eslint-disable-next-line no-unused-vars
-}
+
 export class Board implements IBoard {
 
     openModal(modalAddress: string) {
@@ -124,18 +111,7 @@ export class Board implements IBoard {
         miro.board.viewport.zoomToObject(widget.id, true)
 
 }
-type WidgetSnapshot = {
-    id: string
-    style: CSSProperties
-    // abstractionText: string
-    // exampleText: string
-    // abstractionWidget: SDK.IWidget
-    // exampleWidget: SDK.IWidget
-}
-export type SelectedStep = {
-    widgetSnapshot: WidgetSnapshot
-    stepSchema: stepSchema
-}
+
 
 async function getTheStartingWidget(arrow: SDK.ILineWidget): Promise<SDK.IWidget> {
     const all = await miro.board.widgets.get({ id: arrow.startWidgetId })

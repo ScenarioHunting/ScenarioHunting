@@ -1,7 +1,7 @@
 import sharedStyles from './scenario-step-shared.styles.css'
 import styles from './scenario-step-picker.style.css';
 import * as React from 'react';
-import { IBoard, SelectedStep } from 'miro-board';
+import { IBoard, SelectedStep } from '../../iboard';
 import { IQueuingMachine } from "../../../libs/queuing-machine/iqueuing-machine";
 import { TestStepTurn } from './scenario-step-turn';
 import { log } from "../../../global-dependency-container";

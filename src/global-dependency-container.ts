@@ -1,5 +1,6 @@
+import { IBoard } from "./app/iboard";
 import { iLog } from "./libs/logging/log";
-import { Board, IBoard } from "./miro-board";
+import { Board } from "./miro-board";
 import { ITestResultReports, TestResultReports } from "./test-result-reports";
 
 export let singletonBoard: IBoard = new Board()
