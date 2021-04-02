@@ -1,14 +1,32 @@
 import Handlebars from "handlebars/dist/handlebars.js"
-import { stringHelpers } from "../../libs/string-helpers";
-
-
-Handlebars.registerHelper('skipLast', (options) =>
-    options.data.last
+import { stringCaseHelpers } from "../../libs/string-case-helpers";
+const helpers = {
+    
+    /**
+     * Object to JSON
+     * @param o Object to be converted to JSON.
+     */
+    json(o: any): string {
+        return JSON.stringify(o)
+    },
+    /**
+     * Run the content every time but in the last iteration.
+     */
+    skipLast(options) {
+        return options.data.last
         ? options.inverse()
         : options.fn()
-)
+    }
+}
 
-Object.entries(stringHelpers).map(([name, fn]) => Handlebars.registerHelper(name, fn))
+// Handlebars.registerHelper('skipLast', (options) =>
+//     options.data.last
+//         ? options.inverse()
+//         : options.fn()
+// )
+
+Object.entries(stringCaseHelpers).map(([name, fn]) => Handlebars.registerHelper(name, fn))
+Object.entries(helpers).map(([name, fn]) => Handlebars.registerHelper(name, fn))
 
 
 

@@ -146,8 +146,10 @@ namespace {{context}}.Tests
         {{> callConstructor .}},
     {{/each}}
         };
+
         public ICommand When
         => {{> callConstructor when}};
+
         public IDomainEvent[] Then
         => new IDomainEvent[]{
     {{#each thens}}
@@ -169,8 +171,8 @@ namespace {{context}}.Tests
             templateName: "sample-template"
         },
         {
-            fileNameTemplate: "{{scenario}}2",
-            fileExtension: "cs",
+            fileNameTemplate: "{{scenario}}",
+            fileExtension: "features",
             contentTemplate: `using StoryTest;
 using Vlerx.Es.Messaging;
 using Vlerx.Es.Persistence;

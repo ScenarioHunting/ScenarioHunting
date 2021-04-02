@@ -1,4 +1,4 @@
-export const stringHelpers = {
+export const stringCaseHelpers = {
     sneakToCamelCase(str: string) {
         return str.replace(/_./g, x => x[1].toUpperCase())
     },
@@ -15,7 +15,15 @@ export const stringHelpers = {
     capitalize(str: string) {
         return str.charAt(0).toUpperCase() + str.slice(1)
     },
-    json(obj: any): string {
-        return JSON.stringify(obj)
+    toSnakeCase(str: string) {
+        return str.trim()
+            .replace(/(([^A-Z0-9]+)(.)?)/ig, '_$1')
+            .replace(/-/g, '')
+            .replace(/\s/g, '')
+            .replace(/_+/g, '_')
+            .toLowerCase()
+    },
+    toCamelCase(str: string) {
+        return this.sneakToCamelCase(this.toSnakeCase(str))
     }
 }
