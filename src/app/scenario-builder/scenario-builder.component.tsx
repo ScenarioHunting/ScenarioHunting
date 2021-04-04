@@ -4,7 +4,7 @@ import * as React from 'react';
 import { Givens, OrderedSelectedStep } from './given-collection.component';
 import { WhenStep as When } from './when-step';
 import { ThenStep as Then } from './then-step';
-import { SelectedStep } from 'miro-board';
+import { SelectedStep } from '../iboard';
 import { Save } from './scenario-builder.service';
 import { queueingMachine } from './local-dependency-container';
 import { getTemplateRepository } from '../template-processing/template-repository';

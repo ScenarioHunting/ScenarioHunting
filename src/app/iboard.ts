@@ -1,0 +1,21 @@
+/* eslint-disable no-unused-vars */
+import { CSSProperties } from "react"
+import { stepSchema } from "./spec"
+
+export type WidgetSnapshot = {
+    id: string
+    style: CSSProperties
+}
+export type SelectedStep = {
+    widgetSnapshot: WidgetSnapshot
+    stepSchema: stepSchema
+}
+export interface IBoard {
+    updateWidgetText(widgetId: string, newWidgetText: string): Promise<void>;
+    getWidgetText(widgetId: string): Promise<string>
+    onNextSingleSelection(succeed: (selected: SelectedStep) => void)
+    interceptPossibleTextEdit(updateText: (widgetId: string, updatedWidget: string) => Promise<string>)
+    unselectAll: () => Promise<void>
+    showNotification: (message: string) => Promise<void>
+    zoomTo: (widget: WidgetSnapshot) => void
+}

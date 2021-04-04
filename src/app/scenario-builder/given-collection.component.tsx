@@ -6,7 +6,7 @@ import * as React from 'react'
 import { TestStepTurn } from "./step-picker/scenario-step-turn";
 import { useWhatChanged } from "@simbathesailor/use-what-changed";
 import { GivenStep } from './given-step';
-import { SelectedStep } from 'miro-board';
+import { SelectedStep } from '../iboard';
 import { log } from '../../global-dependency-container';
 
 export type OrderedSelectedStep = {
