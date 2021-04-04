@@ -46,3 +46,4 @@ typings/
 
 ngrok
 
+.tmuxinator.yml
