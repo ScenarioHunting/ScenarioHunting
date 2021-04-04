@@ -4,7 +4,6 @@ import styles from './given-collection.style.css'
 import { queueingMachine } from './local-dependency-container';
 import * as React from 'react'
 import { TestStepTurn } from "./step-picker/scenario-step-turn";
-import { useWhatChanged } from "@simbathesailor/use-what-changed";
 import { GivenStep } from './given-step';
 import { SelectedStep } from '../iboard';
 import { log } from '../../global-dependency-container';
@@ -34,7 +33,6 @@ export let createGivenStepCollection =
 						setIndexedSteps(props.steps)
 				})
 			}, [props.steps])
-			useWhatChanged([indexedSteps])
 
 
 			let nextId: number = 1
