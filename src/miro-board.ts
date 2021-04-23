@@ -5,7 +5,7 @@ import { log } from "./global-dependency-container";
 import { IBoard, SelectedStep, WidgetSnapshot } from "app/iboard";
 // import { log } from "./libs/logging/log";
 
-export class Board implements IBoard {
+export class MiroBoard implements IBoard {
 
     openModal(modalAddress: string) {
         miro.board.ui.openModal(modalAddress, { width: 50, height: 50 })

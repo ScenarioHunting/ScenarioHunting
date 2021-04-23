@@ -19,7 +19,7 @@ const appConfig = {
 	entry: {
 		index: './src/index.ts',
 		sidebar: {
-			import: './src/sidebar.tsx',
+			import: './src/app/app.tsx',
 			//To split this file in order to be able to access it by the template editor:
 			dependOn: 'templateRepository'
 		},
