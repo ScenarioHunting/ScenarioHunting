@@ -12,8 +12,8 @@ async function addSamplesToRepository(repository: iTemplateRepository) {
 }
 
 export async function getTemplateRepository(): Promise<iTemplateRepository> {
-    // var singletonInstance = new miroTemplateRepository()
-    var singletonInstance = new inMemoryTemplateRepository()
+    var singletonInstance = new miroTemplateRepository()
+    // var singletonInstance = new inMemoryTemplateRepository()
     await addSamplesToRepository(singletonInstance)
     return singletonInstance
 }

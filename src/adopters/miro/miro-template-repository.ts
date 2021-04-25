@@ -1,8 +1,8 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
-// import { log } from '../../libs/logging/log';
+import { log } from "../../global-dependency-container";
 import { iTemplateRepository, textTemplate } from '../../app/ports/itemplate-repository'
-const log = console
+// const log = console
 
 export class miroTemplateRepository implements iTemplateRepository {
     // constructor() {

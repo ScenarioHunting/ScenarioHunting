@@ -8,7 +8,7 @@ const app = <div style={{ display: 'flex' }}>
     <Sidebar />
 
 
-    <BoardUi />
+    {/* <BoardUi />
 
     <div id="popup" style={{
         display: 'none',
@@ -37,7 +37,7 @@ const app = <div style={{ display: 'flex' }}>
         overflow: 'hidden',
         backgroundColor: 'rgba(0,0,0,.75)',
         display: 'none'
-    }}></div>
+    }}></div> */}
 </div>
 
 ReactDOM.render(app, document.getElementById('react-app'))
