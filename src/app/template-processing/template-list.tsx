@@ -2,9 +2,9 @@
 /* eslint-disable no-unused-vars */
 import styles from './template-list.css'
 import * as React from 'react';
-import { getTemplateRepository } from './template-repository';
+import { getTemplateRepository } from '../../adopters/template-repository';
 import { useState, useEffect } from "react";
-import { log } from '../../global-dependency-container';
+import { log, singletonBoard } from '../../global-dependency-container';
 // import { log } from '../../logging/log';
 
 export function TemplateList(props): JSX.Element {
@@ -12,22 +12,25 @@ export function TemplateList(props): JSX.Element {
 
     const [templateNames, setAvailableTemplateNames] = useState<string[]>([]);
     function loadTemplateNames() {
+        log.log('Loading all template names:')
         getTemplateRepository().then(repo => {
+            log.log('Repository instantiated.')
             repo.getAllTemplateNames().then(templateNames => {
+                log.log('Templates loaded from repository:', templateNames)
                 setAvailableTemplateNames(templateNames)
+                log.log('Templates set to the component:', templateNames)
             }).catch(e => { throw e })
         })
     }
     useEffect(loadTemplateNames, []);
-    function addTemplate() {
-        miro.board.ui.openModal(`./monaco-editor.html`, { width: 940, fullscreen: false })
+    function openModal(iframeURL: string, options?: { width?: number; height?: number } | { fullscreen: boolean }): Promise<any> {
+        return singletonBoard.openModal(iframeURL, options)
     }
-    function openModal(url: string): Promise<any> {
-        return miro.board.ui.openModal(url, { fullscreen: false })
+    function addTemplate() {
+        openModal(`./monaco-editor.html`, { width: 940, fullscreen: false })
     }
     function editTemplate(templateName: string) {
         log.log(templateName)
-        // eslint-disable-next-line no-undef
         getTemplateRepository()
             .then(repository => {
                 // logger.log(`All Template Names:`, repository.getAllTemplateNames())
@@ -35,7 +38,7 @@ export function TemplateList(props): JSX.Element {
                 repository.getTemplateByName(templateName).then(template => {
                     log.log(`Template: ${template} is here:`, template)
                     const queryString = `?templateName=${templateName}&templateContent=${JSON.stringify(template)}&templateContentObj=${template}`
-                    openModal(`./monaco-editor.html${queryString}`)
+                    openModal(`./monaco-editor.html${queryString}`, { fullscreen: false })
                         .then(() => loadTemplateNames())
                 })
             })

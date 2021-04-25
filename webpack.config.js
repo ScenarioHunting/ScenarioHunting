@@ -1,7 +1,7 @@
 const path = require('path')
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 // const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
-const templateRepositoryPath = './src/app/template-processing/template-repository.ts'
+const templateRepositoryPath = './src/adopters/template-repository.ts'
 const appConfig = {
 	name: 'app',
 	optimization: {
@@ -114,6 +114,9 @@ const editorConfig = {
 				exclude: /node_modules/
 			},
 		]
+	},
+	resolve: {
+		extensions: ['.tsx', '.ts', 'css', '.js', '.svg']
 	},
 	output: {
 		path: path.resolve(__dirname, 'dist'),

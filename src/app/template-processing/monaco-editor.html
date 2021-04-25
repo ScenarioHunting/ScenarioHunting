@@ -85,10 +85,15 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/loader.min.js"></script>
     <script>
         function showNotification(message) {
-            return miro.showNotification(message)
+            if (miro.showNotification)
+                return miro.showNotification(message)
+            else {
+                return alert(message)
+            }
         }
         function close() {
-            miro.board.ui.closeModal()
+            if (miro.board)
+                miro.board.ui.closeModal()
         }
 
         let templateContent = ""
@@ -129,9 +134,9 @@
 `], { type: 'text/javascript' }));
 
 
-        
+
         require(["vs/editor/editor.main"], async function () {
-           
+
 
             if (originalTemplateName) {
                 var repository = await templateRepository.getTemplateRepository()

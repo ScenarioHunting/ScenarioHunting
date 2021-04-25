@@ -5,7 +5,7 @@ import { queueingMachine } from './local-dependency-container';
 import * as React from 'react'
 import { TestStepTurn } from "./step-picker/scenario-step-turn";
 import { GivenStep } from './given-step';
-import { SelectedStep } from '../iboard';
+import { SelectedStep } from '../ports/iboard';
 import { log } from '../../global-dependency-container';
 
 export type OrderedSelectedStep = {

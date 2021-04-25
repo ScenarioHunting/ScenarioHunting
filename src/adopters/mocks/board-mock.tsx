@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
-import { IBoard, SelectedStep, WidgetSnapshot } from "app/iboard";
-import { log } from "./global-dependency-container";
+import { IBoard, SelectedStep, WidgetSnapshot } from "app/ports/iboard";
+import { log } from "../../global-dependency-container";
 import * as React from 'react';
 
 class BoardMock implements IBoard {
@@ -27,6 +27,28 @@ class BoardMock implements IBoard {
     showNotification: (message: string) => Promise<void> = (message) =>
         Promise.resolve(this.showStatus('Notification message:\n' + message))
 
+    openModal(iframeURL: string, options?: { width?: number; height?: number } | { fullscreen: boolean }): Promise<any> {
+        document!.getElementById("popupdarkbg")!.style.display = "block";
+        document!.getElementById("popup")!.style.display = "block";
+        (document!.getElementById('popupiframe')! as HTMLIFrameElement).src = iframeURL;
+        document!.getElementById('popupdarkbg')!.onclick = function () {
+            document.getElementById("popup")!.style.display = "none";
+            document.getElementById("popupdarkbg")!.style.display = "none";
+        };
+
+        // window.onkeydown = function (e) {
+        //     if (e.keyCode == 27) {
+        //         // @ts-ignore: Object is possibly 'null'.
+        //         document.getElementById("popup").style.display = "none";
+        //         // @ts-ignore: Object is possibly 'null'.
+        //         document.getElementById("popupdarkbg").style.display = "none";
+        //         e.preventDefault();
+        //         return;
+        //     }
+        // }
+
+        return Promise.resolve()
+    }
 
     zoomTo: (widget: WidgetSnapshot) => void = (widget: WidgetSnapshot) =>
         this.showStatus('Zooming to:\n' + widget.id)
