@@ -1,11 +1,14 @@
-// import { log } from '../../libs/logging/log';
-const log = console
 /* eslint-disable no-undef */
-class templateRepository {
+/* eslint-disable no-unused-vars */
+// import { log } from '../../libs/logging/log';
+import { iTemplateRepository, textTemplate } from '../../app/ports/itemplate-repository'
+const log = console
+
+export class miroTemplateRepository implements iTemplateRepository {
     // constructor() {
     //     miro.board.widgets.get({
     //         metadata: {
-    //             [miro.getClientId()]: {
+    //             [miro.   getClientId()]: {
     //                 "role": role,
     //             }
     //         }
@@ -22,7 +25,7 @@ class templateRepository {
             .map(w => {
                 log.log('template:' + w.metadata[miro.getClientId()]["templateName"] + "found!")
                 return w.metadata[miro.getClientId()]["templateName"]
-            });
+            })
     }
     public async removeTemplate(templateName: string) {
         var widgets = await this.findWidgetByTemplateName(templateName)
@@ -112,124 +115,4 @@ class templateRepository {
         log.log("Corresponding template:", template)
         return template
     }
-}
-export type textTemplate = {
-    templateName: string,
-    contentTemplate: string,
-    fileNameTemplate: string
-    fileExtension: string,
-}
-async function addSamplesToRepository(repository: templateRepository) {
-    const sampleTemplates: textTemplate[] = [
-        {
-            fileNameTemplate: "{{scenario}}",
-            fileExtension: "cs",
-            contentTemplate: `using StoryTest;
-using Vlerx.Es.Messaging;
-using Vlerx.Es.Persistence;
-using Vlerx.SampleContracts.{{sut}};
-using Vlerx.{{context}}.{{sut}};
-using Vlerx.{{context}}.{{sut}}.Commands;
-using Vlerx.{{context}}.Tests.StoryTests;
-using Xunit;
-
-namespace {{context}}.Tests
-{
-    {{#* inline "callConstructor"}}
-    new {{title}}({{#each properties}}"{{example}}"{{#skipLast}},{{/skipLast}}{{/each}}){{/inline}}
-
-    public class {{scenario}} : IStorySpecification
-    {
-        public IDomainEvent[] Given
-        => new IDomainEvent[]{
-    {{#each givens}}
-        {{> callConstructor .}},
-    {{/each}}
-        };
-
-        public ICommand When
-        => {{> callConstructor when}};
-
-        public IDomainEvent[] Then
-        => new IDomainEvent[]{
-    {{#each thens}}
-        {{> callConstructor .}},
-    {{/each}}
-        };
-
-        public string Sut { get; } = nameof({{sut}});
-
-        [Fact]
-        public void Run()
-        => TestAdapter.Test(this
-                , setupUseCases: eventStore =>
-                        new[] {
-                        new {{sut}}UseCases(new Repository<{{sut}}.State>(eventStore))
-                        });
-    }
-}`,
-            templateName: "sample-template"
-        },
-        {
-            fileNameTemplate: "{{scenario}}",
-            fileExtension: "features",
-            contentTemplate: `using StoryTest;
-using Vlerx.Es.Messaging;
-using Vlerx.Es.Persistence;
-using Vlerx.SampleContracts.{{sut}};
-using Vlerx.{{context}}.{{sut}};
-using Vlerx.{{context}}.{{sut}}.Commands;
-using Vlerx.{{context}}.Tests.StoryTests;
-using Xunit;
-
-namespace {{context}}.Tests
-{
-    {{#* inline "callConstructor"}}
-    new {{title}}({{#each properties}}"{{example}}"{{#skipLast}},{{/skipLast}}{{/each}}){{/inline}}
-
-    public class {{scenario}} : IStorySpecification
-    {
-        public IDomainEvent[] Given
-        => new IDomainEvent[]{
-    {{#each givens}}
-        {{> callConstructor .}},
-    {{/each}}
-        };
-        public ICommand When
-        => {{> callConstructor when}};
-        public IDomainEvent[] Then
-        => new IDomainEvent[]{
-    {{#each thens}}
-        {{> callConstructor .}},
-    {{/each}}
-        };
-
-        public string Sut { get; } = nameof({{sut}});
-
-        [Fact]
-        public void Run()
-        => TestAdapter.Test(this
-                , setupUseCases: eventStore =>
-                        new[] {
-                        new {{sut}}UseCases(new Repository<{{sut}}.State>(eventStore))
-                        });
-    }
-}`,
-            templateName: "sample-template2"
-        },
-    ]
-    for (var i = 0; i < sampleTemplates.length; i++) {
-        await repository.createOrReplaceTemplate(sampleTemplates[i].templateName, sampleTemplates[i])
-    }
-    // sampleTemplates.forEach(async x => await repository.createOrReplaceTemplate(x))
-}
-
-
-export async function getTemplateRepository(): Promise<templateRepository> {
-    return new templateRepository()
-}
-
-export async function createOrUpdateSampleTemplates() {
-    var singletonInstance = new templateRepository()
-    await addSamplesToRepository(singletonInstance)
 }

@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { CSSProperties } from "react"
-import { stepSchema } from "./spec"
+import { stepSchema } from "../spec"
 
 export type WidgetSnapshot = {
     id: string
@@ -17,5 +17,6 @@ export interface IBoard {
     interceptPossibleTextEdit(updateText: (widgetId: string, updatedWidget: string) => Promise<string>)
     unselectAll: () => Promise<void>
     showNotification: (message: string) => Promise<void>
+    openModal(iframeURL: string, options?: { width?: number; height?: number } | { fullscreen: boolean }): Promise<any>
     zoomTo: (widget: WidgetSnapshot) => void
 }

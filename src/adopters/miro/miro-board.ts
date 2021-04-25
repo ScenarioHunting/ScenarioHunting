@@ -1,15 +1,14 @@
 /* eslint-disable no-undef */
-import { extractStepSchema } from "./app/scenario-builder/board-text-schema-extractor";
+import { extractStepSchema } from "../../app/scenario-builder/board-text-schema-extractor";
 import { CSSProperties } from "react";
-import { log } from "./global-dependency-container";
-import { IBoard, SelectedStep, WidgetSnapshot } from "app/iboard";
+import { log } from "../../global-dependency-container";
+import { IBoard, SelectedStep, WidgetSnapshot } from "app/ports/iboard";
 // import { log } from "./libs/logging/log";
 
 export class MiroBoard implements IBoard {
 
-    openModal(modalAddress: string) {
-        miro.board.ui.openModal(modalAddress, { width: 50, height: 50 })
-        throw new Error("Method not implemented.");
+    openModal(iframeURL: string, options?: { width?: number; height?: number } | { fullscreen: boolean }): Promise<any> {
+        return miro.board.ui.openModal(iframeURL, options)
     }
     private previouslySelectedWidgets: SDK.IWidget[]
 

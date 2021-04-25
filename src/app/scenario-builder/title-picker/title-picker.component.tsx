@@ -1,6 +1,6 @@
 import sharedStyles from '../step-picker/scenario-step-shared.styles.css'
 import * as React from "react";
-import { IBoard, SelectedStep } from '../../iboard';
+import { IBoard, SelectedStep } from '../../ports/iboard';
 import { log, singletonBoard } from "../../../global-dependency-container";
 import { TestStepTurn } from "../step-picker/scenario-step-turn";
 import { queueingMachine } from "../local-dependency-container";

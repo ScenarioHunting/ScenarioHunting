@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import { getTemplateRepository } from "../template-processing/template-repository"
+import { getTemplateRepository } from "../../adopters/template-repository"
 import { isNullOrUndefined } from "../../libs/isNullOrUndefined"
 import { compileTemplate } from "../template-processing/template-compiler"
 import { log } from "../../global-dependency-container";

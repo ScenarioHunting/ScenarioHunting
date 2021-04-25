@@ -1,6 +1,6 @@
 import { log, singletonBoard, testResultReports } from "./global-dependency-container";
 import { WhenTestResultsSummeryViewModel, TestReportToSummery, WhenTestReportViewModel } from "./test-result-reports";
-import { createOrUpdateSampleTemplates } from "./app/template-processing/template-repository";
+// import { createOrUpdateSampleTemplates } from "./adopters/template-repository";
 
 /* eslint-disable no-undef */
 const testIcon = '<path fill="currentColor" fill-rule="nonzero" d="M15,4h1V2H8V4H9v6.6L2.25,22H21.75L15,10.6Zm3.25,16H5.75L11,11.15V4h2v7.15Z"/>'
@@ -164,5 +164,5 @@ miro.onReady(async () => {
 	})
 
 	// subscribeToServerEvents("ws://localhost:8080/ws")
-	createOrUpdateSampleTemplates()
+	// createOrUpdateSampleTemplates()
 })
