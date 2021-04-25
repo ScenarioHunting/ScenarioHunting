@@ -84,10 +84,23 @@ export class miroTemplateRepository implements iTemplateRepository {
 
         }
     }
+    private waitUntil = (condition) => {
+        return new Promise((resolve:(value:any)=>void) => {
+            let interval = setInterval(() => {
+                if (!condition()) {
+                    return
+                }
+    
+                clearInterval(interval)
+                resolve(null)
+            }, 100)
+        })
+    }
     private async findAllTemplateWidgets(): Promise<SDK.ITextWidget[]> {
         // var stat = (await miro.board.widgets.get()).filter(x => x.type == 'TEXT' && x["text"].includes('using'))
         // logger.log("# of widgets contain using in their text:", stat.length)
-        while(!miro.board){}
+        await this.waitUntil(() => miro.board)
+        // while(!miro.board){}
         var widgets = await miro.board.widgets.get()
 
         // logger.log("# of widgets that have metadata.clientId.templateName:", widgets.filter(i => i.metadata && i.metadata[miro.getClientId()] && i.metadata[miro.getClientId()] && i.metadata[miro.getClientId()]["templateName"]).length)
