@@ -87,6 +87,7 @@ export class miroTemplateRepository implements iTemplateRepository {
     private async findAllTemplateWidgets(): Promise<SDK.ITextWidget[]> {
         // var stat = (await miro.board.widgets.get()).filter(x => x.type == 'TEXT' && x["text"].includes('using'))
         // logger.log("# of widgets contain using in their text:", stat.length)
+        while(!miro.board){}
         var widgets = await miro.board.widgets.get()
 
         // logger.log("# of widgets that have metadata.clientId.templateName:", widgets.filter(i => i.metadata && i.metadata[miro.getClientId()] && i.metadata[miro.getClientId()] && i.metadata[miro.getClientId()]["templateName"]).length)
