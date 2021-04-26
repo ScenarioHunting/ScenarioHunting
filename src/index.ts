@@ -137,7 +137,7 @@ miro.onReady(async () => {
 			// 			tooltip: 'Make an Example',
 			// 			svgIcon: testIcon,//Config.icon,
 			// 			onClick: () => {
-			// 				// miro.board.ui.openLeftSidebar('sidebar.html')
+			// 				// miro.board.ui.openLeftSidebar('app.html')
 			// 				// makeAnExample(widgets[0])
 			// 				// handleAuthAndOpenWindow(openEstimateModal, widgets);
 			// 			}
@@ -159,7 +159,7 @@ miro.onReady(async () => {
 				title: 'Context Reflective Test',
 				svgIcon: testIcon,
 				onClick: () => {
-					miro.board.ui.openLeftSidebar('sidebar.html')
+					miro.board.ui.openLeftSidebar('app.html')
 				}
 			}
 		}
