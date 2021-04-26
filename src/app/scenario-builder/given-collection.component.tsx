@@ -1,6 +1,4 @@
 import sharedStyles from './step-picker/scenario-step-shared.styles.css'
-// eslint-disable-next-line no-unused-vars
-import styles from './given-collection.style.css'
 import { queueingMachine } from './local-dependency-container';
 import * as React from 'react'
 import { TestStepTurn } from "./step-picker/scenario-step-turn";

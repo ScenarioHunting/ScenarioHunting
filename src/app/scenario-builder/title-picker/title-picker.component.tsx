@@ -6,8 +6,6 @@ import { queueingMachine } from "../local-dependency-container";
 import { ExternalServices, log } from "../../../external-services"
 const boardService = ExternalServices.boardService
 
-// const turn = TestStepTurn.Subject
-const queue = queueingMachine
 export function SelectableText(props: {
     value: string,
     turn: TestStepTurn,
@@ -26,7 +24,7 @@ export function SelectableText(props: {
         setErrors(props.validate(newValue))
         setValue(newValue)
         props.onChange(newValue)
-        queue.done(props.turn)
+        queueingMachine.done(props.turn)
     }
 
     function select() {
@@ -41,7 +39,7 @@ export function SelectableText(props: {
     React.useEffect(() => {
         setErrors(props.validate(props.value))
         boardService.unselectAll();
-        queue.onTurn(props.turn, () => {
+        queueingMachine.onTurn(props.turn, () => {
             setIsActive(true)
             log.log('Waiting...')
             select()

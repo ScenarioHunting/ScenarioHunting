@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import { isNullOrUndefined } from "../../libs/isNullOrUndefined"
 import { compileTemplate } from "../template-processing/template-compiler"
 import { spec } from "app/spec";

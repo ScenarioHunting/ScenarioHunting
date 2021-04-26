@@ -1,9 +1,7 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 import { iTemplateRepository, textTemplate } from '../../app/ports/itemplate-repository'
-// import { ExternalServices } from "../../external-services";
 import { log } from "../../external-services";
-// const log = console
 export class miroTemplateRepository implements iTemplateRepository {
     // constructor() {
     //     miro.board.widgets.get({
@@ -75,7 +73,6 @@ export class miroTemplateRepository implements iTemplateRepository {
             log.log("Updating template:", template)
 
             var dbWidget = widgets[0];
-            // dbWidget["test"] = template.contentTemplate
             dbWidget.metadata[miro.getClientId()] = template;
             // dbWidget.metadata[miro.getClientId()].clientVisible = false;
 

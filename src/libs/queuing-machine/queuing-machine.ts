@@ -1,8 +1,6 @@
-// import { log } from "../logging/log";
 import { IQueuingMachine } from "./iqueuing-machine";
-// import { ExternalServices } from "../../external-services";
 import { log } from "../../external-services";
-/* eslint-disable no-unused-vars */
+
 export class QueuingMachine<T extends string> implements IQueuingMachine<T>{
     constructor(private sortedTokens: T[]) {
         if (!sortedTokens || sortedTokens.length == 0) {

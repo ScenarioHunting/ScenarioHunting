@@ -29,7 +29,6 @@ export function TemplateList(props): JSX.Element {
     }
     function editTemplate(templateName: string) {
         log.log(templateName)
-        // logger.log(`All Template Names:`, repository.getAllTemplateNames())
 
         templateRepository.getTemplateByName(templateName).then(template => {
             log.log(`Template: ${template} is here:`, template)
