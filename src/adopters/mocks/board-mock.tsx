@@ -96,7 +96,7 @@ export function UIComponent() {
             }
         }
 
-    }))
+    }, null, 2))
     function select() {
         if (!step) {
             alert("No selection!")
