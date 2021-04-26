@@ -1,9 +1,9 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
-import { log } from "../../global-dependency-container";
 import { iTemplateRepository, textTemplate } from '../../app/ports/itemplate-repository'
+// import { ExternalServices } from "../../global-dependency-container";
+import {log} from "../../global-dependency-container";
 // const log = console
-
 export class miroTemplateRepository implements iTemplateRepository {
     // constructor() {
     //     miro.board.widgets.get({
@@ -85,25 +85,20 @@ export class miroTemplateRepository implements iTemplateRepository {
         }
     }
     private waitUntil = (condition) => {
-        return new Promise((resolve:(value:any)=>void) => {
+        return new Promise((resolve: (value: any) => void) => {
             let interval = setInterval(() => {
                 if (!condition()) {
                     return
                 }
-    
+
                 clearInterval(interval)
                 resolve(null)
             }, 100)
         })
     }
     private async findAllTemplateWidgets(): Promise<SDK.ITextWidget[]> {
-        // var stat = (await miro.board.widgets.get()).filter(x => x.type == 'TEXT' && x["text"].includes('using'))
-        // logger.log("# of widgets contain using in their text:", stat.length)
         await this.waitUntil(() => miro.board)
-        // while(!miro.board){}
         var widgets = await miro.board.widgets.get()
-
-        // logger.log("# of widgets that have metadata.clientId.templateName:", widgets.filter(i => i.metadata && i.metadata[miro.getClientId()] && i.metadata[miro.getClientId()] && i.metadata[miro.getClientId()]["templateName"]).length)
 
         return widgets
             .filter(i => i.type == 'TEXT'

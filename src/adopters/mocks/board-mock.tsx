@@ -1,6 +1,8 @@
 /* eslint-disable no-unused-vars */
 import { IBoard, SelectedStep, WidgetSnapshot } from "app/ports/iboard";
-import { log } from "../../global-dependency-container";
+// import { ExternalServices } from "../../global-dependency-container";
+// import {log} from 
+
 import * as React from 'react';
 
 class BoardMock implements IBoard {
@@ -60,7 +62,8 @@ const board = new BoardMock()
 export function MockBoard(): IBoard {
     return board
 }
-export function BoardUi() {
+
+export function UIComponent() {
     const [statusMessage, setStatusMessage] = React.useState("status")
     board.showStatus = message => setStatusMessage(message)
     const [step, changeStep] = React.useState<string>(JSON.stringify({
@@ -120,5 +123,36 @@ export function BoardUi() {
             marginBottom: 'auto'
         }}
         >{statusMessage}</pre>
+        <div id="popup" style={{
+            display: 'none',
+            position: 'fixed',
+            top: '12%',
+            left: '15%',
+            width: '70%',
+            height: '70%',
+            backgroundColor: 'white',
+            zIndex: 10
+        }}>
+            <iframe id="popupiframe" style={{
+                width: '100%',
+                height: '100%',
+                border: 0
+            }}>
+            </iframe>
+        </div>
+        <div id="popupdarkbg" style={{
+            position: 'fixed',
+            zIndex: 5,
+            left: 0,
+            top: 0,
+            width: '100%',
+            height: '100%',
+            overflow: 'hidden',
+            backgroundColor: 'rgba(0,0,0,.75)',
+            display: 'none'
+        }}></div>
     </div >
+}
+export class BoardUi {
+    component = UIComponent;
 }

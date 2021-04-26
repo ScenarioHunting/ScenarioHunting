@@ -1,9 +1,10 @@
 /* eslint-disable no-undef */
 import { extractStepSchema } from "../../app/scenario-builder/board-text-schema-extractor";
 import { CSSProperties } from "react";
-import { log } from "../../global-dependency-container";
 import { IBoard, SelectedStep, WidgetSnapshot } from "app/ports/iboard";
-// import { log } from "./libs/logging/log";
+// import { ExternalServices } from "../../global-dependency-container";
+import {log} from "../../global-dependency-container";
+
 
 export class MiroBoard implements IBoard {
 
