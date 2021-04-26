@@ -1,13 +1,11 @@
 /* eslint-disable no-undef */
-// import { getTemplateRepository } from "../../adopters/template-repository"
 import { isNullOrUndefined } from "../../libs/isNullOrUndefined"
 import { compileTemplate } from "../template-processing/template-compiler"
 import { spec } from "app/spec";
-// import { ExternalServices } from "../../global-dependency-container";
 import { ExternalServices, log } from "../../global-dependency-container";
-const getTemplateRepository = () => Promise.resolve(ExternalServices.templateRepository)
+const templateRepository = ExternalServices.templateRepository
 
-function saveAs(fileName: string, data: string) {
+function downloadAs(fileName: string, data: string) {
     log.log(`Saving as: file Name: ${fileName} content: ${JSON.stringify(data)}`)
     var blob = new Blob([data], { type: "text/plain;charset=utf-8" });
     if (isNullOrUndefined(window.navigator.msSaveOrOpenBlob)) {
@@ -22,32 +20,30 @@ function saveAs(fileName: string, data: string) {
         window.navigator.msSaveBlob(blob, fileName);
     }
 }
-export async function Save(templateName: string, viewModel: spec): Promise<string> {
+export class ScenarioBuilderService {
+    static Save = async (templateName: string, viewModel: spec): Promise<string> => {
+        log.log("Saving the template for test:", viewModel.scenario)
 
-    log.log("Saving the template for test:", viewModel.scenario)
-    try {
+        try {
+            var template = await templateRepository.getTemplateByName(templateName)
+            log.log("template loaded:", templateName)
+        }
+        catch (e) {
+            log.log("An error occurred while loading the template:", e)
+            return e.toString()
+        }
 
-        var testTemplateRepository = await getTemplateRepository()
-        var template = await testTemplateRepository.getTemplateByName(templateName)
-        log.log("template loaded:", templateName)
+        try {
+            var testCode = compileTemplate(template.contentTemplate, viewModel)
+            var testFileName = compileTemplate(template.fileNameTemplate, viewModel)
+            log.log("compiled testCode:", testCode, "testFileName", testFileName)
+            downloadAs(`${testFileName}.${template.fileExtension}`, testCode)
+        } catch (e) {
+            //TODO: show the error to the user explicitly to help him to fix the bug in the template
+            log.error("Error while generating code. Probable template bug.", e)
+            return e.toString()
+        }
+
+        return 'Test created successfully.'
     }
-    catch (e) {
-        log.log("An error occurred while loading the template:", e)
-        return e.toString()
-    }
-
-    try {
-        var testCode = compileTemplate(template.contentTemplate, viewModel)
-        var testFileName = compileTemplate(template.fileNameTemplate, viewModel)
-        log.log("compiled testCode:", testCode, "testFileName", testFileName)
-        saveAs(`${testFileName}.${template.fileExtension}`, testCode)
-    } catch (e) {
-        //TODO: show the error to the user explicitly to help him to fix the bug in the template
-        log.error("Error while generating code. Probable template bug.", e)
-        return e.toString()
-    }
-
-    return 'Test created successfully.'
-
-
 }

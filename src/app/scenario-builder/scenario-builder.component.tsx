@@ -4,18 +4,15 @@ import { Givens, OrderedSelectedStep } from './given-collection.component';
 import { WhenStep as When } from './when-step';
 import { ThenStep as Then } from './then-step';
 import { SelectedStep } from '../ports/iboard';
-import { Save } from './scenario-builder.service';
+import { ScenarioBuilderService } from './scenario-builder.service';
 import { queueingMachine } from './local-dependency-container';
 import { useEffect, useState } from 'react';
 import { SelectableText } from './title-picker/title-picker.component';
 import { TestStepTurn } from './step-picker/scenario-step-turn';
 import { spec } from 'app/spec';
 import { ExternalServices } from '../../global-dependency-container';
-const boardService = ExternalServices.boardService
 const templateRepository = ExternalServices.templateRepository
-export const createTestRecorder = (board = boardService
-    , stepNavigator = queueingMachine
-    , save = Save): React.FC<any> => () => {
+export const createTestRecorder = (board = ExternalServices.boardService): React.FC<any> => () => {
         if (!board) {
             //TODO: Implement guard
         }
@@ -42,10 +39,10 @@ export const createTestRecorder = (board = boardService
         }
         useEffect(() => {
             board.unselectAll()
-                .then(stepNavigator.start);
-            templateRepository.getAllTemplateNames().then(x => {
-                setAvailableTemplateNames(x)
-                selectTemplateName(x[0])
+                .then(queueingMachine.start);
+            templateRepository.getAllTemplateNames().then(templateName => {
+                setAvailableTemplateNames(templateName)
+                selectTemplateName(templateName[0])
             }).catch(e => { throw e })
         }, [])
 
@@ -127,7 +124,7 @@ export const createTestRecorder = (board = boardService
                 thens: [then?.stepSchema],
             } as spec
             try {
-                await save(selectedTemplateName, viewModel)
+                await ScenarioBuilderService.Save(selectedTemplateName, viewModel)
                 board.showNotification('Test created successfully.')
             } catch {
                 board.showNotification('Test creation error try again later.\n')
