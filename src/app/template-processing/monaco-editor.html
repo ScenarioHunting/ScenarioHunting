@@ -100,8 +100,10 @@
         let editor
         const originalTemplateName = getParameterByName("templateName")
         document.getElementById("templateName").value = originalTemplateName
+
         async function save() {
-            var repository = await templateRepository.getTemplateRepository()
+            var repository = ExternalServices.ExternalServices.templateRepository
+            // var repository = await templateRepository.getTemplateRepository()
             // var template = await repository.getTemplateByName(templateName)
             const template = {
                 templateName: document.getElementById("templateName").value,
@@ -139,7 +141,10 @@
 
 
             if (originalTemplateName) {
-                var repository = await templateRepository.getTemplateRepository()
+                var repository = ExternalServices.ExternalServices.templateRepository
+                console.log('Services:', ExternalServices)
+
+                // var repository = await templateRepository.getTemplateRepository()
                 var template = await repository.getTemplateByName(originalTemplateName)
                 document.getElementById('fileNameTemplate').value = template.fileNameTemplate
                 document.getElementById('fileExtension').value = template.fileExtension

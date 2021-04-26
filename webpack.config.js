@@ -1,7 +1,8 @@
 const path = require('path')
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 // const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
-const templateRepositoryPath = './src/adopters/template-repository.ts'
+// const templateRepositoryPath = './src/adopters/template-repository.ts'
+const externalServicesPath = './src/global-dependency-container.tsx'
 const appConfig = {
 	name: 'app',
 	optimization: {
@@ -21,10 +22,12 @@ const appConfig = {
 		sidebar: {
 			import: './src/app/app.tsx',
 			//To split this file in order to be able to access it by the template editor:
-			dependOn: 'templateRepository'
+			dependOn: [ 'ExternalServices']
+
 		},
 		//To split this file in order to be able to access it by the template editor:
-		templateRepository: templateRepositoryPath
+		// templateRepository: templateRepositoryPath,
+		ExternalServices: externalServicesPath
 	},
 	module: {
 		rules: [
@@ -78,13 +81,14 @@ const appConfig = {
 		path: path.resolve(__dirname, 'dist'),
 		// clean: true,
 		libraryTarget: 'var',
-		library: 'templateRepo'
+		library: 'ExternalServices'
+		// library: 'templateRepo'
 	},
 	plugins: [
 		new HtmlWebPackPlugin({
 			template: "./src/index.html",
 			filename: "./index.html",
-			excludeChunks: ['templateRepository'],
+			excludeChunks: ['ExternalServices'],
 		}),
 		new HtmlWebPackPlugin({
 			template: "./src/sidebar.html",
@@ -103,7 +107,8 @@ const editorConfig = {
 		// 	// dependOn: 'templateRepositoryLib'
 		// },
 		monacoLanguage: './src/app/template-processing/monaco-languages.js',
-		templateRepositoryLib: templateRepositoryPath,
+		// templateRepositoryLib: templateRepositoryPath,
+		ExternalServices: externalServicesPath
 
 	},
 	module: {
@@ -124,13 +129,15 @@ const editorConfig = {
 
 		// filename: 'template-repository-lib.js',
 		libraryTarget: 'var',
-		library: 'templateRepository'
+		library: 'ExternalServices'
+		// library: 'templateRepository'
+
 	},
 	plugins: [
 		new HtmlWebPackPlugin({
 			template: "./src/app/template-processing/monaco-editor.html",
 			filename: "./monaco-editor.html",
-			chucks: ['templateRepository'],
+			chucks: ['ExternalServices'],
 			inject: 'head',
 			scriptLoading: 'blocking'
 		}),
