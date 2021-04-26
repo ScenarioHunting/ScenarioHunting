@@ -48,11 +48,11 @@ class mockedDependencies implements IExternalServices {
 
 let ExternalServices: IExternalServices
 
-// eslint-disable-next-line no-undef
-if (miro.board)
-    ExternalServices = new miroDependencies()
-else
-    ExternalServices = new mockedDependencies()
+// // eslint-disable-next-line no-undef
+// if (miro.board)
+ExternalServices = new miroDependencies()
+// else
+//     ExternalServices = new mockedDependencies()
 
 
 setDefaultTemplatesToRepository(ExternalServices.templateRepository)
