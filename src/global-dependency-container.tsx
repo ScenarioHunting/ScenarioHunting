@@ -47,5 +47,5 @@ class mockedDependencies implements IExternalServices {
 }
 
 
-export const ExternalServices: IExternalServices = new mockedDependencies()
+export const ExternalServices: IExternalServices = new miroDependencies()
 addSamplesToRepository(ExternalServices.templateRepository)
