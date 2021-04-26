@@ -1,6 +1,6 @@
-import { ExternalServices, testResultReports } from "./global-dependency-container";
+import { ExternalServices, testResultReports } from "./external-services";
 import { WhenTestResultsSummeryViewModel, TestReportToSummery, WhenTestReportViewModel } from "./test-result-reports";
-import {log} from "./global-dependency-container";
+import {log} from "./external-services";
 const boardService = ExternalServices.boardService
 // import { createOrUpdateSampleTemplates } from "./adopters/template-repository";
 

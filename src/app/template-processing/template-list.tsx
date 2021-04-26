@@ -3,7 +3,7 @@
 import styles from './template-list.css'
 import * as React from 'react';
 import { useState, useEffect } from "react";
-import { ExternalServices, log } from '../../global-dependency-container';
+import { ExternalServices, log } from '../../external-services';
 const boardService = ExternalServices.boardService
 const templateRepository = ExternalServices.templateRepository
 

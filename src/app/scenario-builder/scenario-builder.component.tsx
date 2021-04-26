@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react';
 import { SelectableText } from './title-picker/title-picker.component';
 import { TestStepTurn } from './step-picker/scenario-step-turn';
 import { spec } from 'app/spec';
-import { ExternalServices } from '../../global-dependency-container';
+import { ExternalServices } from '../../external-services';
 const templateRepository = ExternalServices.templateRepository
 export const createTestRecorder = (board = ExternalServices.boardService): React.FC<any> => () => {
         if (!board) {

@@ -2,7 +2,7 @@
 import { isNullOrUndefined } from "../../libs/isNullOrUndefined"
 import { compileTemplate } from "../template-processing/template-compiler"
 import { spec } from "app/spec";
-import { ExternalServices, log } from "../../global-dependency-container";
+import { ExternalServices, log } from "../../external-services";
 const templateRepository = ExternalServices.templateRepository
 
 function downloadAs(fileName: string, data: string) {

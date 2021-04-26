@@ -6,7 +6,7 @@ import * as React from 'react'
 import { TestStepTurn } from "./step-picker/scenario-step-turn";
 import { GivenStep } from './given-step';
 import { SelectedStep } from '../ports/iboard';
-import { log } from '../../global-dependency-container';
+import { log } from '../../external-services';
 
 export type OrderedSelectedStep = {
 	index: number

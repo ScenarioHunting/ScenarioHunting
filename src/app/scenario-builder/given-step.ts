@@ -1,5 +1,5 @@
 import { TestStepTurn } from "./step-picker/scenario-step-turn";
-import { ExternalServices } from "../../global-dependency-container";
+import { ExternalServices } from "../../external-services";
 import { createTestStepRecorder } from "./step-picker/scenario-step-picker.component";
 import { immediateQueuingMachine } from "./local-dependency-container";
 const boardService = ExternalServices.boardService

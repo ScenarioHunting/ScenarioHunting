@@ -1,7 +1,7 @@
 const path = require('path')
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 // const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
-const externalServicesPath = './src/global-dependency-container.tsx'
+const externalServicesPath = './src/external-services.tsx'
 const appConfig = {
 	name: 'app',
 	optimization: {

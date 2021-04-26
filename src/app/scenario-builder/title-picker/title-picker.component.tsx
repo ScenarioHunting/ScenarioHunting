@@ -3,7 +3,7 @@ import * as React from "react";
 import { SelectedStep } from '../../ports/iboard';
 import { TestStepTurn } from "../step-picker/scenario-step-turn";
 import { queueingMachine } from "../local-dependency-container";
-import { ExternalServices, log } from "../../../global-dependency-container"
+import { ExternalServices, log } from "../../../external-services"
 const boardService = ExternalServices.boardService
 
 // const turn = TestStepTurn.Subject
