@@ -18,7 +18,7 @@ const appConfig = {
 
 	entry: {
 		index: './src/index.ts',
-		sidebar: {
+		app: {
 			import: './src/app/app.tsx',
 			//To split this file in order to be able to access it by the template editor:
 			dependOn: [ 'ExternalServices']
@@ -88,8 +88,8 @@ const appConfig = {
 			excludeChunks: ['ExternalServices'],
 		}),
 		new HtmlWebPackPlugin({
-			template: "./src/sidebar.html",
-			filename: "./sidebar.html",
+			template: "./src/app/app.html",
+			filename: "./app.html",
 			excludeChunks: ['index']
 		}),
 	]
