@@ -1,10 +1,10 @@
 import { TestStepTurn } from "./step-picker/scenario-step-turn";
-import { singletonBoard } from "../../global-dependency-container";
+import { ExternalServices } from "../../global-dependency-container";
 import { createTestStepRecorder } from "./step-picker/scenario-step-picker.component";
 import { immediateQueuingMachine } from "./local-dependency-container";
-
+const boardService = ExternalServices.boardService
 export let GivenStep = createTestStepRecorder({
-    board: singletonBoard,
+    board: boardService,
     stepNavigator: immediateQueuingMachine,
 
     stepType: '',

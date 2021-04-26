@@ -1,5 +1,7 @@
-import { log, singletonBoard, testResultReports } from "./global-dependency-container";
+import { ExternalServices, testResultReports } from "./global-dependency-container";
 import { WhenTestResultsSummeryViewModel, TestReportToSummery, WhenTestReportViewModel } from "./test-result-reports";
+import {log} from "./global-dependency-container";
+const boardService = ExternalServices.boardService
 // import { createOrUpdateSampleTemplates } from "./adopters/template-repository";
 
 /* eslint-disable no-undef */
@@ -65,9 +67,9 @@ const attachReportToWidgetText = (vm: WhenTestResultsSummeryViewModel, theOrigin
 	return theOriginalText + reportComponent
 }
 const applyReportToWidget = async (widgetId: string, vm: WhenTestResultsSummeryViewModel) => {
-	const originalWidgetText = await singletonBoard.getWidgetText(widgetId)
+	const originalWidgetText = await boardService.getWidgetText(widgetId)
 	const newWidgetText = attachReportToWidgetText(vm, originalWidgetText)
-	await singletonBoard.updateWidgetText(widgetId, newWidgetText)
+	await boardService.updateWidgetText(widgetId, newWidgetText)
 }
 let generateBoardSection = (content: any) => {
 
@@ -119,32 +121,32 @@ miro.onReady(async () => {
 	// logger.log("Client Id:", miro.getClientId())3074457349056199734
 	// .............................................3074457349056199734
 
-	await singletonBoard.interceptPossibleTextEdit(attachReportToWidgetByWidgetId)
+	await boardService.interceptPossibleTextEdit(attachReportToWidgetByWidgetId)
 
 	await miro.initialize({
 		extensionPoints: {
-			getWidgetMenuItems: (widgets: SDK.IWidget[]/*, editMode: boolean*/): Promise<SDK.IWidgetMenuItem | SDK.IWidgetMenuItem[]> => {
+			// getWidgetMenuItems: (widgets: SDK.IWidget[]/*, editMode: boolean*/): Promise<SDK.IWidgetMenuItem | SDK.IWidgetMenuItem[]> => {
 
-				const supportedWidgetsInSelection = widgets
-				// .filter((widget) => Config.supported_widgets[widget.type.toLowerCase()] 
-				// 									!== undefined);
+			// 	const supportedWidgetsInSelection = widgets
+			// 	// .filter((widget) => Config.supported_widgets[widget.type.toLowerCase()] 
+			// 	// 									!== undefined);
 
-				// All selected widgets have to be supported in order to show the menu
-				if (supportedWidgetsInSelection.length == widgets.length && widgets.length == 1) {
-					return Promise.resolve<SDK.IWidgetMenuItem | SDK.IWidgetMenuItem[]>([{
-						tooltip: 'Make an Example',
-						svgIcon: testIcon,//Config.icon,
-						onClick: () => {
-							// miro.board.ui.openLeftSidebar('sidebar.html')
-							// makeAnExample(widgets[0])
-							// handleAuthAndOpenWindow(openEstimateModal, widgets);
-						}
-					}])
-				}
+			// 	// All selected widgets have to be supported in order to show the menu
+			// 	if (supportedWidgetsInSelection.length == widgets.length && widgets.length == 1) {
+			// 		return Promise.resolve<SDK.IWidgetMenuItem | SDK.IWidgetMenuItem[]>([{
+			// 			tooltip: 'Make an Example',
+			// 			svgIcon: testIcon,//Config.icon,
+			// 			onClick: () => {
+			// 				// miro.board.ui.openLeftSidebar('sidebar.html')
+			// 				// makeAnExample(widgets[0])
+			// 				// handleAuthAndOpenWindow(openEstimateModal, widgets);
+			// 			}
+			// 		}])
+			// 	}
 
-				// Not all selected widgets are supported, we won't show the menu
-				return Promise.resolve<SDK.IWidgetMenuItem | SDK.IWidgetMenuItem[]>([{} as SDK.IWidgetMenuItem]);
-			},
+			// 	// Not all selected widgets are supported, we won't show the menu
+			// 	return Promise.resolve<SDK.IWidgetMenuItem | SDK.IWidgetMenuItem[]>([{} as SDK.IWidgetMenuItem]);
+			// },
 			// exportMenu: {
 			// 	title: 'Boilerplate export',
 			// 	svgIcon: icon24,

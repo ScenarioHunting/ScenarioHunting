@@ -1,8 +1,8 @@
 import { createTestStepRecorder } from "./step-picker/scenario-step-picker.component";
 import { TestStepTurn } from "./step-picker/scenario-step-turn";
-import { singletonBoard } from "../../global-dependency-container";
 import { queueingMachine } from "./local-dependency-container";
-
+import { ExternalServices } from "../../global-dependency-container";
+const singletonBoard = ExternalServices.boardService
 export let ThenStep = createTestStepRecorder({
 	board: singletonBoard,
 	stepNavigator: queueingMachine,

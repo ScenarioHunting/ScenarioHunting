@@ -1,5 +1,4 @@
 import styles from './scenario-builder.style.css'
-import { singletonBoard } from '../../global-dependency-container';
 import * as React from 'react';
 import { Givens, OrderedSelectedStep } from './given-collection.component';
 import { WhenStep as When } from './when-step';
@@ -7,14 +6,15 @@ import { ThenStep as Then } from './then-step';
 import { SelectedStep } from '../ports/iboard';
 import { Save } from './scenario-builder.service';
 import { queueingMachine } from './local-dependency-container';
-import { getTemplateRepository } from '../../adopters/template-repository';
+// import { getTemplateRepository } from '../../adopters/template-repository';
 import { useEffect, useState } from 'react';
 import { SelectableText } from './title-picker/title-picker.component';
 import { TestStepTurn } from './step-picker/scenario-step-turn';
 import { spec } from 'app/spec';
-
-
-export const createTestRecorder = (board = singletonBoard
+import { ExternalServices } from '../../global-dependency-container';
+const boardService = ExternalServices.boardService
+const getTemplateRepository = () => Promise.resolve(ExternalServices.templateRepository)
+export const createTestRecorder = (board = boardService
     , stepNavigator = queueingMachine
     , save = Save): React.FC<any> => () => {
         if (!board) {

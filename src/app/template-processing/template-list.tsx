@@ -2,10 +2,11 @@
 /* eslint-disable no-unused-vars */
 import styles from './template-list.css'
 import * as React from 'react';
-import { getTemplateRepository } from '../../adopters/template-repository';
+// import { getTemplateRepository } from '../../adopters/template-repository';
 import { useState, useEffect } from "react";
-import { log, singletonBoard } from '../../global-dependency-container';
-// import { log } from '../../logging/log';
+import { ExternalServices, log } from '../../global-dependency-container';
+const boardService = ExternalServices.boardService
+const getTemplateRepository = () => Promise.resolve(ExternalServices.templateRepository)
 
 export function TemplateList(props): JSX.Element {
 
@@ -24,7 +25,7 @@ export function TemplateList(props): JSX.Element {
     }
     useEffect(loadTemplateNames, []);
     function openModal(iframeURL: string, options?: { width?: number; height?: number } | { fullscreen: boolean }): Promise<any> {
-        return singletonBoard.openModal(iframeURL, options)
+        return boardService.openModal(iframeURL, options)
     }
     function addTemplate() {
         openModal(`./monaco-editor.html`, { width: 940, fullscreen: false })

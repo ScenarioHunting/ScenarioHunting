@@ -1,10 +1,10 @@
 import { createTestStepRecorder } from "./step-picker/scenario-step-picker.component";
 import { TestStepTurn } from "./step-picker/scenario-step-turn";
-import { singletonBoard } from "../../global-dependency-container";
 import { queueingMachine } from "./local-dependency-container";
-
+import { ExternalServices } from "../../global-dependency-container";
+const boardService = ExternalServices.boardService
 export let WhenStep = createTestStepRecorder({
-	board: singletonBoard,
+	board: boardService,
 	stepNavigator: queueingMachine,
 	stepType: TestStepTurn.When,
 	selectionWaitingMessage: 'Select the exercise you want to test.',

@@ -1,9 +1,11 @@
 /* eslint-disable no-undef */
-import { getTemplateRepository } from "../../adopters/template-repository"
+// import { getTemplateRepository } from "../../adopters/template-repository"
 import { isNullOrUndefined } from "../../libs/isNullOrUndefined"
 import { compileTemplate } from "../template-processing/template-compiler"
-import { log } from "../../global-dependency-container";
 import { spec } from "app/spec";
+// import { ExternalServices } from "../../global-dependency-container";
+import { ExternalServices, log } from "../../global-dependency-container";
+const getTemplateRepository = () => Promise.resolve(ExternalServices.templateRepository)
 
 function saveAs(fileName: string, data: string) {
     log.log(`Saving as: file Name: ${fileName} content: ${JSON.stringify(data)}`)
@@ -21,7 +23,7 @@ function saveAs(fileName: string, data: string) {
     }
 }
 export async function Save(templateName: string, viewModel: spec): Promise<string> {
-    
+
     log.log("Saving the template for test:", viewModel.scenario)
     try {
 

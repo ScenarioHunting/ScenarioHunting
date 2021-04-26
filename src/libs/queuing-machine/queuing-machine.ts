@@ -1,7 +1,7 @@
 // import { log } from "../logging/log";
-import { log } from "../../global-dependency-container";
 import { IQueuingMachine } from "./iqueuing-machine";
-
+// import { ExternalServices } from "../../global-dependency-container";
+import { log } from "../../global-dependency-container";
 /* eslint-disable no-unused-vars */
 export class QueuingMachine<T extends string> implements IQueuingMachine<T>{
     constructor(private sortedTokens: T[]) {

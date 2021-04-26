@@ -2,6 +2,7 @@
 import { CSSProperties } from "react"
 import { stepSchema } from "../spec"
 
+
 export type WidgetSnapshot = {
     id: string
     style: CSSProperties

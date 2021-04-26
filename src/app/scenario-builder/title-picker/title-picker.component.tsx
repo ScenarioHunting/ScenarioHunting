@@ -1,12 +1,11 @@
 import sharedStyles from '../step-picker/scenario-step-shared.styles.css'
 import * as React from "react";
-import { IBoard, SelectedStep } from '../../ports/iboard';
-import { log, singletonBoard } from "../../../global-dependency-container";
+import { SelectedStep } from '../../ports/iboard';
 import { TestStepTurn } from "../step-picker/scenario-step-turn";
 import { queueingMachine } from "../local-dependency-container";
-// import { log } from '../../../libs/logging/log';
-
-const board: IBoard = singletonBoard
+import { ExternalServices } from "../../../global-dependency-container";
+import { log } from "../../../global-dependency-container"
+const boardService = ExternalServices.boardService
 // const turn = TestStepTurn.Subject
 const queue = queueingMachine
 export function SelectableText(props: {
@@ -32,8 +31,8 @@ export function SelectableText(props: {
 
     function select() {
         log.log('Waiting...')
-        board.unselectAll()
-        board.onNextSingleSelection((selectedWidget: SelectedStep) => {
+        boardService.unselectAll()
+        boardService.onNextSingleSelection((selectedWidget: SelectedStep) => {
             log.log(props.turn, 'Selected...')
             onChange(selectedWidget.stepSchema.title)
             log.log(props.value + ' selected')
@@ -41,7 +40,7 @@ export function SelectableText(props: {
     }
     React.useEffect(() => {
         setErrors(props.validate(props.value))
-        board.unselectAll();
+        boardService.unselectAll();
         queue.onTurn(props.turn, () => {
             setIsActive(true)
             log.log('Waiting...')
