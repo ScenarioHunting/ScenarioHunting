@@ -50,7 +50,7 @@ let ExternalServices: IExternalServices
 
 // eslint-disable-next-line no-undef
 if (miro.board)
-    ExternalServices = new mockedDependencies()
+    ExternalServices = new miroDependencies()
 else
     ExternalServices = new mockedDependencies()
 
