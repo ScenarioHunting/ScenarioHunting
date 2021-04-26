@@ -1,7 +1,5 @@
 /* eslint-disable no-unused-vars */
 import { IBoard, SelectedStep, WidgetSnapshot } from "app/ports/iboard";
-// import { ExternalServices } from "../../global-dependency-container";
-// import {log} from 
 
 import * as React from 'react';
 
@@ -67,12 +65,6 @@ export function UIComponent() {
     const [statusMessage, setStatusMessage] = React.useState("status")
     board.showStatus = message => setStatusMessage(message)
     const [step, changeStep] = React.useState<string>(JSON.stringify({
-        widgetSnapshot: {
-            id: "3074457354846911652",
-            style: {
-                backgroundColor: "#ff9d48"
-            }
-        },
         stepSchema: {
             $schema: "http://json-schema.org/draft-07/schema#",
             type: "object",
@@ -94,6 +86,12 @@ export function UIComponent() {
                     example: "+44555112100"
                 }
             }
+        },
+        widgetSnapshot: {
+            id: "3074457354846911652",
+            style: {
+                backgroundColor: "#ff9d48"
+            }
         }
 
     }, null, 2))
@@ -111,7 +109,7 @@ export function UIComponent() {
     }
     return <div style={{ width: '100%', backgroundColor: 'rebeccapurple' }}>
         <textarea
-            style={{ width: '99%', height: '300px' }}
+            style={{ width: '99%', height: '512px' }}
             onChange={x => changeStep(x.target.value)} value={step}>
         </textarea>
         <button style={{ width: '99%' }}

@@ -2,11 +2,10 @@
 /* eslint-disable no-unused-vars */
 import styles from './template-list.css'
 import * as React from 'react';
-// import { getTemplateRepository } from '../../adopters/template-repository';
 import { useState, useEffect } from "react";
 import { ExternalServices, log } from '../../global-dependency-container';
 const boardService = ExternalServices.boardService
-const getTemplateRepository = () => Promise.resolve(ExternalServices.templateRepository)
+const templateRepository = ExternalServices.templateRepository
 
 export function TemplateList(props): JSX.Element {
 
@@ -14,14 +13,12 @@ export function TemplateList(props): JSX.Element {
     const [templateNames, setAvailableTemplateNames] = useState<string[]>([]);
     function loadTemplateNames() {
         log.log('Loading all template names:')
-        getTemplateRepository().then(repo => {
-            log.log('Repository instantiated.')
-            repo.getAllTemplateNames().then(templateNames => {
-                log.log('Templates loaded from repository:', templateNames)
-                setAvailableTemplateNames(templateNames)
-                log.log('Templates set to the component:', templateNames)
-            }).catch(e => { throw e })
-        })
+        log.log('Repository instantiated.')
+        templateRepository.getAllTemplateNames().then(templateNames => {
+            log.log('Templates loaded from repository:', templateNames)
+            setAvailableTemplateNames(templateNames)
+            log.log('Templates set to the component:', templateNames)
+        }).catch(e => { throw e })
     }
     useEffect(loadTemplateNames, []);
     function openModal(iframeURL: string, options?: { width?: number; height?: number } | { fullscreen: boolean }): Promise<any> {
@@ -32,28 +29,21 @@ export function TemplateList(props): JSX.Element {
     }
     function editTemplate(templateName: string) {
         log.log(templateName)
-        getTemplateRepository()
-            .then(repository => {
-                // logger.log(`All Template Names:`, repository.getAllTemplateNames())
+        // logger.log(`All Template Names:`, repository.getAllTemplateNames())
 
-                repository.getTemplateByName(templateName).then(template => {
-                    log.log(`Template: ${template} is here:`, template)
-                    const queryString = `?templateName=${templateName}&templateContent=${JSON.stringify(template)}&templateContentObj=${template}`
-                    openModal(`./monaco-editor.html${queryString}`, { fullscreen: false })
-                        .then(() => loadTemplateNames())
-                })
-            })
-        // miro.board.ui.openModal(`./monaco-editor.html?templateName=${templateName}`, { fullscreen: false })
+        templateRepository.getTemplateByName(templateName).then(template => {
+            log.log(`Template: ${template} is here:`, template)
+            const queryString = `?templateName=${templateName}&templateContent=${JSON.stringify(template)}&templateContentObj=${template}`
+            openModal(`./monaco-editor.html${queryString}`, { fullscreen: false })
+                .then(() => loadTemplateNames())
+        })
     }
     function deleteTemplate(templateName: string) {
         if (!confirm(`You are about deleting the template: ${templateName}.\n Are you sure?`))
             return;
-        getTemplateRepository()
-            .then(repository => {
-                repository.removeTemplate(templateName)
-                setAvailableTemplateNames(templateNames.filter(t => t != templateName))
-                log.log("Template: " + templateName + " deleted.")
-            })
+        templateRepository.removeTemplate(templateName)
+        setAvailableTemplateNames(templateNames.filter(t => t != templateName))
+        log.log("Template: " + templateName + " deleted.")
     }
     return <>
         <div className={styles["raw"]} style={{ paddingBottom: "18px" }}>
@@ -73,22 +63,6 @@ export function TemplateList(props): JSX.Element {
             </button>
 
         </div>
-        {/* <button className="image-button" style={{ height: "28px" }}>
-            <svg className="image-button" viewBox="0 0 48 48">
-                <g>
-                    <path d="M37,43c0,0.6-0.4,1-1,1H12c-0.6,0-1-0.4-1-1V5c0-0.6,0.4-1,1-1h13V2H12c-1.7,0-3,1.3-3,3v38c0,1.7,1.3,3,3,3h24   c1.7,0,3-1.3,3-3V16h-2V43z">
-                    </path>
-                    <polygon points="33,8 33,2 31,2 31,8 25,8 25,10 31,10 31,16 33,16 33,10 39,10 39,8  ">
-                    </polygon>
-                    <rect height="2" width="10" x="17" y="19">
-                    </rect>
-                    <rect height="2" width="14" x="17" y="27">
-                    </rect>
-                    <rect height="2" width="10" x="17" y="35">
-                    </rect>
-                </g>
-            </svg>
-        </button> */}
         {templateNames.map(templateName =>
             <div className={styles["raw"]} key={templateName}>
                 <p onClick={() => editTemplate(templateName)} className={styles["templateName"]} >
@@ -101,11 +75,7 @@ export function TemplateList(props): JSX.Element {
                             </path>
                         </g>
                     </svg>
-                    {/* <img alt="Delete" src="https://cdn1.iconfinder.com/data/icons/free-education-set/32/trash-512.png"
-                        className="imageInButton" /> */}
                 </button>
-                {/* <button onClick={() => editTemplate(templateName)} > Edit</button>
-                <button onClick={() => deleteTemplate(templateName)} > Delete</button> */}
             </div>
         )}
 

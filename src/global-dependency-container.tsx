@@ -3,7 +3,6 @@ import { iLog, noLog } from "./libs/logging/log";
 import { ITestResultReports, TestResultReports } from "./test-result-reports";
 
 import { MockBoard } from "./adopters/mocks/board-mock";
-// export let singletonBoard: IBoard = MockBoard()
 
 import { MiroBoard } from "./adopters/miro/miro-board";
 import { UIComponent } from "./adopters/mocks/board-mock";
@@ -11,7 +10,7 @@ import * as React from "react";
 import { iTemplateRepository } from "./app/ports/itemplate-repository";
 import { miroTemplateRepository } from "./adopters/miro/miro-template-repository";
 import { inMemoryTemplateRepository } from "./adopters/mocks/in-memory-template-repository";
-import { addSamplesToRepository } from "./adopters/template-repository";
+import { setDefaultTemplatesToRepository } from "./app/template-processing/default-templates-initializer";
 
 
 
@@ -47,5 +46,7 @@ class mockedDependencies implements IExternalServices {
 }
 
 
-export const ExternalServices: IExternalServices = new miroDependencies()
-addSamplesToRepository(ExternalServices.templateRepository)
+const ExternalServices: IExternalServices = new mockedDependencies()
+setDefaultTemplatesToRepository(ExternalServices.templateRepository)
+
+export { ExternalServices }

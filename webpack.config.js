@@ -1,7 +1,6 @@
 const path = require('path')
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 // const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
-// const templateRepositoryPath = './src/adopters/template-repository.ts'
 const externalServicesPath = './src/global-dependency-container.tsx'
 const appConfig = {
 	name: 'app',
@@ -26,7 +25,6 @@ const appConfig = {
 
 		},
 		//To split this file in order to be able to access it by the template editor:
-		// templateRepository: templateRepositoryPath,
 		ExternalServices: externalServicesPath
 	},
 	module: {
@@ -82,7 +80,6 @@ const appConfig = {
 		// clean: true,
 		libraryTarget: 'var',
 		library: 'ExternalServices'
-		// library: 'templateRepo'
 	},
 	plugins: [
 		new HtmlWebPackPlugin({
@@ -104,10 +101,9 @@ const editorConfig = {
 	entry: {
 		// monacoEditor: {
 		// 	import: './src/template-processing/monaco-editor.ts',
-		// 	// dependOn: 'templateRepositoryLib'
+		// 	// dependOn: 'ExternalServices'
 		// },
 		monacoLanguage: './src/app/template-processing/monaco-languages.js',
-		// templateRepositoryLib: templateRepositoryPath,
 		ExternalServices: externalServicesPath
 
 	},
@@ -126,11 +122,9 @@ const editorConfig = {
 	output: {
 		path: path.resolve(__dirname, 'dist'),
 		chunkFilename: '[id].chunk.js',
-
 		// filename: 'template-repository-lib.js',
 		libraryTarget: 'var',
 		library: 'ExternalServices'
-		// library: 'templateRepository'
 
 	},
 	plugins: [

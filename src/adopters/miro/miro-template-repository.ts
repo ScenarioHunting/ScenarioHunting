@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 import { iTemplateRepository, textTemplate } from '../../app/ports/itemplate-repository'
 // import { ExternalServices } from "../../global-dependency-container";
-import {log} from "../../global-dependency-container";
+import { log } from "../../global-dependency-container";
 // const log = console
 export class miroTemplateRepository implements iTemplateRepository {
     // constructor() {

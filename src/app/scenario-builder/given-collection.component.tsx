@@ -6,8 +6,8 @@ import * as React from 'react'
 import { TestStepTurn } from "./step-picker/scenario-step-turn";
 import { GivenStep } from './given-step';
 import { SelectedStep } from '../ports/iboard';
-// import { ExternalServices } from '../../global-dependency-container';
-import {log} from '../../global-dependency-container';
+import { log } from '../../global-dependency-container';
+
 export type OrderedSelectedStep = {
 	index: number
 	step: SelectedStep
@@ -39,8 +39,6 @@ export let createGivenStepCollection =
 			const add = () => {
 				if (!canAdd || indexedSteps.length > 9)
 					return;
-				// const data = indexedSteps;
-				// data.unshift({ index: nextId } as IndexedStep)
 				setIndexedSteps([{ index: nextId } as OrderedSelectedStep, ...indexedSteps])
 				nextId++;
 
@@ -52,8 +50,6 @@ export let createGivenStepCollection =
 				setCanAdd(true)
 				log.log("New given selection: can add=", canAdd)
 
-				// function replace<T>(arr: Array<T>, newItem: T, predicate: (old: T) => Boolean) {
-				// }
 				const replaceOldIfEqual = (oldStep: OrderedSelectedStep, updatedStep: SelectedStep) => {
 
 					const oldEqualsNew: boolean = oldStep.step == undefined
@@ -112,10 +108,3 @@ export let createGivenStepCollection =
 
 
 export const Givens = createGivenStepCollection()
-// export const Givens = createGivenStepCollection({
-// 	board: singletonBoard,
-// 	stepNavigator: singletonStepNavigator,
-// 	stepType: TestStepTurn.Given,
-// 	selectionWaitingMessage: 'Select minimum required steps for the when to end up then.',
-// 	turn: TestStepTurn.Given,
-// })

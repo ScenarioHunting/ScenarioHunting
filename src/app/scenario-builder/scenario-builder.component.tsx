@@ -6,14 +6,13 @@ import { ThenStep as Then } from './then-step';
 import { SelectedStep } from '../ports/iboard';
 import { Save } from './scenario-builder.service';
 import { queueingMachine } from './local-dependency-container';
-// import { getTemplateRepository } from '../../adopters/template-repository';
 import { useEffect, useState } from 'react';
 import { SelectableText } from './title-picker/title-picker.component';
 import { TestStepTurn } from './step-picker/scenario-step-turn';
 import { spec } from 'app/spec';
 import { ExternalServices } from '../../global-dependency-container';
 const boardService = ExternalServices.boardService
-const getTemplateRepository = () => Promise.resolve(ExternalServices.templateRepository)
+const templateRepository = ExternalServices.templateRepository
 export const createTestRecorder = (board = boardService
     , stepNavigator = queueingMachine
     , save = Save): React.FC<any> => () => {
@@ -44,12 +43,10 @@ export const createTestRecorder = (board = boardService
         useEffect(() => {
             board.unselectAll()
                 .then(stepNavigator.start);
-            getTemplateRepository().then(repo => {
-                repo.getAllTemplateNames().then(x => {
-                    setAvailableTemplateNames(x)
-                    selectTemplateName(x[0])
-                }).catch(e => { throw e })
-            })
+            templateRepository.getAllTemplateNames().then(x => {
+                setAvailableTemplateNames(x)
+                selectTemplateName(x[0])
+            }).catch(e => { throw e })
         }, [])
 
 

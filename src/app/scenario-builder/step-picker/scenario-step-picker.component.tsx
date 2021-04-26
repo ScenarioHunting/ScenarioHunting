@@ -4,8 +4,7 @@ import * as React from 'react';
 import { IBoard, SelectedStep } from '../../ports/iboard';
 import { IQueuingMachine } from "../../../libs/queuing-machine/iqueuing-machine";
 import { TestStepTurn } from './scenario-step-turn';
-// import { ExternalServices } from "../../../global-dependency-container";
-import {log} from "../../../global-dependency-container";
+import { log } from "../../../global-dependency-container";
 
 export class TestStepDependencies {
     stepType: string

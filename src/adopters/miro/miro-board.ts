@@ -2,8 +2,7 @@
 import { extractStepSchema } from "../../app/scenario-builder/board-text-schema-extractor";
 import { CSSProperties } from "react";
 import { IBoard, SelectedStep, WidgetSnapshot } from "app/ports/iboard";
-// import { ExternalServices } from "../../global-dependency-container";
-import {log} from "../../global-dependency-container";
+import { log } from "../../global-dependency-container";
 
 
 export class MiroBoard implements IBoard {
