@@ -171,7 +171,10 @@ export const createTestRecorder = (board = ExternalServices.boardService): React
 
             {scenario &&
                 <div className={styles["save"] + ' ' + styles['full-width'] +
-                    " input-group miro-input-group miro-input-group--small"}>
+                    " input-group miro-input-group miro-input-group--small"}
+                    style={{ width: '100%' }}
+                    
+                    >
                     <select className="miro-select miro-select--secondary-bordered miro-select--small" value={selectedTemplateName}
                         onChange={(e) => selectTemplateName(e.target.value)}
                         style={{ width: '100%' }}
