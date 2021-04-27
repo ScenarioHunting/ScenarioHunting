@@ -107,12 +107,22 @@ export function UIComponent() {
         }
         board.select(selected)
     }
-    return <div style={{ width: '100%', backgroundColor: 'rebeccapurple', marginLeft: '10px' }}>
+    return <div style={{
+        width: '100%',
+        backgroundColor: '#454545',
+        marginLeft: '10px'
+    }}>
         <textarea
-            style={{ width: '99%', height: '512px' }}
+            style={{
+                width: '100%',
+                height: '512px',
+                backgroundColor: '#454545',
+                color: '#ffffffd9',
+                borderStyle: 'none'
+            }}
             onChange={x => changeStep(x.target.value)} value={step}>
         </textarea>
-        <button style={{ width: '99%' }}
+        <button style={{ width: '100%', height: '36px' }}
             onClick={select}>Select</button>
 
         <pre style={{
