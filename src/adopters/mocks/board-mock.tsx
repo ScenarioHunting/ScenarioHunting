@@ -28,20 +28,20 @@ class BoardMock implements IBoard {
         Promise.resolve(this.showStatus('Notification message:\n' + message))
 
     openModal(iframeURL: string, options?: { width?: number; height?: number } | { fullscreen: boolean }): Promise<any> {
-        document!.getElementById("popupdarkbg")!.style.display = "block";
-        document!.getElementById("popup")!.style.display = "block";
-        (document!.getElementById('popupiframe')! as HTMLIFrameElement).src = iframeURL;
-        document!.getElementById('popupdarkbg')!.onclick = function () {
-            document.getElementById("popup")!.style.display = "none";
-            document.getElementById("popupdarkbg")!.style.display = "none";
+        document!.getElementById("modal-dark-background")!.style.display = "block";
+        document!.getElementById("modal")!.style.display = "block";
+        (document!.getElementById('modal-iframe')! as HTMLIFrameElement).src = iframeURL;
+        document!.getElementById('modal-dark-background')!.onclick = function () {
+            document.getElementById("modal")!.style.display = "none";
+            document.getElementById("modal-dark-background")!.style.display = "none";
         };
 
         // window.onkeydown = function (e) {
         //     if (e.keyCode == 27) {
         //         // @ts-ignore: Object is possibly 'null'.
-        //         document.getElementById("popup").style.display = "none";
+        //         document.getElementById("modal").style.display = "none";
         //         // @ts-ignore: Object is possibly 'null'.
-        //         document.getElementById("popupdarkbg").style.display = "none";
+        //         document.getElementById("modal-dark-background").style.display = "none";
         //         e.preventDefault();
         //         return;
         //     }
@@ -121,7 +121,7 @@ export function UIComponent() {
             marginBottom: 'auto'
         }}
         >{statusMessage}</pre>
-        <div id="popup" style={{
+        <div id="modal" style={{
             display: 'none',
             position: 'fixed',
             top: '12%',
@@ -131,14 +131,14 @@ export function UIComponent() {
             backgroundColor: 'white',
             zIndex: 10
         }}>
-            <iframe id="popupiframe" style={{
+            <iframe id="modal-iframe" style={{
                 width: '100%',
                 height: '100%',
                 border: 0
             }}>
             </iframe>
         </div>
-        <div id="popupdarkbg" style={{
+        <div id="modal-dark-background" style={{
             position: 'fixed',
             zIndex: 5,
             left: 0,
