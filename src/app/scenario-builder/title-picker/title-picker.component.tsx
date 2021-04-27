@@ -56,6 +56,8 @@ export function SelectableText(props: {
 
             {/* <h3 style={{ color: isActive ? 'inherit' : '#c3c2cf' }} >{props.title}</h3> */}
             <div className={props.className + " input-group miro-input-group miro-input-group--small " + (errors.length == 0 ? "" : "miro-input-group--invalid")}
+                style={{ width: '100%' }}
+
             >
                 {/* <button
                     className='miro-btn miro-btn--primary miro-btn--small'
