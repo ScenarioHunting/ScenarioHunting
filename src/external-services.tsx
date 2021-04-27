@@ -9,7 +9,7 @@ import { UIComponent } from "./adopters/mocks/board-mock";
 import * as React from "react";
 import { iTemplateRepository } from "./app/ports/itemplate-repository";
 import { miroTemplateRepository } from "./adopters/miro/miro-template-repository";
-import { inMemoryTemplateRepository } from "./adopters/mocks/in-memory-template-repository";
+import { localStorageTemplateRepository } from "./adopters/mocks/in-memory-template-repository";
 import { setDefaultTemplatesToRepository } from "./app/template-processing/default-templates-initializer";
 
 
@@ -41,7 +41,7 @@ class miroDependencies implements IExternalServices {
 class mockedDependencies implements IExternalServices {
     boardService = MockBoard()
     boardUi = UIComponent
-    templateRepository = new inMemoryTemplateRepository()
+    templateRepository = new localStorageTemplateRepository()
 }
 
 
