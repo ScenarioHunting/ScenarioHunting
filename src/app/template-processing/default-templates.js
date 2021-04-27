@@ -8,8 +8,10 @@ using Vlerx.Es.Messaging;
 using Vlerx.Es.Persistence;
 using Vlerx.SampleContracts.{{sut}};
 using Vlerx.{{toCamelCase context}}.{{sut}};
-using Vlerx.{{toCamelCase context}}.{{sut}}.Commands;
-using Vlerx.{{toCamelCase context}}.Tests.StoryTests;
+using Vlerx.{{toPascalCase context}}.{{sut}}.Commands;
+using Vlerx.{{toKebabCase context}}.Tests.StoryTests;
+using Vlerx.{{toSpaceCase context}}.Tests.StoryTests;
+using Vlerx.{{toSentenceCase context}}.Tests.StoryTests;
 using Xunit;
 
 namespace {{context}}.Tests

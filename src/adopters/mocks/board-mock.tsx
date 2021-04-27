@@ -112,6 +112,11 @@ export function UIComponent() {
         backgroundColor: '#454545',
         marginLeft: '10px'
     }}>
+        <h4 style={{
+            backgroundColor: 'white',
+            textAlign: 'center',
+            margin: '0px'
+        }}>Widget Data To Be Selected</h4>
         <textarea
             style={{
                 width: '100%',
@@ -128,8 +133,13 @@ export function UIComponent() {
         <pre style={{
             backgroundColor: '#4262ff',
             color: 'white',
-            marginBottom: 'auto'
+            marginBottom: 'auto',
+            margin: '0px'
         }}
+
+
+
+
         >{statusMessage}</pre>
         <div id="modal" style={{
             display: 'none',

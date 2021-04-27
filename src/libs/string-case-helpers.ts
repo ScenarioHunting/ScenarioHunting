@@ -12,6 +12,9 @@ export const stringCaseHelpers = {
     sneakToSpaceCase(str: string) {
         return str.replace(/_/g, ' ')
     },
+    sneakToSentenceCase(str: string) {
+        return stringCaseHelpers.capitalize(stringCaseHelpers.sneakToSpaceCase(str))
+    },
     capitalize(str: string) {
         return str.charAt(0).toUpperCase() + str.slice(1)
     },
@@ -23,7 +26,22 @@ export const stringCaseHelpers = {
             .replace(/_+/g, '_')
             .toLowerCase()
     },
+
     toCamelCase(str: string) {
         return stringCaseHelpers.sneakToCamelCase(stringCaseHelpers.toSnakeCase(str))
-    }
+    },
+    toPascalCase(str: string) {
+        return stringCaseHelpers.sneakToPascalCase(stringCaseHelpers.toSnakeCase(str))
+    },
+    toKebabCase(str: string) {
+        return stringCaseHelpers.sneakToKebabCase(stringCaseHelpers.toSnakeCase(str))
+    },
+    toSpaceCase(str: string) {
+        return stringCaseHelpers.sneakToSpaceCase(stringCaseHelpers.toSnakeCase(str))
+    },
+    toSentenceCase(str: string) {
+        return stringCaseHelpers.sneakToSentenceCase(stringCaseHelpers.toSnakeCase(str))
+    },
+
+
 }
