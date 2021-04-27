@@ -1,24 +1,4 @@
 import { iTemplateRepository, textTemplate } from '../../app/ports/itemplate-repository';
-function localStorageAllItems() {
-
-    var values: string[] = [],
-        keys = Object.keys(localStorage),
-        i = keys.length;
-
-    while (i--) {
-        const key = keys[i]
-        const item = localStorage.getItem(key)
-        if (item != null)
-            values.push(item);
-
-    }
-
-    return values;
-}
-
-function localStorageAllKeys() {
-    return Object.keys(localStorage)
-}
 
 export class localStorageTemplateRepository implements iTemplateRepository {
 
@@ -26,7 +6,7 @@ export class localStorageTemplateRepository implements iTemplateRepository {
         localStorage.setItem(originalTemplateName, JSON.stringify(newTemplate))
     }
     getAllTemplateNames(): Promise<string[]> {
-        return Promise.resolve(localStorageAllKeys())
+        return Promise.resolve(Object.keys(localStorage))
     }
     removeTemplate(templateName: string) {
         localStorage.removeItem(templateName)
