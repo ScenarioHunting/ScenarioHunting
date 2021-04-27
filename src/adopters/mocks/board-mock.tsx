@@ -107,7 +107,7 @@ export function UIComponent() {
         }
         board.select(selected)
     }
-    return <div style={{ width: '100%', backgroundColor: 'rebeccapurple' }}>
+    return <div style={{ width: '100%', backgroundColor: 'rebeccapurple', marginLeft: '10px' }}>
         <textarea
             style={{ width: '99%', height: '512px' }}
             onChange={x => changeStep(x.target.value)} value={step}>
