@@ -32,9 +32,9 @@ function formatStep(s: stepSchema) {
 }
 function formatSpec(spec: spec): spec {
     return <spec>{
-        context: spec.context,
-        sut: spec.sut,
-        scenario: spec.scenario,
+        context: formatText(spec.context),
+        sut: formatText(spec.sut),
+        scenario: formatText(spec.scenario),
         givens: spec.givens.map(formatStep),
         when: formatStep(spec.when),
         thens: spec.thens.map(formatStep)
@@ -43,9 +43,9 @@ function formatSpec(spec: spec): spec {
 
 export class ScenarioBuilderService {
     static Save = async (templateName: string, spec: spec): Promise<string> => {
-        spec = formatSpec(spec)
-        log.info("Spec formatted:", spec)
-        log.log("Saving the template for test:", spec.scenario)
+        const formattedSpec = formatSpec(spec)
+        log.info("Spec formatted:", formattedSpec)
+        log.log("Saving the template for test:", formattedSpec.scenario)
 
         try {
             var template = await templateRepository.getTemplateByName(templateName)
@@ -57,8 +57,8 @@ export class ScenarioBuilderService {
         }
 
         try {
-            var testCode = compileTemplate(template.contentTemplate, spec)
-            var testFileName = compileTemplate(template.fileNameTemplate, spec)
+            var testCode = compileTemplate(template.contentTemplate, formattedSpec)
+            var testFileName = compileTemplate(template.fileNameTemplate, formattedSpec)
             log.log("compiled testCode:", testCode, "testFileName", testFileName)
             downloadAs(`${testFileName}.${template.fileExtension}`, testCode)
         } catch (e) {

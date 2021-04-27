@@ -24,6 +24,6 @@ export const stringCaseHelpers = {
             .toLowerCase()
     },
     toCamelCase(str: string) {
-        return this.sneakToCamelCase(this.toSnakeCase(str))
+        return stringCaseHelpers.sneakToCamelCase(stringCaseHelpers.toSnakeCase(str))
     }
 }

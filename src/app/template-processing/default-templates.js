@@ -7,9 +7,9 @@ export const defaultTemplates = [
 using Vlerx.Es.Messaging;
 using Vlerx.Es.Persistence;
 using Vlerx.SampleContracts.{{sut}};
-using Vlerx.{{sneakToPascalCase context}}.{{sut}};
-using Vlerx.{{sneakToPascalCase context}}.{{sut}}.Commands;
-using Vlerx.{{sneakToPascalCase context}}.Tests.StoryTests;
+using Vlerx.{{toCamelCase context}}.{{sut}};
+using Vlerx.{{toCamelCase context}}.{{sut}}.Commands;
+using Vlerx.{{toCamelCase context}}.Tests.StoryTests;
 using Xunit;
 
 namespace {{context}}.Tests
