@@ -38,7 +38,6 @@ class miroDependencies implements IExternalServices {
     templateRepository = new miroTemplateRepository()
 }
 
-
 class mockedDependencies implements IExternalServices {
     boardService = MockBoard()
     boardUi = UIComponent
@@ -46,12 +45,12 @@ class mockedDependencies implements IExternalServices {
 }
 
 
-let ExternalServices: IExternalServices
+// let  ExternalServices: IExternalServices
 
-// ExternalServices = new miroDependencies()
-ExternalServices = new mockedDependencies()
+// // ExternalServices = new miroDependencies()
+// ExternalServices = new mockedDependencies()
 
-
+export const ExternalServices = new mockedDependencies()
 setDefaultTemplatesToRepository(ExternalServices.templateRepository)
 
-export { ExternalServices }
+// export { ExternalServices }

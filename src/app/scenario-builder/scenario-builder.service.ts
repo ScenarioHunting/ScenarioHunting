@@ -43,9 +43,9 @@ function formatSpec(spec: spec): spec {
 
 export class ScenarioBuilderService {
     static Save = async (templateName: string, spec: spec): Promise<string> => {
-        const formattedSpec = formatSpec(spec)
-        log.info("Spec formatted:", formattedSpec)
-        log.log("Saving the template for test:", formattedSpec.scenario)
+        spec = formatSpec(spec)
+        log.info("Spec formatted:", spec)
+        log.log("Saving the template for test:", spec.scenario)
 
         try {
             var template = await templateRepository.getTemplateByName(templateName)
@@ -57,8 +57,8 @@ export class ScenarioBuilderService {
         }
 
         try {
-            var testCode = compileTemplate(template.contentTemplate, formattedSpec)
-            var testFileName = compileTemplate(template.fileNameTemplate, formattedSpec)
+            var testCode = compileTemplate(template.contentTemplate, spec)
+            var testFileName = compileTemplate(template.fileNameTemplate, spec)
             log.log("compiled testCode:", testCode, "testFileName", testFileName)
             downloadAs(`${testFileName}.${template.fileExtension}`, testCode)
         } catch (e) {
