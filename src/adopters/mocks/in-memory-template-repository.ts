@@ -1,26 +1,20 @@
 import { iTemplateRepository, textTemplate } from '../../app/ports/itemplate-repository';
 
-export class inMemoryTemplateRepository implements iTemplateRepository {
+export class localStorageTemplateRepository implements iTemplateRepository {
 
-    private templates: textTemplate[] = []
     createOrReplaceTemplate(originalTemplateName: string, newTemplate: textTemplate) {
-        const originalTemplate = this.templates.find(t => t.templateName == originalTemplateName)
-        if (originalTemplate) {
-            this.templates = this.templates.map(t =>
-                t.templateName == originalTemplateName
-                    ? newTemplate
-                    : t)
-            return
-        }
-        this.templates = this.templates.concat(newTemplate)
+        localStorage.setItem(originalTemplateName, JSON.stringify(newTemplate))
     }
     getAllTemplateNames(): Promise<string[]> {
-        return Promise.resolve(this.templates.map(t => t.templateName))
+        return Promise.resolve(Object.keys(localStorage))
     }
     removeTemplate(templateName: string) {
-        this.templates = this.templates.filter(t => t.templateName != templateName)
+        localStorage.removeItem(templateName)
     }
     getTemplateByName(templateName: string): Promise<textTemplate> {
-        return Promise.resolve(this.templates.filter(t => t.templateName == templateName)[0])
+        const item = localStorage.getItem(templateName)
+        if (!item)
+            return Promise.reject("Template not found!")
+        return Promise.resolve((<textTemplate>JSON.parse(item)))
     }
 }
