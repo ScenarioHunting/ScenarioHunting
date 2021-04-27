@@ -1,7 +1,8 @@
 import { isNullOrUndefined } from "../../libs/isNullOrUndefined"
 import { compileTemplate } from "../template-processing/template-compiler"
-import { spec } from "app/spec";
+import { spec, stepSchema } from "app/spec";
 import { ExternalServices, log } from "../../external-services";
+import { stringCaseHelpers } from "../../libs/string-case-helpers";
 const templateRepository = ExternalServices.templateRepository
 
 function downloadAs(fileName: string, data: string) {
@@ -19,9 +20,31 @@ function downloadAs(fileName: string, data: string) {
         window.navigator.msSaveBlob(blob, fileName);
     }
 }
+function formatText(text: string): string {
+    return stringCaseHelpers.toSnakeCase(text)
+}
+function formatStep(s: stepSchema) {
+    return <stepSchema>{
+        $schema: s.$schema,
+        title: formatText(s.title),
+        type: s.type
+    }
+}
+function formatSpec(spec: spec): spec {
+    return <spec>{
+        context: spec.context,
+        sut: spec.sut,
+        scenario: spec.scenario,
+        givens: spec.givens.map(formatStep),
+        when: formatStep(spec.when),
+        thens: spec.thens.map(formatStep)
+    }
+}
+
 export class ScenarioBuilderService {
-    static Save = async (templateName: string, viewModel: spec): Promise<string> => {
-        log.log("Saving the template for test:", viewModel.scenario)
+    static Save = async (templateName: string, spec: spec): Promise<string> => {
+        spec = formatSpec(spec)
+        log.log("Saving the template for test:", spec.scenario)
 
         try {
             var template = await templateRepository.getTemplateByName(templateName)
@@ -33,8 +56,8 @@ export class ScenarioBuilderService {
         }
 
         try {
-            var testCode = compileTemplate(template.contentTemplate, viewModel)
-            var testFileName = compileTemplate(template.fileNameTemplate, viewModel)
+            var testCode = compileTemplate(template.contentTemplate, spec)
+            var testFileName = compileTemplate(template.fileNameTemplate, spec)
             log.log("compiled testCode:", testCode, "testFileName", testFileName)
             downloadAs(`${testFileName}.${template.fileExtension}`, testCode)
         } catch (e) {
