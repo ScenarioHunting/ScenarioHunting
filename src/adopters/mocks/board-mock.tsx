@@ -68,21 +68,21 @@ export function UIComponent() {
         stepSchema: {
             $schema: "http://json-schema.org/draft-07/schema#",
             type: "object",
-            title: "customer_registered",
+            title: "Customer registered",
             properties: {
                 customer_id: {
                     type: "string",
                     description: "customer_id",
                     example: "customerId"
                 },
-                new_address: {
+                newAddress: {
                     type: "string",
-                    description: "new_address",
+                    description: "new address",
                     example: "Oak street"
                 },
-                new_phone_number: {
+                NewPhone_number: {
                     type: "string",
-                    description: "new_phonenumber",
+                    description: "New phonenumber",
                     example: "+44555112100"
                 }
             }

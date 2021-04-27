@@ -44,6 +44,7 @@ function formatSpec(spec: spec): spec {
 export class ScenarioBuilderService {
     static Save = async (templateName: string, spec: spec): Promise<string> => {
         spec = formatSpec(spec)
+        log.info("Spec formatted:", spec)
         log.log("Saving the template for test:", spec.scenario)
 
         try {
@@ -51,7 +52,7 @@ export class ScenarioBuilderService {
             log.log("template loaded:", templateName)
         }
         catch (e) {
-            log.log("An error occurred while loading the template:", e)
+            log.warn("An error occurred while loading the template:", e)
             return e.toString()
         }
 
@@ -62,7 +63,7 @@ export class ScenarioBuilderService {
             downloadAs(`${testFileName}.${template.fileExtension}`, testCode)
         } catch (e) {
             //TODO: show the error to the user explicitly to help him to fix the bug in the template
-            log.error("Error while generating code. Probable template bug.", e)
+            log.warn("Error while generating code. Probable template bug.", e)
             return e.toString()
         }
 
