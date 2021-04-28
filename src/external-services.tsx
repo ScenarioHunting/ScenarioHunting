@@ -14,6 +14,7 @@ import { setDefaultTemplatesToRepository } from "./app/template-processing/defau
 import { ITempStorage } from "./app/ports/itemp-storage";
 import { TempLocalStorage } from "./adopters/mocks/temp-local-storage";
 import { TemplateCompiler } from "./app/template-processing/template-compiler";
+import { MiroTempLocalStorage } from "./adopters/miro/miro-temp-local-storage";
 
 
 
@@ -42,7 +43,7 @@ class miroDependencies implements IExternalServices {
     boardService = new MiroBoard()
     boardUi = emptyComponent
     templateRepository = new miroTemplateRepository()
-    tempSharedStorage = new TempLocalStorage()
+    tempSharedStorage = new MiroTempLocalStorage()
     templateCompiler = new TemplateCompiler()
 }
 

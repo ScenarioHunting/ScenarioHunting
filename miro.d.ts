@@ -129,6 +129,7 @@ declare module SDK {
 	}
 
 	interface IBoardCommands {
+        metadata: any
 		info: IBoardInfoCommands
 		widgets: IBoardWidgetsCommands
 		tags: IBoardTagsCommands

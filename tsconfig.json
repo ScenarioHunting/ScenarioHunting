@@ -19,5 +19,8 @@
   "include": [
     "src/**/*",
     "miro.d.ts"
-, "app.config.ts", "app.config.ts"  ]
+, "app.config.ts", "app.config.ts"  ],
+  "files":[
+    "miro.d.ts"
+  ]
 }

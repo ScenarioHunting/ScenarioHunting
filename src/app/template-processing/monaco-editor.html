@@ -93,27 +93,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/loader.min.js"></script>
     <script>
-        //Preview pane visibility:
-        function showPreview() {
-            document.getElementById('preview-editor').style.display = 'block'
-            document.getElementById('monaco-editor').style.width = '50%'
-            document.getElementById('preview-button').textContent = 'Hide Preview'
-        }
-        function hidePreview() {
-            document.getElementById('preview-editor').style.display = 'none'
-            document.getElementById('monaco-editor').style.width = '100%'
-            document.getElementById('preview-button').textContent = 'Show Preview'
 
-        }
-        showPreview()
-        function togglePreview() {
-            let isPreviewOpen = document.getElementById('preview-button').textContent == 'Hide Preview'
-            if (isPreviewOpen) {
-                hidePreview()
-            } else {
-                showPreview()
-            }
-        }
 
         //notification
         function showNotification(message) {
@@ -248,6 +228,28 @@
             const originalModel = monaco.editor.createModel(preview, language);
             previewEditor.setModel({ original: originalModel, modified: modifiedModel });
         }
+        //Preview pane visibility:
+        function showPreview() {
+            document.getElementById('preview-editor').style.display = 'block'
+            document.getElementById('monaco-editor').style.width = '40%'
+            document.getElementById('preview-button').textContent = 'Hide Preview'
+        }
+        function hidePreview() {
+            document.getElementById('preview-editor').style.display = 'none'
+            document.getElementById('monaco-editor').style.width = '100%'
+            document.getElementById('preview-button').textContent = 'Show Preview'
+
+        }
+        showPreview()
+        function togglePreview() {
+            let isPreviewOpen = document.getElementById('preview-button').textContent == 'Hide Preview'
+            if (isPreviewOpen) {
+                hidePreview()
+            } else {
+                showPreview()
+            }
+        }
+        //language:
         function getLanguageForExtension(extension) {
             const fileTypes = {
                 css: 'css',
