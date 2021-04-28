@@ -21,16 +21,16 @@ export function TemplateList(props): JSX.Element {
         }).catch(e => { throw e })
     }
     useEffect(loadTemplateNames, []);
-    function openModal(iframeURL: string, options?: { width?: number; height?: number } | { fullscreen: boolean }): Promise<any> {
-        return boardService.openModal(iframeURL, options)
+    function openModal(iframeURL: string): Promise<any> {
+        return boardService.openModal(iframeURL, {fullscreen: true})
     }
     function addTemplate() {
-        openModal(`./monaco-editor.html`, { width: 940, fullscreen: false })
+        openModal(`./monaco-editor.html`)
     }
     function editTemplate(templateName: string) {
         templateRepository.getTemplateByName(templateName).then(template => {
             const queryString = `?templateName=${templateName}&templateContent=${JSON.stringify(template)}&templateContentObj=${template}`
-            openModal(`./monaco-editor.html${queryString}`, { fullscreen: false })
+            openModal(`./monaco-editor.html${queryString}`)
                 .then(() => loadTemplateNames())
         })
     }

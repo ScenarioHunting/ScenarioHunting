@@ -20,13 +20,18 @@
         .file-name-options-panel {
             display: flex;
             margin-left: 36px;
-            margin-top: 9px;
+            margin-top: 4px;
+            margin-bottom: 4px;
             justify-content: space-between;
             margin-right: 36px;
         }
 
         .file-extension-input {
             width: 82px;
+        }
+
+        .close-button {
+            margin-left: 0px;
         }
 
         .input-field {
@@ -70,7 +75,8 @@
                 <input class="miro-input miro-input--primary" id="templateName"
                     placeholder="aggregate-unit-test"></input>
                 <button class="save-button miro-btn miro-btn--primary miro-btn--small" onclick="save()">Save</button>
-                <button class="close-button miro-btn miro-btn--primary miro-btn--small" onclick="close()">Close</button>
+                <button class="close-button miro-btn miro-btn--secondary miro-btn--small"
+                    onclick="close()">Close</button>
             </div>
 
         </div>
@@ -177,7 +183,7 @@
 
             //Preview:
             previewEditor = monaco.editor.createDiffEditor(document.getElementById('preview-editor'), {
-                enableSplitViewResizing:true,
+                enableSplitViewResizing: true,
                 renderSideBySide: true,
                 // value: templateContent,
                 // language: 'handlebars',
@@ -192,19 +198,29 @@
                 scrollBeyondLastLine: false,
                 // formatOnType: true//!important
             });
-            
+
             detectLanguageForExtension()
 
+            editor.onDidChangeModelContent(function (e) {
+                preview()
+            })
         });
 
         //Language:
         function detectLanguageForExtension() {
             const language = getLanguageForExtension(document.getElementById("fileExtension").value)
-            const model = monaco.editor.createModel(templateContent, language)
+            const template = editor.getValue()
+            const model = monaco.editor.createModel(template, language)
             editor.setModel(model)
-           
-            const modifiedModel = monaco.editor.createModel(templateContent, language);
-            const originalModel = monaco.editor.createModel(templateContent, language);
+
+            preview()
+        }
+        function preview() {
+            const language = getLanguageForExtension(document.getElementById("fileExtension").value)
+            const template = editor.getValue()
+            const modifiedModel = monaco.editor.createModel(previewEditor.getModifiedEditor().getValue(), language);
+            const preview = ExternalServices.ExternalServices.templateCompiler.compileTemplate(template, sampleTestSpec)
+            const originalModel = monaco.editor.createModel(preview, language);
             previewEditor.setModel({ original: originalModel, modified: modifiedModel });
         }
         function getLanguageForExtension(extension) {
