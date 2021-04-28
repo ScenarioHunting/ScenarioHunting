@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 // eslint-disable-next-line no-unused-vars
 const should = require('chai').should()
-import { localStorageTemplateRepository } from "./in-memory-template-repository";
+import { localStorageTemplateRepository } from "./local-storage-template-repository";
 
 describe('How it creates and restores templates', function () {
     const templateRepository = new localStorageTemplateRepository()

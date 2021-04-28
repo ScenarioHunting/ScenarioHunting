@@ -7,10 +7,12 @@ import { MockBoard } from "./adopters/mocks/board-mock";
 import { MiroBoard } from "./adopters/miro/miro-board";
 import { UIComponent } from "./adopters/mocks/board-mock";
 import * as React from "react";
-import { iTemplateRepository } from "./app/ports/itemplate-repository";
+import { iTemplateRepository as ITemplateRepository } from "./app/ports/itemplate-repository";
 import { miroTemplateRepository } from "./adopters/miro/miro-template-repository";
-import { localStorageTemplateRepository } from "./adopters/mocks/in-memory-template-repository";
+import { localStorageTemplateRepository } from "./adopters/mocks/local-storage-template-repository";
 import { setDefaultTemplatesToRepository } from "./app/template-processing/default-templates-initializer";
+import { ITempStorage } from "./app/ports/itemp-storage";
+import { TempLocalStorage } from "./adopters/mocks/temp-local-storage";
 
 
 
@@ -26,7 +28,8 @@ interface IExternalServices {
     boardService: IBoard
     // eslint-disable-next-line no-undef
     boardUi(): JSX.Element
-    templateRepository: iTemplateRepository
+    templateRepository: ITemplateRepository
+    tempSharedStorage: ITempStorage
 }
 
 
@@ -36,12 +39,14 @@ class miroDependencies implements IExternalServices {
     boardService = new MiroBoard()
     boardUi = emptyComponent
     templateRepository = new miroTemplateRepository()
+    tempSharedStorage = new TempLocalStorage()
 }
 
 class mockedDependencies implements IExternalServices {
     boardService = MockBoard()
     boardUi = UIComponent
     templateRepository = new localStorageTemplateRepository()
+    tempSharedStorage = new TempLocalStorage()
 }
 
 

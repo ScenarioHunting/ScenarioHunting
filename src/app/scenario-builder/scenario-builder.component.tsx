@@ -11,7 +11,11 @@ import { SelectableText } from './title-picker/title-picker.component';
 import { TestStepTurn } from './step-picker/scenario-step-turn';
 import { spec } from 'app/spec';
 import { ExternalServices } from '../../external-services';
+
 const templateRepository = ExternalServices.templateRepository
+const tempSharedStorage = ExternalServices.tempSharedStorage
+const boardService = ExternalServices.boardService
+
 export const createTestRecorder = (board = ExternalServices.boardService): React.FC<any> => () => {
     if (!board) {
         //TODO: Implement guard
@@ -37,14 +41,19 @@ export const createTestRecorder = (board = ExternalServices.boardService): React
             return ["Too long!"]
         return []
     }
+
+    function loadTemplateNames() {
+        templateRepository.getAllTemplateNames().then(templateNames => {
+            setAvailableTemplateNames(templateNames)
+        }).catch(e => { throw e })
+    }
+    
     useEffect(() => {
         board.unselectAll()
             .then(queueingMachine.start);
-        templateRepository.getAllTemplateNames().then(templateName => {
-            setAvailableTemplateNames(templateName)
-            selectTemplateName(templateName[0])
-        }).catch(e => { throw e })
+            loadTemplateNames()
     }, [])
+
 
 
 
@@ -115,7 +124,7 @@ export const createTestRecorder = (board = ExternalServices.boardService): React
         if (!isFormValid)
             return
 
-        var viewModel = {
+        const testSpec = {
             sut: subject,
             context: context,
             scenario: scenario,
@@ -124,13 +133,27 @@ export const createTestRecorder = (board = ExternalServices.boardService): React
             thens: [then?.stepSchema],
         } as spec
         try {
-            await ScenarioBuilderService.Save(selectedTemplateName, viewModel)
+            await ScenarioBuilderService.Save(selectedTemplateName, testSpec)
             board.showNotification('Test created successfully.')
         } catch {
             board.showNotification('Test creation error try again later.\n')
         }
     };
 
+    function editTemplate() {
+        const testSpec = {
+            sut: subject,
+            context: context,
+            scenario: scenario,
+            givens: givens.map(given => given.step.stepSchema),
+            when: when?.stepSchema,
+            thens: [then?.stepSchema],
+        } as spec
+        tempSharedStorage.setItem('sampleTestSpec', testSpec)
+        const queryString = `?mode=preview&templateName=${selectedTemplateName}`
+        boardService.openModal(`./monaco-editor.html${queryString}`, { fullscreen: false })
+            .then(() => loadTemplateNames())
+    }
     return (
         <div className={styles["test-recorder"]}>
             <Givens onStepSelectionChange={recordGiven} steps={givens} />
@@ -173,8 +196,9 @@ export const createTestRecorder = (board = ExternalServices.boardService): React
                 <div className={styles["save"] + ' ' + styles['full-width'] +
                     " input-group miro-input-group miro-input-group--small"}
                     style={{ width: '100%' }}
-                    
-                    >
+
+                >
+                    <button className="miro-btn miro-btn--primary miro-btn--small">Add</button>
                     <select className="miro-select miro-select--secondary-bordered miro-select--small" value={selectedTemplateName}
                         onChange={(e) => selectTemplateName(e.target.value)}
                         style={{ width: '100%' }}
@@ -187,6 +211,10 @@ export const createTestRecorder = (board = ExternalServices.boardService): React
                         ))}
                     </select>
                     <button
+                        onClick={editTemplate}
+                        className="miro-btn miro-btn--primary miro-btn--small">Edit</button>
+                    <button
+                        style={{ margin: '0px' }}
                         className='miro-btn miro-btn--primary miro-btn--small'
                         onClick={saveAndRedirectToExplorer}
                     // disabled={[errors].flat().length > 0}

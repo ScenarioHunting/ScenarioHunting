@@ -28,10 +28,7 @@ export function TemplateList(props): JSX.Element {
         openModal(`./monaco-editor.html`, { width: 940, fullscreen: false })
     }
     function editTemplate(templateName: string) {
-        log.log(templateName)
-
         templateRepository.getTemplateByName(templateName).then(template => {
-            log.log(`Template: ${template} is here:`, template)
             const queryString = `?templateName=${templateName}&templateContent=${JSON.stringify(template)}&templateContentObj=${template}`
             openModal(`./monaco-editor.html${queryString}`, { fullscreen: false })
                 .then(() => loadTemplateNames())

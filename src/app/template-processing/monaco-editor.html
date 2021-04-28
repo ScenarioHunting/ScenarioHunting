@@ -61,7 +61,7 @@
 
 <body>
     <div id="monaco-editor"></div>
-
+    
     <div class="file-name-options-panel">
 
         <!-- <label for="fileNameTemplate">File name template:</label> -->
@@ -100,6 +100,11 @@
         let editor
         const originalTemplateName = getParameterByName("templateName")
         document.getElementById("templateName").value = originalTemplateName
+
+        const sampleTestSpec = ExternalServices.ExternalServices.tempSharedStorage.getItem('sampleTestSpec')
+        if (!sampleTestSpec) {
+
+        }
 
         async function save() {
             var repository = ExternalServices.ExternalServices.templateRepository
