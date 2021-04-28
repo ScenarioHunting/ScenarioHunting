@@ -12,72 +12,78 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/editor/editor.main.min.css">
     <style type="text/css" media="screen">
         #monaco-editor {
-            position: absolute;
-            top: 55px;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            /* background-color: rgb(31, 29, 32); */
-            /* width: 705px; */
+            margin: 0px;
+            height: 100%;
+            width: 75%;
         }
 
         .file-name-options-panel {
             display: flex;
             margin-left: 36px;
-            margin-top: 9px;
+            margin-top: 4px;
+            margin-bottom: 4px;
             justify-content: space-between;
             margin-right: 36px;
-            /* margin: 15px;
-            right: 0px;
-            position: absolute;
-            top: 0px;
-            bottom: 0px;
-            background-color: white; */
         }
 
         .file-extension-input {
-            width: 57px;
+            width: 82px;
+        }
+
+        .close-button {
+            margin-left: 0px;
         }
 
         .input-field {
             padding-top: 15px;
         }
 
-        /* .save-button {
-            width: 205px;
-        } */
-
-        /* body {
-            background-color: rgb(31, 29, 32);
+        #container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
 
-        input {
-            background-color: rgb(31, 29, 32);
-            color: white;
-        } */
+        #editor-group {
+            height: 100%;
+            display: flex;
+            flex-direction: row;
+        }
+
+        #preview-editor {
+            background-color: rebeccapurple;
+            width: 100%;
+        }
     </style>
 
 <script src="monacoLanguage.js"></script><script src="ExternalServices.js"></script></head>
 
 <body>
-    <div id="monaco-editor"></div>
+    <div id="container">
+        <div class="file-name-options-panel">
 
-    <div class="file-name-options-panel">
+            <!-- <label for="fileNameTemplate">File name template:</label> -->
+            <div class="miro-input-group miro-input-group--small">
+                <input class="miro-input miro-input--primary" id="fileNameTemplate" placeholder="{{scenario}}"></input>
+                <input class="file-extension-input miro-input miro-input--primary" id="fileExtension" placeholder="cs"
+                    onchange="detectLanguageForExtension()"></input>
+            </div>
 
-        <!-- <label for="fileNameTemplate">File name template:</label> -->
-        <div class="miro-input-group miro-input-group--small">
-            <input class="miro-input miro-input--primary" id="fileNameTemplate" placeholder="{{scenario}}"></input>
-            <input class="file-extension-input miro-input miro-input--primary" id="fileExtension" placeholder="cs"
-                onchange="detectLanguageForExtension()"></input>
+
+            <!-- <label for="templateName">Template Name:</label> -->
+            <div class="miro-input-group miro-input-group--small">
+                <input class="miro-input miro-input--primary" id="templateName"
+                    placeholder="aggregate-unit-test"></input>
+                <button class="save-button miro-btn miro-btn--primary miro-btn--small" onclick="save()">Save</button>
+                <button class="close-button miro-btn miro-btn--secondary miro-btn--small"
+                    onclick="close()">Close</button>
+            </div>
+
         </div>
-
-
-        <!-- <label for="templateName">Template Name:</label> -->
-        <div class="miro-input-group miro-input-group--small">
-            <input class="miro-input miro-input--primary" id="templateName" placeholder="aggregate-unit-test"></input>
-            <button class="save-button miro-btn miro-btn--primary miro-btn--small" onclick="save()">Save</button>
+        <div id="editor-group">
+            <div id="monaco-editor"></div>
+            <div id="preview-editor"></div>
         </div>
-
     </div>
 
     <!-- <div id="example-editor" style="background-color: chartreuse;"></div> -->
@@ -94,13 +100,20 @@
         function close() {
             if (miro.board)
                 miro.board.ui.closeModal()
+            else
+                alert('Close')
         }
 
         let templateContent = ""
         let editor
+        let previewEditor
         const originalTemplateName = getParameterByName("templateName")
         document.getElementById("templateName").value = originalTemplateName
 
+        const sampleTestSpec = ExternalServices.ExternalServices.tempSharedStorage.getItem('sampleTestSpec')
+        if (!sampleTestSpec) {
+
+        }
         async function save() {
             var repository = ExternalServices.ExternalServices.templateRepository
             // var repository = await templateRepository.getTemplateRepository()
@@ -165,19 +178,52 @@
                 formatOnType: true//!important
             });
 
-            // const model = monaco.editor.createModel(
-            //     templateContent,
-            //     'csharp')
-
-            // editor.setModel(model)
-
-            detectLanguageForExtension()
             // editor.trigger(‘anyString’, 'editor.action.formatDocument'); 
             // editor.setModel(textModel)
+
+            //Preview:
+            previewEditor = monaco.editor.createDiffEditor(document.getElementById('preview-editor'), {
+                enableSplitViewResizing: true,
+                renderSideBySide: true,
+                // value: templateContent,
+                // language: 'handlebars',
+                theme: 'vs-dark',
+                // // theme: 'monokai',
+                lineHeight: 20,
+                fontSize: 14,
+                // // wordWrap: "bounded",
+                automaticLayout: true,
+                // wrappingIndent: 'indent',
+                // minimap: { enabled: false },
+                scrollBeyondLastLine: false,
+                // formatOnType: true//!important
+            });
+
+            detectLanguageForExtension()
+
+            editor.onDidChangeModelContent(function (e) {
+                preview()
+            })
         });
+
+        //Language:
         function detectLanguageForExtension() {
-            const templateContent = editor.getValue()
-            const extension = document.getElementById("fileExtension").value
+            const language = getLanguageForExtension(document.getElementById("fileExtension").value)
+            const template = editor.getValue()
+            const model = monaco.editor.createModel(template, language)
+            editor.setModel(model)
+
+            preview()
+        }
+        function preview() {
+            const language = getLanguageForExtension(document.getElementById("fileExtension").value)
+            const template = editor.getValue()
+            const modifiedModel = monaco.editor.createModel(previewEditor.getModifiedEditor().getValue(), language);
+            const preview = ExternalServices.ExternalServices.templateCompiler.compileTemplate(template, sampleTestSpec)
+            const originalModel = monaco.editor.createModel(preview, language);
+            previewEditor.setModel({ original: originalModel, modified: modifiedModel });
+        }
+        function getLanguageForExtension(extension) {
             const fileTypes = {
                 css: 'css',
                 js: 'javascript',
@@ -511,10 +557,7 @@
             if (!language) {
                 language = "handlebars"
             }
-            const model = monaco.editor.createModel(
-                templateContent, language)
-
-            editor.setModel(model)
+            return language
         }
     </script>
 
