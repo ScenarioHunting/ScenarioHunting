@@ -8,14 +8,18 @@ export class MiroTempLocalStorage implements ITempStorage {
                 [key]: value
             }
         };
-        miro.board.metadata.update(rec).
+        (miro.board as any).metadata.update(rec).
             then(() => { })
     }
     getItem(key: string): object | null {
-        return miro.board.metadata.get()[key]
+        return (miro.board as any).metadata.get()[key]
     }
     removeItem(key: string): void {
-        miro.board.metadata.update(delete miro.board.metadata.get()[key]).
+        const item = this.getItem(key)
+        if (!item)
+            return;
+        delete item[key];
+        (miro.board as any).metadata.update(item).
             then(() => { })
     }
 
