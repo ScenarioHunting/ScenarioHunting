@@ -19,5 +19,6 @@ export interface IBoard {
     unselectAll: () => Promise<void>
     showNotification: (message: string) => Promise<void>
     openModal(iframeURL: string, options?: { width?: number; height?: number } | { fullscreen: boolean }): Promise<any>
+    closeModal()
     zoomTo: (widget: WidgetSnapshot) => void
 }

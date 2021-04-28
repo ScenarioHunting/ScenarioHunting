@@ -28,28 +28,36 @@ class BoardMock implements IBoard {
         Promise.resolve(this.showStatus('Notification message:\n' + message))
 
     openModal(iframeURL: string, options?: { width?: number; height?: number } | { fullscreen: boolean }): Promise<any> {
-        document!.getElementById("modal-dark-background")!.style.display = "block";
-        document!.getElementById("modal")!.style.display = "block";
-        (document!.getElementById('modal-iframe')! as HTMLIFrameElement).src = iframeURL;
-        document!.getElementById('modal-dark-background')!.onclick = function () {
-            document.getElementById("modal")!.style.display = "none";
-            document.getElementById("modal-dark-background")!.style.display = "none";
-        };
+        const modal = document!.getElementById("modal")
+        const modalDarkBackground = document.getElementById("modal-dark-background")
 
-        // window.onkeydown = function (e) {
-        //     if (e.keyCode == 27) {
-        //         // @ts-ignore: Object is possibly 'null'.
-        //         document.getElementById("modal").style.display = "none";
-        //         // @ts-ignore: Object is possibly 'null'.
-        //         document.getElementById("modal-dark-background").style.display = "none";
-        //         e.preventDefault();
-        //         return;
-        //     }
-        // }
+        modalDarkBackground!.style.display = "block";
+        modal!.style.display = "block";
+        (document!.getElementById('modal-iframe')! as HTMLIFrameElement).src = iframeURL;
+
+        modalDarkBackground!.onclick = function () {
+            modal!.style.display = "none";
+            modalDarkBackground!.style.display = "none";
+        };
+        window.onkeydown = function (e) {
+            if (e.keyCode == 27) {
+                this.closeModal()
+                e.preventDefault();
+                return;
+            }
+        }
 
         return Promise.resolve()
     }
-
+    closeModal() {
+        if (document && document!.getElementById("modal")) {
+            document!.getElementById("modal")!.style.display = "none";
+            document!.getElementById("modal-dark-background")!.style.display = "none";
+            return
+        }
+        window.parent.document.getElementById("modal")!.style.display = "none";
+        window.parent.document.getElementById("modal-dark-background")!.style.display = "none";
+    }
     zoomTo: (widget: WidgetSnapshot) => void = (widget: WidgetSnapshot) =>
         this.showStatus('Zooming to:\n' + widget.id)
 

@@ -30,8 +30,8 @@
             width: 82px;
         }
 
-        .close-button {
-            margin-left: 0px;
+        #close-button {
+            margin-left: 0px !important;
         }
 
         .input-field {
@@ -53,6 +53,7 @@
         #preview-editor {
             background-color: rebeccapurple;
             width: 100%;
+            height: 100%;
         }
     </style>
 
@@ -72,11 +73,13 @@
 
             <!-- <label for="templateName">Template Name:</label> -->
             <div class="miro-input-group miro-input-group--small">
+                <button id="preview-button" class="miro-btn miro-btn--secondary miro-btn--small"
+                    onclick="togglePreview()">Show Preview</button>
                 <input class="miro-input miro-input--primary" id="templateName"
                     placeholder="aggregate-unit-test"></input>
                 <button class="save-button miro-btn miro-btn--primary miro-btn--small" onclick="save()">Save</button>
-                <button class="close-button miro-btn miro-btn--secondary miro-btn--small"
-                    onclick="close()">Close</button>
+                <button id="close-button" class="miro-btn miro-btn--secondary miro-btn--small"
+                    onclick="closeModal()">Close</button>
             </div>
 
         </div>
@@ -90,18 +93,40 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/loader.min.js"></script>
     <script>
-        function showNotification(message) {
-            if (miro.showNotification)
-                return miro.showNotification(message)
-            else {
-                return alert(message)
+        //Preview pane visibility:
+        function showPreview() {
+            document.getElementById('preview-editor').style.display = 'block'
+            document.getElementById('monaco-editor').style.width = '50%'
+            document.getElementById('preview-button').textContent = 'Hide Preview'
+        }
+        function hidePreview() {
+            document.getElementById('preview-editor').style.display = 'none'
+            document.getElementById('monaco-editor').style.width = '100%'
+            document.getElementById('preview-button').textContent = 'Show Preview'
+
+        }
+        showPreview()
+        function togglePreview() {
+            let isPreviewOpen = document.getElementById('preview-button').textContent == 'Hide Preview'
+            if (isPreviewOpen) {
+                hidePreview()
+            } else {
+                showPreview()
             }
         }
-        function close() {
-            if (miro.board)
-                miro.board.ui.closeModal()
-            else
-                alert('Close')
+
+        //notification
+        function showNotification(message) {
+            ExternalServices.ExternalServices.boardService.showNotification(message)
+        }
+        function closeModal() {
+            if (!ExternalServices.ExternalServices.boardService)
+                alert("No boards")
+            ExternalServices.ExternalServices.boardService.closeModal()
+            // if (miro.board)
+            //     miro.board.ui.closeModal()
+            // else
+            //     alert('Close')
         }
 
         let templateContent = ""
@@ -126,7 +151,7 @@
             }
             await repository.createOrReplaceTemplate(originalTemplateName, template)
             await showNotification(`${template.templateName} saved.`)
-            close()
+            closeModal()
         }
 
         // var repository=require("templateRepository").getTemplateRepository()
