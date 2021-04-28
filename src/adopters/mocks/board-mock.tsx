@@ -144,11 +144,10 @@ export function UIComponent() {
         <div id="modal" style={{
             display: 'none',
             position: 'fixed',
-            top: '12%',
-            left: '15%',
-            width: '70%',
-            height: '70%',
-            backgroundColor: 'white',
+            top: '0%',
+            left: '0%',
+            width: '100%',
+            height: '100%',
             zIndex: 10
         }}>
             <iframe id="modal-iframe" style={{
