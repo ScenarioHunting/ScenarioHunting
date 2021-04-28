@@ -76,7 +76,7 @@
                     placeholder="aggregate-unit-test"></input>
                 <button class="save-button miro-btn miro-btn--primary miro-btn--small" onclick="save()">Save</button>
                 <button class="close-button miro-btn miro-btn--secondary miro-btn--small"
-                    onclick="close()">Close</button>
+                    onclick="closeModal()">Close</button>
             </div>
 
         </div>
@@ -97,7 +97,7 @@
                 return alert(message)
             }
         }
-        function close() {
+        function closeModal() {
             if (miro.board)
                 miro.board.ui.closeModal()
             else
@@ -126,7 +126,7 @@
             }
             await repository.createOrReplaceTemplate(originalTemplateName, template)
             await showNotification(`${template.templateName} saved.`)
-            close()
+            closeModal()
         }
 
         // var repository=require("templateRepository").getTemplateRepository()
