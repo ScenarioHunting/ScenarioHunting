@@ -13,6 +13,7 @@ import { localStorageTemplateRepository } from "./adopters/mocks/local-storage-t
 import { setDefaultTemplatesToRepository } from "./app/template-processing/default-templates-initializer";
 import { ITempStorage } from "./app/ports/itemp-storage";
 import { TempLocalStorage } from "./adopters/mocks/temp-local-storage";
+import { TemplateCompiler } from "./app/template-processing/template-compiler";
 
 
 
@@ -30,16 +31,19 @@ interface IExternalServices {
     boardUi(): JSX.Element
     templateRepository: ITemplateRepository
     tempSharedStorage: ITempStorage
+    templateCompiler: TemplateCompiler
 }
 
 
 
 const emptyComponent = () => <></>
+// eslint-disable-next-line no-unused-vars
 class miroDependencies implements IExternalServices {
     boardService = new MiroBoard()
     boardUi = emptyComponent
     templateRepository = new miroTemplateRepository()
     tempSharedStorage = new TempLocalStorage()
+    templateCompiler = new TemplateCompiler()
 }
 
 class mockedDependencies implements IExternalServices {
@@ -47,6 +51,7 @@ class mockedDependencies implements IExternalServices {
     boardUi = UIComponent
     templateRepository = new localStorageTemplateRepository()
     tempSharedStorage = new TempLocalStorage()
+    templateCompiler = new TemplateCompiler()
 }
 
 

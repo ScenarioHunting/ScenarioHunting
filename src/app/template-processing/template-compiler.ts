@@ -1,7 +1,7 @@
 import Handlebars from "handlebars/dist/handlebars.js"
 import { stringCaseHelpers } from "../../libs/string-case-helpers";
 const helpers = {
-    
+
     /**
      * Object to JSON
      * @param o Object to be converted to JSON.
@@ -14,8 +14,8 @@ const helpers = {
      */
     skipLast(options) {
         return options.data.last
-        ? options.inverse()
-        : options.fn()
+            ? options.inverse()
+            : options.fn()
     }
 }
 
@@ -30,14 +30,12 @@ Object.entries(helpers).map(([name, fn]) => Handlebars.registerHelper(name, fn))
 
 
 
+export class TemplateCompiler {
+    compileTemplate(template: string, testSchema): string {
 
-export function compileTemplate(template: string, testSchema): string {
+        var compiledTemplate = Handlebars.compile(template);
 
-
-
-
-    var compiledTemplate = Handlebars.compile(template);
-
-    //TODO: validate: the test must have When and Then at least.
-    return compiledTemplate(testSchema)
+        //TODO: validate: the test must have When and Then at least.
+        return compiledTemplate(testSchema)
+    }
 }

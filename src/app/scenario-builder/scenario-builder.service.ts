@@ -1,10 +1,9 @@
 import { isNullOrUndefined } from "../../libs/isNullOrUndefined"
-import { compileTemplate } from "../template-processing/template-compiler"
 import { spec, stepSchema } from "app/spec";
 import { ExternalServices, log } from "../../external-services";
 import { stringCaseHelpers } from "../../libs/string-case-helpers";
 const templateRepository = ExternalServices.templateRepository
-
+const templateCompiler = ExternalServices.templateCompiler
 function downloadAs(fileName: string, data: string) {
     log.log(`Saving as: file Name: ${fileName} content: ${JSON.stringify(data)}`)
     var blob = new Blob([data], { type: "text/plain;charset=utf-8" });
@@ -57,8 +56,8 @@ export class ScenarioBuilderService {
         }
 
         try {
-            var testCode = compileTemplate(template.contentTemplate, spec)
-            var testFileName = compileTemplate(template.fileNameTemplate, spec)
+            var testCode = templateCompiler.compileTemplate(template.contentTemplate, spec)
+            var testFileName = templateCompiler.compileTemplate(template.fileNameTemplate, spec)
             log.log("compiled testCode:", testCode, "testFileName", testFileName)
             downloadAs(`${testFileName}.${template.fileExtension}`, testCode)
         } catch (e) {
