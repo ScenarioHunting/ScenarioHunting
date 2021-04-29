@@ -2,7 +2,6 @@
 import { ITempStorage } from "../../app/ports/itemp-storage";
 import { log } from "../../external-services";
 
-const KEY = "storage.-key"
 const VALUE = "storage.-value"
 
 export class MiroTempStorage implements ITempStorage {
@@ -23,14 +22,16 @@ export class MiroTempStorage implements ITempStorage {
             }, 100)
         })
     }
-
+    private getStorageId(): string {
+        return "storage.-id" + miro.currentUser.getId()
+    }
     private async getAllStorageWidgets() {
         await this.waitUntil(() => miro.board)
         return ((await miro.board.widgets.get())
             .filter(i => i.type == 'TEXT'
                 && i.metadata && i.metadata[miro.getClientId()]
                 && i.metadata[miro.getClientId()]
-                && i.metadata[miro.getClientId()][KEY + miro.currentUser.getId()]) as SDK.ITextWidget[])
+                && i.metadata[miro.getClientId()][this.getStorageId()]) as SDK.ITextWidget[])
     }
     private async getAll() {
         return (await this.getAllStorageWidgets())
@@ -50,7 +51,7 @@ export class MiroTempStorage implements ITempStorage {
             x = viewport.x - 200
             y = viewport.y - 200
         }
-        const kv = { [KEY + miro.currentUser.getId()]: key, [VALUE]: value }
+        const kv = { [this.getStorageId()]: key, [VALUE]: value }
         await miro.board.widgets.create({
             type: "TEXT",
             text: JSON.stringify(kv),
@@ -76,7 +77,7 @@ export class MiroTempStorage implements ITempStorage {
     }
     async getItem(key: string): Promise<object | null> {
         const all = await this.getAll()
-        const kv = all.find(i => i[KEY + miro.currentUser.getId()] == key)
+        const kv = all.find(i => i[this.getStorageId()] == key)
         if (!kv)
             return null;
         return kv[VALUE]
@@ -84,7 +85,7 @@ export class MiroTempStorage implements ITempStorage {
     async removeItem(key: string): Promise<void> {
         const allWidgets = await this.getAllStorageWidgets()
         const widgetsToRemove = await allWidgets.filter(w =>
-            w.metadata[miro.getClientId()][KEY + miro.currentUser.getId()] == key)
+            w.metadata[miro.getClientId()][this.getStorageId()] == key)
         log.log('Removing storage:', key)
         log.log('widgetsToRemove:', widgetsToRemove)
         widgetsToRemove.forEach(async widget => {
@@ -97,7 +98,7 @@ export class MiroTempStorage implements ITempStorage {
 //         const appId = miro.getClientId();
 //         const rec = {
 //             [appId]: {
-//                 [KEY + miro.currentUser.getId()]: value
+//                 [this.getStorageKey()]: value
 //             }
 //         };
 //         await (miro.board as any).metadata.update(JSON.stringify(rec))
@@ -117,13 +118,13 @@ export class MiroTempStorage implements ITempStorage {
 //     }
 //     async getItem(key: string): Promise<object | null> {
 //         await this.waitUntil(() => miro.board)
-//         return (await (miro.board as any).metadata.get())[KEY + miro.currentUser.getId()]
+//         return (await (miro.board as any).metadata.get())[this.getStorageKey()]
 //     }
 //     async removeItem(key: string): Promise<void> {
 //         const item = this.getItem(key)
 //         if (!item)
 //             return;
-//         delete item[KEY + miro.currentUser.getId()];
+//         delete item[this.getStorageKey()];
 //         await (miro.board as any).metadata.update(JSON.stringify(item))
 //     }
 
