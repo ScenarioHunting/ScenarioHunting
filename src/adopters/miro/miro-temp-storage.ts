@@ -23,7 +23,7 @@ export class MiroTempStorage implements ITempStorage {
             }, 100)
         })
     }
-    
+
     private async getAllStorageWidgets() {
         await this.waitUntil(() => miro.board)
         return ((await miro.board.widgets.get())
@@ -84,7 +84,8 @@ export class MiroTempStorage implements ITempStorage {
     async removeItem(key: string): Promise<void> {
         const allWidgets = await this.getAllStorageWidgets()
         log.log('All Storage Widgets:', key)
-        const widgetsToRemove = await allWidgets.filter(w => w[KEY] == key)
+        const widgetsToRemove = await allWidgets.filter(w =>
+            w.metadata[miro.getClientId()][KEY] == key)
         log.log('Item to remove from storage widget:', key)
         log.log('widgetsToRemove:', widgetsToRemove)
         widgetsToRemove.forEach(async widget => await miro.board.widgets.deleteById(widget.id))
