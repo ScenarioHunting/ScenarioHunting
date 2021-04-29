@@ -294,77 +294,78 @@
             const language = getLanguageForExtension(document.getElementById("fileExtension").value)
             const template = editor.getValue()
             const modifiedModel = monaco.editor.createModel(previewEditor.getModifiedEditor().getValue(), language);
-            const preview = ExternalServices.ExternalServices.templateCompiler.compileTemplate(template, {
-                sut: 'subject',
-                context: 'context',
-                scenario: 'scenario',
-                givens: [{
-                    $schema: "http://json-schema.org/draft-07/schema#",
-                    type: "object",
-                    title: "Customer registered",
-                    properties: {
-                        customer_id: {
-                            type: "string",
-                            description: "customer_id",
-                            example: "customerId"
-                        },
-                        newAddress: {
-                            type: "string",
-                            description: "new address",
-                            example: "Oak street"
-                        },
-                        NewPhone_number: {
-                            type: "string",
-                            description: "New phonenumber",
-                            example: "+44555112100"
-                        }
-                    }
-                }],
-                when: {
-                    $schema: "http://json-schema.org/draft-07/schema#",
-                    type: "object",
-                    title: "Customer registered",
-                    properties: {
-                        customer_id: {
-                            type: "string",
-                            description: "customer_id",
-                            example: "customerId"
-                        },
-                        newAddress: {
-                            type: "string",
-                            description: "new address",
-                            example: "Oak street"
-                        },
-                        NewPhone_number: {
-                            type: "string",
-                            description: "New phonenumber",
-                            example: "+44555112100"
-                        }
-                    }
-                },
-                thens: [{
-                    $schema: "http://json-schema.org/draft-07/schema#",
-                    type: "object",
-                    title: "Customer registered",
-                    properties: {
-                        customer_id: {
-                            type: "string",
-                            description: "customer_id",
-                            example: "customerId"
-                        },
-                        newAddress: {
-                            type: "string",
-                            description: "new address",
-                            example: "Oak street"
-                        },
-                        NewPhone_number: {
-                            type: "string",
-                            description: "New phonenumber",
-                            example: "+44555112100"
-                        }
-                    }
-                }],
-            })
+            const preview = ExternalServices.ExternalServices.templateCompiler.compileTemplate(template, sampleTestSpec)
+            // {
+            //     sut: 'subject',
+            //     context: 'context',
+            //     scenario: 'scenario',
+            //     givens: [{
+            //         $schema: "http://json-schema.org/draft-07/schema#",
+            //         type: "object",
+            //         title: "Customer registered",
+            //         properties: {
+            //             customer_id: {
+            //                 type: "string",
+            //                 description: "customer_id",
+            //                 example: "customerId"
+            //             },
+            //             newAddress: {
+            //                 type: "string",
+            //                 description: "new address",
+            //                 example: "Oak street"
+            //             },
+            //             NewPhone_number: {
+            //                 type: "string",
+            //                 description: "New phonenumber",
+            //                 example: "+44555112100"
+            //             }
+            //         }
+            //     }],
+            //     when: {
+            //         $schema: "http://json-schema.org/draft-07/schema#",
+            //         type: "object",
+            //         title: "Customer registered",
+            //         properties: {
+            //             customer_id: {
+            //                 type: "string",
+            //                 description: "customer_id",
+            //                 example: "customerId"
+            //             },
+            //             newAddress: {
+            //                 type: "string",
+            //                 description: "new address",
+            //                 example: "Oak street"
+            //             },
+            //             NewPhone_number: {
+            //                 type: "string",
+            //                 description: "New phonenumber",
+            //                 example: "+44555112100"
+            //             }
+            //         }
+            //     },
+            //     thens: [{
+            //         $schema: "http://json-schema.org/draft-07/schema#",
+            //         type: "object",
+            //         title: "Customer registered",
+            //         properties: {
+            //             customer_id: {
+            //                 type: "string",
+            //                 description: "customer_id",
+            //                 example: "customerId"
+            //             },
+            //             newAddress: {
+            //                 type: "string",
+            //                 description: "new address",
+            //                 example: "Oak street"
+            //             },
+            //             NewPhone_number: {
+            //                 type: "string",
+            //                 description: "New phonenumber",
+            //                 example: "+44555112100"
+            //             }
+            //         }
+            //     }],
+            // })
             const originalModel = monaco.editor.createModel(preview, language);
             previewEditor.setModel({ original: originalModel, modified: modifiedModel });
         }
