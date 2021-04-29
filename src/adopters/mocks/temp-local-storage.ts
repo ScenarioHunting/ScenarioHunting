@@ -8,7 +8,7 @@ export class TempLocalStorage implements ITempStorage {
         const item = localStorage.getItem(key)
         if (!item)
             return Promise.resolve(null)
-        return JSON.parse(item)
+        return Promise.resolve(JSON.parse(item))
     }
     removeItem(key: string): Promise<void> {
         localStorage.removeItem(key)

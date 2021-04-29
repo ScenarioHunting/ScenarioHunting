@@ -15,7 +15,7 @@
     "coverage": "nyc -r lcov -e .ts -x \"*.test.ts\" npm run test",
     "homepage": "http://ScenarioHunting.github.io/ScenarioHunting",
     "predeploy": "npm run build",
-    "deploy": "sed -i 's/new mockedDependencies/new miroDependencies/g' dist/ExternalServices.js && gh-pages -d dist"
+    "deploy": "sed -i 's/ExternalServices = createMockedDependencies()/ExternalServices = createMiroDependencies()/g' dist/ExternalServices.js && gh-pages -d dist"
   },
   "keywords": [],
   "author": "",

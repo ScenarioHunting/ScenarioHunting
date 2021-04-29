@@ -188,7 +188,9 @@
         //         }
         //     }],
         // }
-        ExternalServices.ExternalServices.tempSharedStorage.getItem('sample-test-spec').then(spec => {
+        const promise = ExternalServices.ExternalServices.tempSharedStorage.getItem('sample-test-spec')
+        console.log("promise:", promise)
+        promise.then(spec => {
             sampleTestSpec = spec
             ExternalServices.ExternalServices.tempSharedStorage.removeItem('sample-test-spec')
         })

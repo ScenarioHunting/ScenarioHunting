@@ -23,9 +23,6 @@ export let testResultReports: ITestResultReports = new TestResultReports()
 // export let singletonBoard: IBoard = new MiroBoard()
 export let log: iLog = console
 
-
-
-
 interface IExternalServices {
     boardService: IBoard
     // eslint-disable-next-line no-undef
@@ -35,33 +32,29 @@ interface IExternalServices {
     templateCompiler: TemplateCompiler
 }
 
-
-
-const emptyComponent = () => <></>
 // eslint-disable-next-line no-unused-vars
-class miroDependencies implements IExternalServices {
-    boardService = new MiroBoard()
-    boardUi = emptyComponent
-    templateRepository = new miroTemplateRepository()
-    tempSharedStorage = new MiroTempLocalStorage()
-    templateCompiler = new TemplateCompiler()
+const createMiroDependencies = (): IExternalServices => {
+    const emptyComponent = () => <></>
+    return {
+        boardService: new MiroBoard(),
+        boardUi: emptyComponent,
+        templateRepository: new miroTemplateRepository(),
+        tempSharedStorage: new MiroTempLocalStorage(),
+        templateCompiler: new TemplateCompiler(),
+    }
 }
 
-class mockedDependencies implements IExternalServices {
-    boardService = MockBoard()
-    boardUi = UIComponent
-    templateRepository = new localStorageTemplateRepository()
-    tempSharedStorage = new TempLocalStorage()
-    templateCompiler = new TemplateCompiler()
+const createMockedDependencies = (): IExternalServices => {
+    return {
+        boardService: MockBoard(),
+        boardUi: UIComponent,
+        templateRepository: new localStorageTemplateRepository(),
+        tempSharedStorage: new TempLocalStorage(),
+        templateCompiler: new TemplateCompiler(),
+    }
 }
 
-
-// let  ExternalServices: IExternalServices
-
-// // ExternalServices = new miroDependencies()
-// ExternalServices = new mockedDependencies()
-
-export const ExternalServices = new mockedDependencies()
+const ExternalServices = createMockedDependencies()
 setDefaultTemplatesToRepository(ExternalServices.templateRepository)
 
-// export { ExternalServices }
+export { ExternalServices }
