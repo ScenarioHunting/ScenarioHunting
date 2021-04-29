@@ -5,7 +5,21 @@ const KEY = "storage.-key"
 const VALUE = "storage.-value"
 
 export class MiroTempLocalStorage implements ITempStorage {
+    private waitUntil = (condition) => {
+        // eslint-disable-next-line no-unused-vars
+        return new Promise((resolve: (value: any) => void) => {
+            let interval = setInterval(() => {
+                if (!condition()) {
+                    return
+                }
+
+                clearInterval(interval)
+                resolve(null)
+            }, 100)
+        })
+    }
     private async getAllStorageWidgets() {
+        await this.waitUntil(() => miro.board)
         return ((await miro.board.widgets.get())
             .filter(i => i.type == 'TEXT'
                 && i.metadata && i.metadata[miro.getClientId()]
