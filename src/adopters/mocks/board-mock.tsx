@@ -27,7 +27,7 @@ class BoardMock implements IBoard {
     showNotification: (message: string) => Promise<void> = (message) =>
         Promise.resolve(this.showStatus('Notification message:\n' + message))
 
-    openModal(iframeURL: string, options?: { width?: number; height?: number } | { fullscreen: boolean }): Promise<any> {
+    openModal(iframeURL: string): Promise<any> {
         const modal = document!.getElementById("modal")
         const modalDarkBackground = document.getElementById("modal-dark-background")
 

@@ -21,8 +21,8 @@ export function TemplateList(props): JSX.Element {
         }).catch(e => { throw e })
     }
     useEffect(loadTemplateNames, []);
-    function openModal(iframeURL: string): Promise<any> {
-        return boardService.openModal(iframeURL, {fullscreen: true})
+    function openModal(iframeURL: string): Promise<void> {
+        return boardService.openModal(iframeURL)
     }
     function addTemplate() {
         openModal(`./monaco-editor.html`)

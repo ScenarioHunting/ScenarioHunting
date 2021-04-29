@@ -151,16 +151,12 @@ export const createTestRecorder = (board = ExternalServices.boardService): React
             thens: [then?.stepSchema],
         } as spec
         tempSharedStorage.setItem('sample-test-spec', testSpec)
+        
         const queryString = `?templateName=${selectedTemplateName}`
-        // await 
-        boardService.openModal(`./monaco-editor.html${queryString}`, { fullscreen: true })
-            .then(() => {
-                loadTemplateNames()
-                // )
-                // .finally(() => 
-                tempSharedStorage.removeItem('sample-test-spec')
-            })
+        await boardService.openModal(`./monaco-editor.html${queryString}`)
+        loadTemplateNames()
     }
+
     return (
         <div className={styles["test-recorder"]}>
             <Givens onStepSelectionChange={recordGiven} steps={givens} />

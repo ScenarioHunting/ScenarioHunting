@@ -5,7 +5,7 @@ import { log } from "../../external-services";
 const VALUE = "storage.-value"
 
 export class MiroTempStorage implements ITempStorage {
-    // private KEY = KEY
+    // private KEY = "storage.-id"
     // constructor(private keyPostfix: string = '') {
     //     this.KEY = KEY + '+' + keyPostfix
     // }

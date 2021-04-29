@@ -7,8 +7,8 @@ import { log } from "../../external-services";
 
 export class MiroBoard implements IBoard {
 
-    openModal(iframeURL: string, options?: { width?: number; height?: number } | { fullscreen: boolean }): Promise<any> {
-        return miro.board.ui.openModal(iframeURL, options)
+    openModal(iframeURL: string): Promise<any> {
+        return miro.board.ui.openModal(iframeURL, { fullscreen: true })
     }
     closeModal() {
         miro.board.ui.closeModal()
