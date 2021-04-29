@@ -1,4 +1,5 @@
 import { IBoard } from "./app/ports/iboard";
+// eslint-disable-next-line no-unused-vars
 import { iLog, noLog } from "./libs/logging/log";
 import { ITestResultReports, TestResultReports } from "./test-result-reports";
 
@@ -32,7 +33,7 @@ interface IExternalServices {
     templateCompiler: TemplateCompiler
 }
 
-// eslint-disable-next-line no-unused-vars
+// eslint-disable-next-line no-unused-vars 
 const createMiroDependencies = (): IExternalServices => {
     const emptyComponent = () => <></>
     return {

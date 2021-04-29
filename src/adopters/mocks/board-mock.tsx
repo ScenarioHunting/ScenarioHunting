@@ -41,7 +41,14 @@ class BoardMock implements IBoard {
         };
         window.onkeydown = function (e) {
             if (e.keyCode == 27) {
-                this.closeModal()
+                if (document && document!.getElementById("modal")) {
+                    document!.getElementById("modal")!.style.display = "none";
+                    document!.getElementById("modal-dark-background")!.style.display = "none";
+                    return
+                }
+                window.parent.document.getElementById("modal")!.style.display = "none";
+                window.parent.document.getElementById("modal-dark-background")!.style.display = "none";
+                // this.closeModal()
                 e.preventDefault();
                 return;
             }
