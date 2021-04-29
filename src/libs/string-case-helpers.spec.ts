@@ -34,4 +34,6 @@ describe('string case helpers', function () {
 
             .should.eq('The first letter was originally small')
     )
+    it('returns empty string for null')
+    it('returns empty string for undefined')
 })

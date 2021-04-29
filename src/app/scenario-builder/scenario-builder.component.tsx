@@ -45,13 +45,14 @@ export const createTestRecorder = (board = ExternalServices.boardService): React
     function loadTemplateNames() {
         templateRepository.getAllTemplateNames().then(templateNames => {
             setAvailableTemplateNames(templateNames)
+            selectTemplateName(templateNames[0])
         }).catch(e => { throw e })
     }
-    
+
     useEffect(() => {
         board.unselectAll()
             .then(queueingMachine.start);
-            loadTemplateNames()
+        loadTemplateNames()
     }, [])
 
 
@@ -149,7 +150,7 @@ export const createTestRecorder = (board = ExternalServices.boardService): React
             when: when?.stepSchema,
             thens: [then?.stepSchema],
         } as spec
-        tempSharedStorage.setItem('sampleTestSpec', testSpec)
+        tempSharedStorage.setItem('sample-test-spec', testSpec)
         const queryString = `?mode=preview&templateName=${selectedTemplateName}`
         boardService.openModal(`./monaco-editor.html${queryString}`, { fullscreen: true })
             .then(() => loadTemplateNames())

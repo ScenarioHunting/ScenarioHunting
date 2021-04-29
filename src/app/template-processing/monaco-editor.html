@@ -115,9 +115,79 @@
         const originalTemplateName = getParameterByName("templateName")
         document.getElementById("templateName").value = originalTemplateName
 
-        const sampleTestSpec = ExternalServices.ExternalServices.tempSharedStorage.getItem('sampleTestSpec')
+        const sampleTestSpec = ExternalServices.ExternalServices.tempSharedStorage.getItem('sample-test-spec')
         if (!sampleTestSpec) {
-
+            sampleTestSpec = {
+                sut: 'subject',
+                context: 'context',
+                scenario: 'scenario',
+                givens: [{
+                    $schema: "http://json-schema.org/draft-07/schema#",
+                    type: "object",
+                    title: "Customer registered",
+                    properties: {
+                        customer_id: {
+                            type: "string",
+                            description: "customer_id",
+                            example: "customerId"
+                        },
+                        newAddress: {
+                            type: "string",
+                            description: "new address",
+                            example: "Oak street"
+                        },
+                        NewPhone_number: {
+                            type: "string",
+                            description: "New phonenumber",
+                            example: "+44555112100"
+                        }
+                    }
+                }],
+                when: {
+                    $schema: "http://json-schema.org/draft-07/schema#",
+                    type: "object",
+                    title: "Customer registered",
+                    properties: {
+                        customer_id: {
+                            type: "string",
+                            description: "customer_id",
+                            example: "customerId"
+                        },
+                        newAddress: {
+                            type: "string",
+                            description: "new address",
+                            example: "Oak street"
+                        },
+                        NewPhone_number: {
+                            type: "string",
+                            description: "New phonenumber",
+                            example: "+44555112100"
+                        }
+                    }
+                },
+                thens: [{
+                    $schema: "http://json-schema.org/draft-07/schema#",
+                    type: "object",
+                    title: "Customer registered",
+                    properties: {
+                        customer_id: {
+                            type: "string",
+                            description: "customer_id",
+                            example: "customerId"
+                        },
+                        newAddress: {
+                            type: "string",
+                            description: "new address",
+                            example: "Oak street"
+                        },
+                        NewPhone_number: {
+                            type: "string",
+                            description: "New phonenumber",
+                            example: "+44555112100"
+                        }
+                    }
+                }],
+            }
         }
         async function save() {
             var repository = ExternalServices.ExternalServices.templateRepository
