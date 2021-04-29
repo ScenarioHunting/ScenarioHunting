@@ -188,13 +188,7 @@
         //         }
         //     }],
         // }
-        const promise = ExternalServices.ExternalServices.tempSharedStorage.getItem('sample-test-spec')
-        console.log("promise:", promise)
-        promise.then(spec => {
-            sampleTestSpec = spec
-            console.log('sample spec:', spec)
-            ExternalServices.ExternalServices.tempSharedStorage.removeItem('sample-test-spec')
-        })
+        
 
         async function save() {
             var repository = ExternalServices.ExternalServices.templateRepository
@@ -237,7 +231,6 @@
 
             if (originalTemplateName) {
                 var repository = ExternalServices.ExternalServices.templateRepository
-                console.log('Services:', ExternalServices)
 
                 // var repository = await templateRepository.getTemplateRepository()
                 var template = await repository.getTemplateByName(originalTemplateName)
@@ -297,6 +290,12 @@
 
             preview()
         }
+        const promise = ExternalServices.ExternalServices.tempSharedStorage.getItem('sample-test-spec')
+        promise.then(spec => {
+            sampleTestSpec = spec
+            ExternalServices.log.log('Sample spec:', spec)
+            ExternalServices.ExternalServices.tempSharedStorage.removeItem('sample-test-spec')
+        })
         function preview() {
             const language = getLanguageForExtension(document.getElementById("fileExtension").value)
             const template = editor.getValue()
@@ -304,7 +303,7 @@
             if (!sampleTestSpec) {
                 ExternalServices.ExternalServices.tempSharedStorage.getItem('sample-test-spec').then(spec => {
                     sampleTestSpec = spec
-                    console.log('sample spec from preview:', spec)
+                    ExternalServices.log.log('Sample spec from preview:', spec)
 
                     ExternalServices.ExternalServices.tempSharedStorage.removeItem('sample-test-spec')
                     const preview = ExternalServices.ExternalServices.templateCompiler.compileTemplate(template, sampleTestSpec)
