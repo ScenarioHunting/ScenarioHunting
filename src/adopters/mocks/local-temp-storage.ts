@@ -1,5 +1,5 @@
 import { ITempStorage } from '../../app/ports/itemp-storage'
-export class TempLocalStorage implements ITempStorage {
+export class LocalTempStorage implements ITempStorage {
     setItem(key: string, value: object): Promise<void> {
         localStorage.setItem(key, JSON.stringify(value))
         return Promise.resolve()

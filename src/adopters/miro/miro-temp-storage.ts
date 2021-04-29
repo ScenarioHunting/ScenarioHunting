@@ -4,7 +4,11 @@ import { ITempStorage } from "../../app/ports/itemp-storage";
 const KEY = "storage.-key"
 const VALUE = "storage.-value"
 
-export class MiroTempLocalStorage implements ITempStorage {
+export class MiroTempStorage implements ITempStorage {
+    // private KEY = KEY
+    // constructor(private keyPostfix: string = '') {
+    //     this.KEY = KEY + '-' + keyPostfix
+    // }
     private waitUntil = (condition) => {
         // eslint-disable-next-line no-unused-vars
         return new Promise((resolve: (value: any) => void) => {
@@ -61,6 +65,7 @@ export class MiroTempLocalStorage implements ITempStorage {
             // clientVisible: false
         })
     }
+
     async setItem(key: string, value: object): Promise<void> {
         if (this.getItem(key))
             await this.removeItem(key)

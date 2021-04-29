@@ -12,9 +12,9 @@ import { miroTemplateRepository } from "./adopters/miro/miro-template-repository
 import { localStorageTemplateRepository } from "./adopters/mocks/local-storage-template-repository";
 import { setDefaultTemplatesToRepository } from "./app/template-processing/default-templates-initializer";
 import { ITempStorage } from "./app/ports/itemp-storage";
-import { TempLocalStorage } from "./adopters/mocks/temp-local-storage";
+import { LocalTempStorage } from "./adopters/mocks/local-temp-storage";
 import { TemplateCompiler } from "./app/template-processing/template-compiler";
-import { MiroTempLocalStorage } from "./adopters/miro/miro-temp-local-storage";
+import { MiroTempStorage } from "./adopters/miro/miro-temp-storage";
 
 
 
@@ -39,7 +39,7 @@ const createMiroDependencies = (): IExternalServices => {
         boardService: new MiroBoard(),
         boardUi: emptyComponent,
         templateRepository: new miroTemplateRepository(),
-        tempSharedStorage: new MiroTempLocalStorage(),
+        tempSharedStorage: new MiroTempStorage(),
         templateCompiler: new TemplateCompiler(),
     }
 }
@@ -49,7 +49,7 @@ const createMockedDependencies = (): IExternalServices => {
         boardService: MockBoard(),
         boardUi: UIComponent,
         templateRepository: new localStorageTemplateRepository(),
-        tempSharedStorage: new TempLocalStorage(),
+        tempSharedStorage: new LocalTempStorage(),
         templateCompiler: new TemplateCompiler(),
     }
 }
