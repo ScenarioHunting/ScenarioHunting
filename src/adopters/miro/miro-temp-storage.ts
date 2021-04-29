@@ -7,7 +7,7 @@ const VALUE = "storage.-value"
 export class MiroTempStorage implements ITempStorage {
     // private KEY = KEY
     // constructor(private keyPostfix: string = '') {
-    //     this.KEY = KEY + '-' + keyPostfix
+    //     this.KEY = KEY + '+' + keyPostfix
     // }
     private waitUntil = (condition) => {
         // eslint-disable-next-line no-unused-vars
@@ -48,11 +48,12 @@ export class MiroTempStorage implements ITempStorage {
             x = viewport.x - 200
             y = viewport.y - 200
         }
+        const kv = { [KEY]: key, [VALUE]: value }
         await miro.board.widgets.create({
             type: "TEXT",
-            text: '',
+            text: JSON.stringify(kv),
             metadata: {
-                [miro.getClientId()]: { [KEY]: key, [VALUE]: value }
+                [miro.getClientId()]: kv
             },
             capabilities: {
                 editable: false
