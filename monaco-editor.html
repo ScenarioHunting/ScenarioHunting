@@ -115,7 +115,7 @@
         const originalTemplateName = getParameterByName("templateName")
         document.getElementById("templateName").value = originalTemplateName
 
-        const sampleTestSpec = ExternalServices.ExternalServices.tempSharedStorage.getItem('sample-test-spec')
+        let sampleTestSpec = ExternalServices.ExternalServices.tempSharedStorage.getItem('sample-test-spec')
         if (!sampleTestSpec) {
             sampleTestSpec = {
                 sut: 'subject',
