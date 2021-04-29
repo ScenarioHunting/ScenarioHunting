@@ -153,7 +153,10 @@ export const createTestRecorder = (board = ExternalServices.boardService): React
         tempSharedStorage.setItem('sample-test-spec', testSpec)
         const queryString = `?mode=preview&templateName=${selectedTemplateName}`
         boardService.openModal(`./monaco-editor.html${queryString}`, { fullscreen: true })
-            .then(() => loadTemplateNames())
+            .then(() => {
+                tempSharedStorage.removeItem('sample-test-spec')
+                loadTemplateNames()
+            })
     }
     return (
         <div className={styles["test-recorder"]}>
