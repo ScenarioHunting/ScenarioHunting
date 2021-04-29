@@ -118,18 +118,18 @@
         let sampleTestSpec = ExternalServices.ExternalServices.tempSharedStorage.getItem('sample-test-spec')
         if (!sampleTestSpec) {
             sampleTestSpec = {
-                sut: 'subject',
-                context: 'context',
-                scenario: 'scenario',
+                sut: 'Your-subject-under-test',
+                context: 'Your-context',
+                scenario: 'Your-scenario',
                 givens: [{
                     $schema: "http://json-schema.org/draft-07/schema#",
                     type: "object",
-                    title: "Customer registered",
+                    title: "Given-title-1",
                     properties: {
-                        customer_id: {
+                        Given1_property_1: {
                             type: "string",
-                            description: "customer_id",
-                            example: "customerId"
+                            description: "Given1-property-1",
+                            example: "Given1-property-1-value"
                         },
                         newAddress: {
                             type: "string",
