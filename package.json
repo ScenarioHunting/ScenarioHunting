@@ -14,8 +14,10 @@
     "test": "mocha --config .mocharc.json",
     "coverage": "nyc -r lcov -e .ts -x \"*.test.ts\" npm run test",
     "homepage": "http://ScenarioHunting.github.io/ScenarioHunting",
-    "predeploy": "npm run build",
-    "deploy": "sed -i 's/ExternalServices = createMockedDependencies()/ExternalServices = createMiroDependencies()/g' dist/ExternalServices.js && gh-pages -d dist"
+    "predeploy": "npm run build && sed -i 's/ExternalServices = createMockedDependencies()/ExternalServices = createMiroDependencies()/g' dist/ExternalServices.js",
+    "deploy": "gh-pages -d dist",
+    "prestage": "npm run predeploy",
+    "stage": "gh-pages -d dist --repo https://github.com/ScenarioHunting/ScenarioHuntingStaging"
   },
   "keywords": [],
   "author": "",
