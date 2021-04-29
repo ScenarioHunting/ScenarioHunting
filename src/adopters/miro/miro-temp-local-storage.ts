@@ -8,7 +8,7 @@ export class MiroTempLocalStorage implements ITempStorage {
                 [key]: value
             }
         };
-        await (miro.board as any).metadata.update(rec)
+        await (miro.board as any).metadata.update(JSON.stringify(rec))
     }
     private waitUntil = (condition) => {
         // eslint-disable-next-line no-unused-vars
@@ -32,7 +32,7 @@ export class MiroTempLocalStorage implements ITempStorage {
         if (!item)
             return;
         delete item[key];
-        await (miro.board as any).metadata.update(item)
+        await (miro.board as any).metadata.update(JSON.stringify(item))
     }
 
 }
