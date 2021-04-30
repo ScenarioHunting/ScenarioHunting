@@ -9,7 +9,7 @@ import { queueingMachine } from './local-dependency-container';
 import { useEffect, useState } from 'react';
 import { SelectableText } from './title-picker/title-picker.component';
 import { TestStepTurn } from './step-picker/scenario-step-turn';
-import { spec } from 'app/spec';
+import { spec } from '../../app/spec';
 import { ExternalServices } from '../../external-services';
 
 const templateRepository = ExternalServices.templateRepository

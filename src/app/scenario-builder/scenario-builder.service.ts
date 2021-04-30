@@ -1,5 +1,5 @@
 import { isNullOrUndefined } from "../../libs/isNullOrUndefined"
-import { spec, stepSchema } from "app/spec";
+import { spec, stepSchema } from "../../app/spec";
 import { ExternalServices, log } from "../../external-services";
 import { stringCaseHelpers } from "../../libs/string-case-helpers";
 const templateRepository = ExternalServices.templateRepository

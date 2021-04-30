@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 import { extractStepSchema } from "../../app/scenario-builder/board-text-schema-extractor";
 import { CSSProperties } from "react";
-import { IBoard, SelectedStep, WidgetSnapshot } from "app/ports/iboard";
+import { IBoard, SelectedStep, WidgetSnapshot } from "../../app/ports/iboard";
 import { log } from "../../external-services";
 
 

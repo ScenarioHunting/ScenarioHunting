@@ -1,8 +1,11 @@
-export const monacoLanguage = (function () {
-    const extensionLanguages = {
+export function getLanguageForExtension(extension) {
+    const fileTypes = {
         css: 'css',
+        js: 'javascript',
         json: 'json',
+        md: 'markdown',
         mjs: 'javascript',
+        ts: 'typescript',
         cs: 'csharp',
         abap: 'abap',
         aes: 'aes',//?
@@ -41,6 +44,7 @@ export const monacoLanguage = (function () {
         "ipp": 'cpp',
         "tcc": 'cpp',
         "tpp": 'cpp',
+        "cs": 'csharp',
         // "": 'csp',
         dart: 'dart',
         dockerfile: 'dockerfile',
@@ -88,6 +92,7 @@ export const monacoLanguage = (function () {
         "sublime_session": 'javascript',
         xsjs: 'javascript',
         xsjslib: 'javascript',
+        json: 'json',
         jl: 'julia',
         kt: 'kotlin',
         ktm: 'kotlin',
@@ -110,15 +115,18 @@ export const monacoLanguage = (function () {
         // : 'mips',
         // : 'msdax',
         // sql: 'mysql',
+        c: 'c',
         pas: 'pascal',
         dfm: 'pascal',
         dpr: 'pascal',
+        inc: 'pascal',
         lpr: 'pascal',
         pp: 'pascal',
         // : 'pascaligo',
         pl: 'perl',
         al: 'perl',
         cgi: 'perl',
+        fcgi: 'perl',
         perl: 'perl',
         ph: 'perl',
         plx: 'perl',
@@ -128,6 +136,7 @@ export const monacoLanguage = (function () {
         t: 'perl',
         // : 'pgsql',
         php: 'php',
+        hh: 'php',
         txt: 'plaintext',
         // : 'postiats',
         // : 'powerquery',
@@ -137,6 +146,8 @@ export const monacoLanguage = (function () {
         // : 'pug',
         py: 'python',
         bzl: 'python',
+        cgi: 'python',
+        fcgi: 'python',
         gyp: 'python',
         lmi: 'python',
         pyde: 'python',
@@ -159,6 +170,7 @@ export const monacoLanguage = (function () {
         "rst.txt": 'restructuredtext',
         rb: 'ruby',
         builder: 'ruby',
+        fcgi: 'ruby',
         gemspec: 'ruby',
         god: 'ruby',
         irbrc: 'ruby',
@@ -189,7 +201,9 @@ export const monacoLanguage = (function () {
         sh: 'shell',
         bash: 'shell',
         bats: 'shell',
+        cgi: 'shell',
         command: 'shell',
+        fcgi: 'shell',
         ksh: 'shell',
         shin: 'shell',
         tmux: 'shell',
@@ -199,6 +213,7 @@ export const monacoLanguage = (function () {
         sql: 'sql',
         cql: 'sql',
         ddl: 'sql',
+        inc: 'sql',
         prc: 'sql',
         tab: 'sql',
         udf: 'sql',
@@ -216,6 +231,7 @@ export const monacoLanguage = (function () {
         tsx: 'typescript',
         vb: 'vb',
         bas: 'vb',
+        cls: 'vb',
         frm: 'vb',
         frx: 'vb',
         vba: 'vb',
@@ -258,6 +274,7 @@ export const monacoLanguage = (function () {
         odd: 'xml',
         osm: 'xml',
         plist: 'xml',
+        pluginspec: 'xml',
         props: 'xml',
         ps1xml: 'xml',
         psc1: 'xml',
@@ -276,6 +293,8 @@ export const monacoLanguage = (function () {
         tmPreferences: 'xml',
         tmSnippet: 'xml',
         tmTheme: 'xml',
+        ts: 'xml',
+        tsx: 'xml',
         ui: 'xml',
         urdf: 'xml',
         ux: 'xml',
@@ -307,10 +326,11 @@ export const monacoLanguage = (function () {
         syntax: 'yaml',
         yaml: 'yaml',
         "yaml-tmlanguage": 'yaml',
+
     }
-    return {
-        fromExtension:function(extension) {
-            return extensionLanguages[extension]
-        }
+    let language = fileTypes[extension]
+    if (!language) {
+        language = "handlebars"
     }
-})()
+    return language
+}

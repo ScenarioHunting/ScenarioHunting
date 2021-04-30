@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { IBoard, SelectedStep, WidgetSnapshot } from "app/ports/iboard";
+import { IBoard, SelectedStep, WidgetSnapshot } from "../../app/ports/iboard";
 
 import * as React from 'react';
 

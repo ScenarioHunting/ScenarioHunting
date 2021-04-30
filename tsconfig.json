@@ -14,13 +14,17 @@
       "es2019",
       "dom",
       "esnext"
-    ]
+    ],
+    "paths":{
+      "*":["src/@types"]
+    }
   },
   "include": [
     "src/**/*",
-    "miro.d.ts"
-, "app.config.ts", "app.config.ts"  ],
-  "files":[
-    "miro.d.ts"
+    "@types/miro.d.ts",
+    "app.config.ts"
+  ],
+  "files": [
+    "@types/miro.d.ts"
   ]
 }

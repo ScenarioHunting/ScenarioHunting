@@ -1,7 +1,8 @@
 const path = require('path')
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 // const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
-const externalServicesPath = './src/external-services.tsx'
+
+// const externalServicesPath = './src/external-services.tsx'
 const appConfig = {
 	name: 'app',
 	optimization: {
@@ -21,11 +22,11 @@ const appConfig = {
 		app: {
 			import: './src/app/app.tsx',
 			//To split this file in order to be able to access it by the template editor:
-			dependOn: [ 'ExternalServices']
+			// dependOn: ['ExternalServices']
 
 		},
 		//To split this file in order to be able to access it by the template editor:
-		ExternalServices: externalServicesPath
+		// ExternalServices: externalServicesPath
 	},
 	module: {
 		rules: [
@@ -78,14 +79,14 @@ const appConfig = {
 		// chunkFilename: '[id].chunk.js',
 		path: path.resolve(__dirname, 'dist'),
 		// clean: true,
-		libraryTarget: 'var',
-		library: 'ExternalServices'
+		// libraryTarget: 'var',
+		// library: 'ExternalServices'
 	},
 	plugins: [
 		new HtmlWebPackPlugin({
 			template: "./src/index.html",
 			filename: "./index.html",
-			excludeChunks: ['ExternalServices'],
+			// excludeChunks: ['ExternalServices'],
 		}),
 		new HtmlWebPackPlugin({
 			template: "./src/app/app.html",
@@ -99,12 +100,9 @@ const editorConfig = {
 	// mode: 'production',
 	mode: 'development',
 	entry: {
-		// monacoEditor: {
-		// 	import: './src/template-processing/monaco-editor.ts',
-		// 	// dependOn: 'ExternalServices'
-		// },
+		editor: "./src/app/template-processing/editor.js",
 		monacoLanguage: './src/app/template-processing/monaco-languages.js',
-		ExternalServices: externalServicesPath
+		// ExternalServices: externalServicesPath
 
 	},
 	module: {
@@ -122,17 +120,16 @@ const editorConfig = {
 	output: {
 		path: path.resolve(__dirname, 'dist'),
 		chunkFilename: '[id].chunk.js',
-		// filename: 'template-repository-lib.js',
-		libraryTarget: 'var',
-		library: 'ExternalServices'
+		// libraryTarget: 'var',
+		// library: 'ExternalServices'
 
 	},
 	plugins: [
 		new HtmlWebPackPlugin({
 			template: "./src/app/template-processing/monaco-editor.html",
 			filename: "./monaco-editor.html",
-			chucks: ['ExternalServices'],
-			inject: 'head',
+			// chucks: ['ExternalServices'],
+			inject: 'body',
 			scriptLoading: 'blocking'
 		}),
 		// new MonacoWebpackPlugin()

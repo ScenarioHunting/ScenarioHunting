@@ -1,4 +1,4 @@
-import { properties, stepSchema } from 'app/spec';
+import { properties, stepSchema } from '../../app/spec';
 
 const toSnakeCase = (str: string) => str.trim()
     .replace(/(([^A-Z0-9]+)(.)?)/ig, '_$1')

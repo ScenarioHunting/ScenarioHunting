@@ -1,4 +1,4 @@
-import { iTemplateRepository } from "app/ports/itemplate-repository"
+import { iTemplateRepository } from "../../app/ports/itemplate-repository"
 import { defaultTemplates } from "./default-templates"
 
 export const setDefaultTemplatesToRepository =
