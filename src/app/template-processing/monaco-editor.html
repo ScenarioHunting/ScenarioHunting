@@ -317,12 +317,9 @@
                 monaco.editor.setModelMarkers(model, null, [])
             }
             catch (err) {
-                ExternalServices.log.log("Handlebars: " + err)
-
                 var lineNumber
-                const lineNumberMatch = String(err).match(/error on line (\d+)/)
-                if (lineNumberMatch && lineNumberMatch.length > 1)
-                    lineNumber = parseInt(lineNumberMatch[1])
+                if (err.hasLineNumber)
+                    lineNumber = err.lineNumber
                 else {
                     lineNumber = editor.getPosition().lineNumber;
                 }
