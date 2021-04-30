@@ -9,10 +9,10 @@
   padding-top: 10px;
   padding-bottom: 10px;
 }
-.save-template-panel:hover{
+.template-selection-panel:hover{
   border-color: #827f9b;
 }
-.save-template-panel{
+.template-selection-panel{
   padding-top:30px;
   width: 100%;
   padding: 0px;
