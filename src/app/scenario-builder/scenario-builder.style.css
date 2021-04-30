@@ -22,6 +22,6 @@
   border-width: thin;
 }
 .svg-button{
-  min-width: '22px';
-  padding: '0px';
+  min-width: 22px!important;
+  padding: 0px!important;
 }
