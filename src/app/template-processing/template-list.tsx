@@ -25,6 +25,7 @@ export function TemplateList(props): JSX.Element {
         return boardService.openModal(iframeURL)
     }
     function addTemplate() {
+        ExternalServices
         openModal(`./monaco-editor.html`)
     }
     function editTemplate(templateName: string) {

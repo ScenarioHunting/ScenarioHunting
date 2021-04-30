@@ -136,6 +136,7 @@ import { defaultTestSpec } from './default-test-spec'
     let preview
     (async function () {
         let sampleTestSpec = await ExternalServices.tempSharedStorage.getItem('sample-test-spec')
+        await ExternalServices.tempSharedStorage.removeItem('sample-test-spec')
         if (!sampleTestSpec)
             sampleTestSpec = defaultTestSpec
         preview = async function (fileExtension, editorModel) {
