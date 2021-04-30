@@ -9,6 +9,19 @@
   padding-top: 10px;
   padding-bottom: 10px;
 }
-.save{
+.save-template-panel:hover{
+  border-color: #827f9b;
+}
+.save-template-panel{
   padding-top:30px;
+  width: 100%;
+  padding: 0px;
+  border-color: #c3c2cf;
+  border-radius: 6px;
+  border-style: solid;
+  border-width: thin;
+}
+.svg-button{
+  min-width: '22px';
+  padding: '0px';
 }
