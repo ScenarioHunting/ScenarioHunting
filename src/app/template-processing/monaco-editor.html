@@ -116,77 +116,7 @@
 
 
         let sampleTestSpec;
-        // {
-        //     sut: 'Your-subject-under-test',
-        //     context: 'Your-context',
-        //     scenario: 'Your-scenario',
-        //     givens: [{
-        //         $schema: "http://json-schema.org/draft-07/schema#",
-        //         type: "object",
-        //         title: "Given-title-1",
-        //         properties: {
-        //             Given1_property_1: {
-        //                 type: "string",
-        //                 description: "Given1-property-1",
-        //                 example: "Given1-property-1-value"
-        //             },
-        //             newAddress: {
-        //                 type: "string",
-        //                 description: "new address",
-        //                 example: "Oak street"
-        //             },
-        //             NewPhone_number: {
-        //                 type: "string",
-        //                 description: "New phonenumber",
-        //                 example: "+44555112100"
-        //             }
-        //         }
-        //     }],
-        //     when: {
-        //         $schema: "http://json-schema.org/draft-07/schema#",
-        //         type: "object",
-        //         title: "Customer registered",
-        //         properties: {
-        //             customer_id: {
-        //                 type: "string",
-        //                 description: "customer_id",
-        //                 example: "customerId"
-        //             },
-        //             newAddress: {
-        //                 type: "string",
-        //                 description: "new address",
-        //                 example: "Oak street"
-        //             },
-        //             NewPhone_number: {
-        //                 type: "string",
-        //                 description: "New phonenumber",
-        //                 example: "+44555112100"
-        //             }
-        //         }
-        //     },
-        //     thens: [{
-        //         $schema: "http://json-schema.org/draft-07/schema#",
-        //         type: "object",
-        //         title: "Customer registered",
-        //         properties: {
-        //             customer_id: {
-        //                 type: "string",
-        //                 description: "customer_id",
-        //                 example: "customerId"
-        //             },
-        //             newAddress: {
-        //                 type: "string",
-        //                 description: "new address",
-        //                 example: "Oak street"
-        //             },
-        //             NewPhone_number: {
-        //                 type: "string",
-        //                 description: "New phonenumber",
-        //                 example: "+44555112100"
-        //             }
-        //         }
-        //     }],
-        // }
+
 
 
         async function save() {
@@ -279,13 +209,14 @@
                 preview()
             })
         });
-
+        var model
         //Language:
         function detectLanguageForExtension() {
             const language = getLanguageForExtension(document.getElementById("fileExtension").value)
             const template = editor.getValue()
-            const model = monaco.editor.createModel(template, language)
+            model = monaco.editor.createModel(template, language)
             editor.setModel(model)
+
 
             preview()
         }
@@ -295,6 +226,7 @@
             ExternalServices.log.log('Sample spec:', spec)
             ExternalServices.ExternalServices.tempSharedStorage.removeItem('sample-test-spec')
         })
+
         function preview() {
             const language = getLanguageForExtension(document.getElementById("fileExtension").value)
             const template = editor.getValue()
@@ -303,17 +235,114 @@
                 ExternalServices.ExternalServices.tempSharedStorage.getItem('sample-test-spec').then(spec => {
                     sampleTestSpec = spec
                     ExternalServices.log.log('Sample spec from preview:', spec)
-
-                    ExternalServices.ExternalServices.tempSharedStorage.removeItem('sample-test-spec')
-                    const preview = ExternalServices.ExternalServices.templateCompiler.compileTemplate(template, sampleTestSpec)
-                    const originalModel = monaco.editor.createModel(preview, language);
-                    previewEditor.setModel({ original: originalModel, modified: modifiedModel });
+                    if (!sampleTestSpec)
+                        sampleTestSpec = {
+                            sut: 'Your-subject-under-test',
+                            context: 'Your-context',
+                            scenario: 'Your-scenario',
+                            givens: [{
+                                $schema: "http://json-schema.org/draft-07/schema#",
+                                type: "object",
+                                title: "Given-title-1",
+                                properties: {
+                                    Given1_property_1: {
+                                        type: "string",
+                                        description: "Given1-property-1",
+                                        example: "Given1-property-1-value"
+                                    },
+                                    newAddress: {
+                                        type: "string",
+                                        description: "new address",
+                                        example: "Oak street"
+                                    },
+                                    NewPhone_number: {
+                                        type: "string",
+                                        description: "New phonenumber",
+                                        example: "+44555112100"
+                                    }
+                                }
+                            }],
+                            when: {
+                                $schema: "http://json-schema.org/draft-07/schema#",
+                                type: "object",
+                                title: "Customer registered",
+                                properties: {
+                                    customer_id: {
+                                        type: "string",
+                                        description: "customer_id",
+                                        example: "customerId"
+                                    },
+                                    newAddress: {
+                                        type: "string",
+                                        description: "new address",
+                                        example: "Oak street"
+                                    },
+                                    NewPhone_number: {
+                                        type: "string",
+                                        description: "New phonenumber",
+                                        example: "+44555112100"
+                                    }
+                                }
+                            },
+                            thens: [{
+                                $schema: "http://json-schema.org/draft-07/schema#",
+                                type: "object",
+                                title: "Customer registered",
+                                properties: {
+                                    customer_id: {
+                                        type: "string",
+                                        description: "customer_id",
+                                        example: "customerId"
+                                    },
+                                    newAddress: {
+                                        type: "string",
+                                        description: "new address",
+                                        example: "Oak street"
+                                    },
+                                    NewPhone_number: {
+                                        type: "string",
+                                        description: "New phonenumber",
+                                        example: "+44555112100"
+                                    }
+                                }
+                            }],
+                        }
                 })
-                return;
             }
-            const preview = ExternalServices.ExternalServices.templateCompiler.compileTemplate(template, sampleTestSpec)
-            const originalModel = monaco.editor.createModel(preview, language);
-            previewEditor.setModel({ original: originalModel, modified: modifiedModel });
+            try {
+
+                const preview = ExternalServices.ExternalServices.templateCompiler.compileTemplate(template, sampleTestSpec)
+                const originalModel = monaco.editor.createModel(preview, language);
+                previewEditor.setModel({ original: originalModel, modified: modifiedModel });
+                monaco.editor.setModelMarkers(model, null, [])
+            }
+            catch (err) {
+                ExternalServices.log.log("Handlebars: " + err)
+
+                var lineNumber
+                const lineNumberMatch = String(err).match(/error on line (\d+)/)
+                if (lineNumberMatch && lineNumberMatch.length > 1)
+                    lineNumber = parseInt(lineNumberMatch[1])
+                else {
+                    lineNumber = editor.getPosition().lineNumber;
+                }
+                monaco.editor.setModelMarkers(model, null, [
+                    {
+                        startLineNumber: lineNumber,
+                        endLineNumber: lineNumber + 1,
+                        message: err,
+                        severity: monaco.MarkerSeverity.Error
+                    }
+                ]);
+
+                const preview = ""
+                const originalModel = monaco.editor.createModel(preview, language);
+                previewEditor.setModel({ original: originalModel, modified: modifiedModel });
+
+
+
+            }
+
         }
         //Preview pane visibility:
         function showPreview() {
