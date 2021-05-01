@@ -69,7 +69,7 @@ import { defaultTestSpec } from './default-test-spec'
             scrollBeyondLastLine: false,
             formatOnType: true//!important
         });
-        // editor.trigger(‘anyString’, 'editor.action.formatDocument'); 
+        // editor.trigger(A string to insert into the editor, 'editor.action.formatDocument'); 
     }
     function createPreviewEditor(editorElement) {
         return monaco.editor.createDiffEditor(editorElement, {
@@ -91,7 +91,6 @@ import { defaultTestSpec } from './default-test-spec'
     }
     window.editorMain = async function () {
         let templateContent = undefined;
-
         if (originalTemplateName) {
             const template = await ExternalServices.templateRepository
                 .getTemplateByName(originalTemplateName)
@@ -107,6 +106,11 @@ import { defaultTestSpec } from './default-test-spec'
         editor.onDidChangeModelContent(async function (e) {
             await preview(document.getElementById("fileExtension").value, editorModel)
         })
+        
+        // monaco.languages.typescript.typescriptDefaults.addExtraLib(
+        //     'export declare function add(a: number, b: number): number', 
+        //     'file:///monaco.d.ts');
+
     }
     
     var editorModel
