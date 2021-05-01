@@ -108,7 +108,7 @@ import { defaultTestSpec } from './default-test-spec'
             await preview(document.getElementById("fileExtension").value, editorModel)
         })
     }
-
+    
     var editorModel
     //Language:
     async function detectLanguageForExtension() {
@@ -132,7 +132,7 @@ import { defaultTestSpec } from './default-test-spec'
             }
         ]);
     }
-
+    
     let preview
     (async function () {
         let sampleTestSpec = await ExternalServices.tempSharedStorage.getItem('sample-test-spec')
