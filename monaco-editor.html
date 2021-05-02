@@ -54,9 +54,50 @@
             width: 100%;
             height: 100%;
         }
+
+        #theme-button {
+            margin-left: 0px;
+        }
+
+        /*theme:*/
+        input {
+            height: 27px !important;
+        }
+
+        button {
+            height: 27px !important;
+            padding: 6px !important;
+        }
+
+        /*dark:*/
+        .dark-body {
+            background-color: #252526;
+        }
+
+        .dark-text-input {
+            background-color: #3c3c3c !important;
+            color: #bfbfbf !important;
+            border-color: #454545 !important;
+        }
+
+        .dark-button {
+            background-color: #737373 !important;
+            color: white !important;
+            border-color: #454545 !important;
+        }
+
+
+        /*light*/
+        .light-body {
+            background-color: #ebeaf1;
+        }
+
+        .light-text-input {}
+
+        .light-button {}
     </style>
 
-<script src="monacoLanguage.js"></script><script src="ExternalServices.js"></script></head>
+</head>
 
 <body>
     <div id="container">
@@ -70,10 +111,15 @@
             </div>
 
 
-            <!-- <label for="templateName">Template Name:</label> -->
             <div class="miro-input-group miro-input-group--small">
                 <button id="preview-button" class="miro-btn miro-btn--secondary miro-btn--small"
                     onclick="togglePreview()">Show Preview</button>
+                <button id="theme-button" class="miro-btn miro-btn--secondary miro-btn--small"
+                    onclick="toggleTheme()">Lighten</button>
+
+            </div>
+            <div class="miro-input-group miro-input-group--small">
+
                 <input class="miro-input miro-input--primary" id="templateName"
                     placeholder="aggregate-unit-test"></input>
                 <button class="save-button miro-btn miro-btn--primary miro-btn--small" onclick="save()">Save</button>
@@ -91,591 +137,12 @@
     <!-- <div id="example-editor" style="background-color: chartreuse;"></div> -->
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/loader.min.js"></script>
-    <script>
 
-
-        //notification
-        function showNotification(message) {
-            ExternalServices.ExternalServices.boardService.showNotification(message)
-        }
-        function closeModal() {
-            if (!ExternalServices.ExternalServices.boardService)
-                alert("No boards")
-            ExternalServices.ExternalServices.boardService.closeModal()
-            // if (miro.board)
-            //     miro.board.ui.closeModal()
-            // else
-            //     alert('Close')
-        }
-
-        let templateContent = ""
-        let editor
-        let previewEditor
-        const originalTemplateName = getParameterByName("templateName")
-        document.getElementById("templateName").value = originalTemplateName
-
-
-        let sampleTestSpec;
-        // {
-        //     sut: 'Your-subject-under-test',
-        //     context: 'Your-context',
-        //     scenario: 'Your-scenario',
-        //     givens: [{
-        //         $schema: "http://json-schema.org/draft-07/schema#",
-        //         type: "object",
-        //         title: "Given-title-1",
-        //         properties: {
-        //             Given1_property_1: {
-        //                 type: "string",
-        //                 description: "Given1-property-1",
-        //                 example: "Given1-property-1-value"
-        //             },
-        //             newAddress: {
-        //                 type: "string",
-        //                 description: "new address",
-        //                 example: "Oak street"
-        //             },
-        //             NewPhone_number: {
-        //                 type: "string",
-        //                 description: "New phonenumber",
-        //                 example: "+44555112100"
-        //             }
-        //         }
-        //     }],
-        //     when: {
-        //         $schema: "http://json-schema.org/draft-07/schema#",
-        //         type: "object",
-        //         title: "Customer registered",
-        //         properties: {
-        //             customer_id: {
-        //                 type: "string",
-        //                 description: "customer_id",
-        //                 example: "customerId"
-        //             },
-        //             newAddress: {
-        //                 type: "string",
-        //                 description: "new address",
-        //                 example: "Oak street"
-        //             },
-        //             NewPhone_number: {
-        //                 type: "string",
-        //                 description: "New phonenumber",
-        //                 example: "+44555112100"
-        //             }
-        //         }
-        //     },
-        //     thens: [{
-        //         $schema: "http://json-schema.org/draft-07/schema#",
-        //         type: "object",
-        //         title: "Customer registered",
-        //         properties: {
-        //             customer_id: {
-        //                 type: "string",
-        //                 description: "customer_id",
-        //                 example: "customerId"
-        //             },
-        //             newAddress: {
-        //                 type: "string",
-        //                 description: "new address",
-        //                 example: "Oak street"
-        //             },
-        //             NewPhone_number: {
-        //                 type: "string",
-        //                 description: "New phonenumber",
-        //                 example: "+44555112100"
-        //             }
-        //         }
-        //     }],
-        // }
-
-
-        async function save() {
-            var repository = ExternalServices.ExternalServices.templateRepository
-            // var repository = await templateRepository.getTemplateRepository()
-            // var template = await repository.getTemplateByName(templateName)
-            const template = {
-                templateName: document.getElementById("templateName").value,
-                contentTemplate: editor.getValue(),
-                fileNameTemplate: document.getElementById('fileNameTemplate').value,
-                fileExtension: document.getElementById('fileExtension').value,
-            }
-            await repository.createOrReplaceTemplate(originalTemplateName, template)
-            await showNotification(`${template.templateName} saved.`)
-            closeModal()
-        }
-
-        // var repository=require("templateRepository").getTemplateRepository()
-        function getParameterByName(name, url = window.location.href) {
-            name = name.replace(/[\[\]]/g, '\\$&');
-            var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-                results = regex.exec(url);
-            if (!results) return null;
-            if (!results[2]) return '';
-            return decodeURIComponent(results[2].replace(/\+/g, ' '));
-        }
-
-        require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs' } });
-        window.MonacoEnvironment = { getWorkerUrl: () => proxy };
-        let proxy = URL.createObjectURL(new Blob([`
-    self.MonacoEnvironment = {
-        baseUrl: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min'
-    };
-    importScripts('https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/base/worker/workerMain.min.js');
-`], { type: 'text/javascript' }));
-
-
-
-        require(["vs/editor/editor.main"], async function () {
-
-
-            if (originalTemplateName) {
-                var repository = ExternalServices.ExternalServices.templateRepository
-
-                // var repository = await templateRepository.getTemplateRepository()
-                var template = await repository.getTemplateByName(originalTemplateName)
-                document.getElementById('fileNameTemplate').value = template.fileNameTemplate
-                document.getElementById('fileExtension').value = template.fileExtension
-                templateContent = template.contentTemplate
-            }
-            editor = monaco.editor.create(document.getElementById('monaco-editor'), {
-                value: templateContent,
-                language: 'handlebars',
-                theme: 'vs-dark',
-                // theme: 'monokai',
-                lineHeight: 20,
-                fontSize: 14,
-                // wordWrap: "bounded",
-                automaticLayout: true,
-                wrappingIndent: 'indent',
-                minimap: { enabled: false },
-                scrollBeyondLastLine: false,
-                formatOnType: true//!important
-            });
-
-            // editor.trigger(‘anyString’, 'editor.action.formatDocument'); 
-            // editor.setModel(textModel)
-
-            //Preview:
-            previewEditor = monaco.editor.createDiffEditor(document.getElementById('preview-editor'), {
-                enableSplitViewResizing: true,
-                renderSideBySide: true,
-                // value: templateContent,
-                // language: 'handlebars',
-                theme: 'vs-dark',
-                // // theme: 'monokai',
-                lineHeight: 20,
-                fontSize: 14,
-                // // wordWrap: "bounded",
-                automaticLayout: true,
-                // wrappingIndent: 'indent',
-                // minimap: { enabled: false },
-                scrollBeyondLastLine: false,
-                // formatOnType: true//!important
-            });
-
-            detectLanguageForExtension()
-
-            editor.onDidChangeModelContent(function (e) {
-                preview()
-            })
-        });
-
-        //Language:
-        function detectLanguageForExtension() {
-            const language = getLanguageForExtension(document.getElementById("fileExtension").value)
-            const template = editor.getValue()
-            const model = monaco.editor.createModel(template, language)
-            editor.setModel(model)
-
-            preview()
-        }
-        const promise = ExternalServices.ExternalServices.tempSharedStorage.getItem('sample-test-spec')
-        promise.then(spec => {
-            sampleTestSpec = spec
-            ExternalServices.log.log('Sample spec:', spec)
-            ExternalServices.ExternalServices.tempSharedStorage.removeItem('sample-test-spec')
-        })
-        function preview() {
-            const language = getLanguageForExtension(document.getElementById("fileExtension").value)
-            const template = editor.getValue()
-            const modifiedModel = monaco.editor.createModel(previewEditor.getModifiedEditor().getValue(), language);
-            if (!sampleTestSpec) {
-                ExternalServices.ExternalServices.tempSharedStorage.getItem('sample-test-spec').then(spec => {
-                    sampleTestSpec = spec
-                    ExternalServices.log.log('Sample spec from preview:', spec)
-
-                    ExternalServices.ExternalServices.tempSharedStorage.removeItem('sample-test-spec')
-                    const preview = ExternalServices.ExternalServices.templateCompiler.compileTemplate(template, sampleTestSpec)
-                    const originalModel = monaco.editor.createModel(preview, language);
-                    previewEditor.setModel({ original: originalModel, modified: modifiedModel });
-                })
-                return;
-            }
-            const preview = ExternalServices.ExternalServices.templateCompiler.compileTemplate(template, sampleTestSpec)
-            const originalModel = monaco.editor.createModel(preview, language);
-            previewEditor.setModel({ original: originalModel, modified: modifiedModel });
-        }
-        //Preview pane visibility:
-        function showPreview() {
-            document.getElementById('preview-editor').style.display = 'block'
-            document.getElementById('monaco-editor').style.width = '40%'
-            document.getElementById('preview-button').textContent = 'Hide Preview'
-        }
-        function hidePreview() {
-            document.getElementById('preview-editor').style.display = 'none'
-            document.getElementById('monaco-editor').style.width = '100%'
-            document.getElementById('preview-button').textContent = 'Show Preview'
-
-        }
-        showPreview()
-        function togglePreview() {
-            let isPreviewOpen = document.getElementById('preview-button').textContent == 'Hide Preview'
-            if (isPreviewOpen) {
-                hidePreview()
-            } else {
-                showPreview()
-            }
-        }
-        //language:
-        function getLanguageForExtension(extension) {
-            const fileTypes = {
-                css: 'css',
-                js: 'javascript',
-                json: 'json',
-                md: 'markdown',
-                mjs: 'javascript',
-                ts: 'typescript',
-                cs: 'csharp',
-                abap: 'abap',
-                aes: 'aes',//?
-                cls: 'apex',
-                // : 'azcli',//?
-                bat: 'bat',
-                c: 'c',
-                // : 'cameligo',
-                clj: 'clojure',
-                boot: 'clojure',
-                cl2: 'clojure',
-                cljc: 'clojure',
-                "cljs.hl": 'clojure',
-                cljs: 'clojure',
-                cljscm: 'clojure',
-                cljx: 'clojure',
-                hic: 'clojure',
-                coffee: 'coffeescript',
-                _coffee: 'coffeescript',
-                cake: 'coffeescript',
-                cjsx: 'coffeescript',
-                cson: 'coffeescript',
-                iced: 'coffeescript',
-                "cpp": 'cpp',
-                "c++": 'cpp',
-                "cc": 'cpp',
-                "cp": 'cpp',
-                "cxx": 'cpp',
-                "h": 'cpp',
-                "h++": 'cpp',
-                "hh": 'cpp',
-                "hpp": 'cpp',
-                "hxx": 'cpp',
-                "inc": 'cpp',
-                "inl": 'cpp',
-                "ipp": 'cpp',
-                "tcc": 'cpp',
-                "tpp": 'cpp',
-                "cs": 'csharp',
-                // "": 'csp',
-                dart: 'dart',
-                dockerfile: 'dockerfile',
-                ecl: 'ecl',
-                eclxml: 'ecl',
-                fs: 'fsharp',
-                go: 'go',
-                graphql: 'graphql',
-                hbs: 'handlebars',
-                hcl: 'hcl',
-                tf: 'hcl',
-                html: 'html',
-                htm: 'html',
-                ini: 'ini',
-                java: 'java',
-                js: 'javascript',
-                _js: 'javascript',
-                bones: 'javascript',
-                es: 'javascript',
-                es6: 'javascript',
-                frag: 'javascript',
-                gs: 'javascript',
-                jake: 'javascript',
-                jsb: 'javascript',
-                jscad: 'javascript',
-                jsfl: 'javascript',
-                jsm: 'javascript',
-                jss: 'javascript',
-                njs: 'javascript',
-                pac: 'javascript',
-                sjs: 'javascript',
-                ssjs: 'javascript',
-                "sublime-build": 'javascript',
-                "sublime-commands": 'javascript',
-                "sublime-completions": 'javascript',
-                "sublime-keymap": 'javascript',
-                "sublime-macro": 'javascript',
-                "sublime-menu": 'javascript',
-                "sublime-mousemap": 'javascript',
-                "sublime-project": 'javascript',
-                "sublime-settings": 'javascript',
-                "sublime-theme": 'javascript',
-                "sublime-workspace": 'javascript',
-                "sublime_metrics": 'javascript',
-                "sublime_session": 'javascript',
-                xsjs: 'javascript',
-                xsjslib: 'javascript',
-                json: 'json',
-                jl: 'julia',
-                kt: 'kotlin',
-                ktm: 'kotlin',
-                kts: 'kotlin',
-                less: 'less',
-                // : 'lexon',
-                lua: 'lua',
-                fcgi: 'lua',
-                nse: 'lua',
-                pd_lua: 'lua',
-                rbxs: 'lua',
-                wlua: 'lua',
-                // : 'm3',
-                md: 'markdown',
-                markdown: 'markdown',
-                mkd: 'markdown',
-                mkdn: 'markdown',
-                mkdown: 'markdown',
-                ron: 'markdown',
-                // : 'mips',
-                // : 'msdax',
-                // sql: 'mysql',
-                c: 'c',
-                pas: 'pascal',
-                dfm: 'pascal',
-                dpr: 'pascal',
-                inc: 'pascal',
-                lpr: 'pascal',
-                pp: 'pascal',
-                // : 'pascaligo',
-                pl: 'perl',
-                al: 'perl',
-                cgi: 'perl',
-                fcgi: 'perl',
-                perl: 'perl',
-                ph: 'perl',
-                plx: 'perl',
-                pm: 'perl',
-                pod: 'perl',
-                psgi: 'perl',
-                t: 'perl',
-                // : 'pgsql',
-                php: 'php',
-                hh: 'php',
-                txt: 'plaintext',
-                // : 'postiats',
-                // : 'powerquery',
-                ps1: 'powershell',
-                psd1: 'powershell',
-                psm: 'powershell',
-                // : 'pug',
-                py: 'python',
-                bzl: 'python',
-                cgi: 'python',
-                fcgi: 'python',
-                gyp: 'python',
-                lmi: 'python',
-                pyde: 'python',
-                pyp: 'python',
-                pyt: 'python',
-                pyw: 'python',
-                rpy: 'python',
-                tac: 'python',
-                wsgi: 'python',
-                xpy: 'python',
-                r: 'r',
-                rd: 'r',
-                rsx: 'r',
-                // razor: 'razor',
-                // : 'redis',
-                // : 'redshift',
-                rst: 'restructuredtext',
-                rest: 'restructuredtext',
-                "rest.txt": 'restructuredtext',
-                "rst.txt": 'restructuredtext',
-                rb: 'ruby',
-                builder: 'ruby',
-                fcgi: 'ruby',
-                gemspec: 'ruby',
-                god: 'ruby',
-                irbrc: 'ruby',
-                jbuilder: 'ruby',
-                mspec: 'ruby',
-                pluginspec: 'ruby',
-                podspec: 'ruby',
-                rabl: 'ruby',
-                rake: 'ruby',
-                rbuild: 'ruby',
-                rbw: 'ruby',
-                rbx: 'ruby',
-                ru: 'ruby',
-                ruby: 'ruby',
-                thor: 'ruby',
-                watchr: 'ruby',
-                rs: 'rust',
-                "rs.in": 'rust',
-                // : 'sb',
-                sbt: 'scala',
-                sc: 'scala',
-                scm: 'scheme',
-                sld: 'scheme',
-                sls: 'scheme',
-                sps: 'scheme',
-                ss: 'scheme',
-                scss: 'scss',
-                sh: 'shell',
-                bash: 'shell',
-                bats: 'shell',
-                cgi: 'shell',
-                command: 'shell',
-                fcgi: 'shell',
-                ksh: 'shell',
-                shin: 'shell',
-                tmux: 'shell',
-                tool: 'shell',
-                zsh: 'shell',
-                // : 'sol',
-                sql: 'sql',
-                cql: 'sql',
-                ddl: 'sql',
-                inc: 'sql',
-                prc: 'sql',
-                tab: 'sql',
-                udf: 'sql',
-                viw: 'sql',
-                // : 'st',
-                swift: 'swift',
-                sv: 'systemverilog',
-                svh: 'systemverilog',
-                vh: 'systemverilog',
-                tcl: 'tcl',
-                adp: 'tcl',
-                tm: 'tcl',
-                twig: 'twig',
-                ts: 'typescript',
-                tsx: 'typescript',
-                vb: 'vb',
-                bas: 'vb',
-                cls: 'vb',
-                frm: 'vb',
-                frx: 'vb',
-                vba: 'vb',
-                vbhtml: 'vb',
-                vbs: 'vb',
-                v: 'verilog',
-                veo: 'verilog',
-                xml: 'xml',
-                ant: 'xml',
-                axml: 'xml',
-                ccxml: 'xml',
-                clixml: 'xml',
-                cproject: 'xml',
-                csl: 'xml',
-                csproj: 'xml',
-                ct: 'xml',
-                dita: 'xml',
-                ditamap: 'xml',
-                ditaval: 'xml',
-                "dll.config": 'xml',
-                dotsettings: 'xml',
-                filters: 'xml',
-                fsproj: 'xml',
-                fxml: 'xml',
-                glade: 'xml',
-                gml: 'xml',
-                grxml: 'xml',
-                iml: 'xml',
-                ivy: 'xml',
-                jelly: 'xml',
-                jsproj: 'xml',
-                kml: 'xml',
-                launch: 'xml',
-                mdpolicy: 'xml',
-                mm: 'xml',
-                mod: 'xml',
-                mxml: 'xml',
-                nproj: 'xml',
-                nuspec: 'xml',
-                odd: 'xml',
-                osm: 'xml',
-                plist: 'xml',
-                pluginspec: 'xml',
-                props: 'xml',
-                ps1xml: 'xml',
-                psc1: 'xml',
-                pt: 'xml',
-                rdf: 'xml',
-                rss: 'xml',
-                scxml: 'xml',
-                srdf: 'xml',
-                storyboard: 'xml',
-                stTheme: 'xml',
-                "sublime-snippet": 'xml',
-                targets: 'xml',
-                tmCommand: 'xml',
-                tml: 'xml',
-                tmLanguage: 'xml',
-                tmPreferences: 'xml',
-                tmSnippet: 'xml',
-                tmTheme: 'xml',
-                ts: 'xml',
-                tsx: 'xml',
-                ui: 'xml',
-                urdf: 'xml',
-                ux: 'xml',
-                vbproj: 'xml',
-                vcxproj: 'xml',
-                vssettings: 'xml',
-                vxml: 'xml',
-                wsdl: 'xml',
-                wsf: 'xml',
-                wxi: 'xml',
-                wxl: 'xml',
-                wxs: 'xml',
-                x3d: 'xml',
-                xacro: 'xml',
-                xaml: 'xml',
-                xib: 'xml',
-                xlf: 'xml',
-                xliff: 'xml',
-                xmi: 'xml',
-                "xml.dist": 'xml',
-                xproj: 'xml',
-                xsd: 'xml',
-                xul: 'xml',
-                zcml: 'xml',
-                yml: 'yaml',
-                reek: 'yaml',
-                rviz: 'yaml',
-                sublimesyntax: 'yaml',
-                syntax: 'yaml',
-                yaml: 'yaml',
-                "yaml-tmlanguage": 'yaml',
-
-            }
-            let language = fileTypes[extension]
-            if (!language) {
-                language = "handlebars"
-            }
-            return language
-        }
-    </script>
-
-</body>
+<script src="editor.js"></script><script src="monacoLanguage.js"></script></body>
+<script>
+    require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs' } });
+    require(["vs/editor/editor.main"], editorMain)
+</script>
 
 </html>
 <!-- Render glyphs in the margin:
