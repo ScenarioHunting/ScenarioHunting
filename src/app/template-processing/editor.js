@@ -106,13 +106,13 @@ import { defaultTestSpec } from './default-test-spec'
         editor.onDidChangeModelContent(async function (e) {
             await preview(document.getElementById("fileExtension").value, editorModel)
         })
-        
+
         // monaco.languages.typescript.typescriptDefaults.addExtraLib(
         //     'export declare function add(a: number, b: number): number', 
         //     'file:///monaco.d.ts');
 
     }
-    
+
     var editorModel
     //Language:
     async function detectLanguageForExtension() {
@@ -136,7 +136,7 @@ import { defaultTestSpec } from './default-test-spec'
             }
         ]);
     }
-    
+
     let preview
     (async function () {
         let sampleTestSpec = await ExternalServices.tempSharedStorage.getItem('sample-test-spec')

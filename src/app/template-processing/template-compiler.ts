@@ -7,7 +7,7 @@ const helpers = {
      * @param o Object to be converted to JSON.
      */
     json(o: any): string {
-        return JSON.stringify(o)
+        return JSON.stringify(o,null,4)
     },
     /**
      * Run the content every time but in the last iteration.
