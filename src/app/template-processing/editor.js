@@ -2,6 +2,7 @@
 import { ExternalServices } from '../../external-services'
 import { getLanguageForExtension } from './monaco-languages'
 import { defaultTestSpec } from './default-test-spec'
+import { prefix } from '@fortawesome/free-solid-svg-icons';
 (async function () {
     window.MonacoEnvironment = { getWorkerUrl: () => proxy };
     let proxy = URL.createObjectURL(new Blob([`
@@ -19,7 +20,7 @@ import { defaultTestSpec } from './default-test-spec'
     }
 
     // let templateContent = ""
-    let editor
+    let editor//: monaco.editor.IStandaloneCodeEditor
     let previewEditor
     const originalTemplateName = getParameterByName("templateName")
     document.getElementById("templateName").value = originalTemplateName
@@ -110,6 +111,8 @@ import { defaultTestSpec } from './default-test-spec'
         // monaco.languages.typescript.typescriptDefaults.addExtraLib(
         //     'export declare function add(a: number, b: number): number', 
         //     'file:///monaco.d.ts');
+        toggleTheme()
+        toggleTheme()
 
     }
 
@@ -183,4 +186,78 @@ import { defaultTestSpec } from './default-test-spec'
         }
     }
     showPreview()
+    //Theme:
+    function toggleTheme() {
+        const wasDark = document.getElementsByTagName('body')[0]
+            .classList.contains('dark-body')
+
+        if (wasDark) {
+            monaco.editor.setTheme('monokai')
+            document.getElementById('theme-button').textContent = 'Darken' 
+        } else {
+            monaco.editor.setTheme('vs-dark')
+            document.getElementById('theme-button').textContent = 'Lighten' 
+        }
+        const oldClassPrefix = wasDark ? 'dark' : 'light';
+        const newClassPrefix = wasDark ? 'light' : 'dark';
+
+        function changeClass(
+            {
+                elements,
+                classPostfix
+            }) {
+            if (elements.length == 0) {
+
+                console.log('Elements not found')
+            }
+            const getClassName = (prefix, postfix) => `${prefix}-${postfix}`;
+
+            const oldClassName = getClassName(oldClassPrefix, classPostfix)
+                , newClassName = getClassName(newClassPrefix, classPostfix);
+
+            for (var i = elements.length - 1; i > -1; i--) {
+                const element = elements[i];
+
+                element.classList.remove(oldClassName)
+                element.classList.add(newClassName)
+
+            }
+        }
+
+        changeClass({
+            elements: document.getElementsByTagName('body'),
+            classPostfix: 'body'
+        })
+        changeClass({
+            elements: document.getElementsByTagName('input'),
+            classPostfix: 'text-input'
+        })
+        changeClass({
+            elements: document.getElementsByTagName('button'),
+            classPostfix: 'button'
+        })
+
+
+
+
+
+
+
+
+
+
+
+        // document.querySelectorAll(`[class^="${oldPrefix}"]`).forEach(e =>
+        //     e.classList.forEach(c => {
+
+        //         if (c.startsWith(oldPrefix)) {
+        //             e.classList.remove(c)
+        //             e.classList.add(c.replace(oldPrefix, newPrefix))
+        //         }
+
+        //     }))
+
+    }
+    window.toggleTheme = toggleTheme
+
 })()
