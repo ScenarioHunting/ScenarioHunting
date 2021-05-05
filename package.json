@@ -1,5 +1,5 @@
 {
-  "name": "scenario-picker",
+  "name": "scenario-hunting",
   "version": "1.0.0",
   "description": "Helps to pick scenarios from modeling artifacts, and generate custom based on them",
   "private": true,
