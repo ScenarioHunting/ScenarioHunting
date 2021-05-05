@@ -76,7 +76,7 @@ function filterSuggestionsFor(
         if (matchedSuggestion?.children)
             currentLevel = matchedSuggestion?.children;
     }
-    console.log("matchedSuggestion", matchedSuggestion)
+    
 
     if (matchedSuggestion?.children)
         return currentLevel
@@ -109,7 +109,7 @@ const buildSuggestions = (
     currentPosition: monaco.IPosition,
     model: monaco.editor.ITextModel): monaco.languages.CompletionItem[] => {
 
-    console.log('All suggestions:', allSuggestions)
+    
 
     if (!isPositionBetween('{{', currentPosition, '}}', model))
         return []
@@ -119,9 +119,9 @@ const buildSuggestions = (
         currentPosition,
         model)
 
-    console.log('current phrase:', currentPhrase)
+    
     const results = filterSuggestionsFor(allSuggestions, currentPhrase).map(mapSuggestion)
-    console.log('Suggestion results:', results)
+    
     return results
 }
 
@@ -190,7 +190,7 @@ export const applyIntellisense = (language: string) => {
         {
             triggerCharacters: ['{', '.'],
             provideCompletionItems: (model, position) => {
-                console.log('Providing completion items.')
+                
                 return {
                     suggestions: buildSuggestions(
                         modelSuggestions.concat(propertySuggestions),

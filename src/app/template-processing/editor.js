@@ -105,7 +105,7 @@ import { applyIntellisense } from './intellisense'
 
         await detectLanguageForExtension()
         editor.onDidChangeModelContent(async function () {
-            await preview(document.getElementById("fileExtension").value, editorModel)
+            await togglePreview(document.getElementById("fileExtension").value, editorModel)
         })
 
         // monaco.languages.typescript.typescriptDefaults.addExtraLib(
@@ -121,7 +121,7 @@ import { applyIntellisense } from './intellisense'
         const template = editor.getValue()
         editorModel = monaco.editor.createModel(template, language)
         editor.setModel(editorModel)
-        await preview(document.getElementById("fileExtension").value, editorModel)
+        await togglePreview(document.getElementById("fileExtension").value, editorModel)
     }
     window.detectLanguageForExtension = detectLanguageForExtension
 
@@ -143,13 +143,13 @@ import { applyIntellisense } from './intellisense'
         monaco.editor.setModelMarkers(editorModel, null, [])
     }
 
-    let preview
+    let togglePreview
     (async function () {
         let sampleTestSpec = await ExternalServices.tempSharedStorage.getItem('sample-test-spec')
         await ExternalServices.tempSharedStorage.removeItem('sample-test-spec')
         if (!sampleTestSpec)
             sampleTestSpec = defaultTestSpec
-        preview = async function (fileExtension, editorModel) {
+        togglePreview = async function (fileExtension, editorModel) {
 
             const template = editor.getValue()
             const language = getLanguageForExtension(fileExtension)
@@ -211,10 +211,6 @@ import { applyIntellisense } from './intellisense'
                 elements,
                 classPostfix
             }) {
-            if (elements.length == 0) {
-
-                console.log('Elements not found')
-            }
             const getClassName = (prefix, postfix) => `${prefix}-${postfix}`;
 
             const oldClassName = getClassName(oldClassPrefix, classPostfix)
@@ -241,17 +237,6 @@ import { applyIntellisense } from './intellisense'
             elements: document.getElementsByTagName('button'),
             classPostfix: 'button'
         })
-
-        // document.querySelectorAll(`[class^="${oldPrefix}"]`).forEach(e =>
-        //     e.classList.forEach(c => {
-
-        //         if (c.startsWith(oldPrefix)) {
-        //             e.classList.remove(c)
-        //             e.classList.add(c.replace(oldPrefix, newPrefix))
-        //         }
-
-        //     }))
-
     }
     window.toggleTheme = toggleTheme
 
