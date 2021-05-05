@@ -5,15 +5,15 @@ const HtmlWebPackPlugin = require("html-webpack-plugin");
 const externalServicesPath = './src/external-services.tsx'
 const appConfig = {
 	name: 'app',
-	optimization: {
-		minimize: true,
-		emitOnErrors: true,
-		mergeDuplicateChunks: true,
-		removeAvailableModules: true,
-		removeEmptyChunks: true,
-		flagIncludedChunks: true,
-		// runtimeChunk: 'single',
-	},
+	// optimization: {
+	// 	minimize: true,
+	// 	emitOnErrors: true,
+	// 	mergeDuplicateChunks: true,
+	// 	removeAvailableModules: true,
+	// 	removeEmptyChunks: true,
+	// 	flagIncludedChunks: true,
+	// 	// runtimeChunk: 'single',
+	// },
 	// mode: 'production',
 	mode: 'development',
 

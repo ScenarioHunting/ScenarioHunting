@@ -263,18 +263,20 @@ export const applyIntellisense = (language: string) => {
         {
             triggerCharacters: ['#'],
             provideCompletionItems: (model, currentPosition) => {
-                function getStepSnippet(collection: string, item: string): monaco.languages.CompletionItem {
 
-                    return {
-                        label: `each ${collection}`,
-                        insertText: `#each ${collection} as |${item} propertyName|}}
-    {{step.title}}:
+                const stepInsertText =`{{step.title}}:
     {{#each step.properties as |property propertyName|}}
         {{#if @first}}({{/if}}
         {{propertyName}} = {{property.example}}
         {{#skipLast}},{{/skipLast}}
         {{#if @last}}){{/if}}
-    {{/each}}
+    {{/each}}`
+                
+                function getStepSnippet(collection: string): monaco.languages.CompletionItem {
+                    return {
+                        label: `each ${collection}`,
+                        insertText: `#each ${collection} as |step|}}
+    ${stepInsertText}
 {{/each`,
                         kind: monaco.languages.CompletionItemKind.Function,
                         detail: `List all ${collection} properties`,
@@ -283,7 +285,7 @@ export const applyIntellisense = (language: string) => {
 
                 }
 
-                function labelBuiltInHelper(helper: monaco.languages.CompletionItem): monaco.languages.CompletionItem[] {
+                function appendSharpLabelTo(helper: monaco.languages.CompletionItem): monaco.languages.CompletionItem[] {
                     return [helper, { ...helper, label: "#" + helper.label }]
                 }
                 function addBlocksIfMissing(snippet: monaco.languages.CompletionItem) {
@@ -299,23 +301,18 @@ export const applyIntellisense = (language: string) => {
                 }
                 const whenSnippet = {
                     label: `with when`,
-                    insertText: `#with when.properties}}
-    {{#each . as |property propertyName|}}
-        {{#if @first}}({{/if}}
-        {{propertyName}} = {{property.example}}
-        {{#unless @last}},{{/unless}}        
-        {{#if @last}}){{/if}}       
-    {{/each}}
+                    insertText: `#with when as |step|}}
+    ${stepInsertText}
 {{/with`,
                     kind: monaco.languages.CompletionItemKind.Function,
                     detail: `List when properties`,
                     range: null as any
                 }
                 const stepSnippets = [
-                    getStepSnippet('givens', 'step'),
-                    getStepSnippet('thens', 'step'),
+                    getStepSnippet('givens'),
+                    getStepSnippet('thens'),
                     whenSnippet
-                ].flatMap(ss => labelBuiltInHelper(addBlocksIfMissing(ss)))
+                ].flatMap(ss => appendSharpLabelTo(addBlocksIfMissing(ss)))
 
                 let customHelperSnippets: monaco.languages.CompletionItem[] = []
                 if (!isPositionBetween('{{', currentPosition, '}}', model))

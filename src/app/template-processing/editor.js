@@ -87,6 +87,7 @@ import { applyIntellisense } from './intellisense'
             // wrappingIndent: 'indent',
             // minimap: { enabled: false },
             scrollBeyondLastLine: false,
+            // overviewRulerLanes: 0,
             formatOnType: true//!important
         });
     }

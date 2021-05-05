@@ -10,9 +10,8 @@ export class MiroBoard implements IBoard {
     openModal(iframeURL: string): Promise<any> {
         return miro.board.ui.openModal(iframeURL, { fullscreen: true })
     }
-    closeModal() {
-        miro.board.ui.closeModal()
-    }
+    closeModal = miro.board.ui.closeModal
+
     private previouslySelectedWidgets: SDK.IWidget[]
 
     // eslint-disable-next-line no-unused-vars
