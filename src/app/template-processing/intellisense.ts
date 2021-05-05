@@ -1,6 +1,5 @@
 /* eslint-disable no-undef */
 
-import { faLaughBeam } from "@fortawesome/free-solid-svg-icons";
 
 
 interface EditorSuggestion {
@@ -234,6 +233,7 @@ const specSuggestions: EditorSuggestion[] = [
         children: propertySuggestions,
     },
 ]
+
 //////////////////////////////
 
 let disposables: monaco.IDisposable[] = []
@@ -257,44 +257,81 @@ export const applyIntellisense = (language: string) => {
         }
     );
     disposables.push(disposable)
+
     disposable = monaco.languages.registerCompletionItemProvider(
         language,
         {
-            triggerCharacters: ['{'],
+            triggerCharacters: ['#'],
             provideCompletionItems: (model, currentPosition) => {
-                function buildStepSnippetSuggestions(collection: string, item: string, isInBlock: boolean = false) {
-                    let startSnippet = '{{'
-                    let endSnippet = '}}'
-                    if (isInBlock) {
-                        startSnippet = ''
-                        endSnippet = ''
-                    }
+                function getStepSnippet(collection: string, item: string): monaco.languages.CompletionItem {
+
                     return {
                         label: `each ${collection}`,
-                        insertText: `${startSnippet}#each ${collection} as |${item}|}}
+                        insertText: `#each ${collection} as |${item} propertyName|}}
     {{step.title}}:
-    {{#each step.properties as |property|}}
-        {{property.example}}
+    {{#each step.properties as |property propertyName|}}
+        {{#if @first}}({{/if}}
+        {{propertyName}} = {{property.example}}
+        {{#skipLast}},{{/skipLast}}
+        {{#if @last}}){{/if}}
     {{/each}}
-{{/each${endSnippet}`,
-                        kind: monaco.languages.CompletionItemKind.Snippet,
-                        detail: `For each given`,
+{{/each`,
+                        kind: monaco.languages.CompletionItemKind.Function,
+                        detail: `List all ${collection} properties`,
                         range: null as any
                     }
+
                 }
-                const isInDoubleBlock = isPositionBetween('{{', currentPosition, '}}', model)
+
+                function labelBuiltInHelper(helper: monaco.languages.CompletionItem): monaco.languages.CompletionItem[] {
+                    return [helper, { ...helper, label: "#" + helper.label }]
+                }
+                function addBlocksIfMissing(snippet: monaco.languages.CompletionItem) {
+                    const isInBlock = isPositionBetween('{{', currentPosition, '}}', model)
+                    let startSnippet = '{{', endSnippet = '}}'
+                    if (isInBlock) {
+                        startSnippet = '', endSnippet = ''
+                    }
+                    return {
+                        ...snippet,
+                        insertText: `${startSnippet}${snippet.insertText}${endSnippet}`
+                    }
+                }
+                const whenSnippet = {
+                    label: `with when`,
+                    insertText: `#with when.properties}}
+    {{#each . as |property propertyName|}}
+        {{#if @first}}({{/if}}
+        {{propertyName}} = {{property.example}}
+        {{#unless @last}},{{/unless}}        
+        {{#if @last}}){{/if}}       
+    {{/each}}
+{{/with`,
+                    kind: monaco.languages.CompletionItemKind.Function,
+                    detail: `List when properties`,
+                    range: null as any
+                }
+                const stepSnippets = [
+                    getStepSnippet('givens', 'step'),
+                    getStepSnippet('thens', 'step'),
+                    whenSnippet
+                ].flatMap(ss => labelBuiltInHelper(addBlocksIfMissing(ss)))
+
+                let customHelperSnippets: monaco.languages.CompletionItem[] = []
+                if (!isPositionBetween('{{', currentPosition, '}}', model))
+                    customHelperSnippets.push({
+                        label: 'json',
+                        insertText: '\n{{{json .}}}\n',
+                        kind: monaco.languages.CompletionItemKind.Function,
+                        detail: `Print json`,
+                        range: null as any
+                    })
+
 
                 return {
-                    suggestions: [
-                        buildStepSnippetSuggestions('givens', 'step', isInDoubleBlock),
-                        buildStepSnippetSuggestions('thens', 'step', isInDoubleBlock),
-                        {
-                            label: 'json',
-                            insertText: '\n{{{json .}}}\n',
-                            kind: monaco.languages.CompletionItemKind.Function,
-                            detail: `Print json`,
-                        }
-                    ]
+                    suggestions:
+                        stepSnippets.concat(customHelperSnippets)
+
                 } as monaco.languages.ProviderResult<monaco.languages.CompletionList>;
             }
         }
