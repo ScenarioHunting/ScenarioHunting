@@ -1,5 +1,8 @@
 /* eslint-disable no-undef */
 
+import { faLaughBeam } from "@fortawesome/free-solid-svg-icons";
+
+
 interface EditorSuggestion {
     label: string;
     detail?: string;
@@ -52,15 +55,16 @@ const isPositionBetween = (left: string, position: monaco.IPosition, right: stri
 
 function filterSuggestionsFor(
     allSuggestions: EditorSuggestion[],
-    phrase: string
+    phrase: string,
+    separator: string
 ): EditorSuggestion[] {
-    if (phrase.startsWith('.'))
+    if (phrase.startsWith(separator))
         return []
 
     if (phrase.length === 0)
         return allSuggestions
 
-    const wordChain = phrase.split('.').filter(s => s !== '');
+    const wordChain = phrase.split(separator).filter(s => s !== '');
 
     if (!wordChain.length)
         return allSuggestions.filter(s => s.insertText.includes(phrase))
@@ -76,12 +80,12 @@ function filterSuggestionsFor(
         if (matchedSuggestion?.children)
             currentLevel = matchedSuggestion?.children;
     }
-    
+
 
     if (matchedSuggestion?.children)
         return currentLevel
 
-    if (phrase.endsWith('.'))
+    if (phrase.endsWith(separator))
         return []
 
     if (matchedSuggestion)
@@ -92,6 +96,7 @@ function filterSuggestionsFor(
 
 const getPhraseBetween = (start: monaco.IPosition | undefined
     , end: monaco.IPosition | undefined
+    , separator: string
     , model: monaco.editor.ITextModel): string => {
     if (!start || !end)
         return ""
@@ -101,31 +106,36 @@ const getPhraseBetween = (start: monaco.IPosition | undefined
         startColumn: start.column,
         endLineNumber: end.lineNumber,
         endColumn: end.column
-    }), [' ', '\n']).trim()
+    }), [' ', '\n'].filter(x => x != separator)).trim()
 }
 
 const buildSuggestions = (
+    blockStart: string,
     allSuggestions: EditorSuggestion[],
+    blockEnd: string,
+    separator: string,
+
     currentPosition: monaco.IPosition,
     model: monaco.editor.ITextModel): monaco.languages.CompletionItem[] => {
 
-    
 
-    if (!isPositionBetween('{{', currentPosition, '}}', model))
+
+    if (!isPositionBetween(blockStart, currentPosition, blockEnd, model))
         return []
 
     let currentPhrase = getPhraseBetween(
-        model.findPreviousMatch('{{', currentPosition, false, false, null, false)?.range?.getEndPosition(),
+        model.findPreviousMatch(blockStart, currentPosition, false, false, null, false)?.range?.getEndPosition(),
         currentPosition,
+        separator,
         model)
 
-    
-    const results = filterSuggestionsFor(allSuggestions, currentPhrase).map(mapSuggestion)
-    
+
+    const results = filterSuggestionsFor(allSuggestions, currentPhrase, separator).map(mapSuggestion)
+
     return results
 }
 
-
+///////////////////////////////////////////////////////////////////////
 const propertySuggestions: EditorSuggestion[] = [
     {
         label: "type",
@@ -140,64 +150,155 @@ const propertySuggestions: EditorSuggestion[] = [
         insertText: "example",
     },
 ]
-const modelSuggestions: EditorSuggestion[] = [
-    {
-        label: "model",
-        insertText: "model",
 
-        children: [
-            {
-                label: "context",
-                insertText: "context"
-            },
-            {
-                label: "subject",
-                insertText: "subject"
-            },
-            {
-                label: "scenario",
-                insertText: "scenario"
-            },
-            {
-                label: "when",
-                insertText: "when",
-                children: [
-                    {
-                        label: "title",
-                        insertText: "title"
-                    },
-                    {
-                        label: "type",
-                        insertText: "type"
-                    },
-                    {
-                        label: "properties",
-                        insertText: "properties",
-                        detail: "the properties..................."
-                    }]
-            }]
-    }
+const stepSchemaSuggestions: EditorSuggestion[] = [
+    {
+        label: "title",
+        insertText: "title",
+        detail: "Step title (type of the step in it's context)"
+    },
+    {
+        label: "type",
+        insertText: "type",
+        detail: "The type of the step from json schema specification"
+    },
+    {
+        label: "properties",
+        insertText: "properties",
+        detail: "Step properties",
+        children: [{
+            label: "first",
+            insertText: "[0]",
+            children: propertySuggestions,
+        }],
+    },
 
 ]
 
-let disposable: monaco.IDisposable | undefined
+const specSuggestions: EditorSuggestion[] = [
+    {
+        label: "context",
+        insertText: "context",
+        detail: "The Bounded context of the scenario"
+    },
+    {
+        label: "subject",
+        insertText: "sut",
+        detail: "The name of the subject (system under test)"
+    },
+    {
+        label: "scenario",
+        insertText: "scenario",
+        detail: "The name of the scenario"
+    },
+    {
+        label: "when",
+        insertText: "when",
+        detail: "when step",
+        children: stepSchemaSuggestions,
+    },
+    //Collections:
+    {
+        label: "givens",//givens.+\}(\r\n|\r|\n)+.+\{\{
+        insertText: "givens",
+        detail: "given steps",
+        children: [{
+            label: "first",
+            insertText: "[0]",
+            children: stepSchemaSuggestions,
+        }]
+    },
+    {
+        label: "thens",//thens.+\}(\r\n|\r|\n)+.+\{\{
+        insertText: "thens",
+        detail: "then steps",
+        children: [{
+            label: "first",
+            insertText: "[0]",
+            children: stepSchemaSuggestions,
+        }]
+    },
+    //collections:
 
+    // //Collection Items
+    {
+        label: "step",//\{\{#each.*givens\sas\s\|step\|\}\}(\r\n|\r|\n)+.+\{\{
+        insertText: "step",
+        detail: "A scenario step",
+        children: stepSchemaSuggestions
+    },
+    {
+        label: "property",
+        insertText: "property",
+        detail: "Step property",
+        children: propertySuggestions,
+    },
+]
+//////////////////////////////
 
+let disposables: monaco.IDisposable[] = []
 export const applyIntellisense = (language: string) => {
-    disposable?.dispose()
-    disposable = monaco.languages.registerCompletionItemProvider(
+    disposables.forEach(z => z.dispose())
+    let disposable = monaco.languages.registerCompletionItemProvider(
         language,
         {
-            triggerCharacters: ['{', '.'],
+            triggerCharacters: ['{', '.', ' '],
             provideCompletionItems: (model, position) => {
-                
                 return {
-                    suggestions: buildSuggestions(
-                        modelSuggestions.concat(propertySuggestions),
-                        position,
-                        model),
+                    suggestions:
+                        buildSuggestions('{{',
+                            specSuggestions,
+                            '}}',
+                            ".",
+                            position,
+                            model)
                 } as monaco.languages.ProviderResult<monaco.languages.CompletionList>;
             }
         }
     );
+    disposables.push(disposable)
+    disposable = monaco.languages.registerCompletionItemProvider(
+        language,
+        {
+            triggerCharacters: ['{'],
+            provideCompletionItems: (model, currentPosition) => {
+                function buildStepSnippetSuggestions(collection: string, item: string, isInBlock: boolean = false) {
+                    let startSnippet = '{{'
+                    let endSnippet = '}}'
+                    if (isInBlock) {
+                        startSnippet = ''
+                        endSnippet = ''
+                    }
+                    return {
+                        label: `each ${collection}`,
+                        insertText: `${startSnippet}#each ${collection} as |${item}|}}
+    {{step.title}}:
+    {{#each step.properties as |property|}}
+        {{property.example}}
+    {{/each}}
+{{/each${endSnippet}`,
+                        kind: monaco.languages.CompletionItemKind.Snippet,
+                        detail: `For each given`,
+                        range: null as any
+                    }
+                }
+                const isInDoubleBlock = isPositionBetween('{{', currentPosition, '}}', model)
+
+                return {
+                    suggestions: [
+                        buildStepSnippetSuggestions('givens', 'step', isInDoubleBlock),
+                        buildStepSnippetSuggestions('thens', 'step', isInDoubleBlock),
+                        {
+                            label: 'json',
+                            insertText: '\n{{{json .}}}\n',
+                            kind: monaco.languages.CompletionItemKind.Function,
+                            detail: `Print json`,
+                        }
+                    ]
+                } as monaco.languages.ProviderResult<monaco.languages.CompletionList>;
+            }
+        }
+    );
+    disposables.push(disposable)
+
 }
