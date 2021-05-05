@@ -49,17 +49,6 @@ Handlebars.registerHelper('blockHelperMissing', (context, options) => {
     }
 });
 
-Handlebars.registerHelper("formIt", function (data, options) {
-    var fields = {};
-    //Generate the Inputs
-    for (var k in data) {
-        var v = data[k];
-        fields[k] = new Handlebars.SafeString(v + ",");
-    }
-
-    return options.fn(fields);
-});
-
 export class TemplateCompiler {
     compileTemplate(template: string, testSchema): string {
         try {
