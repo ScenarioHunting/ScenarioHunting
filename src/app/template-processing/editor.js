@@ -2,7 +2,7 @@
 import { ExternalServices } from '../../external-services'
 import { getLanguageForExtension } from './monaco-languages'
 import { defaultTestSpec } from './default-test-spec'
-import { prefix } from '@fortawesome/free-solid-svg-icons';
+import { applyIntellisense } from './intellisense'
 (async function () {
     window.MonacoEnvironment = { getWorkerUrl: () => proxy };
     let proxy = URL.createObjectURL(new Blob([`
@@ -59,7 +59,7 @@ import { prefix } from '@fortawesome/free-solid-svg-icons';
         return monaco.editor.create(editorElement, {
             value: templateContent,
             language: 'handlebars',
-            theme: 'vs-dark',
+            // theme: 'vs-dark',
             // theme: 'monokai',
             lineHeight: 20,
             fontSize: 14,
@@ -78,7 +78,7 @@ import { prefix } from '@fortawesome/free-solid-svg-icons';
             renderSideBySide: true,
             // value: templateContent,
             language: 'handlebars',
-            theme: 'vs-dark',
+            // theme: 'vs-dark',
             // theme: 'monokai',
             lineHeight: 20,
             fontSize: 14,
@@ -104,7 +104,7 @@ import { prefix } from '@fortawesome/free-solid-svg-icons';
         previewEditor = createPreviewEditor(document.getElementById('preview-editor'))
 
         await detectLanguageForExtension()
-        editor.onDidChangeModelContent(async function (e) {
+        editor.onDidChangeModelContent(async function () {
             await preview(document.getElementById("fileExtension").value, editorModel)
         })
 
@@ -113,7 +113,6 @@ import { prefix } from '@fortawesome/free-solid-svg-icons';
         //     'file:///monaco.d.ts');
         toggleTheme()
         toggleTheme()
-
     }
 
     var editorModel
@@ -162,6 +161,8 @@ import { prefix } from '@fortawesome/free-solid-svg-icons';
             }
             const compiledCodeModel = monaco.editor.createModel(compiledCode, language);
             previewEditor.setModel({ original: compiledCodeModel, modified: expectedCodeModel });
+            applyIntellisense(language)
+
         }
     })()
 
@@ -193,10 +194,10 @@ import { prefix } from '@fortawesome/free-solid-svg-icons';
 
         if (wasDark) {
             monaco.editor.setTheme('monokai')
-            document.getElementById('theme-button').textContent = 'Darken' 
+            document.getElementById('theme-button').textContent = 'Darken'
         } else {
             monaco.editor.setTheme('vs-dark')
-            document.getElementById('theme-button').textContent = 'Lighten' 
+            document.getElementById('theme-button').textContent = 'Lighten'
         }
         const oldClassPrefix = wasDark ? 'dark' : 'light';
         const newClassPrefix = wasDark ? 'light' : 'dark';
@@ -259,5 +260,7 @@ import { prefix } from '@fortawesome/free-solid-svg-icons';
 
     }
     window.toggleTheme = toggleTheme
+
+
 
 })()

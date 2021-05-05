@@ -1,4 +1,6 @@
+import { log } from "../../external-services";
 import Handlebars from "handlebars/dist/handlebars.js"
+// import "handlebars/types/index"
 import { stringCaseHelpers } from "../../libs/string-case-helpers";
 const helpers = {
 
@@ -7,7 +9,7 @@ const helpers = {
      * @param o Object to be converted to JSON.
      */
     json(o: any): string {
-        return JSON.stringify(o,null,4)
+        return JSON.stringify(o, null, 4)
     },
     /**
      * Run the content every time but in the last iteration.
@@ -38,6 +40,7 @@ export class TemplateCompiler {
             //TODO: validate: the test must have When and Then at least.
             return compiledTemplate(testSchema)
         } catch (err) {
+            log.log(err)
             let wrappedError = {
                 hasLineNumber: false,
                 lineNumber: 0,
