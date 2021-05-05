@@ -2,8 +2,8 @@ const path = require('path')
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 // const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 
-const externalServicesPath = './src/external-services.tsx'
-function appConfig() {
+// const externalServicesPath = './src/external-services.tsx'
+function appConfig(options) {
 	return {
 		name: 'app',
 		optimization: {
@@ -15,8 +15,9 @@ function appConfig() {
 			flagIncludedChunks: true,
 			// runtimeChunk: 'single',
 		},
-		mode: 'production',
+		// mode: 'production',
 		// mode: 'development',
+		mode: options.mode,
 
 		entry: {
 			index: './src/index.ts',
@@ -27,7 +28,7 @@ function appConfig() {
 
 			},
 			//To split this file in order to be able to access it by the template editor:
-			ExternalServices: externalServicesPath
+			ExternalServices: options.externalServicesPath
 		},
 		module: {
 			rules: [
@@ -97,15 +98,16 @@ function appConfig() {
 		]
 	}
 }
-function editorConfig() {
+function editorConfig(options) {
 	return {
 		name: 'editor',
 		// mode: 'production',
-		mode: 'development',
+		// mode: 'development',
+		mode: options.mode,
 		entry: {
 			editor: "./src/app/template-processing/editor.js",
 			monacoLanguage: './src/app/template-processing/monaco-languages.js',
-			ExternalServices: externalServicesPath
+			ExternalServices: options.externalServicesPath
 
 		},
 		module: {
@@ -139,5 +141,16 @@ function editorConfig() {
 		]
 	}
 }
-module.exports = (env) => [appConfig(), editorConfig()]
+
+//=>webpack --env= production
+module.exports = (env) => {
+	console.log('Webpack env:', env)
+	if (!['production', 'development'].includes(env))
+		env = 'production'
+	const options = {
+		mode: env,
+		externalServicesPath: './src/external-services.tsx'
+	}
+	return [appConfig(options), editorConfig(options)]
+}
 module.exports.parallelism = 1;

@@ -24,7 +24,7 @@ export let testResultReports: ITestResultReports = new TestResultReports()
 // export let singletonBoard: IBoard = new MiroBoard()
 export let log: iLog = console
 
-interface IExternalServices {
+export interface IExternalServices {
     boardService: IBoard
     // eslint-disable-next-line no-undef
     boardUi(): JSX.Element
