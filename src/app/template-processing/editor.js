@@ -112,7 +112,6 @@ import { applyIntellisense } from './intellisense'
         //     'export declare function add(a: number, b: number): number', 
         //     'file:///monaco.d.ts');
         toggleTheme()
-        toggleTheme()
     }
 
     var editorModel
@@ -127,16 +126,21 @@ import { applyIntellisense } from './intellisense'
     window.detectLanguageForExtension = detectLanguageForExtension
 
 
-    function showError(err) {
-        var lineNumber = err.hasLineNumber ? err.lineNumber : editor.getPosition().lineNumber;
-        monaco.editor.setModelMarkers(editorModel, null, [
-            {
-                startLineNumber: lineNumber,
-                endLineNumber: lineNumber + 1,
-                message: err.internalError,
-                severity: monaco.MarkerSeverity.Error
-            }
-        ]);
+    // let oldMarker
+    function showError(err, position) {
+
+        const newMarker = {
+            startLineNumber: err.startLineNumber ?? position.lineNumber,
+            endLineNumber: err.endLineNumber ?? position.lineNumber + 1,
+            startColumn: err.startColumn,
+            endColumn: err.endColumn,
+            message: err.message,
+            severity: monaco.MarkerSeverity.Error
+        }
+        monaco.editor.setModelMarkers(editorModel, null, [newMarker]);
+    }
+    function clearErrors() {
+        monaco.editor.setModelMarkers(editorModel, null, [])
     }
 
     let preview
@@ -154,10 +158,10 @@ import { applyIntellisense } from './intellisense'
 
             try {
                 compiledCode = ExternalServices.templateCompiler.compileTemplate(template, sampleTestSpec)
-                monaco.editor.setModelMarkers(editorModel, null, [])
+                clearErrors()
             }
             catch (err) {
-                showError(err)
+                showError(err, editor.getPosition())
             }
             const compiledCodeModel = monaco.editor.createModel(compiledCode, language);
             previewEditor.setModel({ original: compiledCodeModel, modified: expectedCodeModel });
