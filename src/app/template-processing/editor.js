@@ -238,16 +238,6 @@ import { applyIntellisense } from './intellisense'
             classPostfix: 'button'
         })
 
-
-
-
-
-
-
-
-
-
-
         // document.querySelectorAll(`[class^="${oldPrefix}"]`).forEach(e =>
         //     e.classList.forEach(c => {
 
