@@ -1,17 +1,4 @@
-<!doctype html>
-<html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <title>Template Editor</title>
-    <script type="text/javascript" src="https://miro.com/app/static/sdk.1.1.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://miro.com/app/static/styles.1.0.css" />
-
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script> -->
-    <link rel="stylesheet" data-name="vs/editor/editor.main"
-        href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/editor/editor.main.min.css">
-    <style type="text/css" media="screen">
-        #monaco-editor {
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Template Editor</title><script src="https://miro.com/app/static/sdk.1.1.js"></script><link rel="stylesheet" href="https://miro.com/app/static/styles.1.0.css"/><link rel="stylesheet" data-name="vs/editor/editor.main" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/editor/editor.main.min.css"><style media="screen">#monaco-editor {
             margin: 0px;
             height: 100%;
             width: 75%;
@@ -94,88 +81,5 @@
 
         .light-text-input {}
 
-        .light-button {}
-    </style>
-
-</head>
-
-<body>
-    <div id="container">
-        <div class="file-name-options-panel">
-
-            <!-- <label for="fileNameTemplate">File name template:</label> -->
-            <div class="miro-input-group miro-input-group--small">
-                <input class="miro-input miro-input--primary" id="fileNameTemplate" placeholder="{{scenario}}"></input>
-                <input class="file-extension-input miro-input miro-input--primary" id="fileExtension" placeholder="cs"
-                    onchange="detectLanguageForExtension()"></input>
-            </div>
-
-
-            <div class="miro-input-group miro-input-group--small">
-                <button id="preview-button" class="miro-btn miro-btn--secondary miro-btn--small"
-                    onclick="togglePreview()">Show Preview</button>
-                <button id="theme-button" class="miro-btn miro-btn--secondary miro-btn--small"
-                    onclick="toggleTheme()">Lighten</button>
-
-            </div>
-            <div class="miro-input-group miro-input-group--small">
-
-                <input class="miro-input miro-input--primary" id="templateName"
-                    placeholder="aggregate-unit-test"></input>
-                <button class="save-button miro-btn miro-btn--primary miro-btn--small" onclick="save()">Save</button>
-                <button id="close-button" class="miro-btn miro-btn--secondary miro-btn--small"
-                    onclick="closeModal()">Close</button>
-            </div>
-
-        </div>
-        <div id="editor-group">
-            <div id="monaco-editor"></div>
-            <div id="preview-editor"></div>
-        </div>
-    </div>
-
-    <!-- <div id="example-editor" style="background-color: chartreuse;"></div> -->
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/loader.min.js"></script>
-
-<script src="editor.js"></script><script src="monacoLanguage.js"></script><script src="ExternalServices.js"></script></body>
-<script>
-    require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs' } });
-    require(["vs/editor/editor.main"], editorMain)
-</script>
-
-</html>
-<!-- Render glyphs in the margin:
-https://microsoft.github.io/monaco-editor/playground.html#interacting-with-the-editor-rendering-glyphs-in-the-margin -->
-<!-- Custom Intellisense:
-https://mono.software/2017/04/11/custom-intellisense-with-monaco-editor/ -->
-<!-- Detect Language:
-https://stackoverflow.com/questions/56681345/how-to-dynamically-set-language-according-to-file-extension-in-monaco-editor -->
-<!-- Json schema editor:
-https://jsoneditoronline.org/#right=local.juyaqi&left=local.toheka -->
-
-<!-- Json Intellisense
-https://www.npmjs.com/package/monaco-json -->
-
-<!-- File saver:
-https://github.com/eligrey/FileSaver.js -->
-
-<!-- go multi-language template engine
-https://github.com/kataras/go-template -->
-
-<!-- handlebars for go
-https://github.com/aymerick/raymond#quick-start -->
-
-<!-- https://github.com/microsoft/monaco-editor/issues/833 -->
-
-<!-- Custom language 
-    https://microsoft.github.io/monaco-editor/monarch.html -->
-
-<!-- Custom suggestions (based on json schema...) 
-    https://microsoft.github.io/monaco-editor/playground.html#extending-language-services-completion-provider-example 
-https://github.com/Microsoft/monaco-editor/issues/38-->
-<!-- Handlebars json suggestions:
-     https://github.com/microsoft/monaco-editor/issues/1731 -->
-
-<!--Event storming example
-     https://medium.com/capital-one-tech/event-storming-decomposing-the-monolith-to-kick-start-your-microservice-architecture-acb8695a6e61 -->
+        .light-button {}</style></head><body><div id="container"><div class="file-name-options-panel"><div class="miro-input-group miro-input-group--small"><input class="miro-input miro-input--primary" id="fileNameTemplate" placeholder="{{scenario}}"><input class="file-extension-input miro-input miro-input--primary" id="fileExtension" placeholder="cs" onchange="detectLanguageForExtension()"></div><div class="miro-input-group miro-input-group--small"><button id="preview-button" class="miro-btn miro-btn--secondary miro-btn--small" onclick="togglePreview()">Show Preview</button> <button id="theme-button" class="miro-btn miro-btn--secondary miro-btn--small" onclick="toggleTheme()">Lighten</button></div><div class="miro-input-group miro-input-group--small"><input class="miro-input miro-input--primary" id="templateName" placeholder="aggregate-unit-test"><button class="save-button miro-btn miro-btn--primary miro-btn--small" onclick="save()">Save</button> <button id="close-button" class="miro-btn miro-btn--secondary miro-btn--small" onclick="closeModal()">Close</button></div></div><div id="editor-group"><div id="monaco-editor"></div><div id="preview-editor"></div></div></div><script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/loader.min.js"></script><script src="editor.js"></script><script src="monacoLanguage.js"></script><script src="ExternalServices.js"></script></body><script>require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs' } });
+    require(["vs/editor/editor.main"], editorMain)</script></html>
