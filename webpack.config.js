@@ -148,9 +148,10 @@ module.exports = (env) => {
 	if (!['production', 'development'].includes(env))
 		env = 'production'
 	const options = {
-		mode: env,
+		mode: 'development',
 		externalServicesPath: './src/external-services.tsx'
 	}
+	console.log('Webpack options:', options)
 	return [appConfig(options), editorConfig(options)]
 }
 module.exports.parallelism = 1;
