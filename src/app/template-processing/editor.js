@@ -91,6 +91,58 @@ import { applyIntellisense } from './intellisense'
             formatOnType: true//!important
         });
     }
+    //Preview:
+
+    let preview
+    (async function () {
+        let sampleTestSpec = await ExternalServices.tempSharedStorage.getItem('sample-test-spec')
+        await ExternalServices.tempSharedStorage.removeItem('sample-test-spec')
+        if (!sampleTestSpec)
+            sampleTestSpec = defaultTestSpec
+        preview = async function (fileExtension, editorModel) {
+
+            const template = editor.getValue()
+            const language = getLanguageForExtension(fileExtension)
+            const expectedCodeModel = monaco.editor.createModel(previewEditor.getModifiedEditor().getValue(), language);
+            let compiledCode = ""
+
+            try {
+                compiledCode = ExternalServices.templateCompiler.compileTemplate(template, sampleTestSpec)
+                clearErrors()
+            }
+            catch (err) {
+                showError(err, editor.getPosition())
+            }
+            const compiledCodeModel = monaco.editor.createModel(compiledCode, language);
+            previewEditor.setModel({ original: compiledCodeModel, modified: expectedCodeModel });
+            applyIntellisense(language)
+
+        }
+    })()
+
+    //Preview pane visibility:
+    function showPreview() {
+        document.getElementById('preview-editor').style.display = 'block'
+        document.getElementById('monaco-editor').style.width = '40%'
+        document.getElementById('preview-button').textContent = 'Hide Preview'
+    }
+    function hidePreview() {
+        document.getElementById('preview-editor').style.display = 'none'
+        document.getElementById('monaco-editor').style.width = '100%'
+        document.getElementById('preview-button').textContent = 'Show Preview'
+
+    }
+    window.togglePreview = function () {
+        let isPreviewOpen = document.getElementById('preview-button').textContent == 'Hide Preview'
+        if (isPreviewOpen) {
+            hidePreview()
+        } else {
+            showPreview()
+        }
+    }
+    showPreview()
+    //eof preview
+
     window.editorMain = async function () {
         let templateContent = undefined;
         if (originalTemplateName) {
@@ -144,54 +196,7 @@ import { applyIntellisense } from './intellisense'
         monaco.editor.setModelMarkers(editorModel, null, [])
     }
 
-    let preview
-    (async function () {
-        let sampleTestSpec = await ExternalServices.tempSharedStorage.getItem('sample-test-spec')
-        await ExternalServices.tempSharedStorage.removeItem('sample-test-spec')
-        if (!sampleTestSpec)
-            sampleTestSpec = defaultTestSpec
-        preview = async function (fileExtension, editorModel) {
 
-            const template = editor.getValue()
-            const language = getLanguageForExtension(fileExtension)
-            const expectedCodeModel = monaco.editor.createModel(previewEditor.getModifiedEditor().getValue(), language);
-            let compiledCode = ""
-
-            try {
-                compiledCode = ExternalServices.templateCompiler.compileTemplate(template, sampleTestSpec)
-                clearErrors()
-            }
-            catch (err) {
-                showError(err, editor.getPosition())
-            }
-            const compiledCodeModel = monaco.editor.createModel(compiledCode, language);
-            previewEditor.setModel({ original: compiledCodeModel, modified: expectedCodeModel });
-            applyIntellisense(language)
-
-        }
-    })()
-
-    //Preview pane visibility:
-    function showPreview() {
-        document.getElementById('preview-editor').style.display = 'block'
-        document.getElementById('monaco-editor').style.width = '40%'
-        document.getElementById('preview-button').textContent = 'Hide Preview'
-    }
-    function hidePreview() {
-        document.getElementById('preview-editor').style.display = 'none'
-        document.getElementById('monaco-editor').style.width = '100%'
-        document.getElementById('preview-button').textContent = 'Show Preview'
-
-    }
-    window.togglePreview = function () {
-        let isPreviewOpen = document.getElementById('preview-button').textContent == 'Hide Preview'
-        if (isPreviewOpen) {
-            hidePreview()
-        } else {
-            showPreview()
-        }
-    }
-    showPreview()
     //Theme:
     function toggleTheme() {
         const wasDark = document.getElementsByTagName('body')[0]
