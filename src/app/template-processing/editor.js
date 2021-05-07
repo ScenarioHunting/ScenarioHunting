@@ -91,10 +91,27 @@ import { applyIntellisense } from './intellisense'
             formatOnType: true//!important
         });
     }
+
+    function showError(err, position) {
+
+        const newMarker = {
+            startLineNumber: err.startLineNumber ?? position.lineNumber,
+            endLineNumber: err.endLineNumber ?? position.lineNumber + 1,
+            startColumn: err.startColumn,
+            endColumn: err.endColumn,
+            message: err.message,
+            severity: monaco.MarkerSeverity.Error
+        }
+        monaco.editor.setModelMarkers(editorModel, null, [newMarker]);
+    }
+    function clearErrors() {
+        monaco.editor.setModelMarkers(editorModel, null, [])
+    }
+
     //Preview:
 
     let preview
-    (async function () {
+    // (async function () {
         let sampleTestSpec = await ExternalServices.tempSharedStorage.getItem('sample-test-spec')
         await ExternalServices.tempSharedStorage.removeItem('sample-test-spec')
         if (!sampleTestSpec)
@@ -118,7 +135,7 @@ import { applyIntellisense } from './intellisense'
             applyIntellisense(language)
 
         }
-    })()
+    // })()
 
     //Preview pane visibility:
     function showPreview() {
@@ -179,23 +196,7 @@ import { applyIntellisense } from './intellisense'
     window.detectLanguageForExtension = detectLanguageForExtension
 
 
-    // let oldMarker
-    function showError(err, position) {
-
-        const newMarker = {
-            startLineNumber: err.startLineNumber ?? position.lineNumber,
-            endLineNumber: err.endLineNumber ?? position.lineNumber + 1,
-            startColumn: err.startColumn,
-            endColumn: err.endColumn,
-            message: err.message,
-            severity: monaco.MarkerSeverity.Error
-        }
-        monaco.editor.setModelMarkers(editorModel, null, [newMarker]);
-    }
-    function clearErrors() {
-        monaco.editor.setModelMarkers(editorModel, null, [])
-    }
-
+    
 
     //Theme:
     function toggleTheme() {
