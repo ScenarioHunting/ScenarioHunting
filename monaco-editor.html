@@ -140,8 +140,15 @@
 
 <script src="ExternalServices.js"></script><script src="monacoLanguage.js"></script><script src="editor.js"></script></body>
 <script>
-    require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs' } });
-    require(["vs/editor/editor.main"], window.editorMain)
+    setupEditor().then(() => {
+        require.config({
+            paths: {
+                'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs'
+            }
+        });
+
+        require(["vs/editor/editor.main"], window.editorMain)
+    })
 </script>
 
 </html>
