@@ -106,7 +106,7 @@ import { applyIntellisense } from './intellisense'
 
         await detectLanguageForExtension()
         editor.onDidChangeModelContent(async function () {
-            await togglePreview(document.getElementById("fileExtension").value, editorModel)
+            await preview(document.getElementById("fileExtension").value, editorModel)
         })
 
         // monaco.languages.typescript.typescriptDefaults.addExtraLib(
@@ -122,7 +122,7 @@ import { applyIntellisense } from './intellisense'
         const template = editor.getValue()
         editorModel = monaco.editor.createModel(template, language)
         editor.setModel(editorModel)
-        await togglePreview(document.getElementById("fileExtension").value, editorModel)
+        await preview(document.getElementById("fileExtension").value, editorModel)
     }
     window.detectLanguageForExtension = detectLanguageForExtension
 
@@ -144,13 +144,13 @@ import { applyIntellisense } from './intellisense'
         monaco.editor.setModelMarkers(editorModel, null, [])
     }
 
-    let togglePreview
+    let preview
     (async function () {
         let sampleTestSpec = await ExternalServices.tempSharedStorage.getItem('sample-test-spec')
         await ExternalServices.tempSharedStorage.removeItem('sample-test-spec')
         if (!sampleTestSpec)
             sampleTestSpec = defaultTestSpec
-        togglePreview = async function (fileExtension, editorModel) {
+        preview = async function (fileExtension, editorModel) {
 
             const template = editor.getValue()
             const language = getLanguageForExtension(fileExtension)
