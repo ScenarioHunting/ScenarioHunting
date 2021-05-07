@@ -15,7 +15,7 @@
     "coverage": "nyc -r lcov -e .ts -x \"*.test.ts\" npm run test",
     "homepage": "http://ScenarioHunting.github.io/ScenarioHunting",
     "predeploy": "sed -i 's|ExternalServices = createMockedDependencies|ExternalServices = createMiroDependencies|g' ./src/external-services.tsx",
-    "deploy": "git add . && git commit -m 'chore:Setup miro dependencies' && npm run build && gh-pages -d dist",
+    "deploy": " npm run build && gh-pages -d dist",
     "prestage": "npm run predeploy",
     "stage": "git add . && git commit -m 'chore:Setup miro dependencies' && npm run build && gh-pages -d dist --repo https://github.com/ScenarioHunting/ScenarioHuntingStaging"
   },
