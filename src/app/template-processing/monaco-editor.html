@@ -141,13 +141,17 @@
 </body>
 <script>
     setupEditor().then(() => {
+        console.log('Editor is set up.')
         require.config({
             paths: {
                 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs'
             }
         });
 
-        require(["vs/editor/editor.main"], window.editorMain)
+        require(["vs/editor/editor.main"],function(){ 
+            console.log('The editor is loaded.')
+            return window.editorMain()
+        })
     })
 </script>
 
