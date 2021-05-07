@@ -110,31 +110,31 @@ import { applyIntellisense } from './intellisense'
 
     //Preview:
 
-    let preview
+    // let preview
     // (async function () {
-        let sampleTestSpec = await ExternalServices.tempSharedStorage.getItem('sample-test-spec')
-        await ExternalServices.tempSharedStorage.removeItem('sample-test-spec')
-        if (!sampleTestSpec)
-            sampleTestSpec = defaultTestSpec
-        preview = async function (fileExtension, editorModel) {
+    let sampleTestSpec = await ExternalServices.tempSharedStorage.getItem('sample-test-spec')
+    await ExternalServices.tempSharedStorage.removeItem('sample-test-spec')
+    if (!sampleTestSpec)
+        sampleTestSpec = defaultTestSpec
+    let preview = async function (fileExtension, editorModel) {
 
-            const template = editor.getValue()
-            const language = getLanguageForExtension(fileExtension)
-            const expectedCodeModel = monaco.editor.createModel(previewEditor.getModifiedEditor().getValue(), language);
-            let compiledCode = ""
+        const template = editor.getValue()
+        const language = getLanguageForExtension(fileExtension)
+        const expectedCodeModel = monaco.editor.createModel(previewEditor.getModifiedEditor().getValue(), language);
+        let compiledCode = ""
 
-            try {
-                compiledCode = ExternalServices.templateCompiler.compileTemplate(template, sampleTestSpec)
-                clearErrors()
-            }
-            catch (err) {
-                showError(err, editor.getPosition())
-            }
-            const compiledCodeModel = monaco.editor.createModel(compiledCode, language);
-            previewEditor.setModel({ original: compiledCodeModel, modified: expectedCodeModel });
-            applyIntellisense(language)
-
+        try {
+            compiledCode = ExternalServices.templateCompiler.compileTemplate(template, sampleTestSpec)
+            clearErrors()
         }
+        catch (err) {
+            showError(err, editor.getPosition())
+        }
+        const compiledCodeModel = monaco.editor.createModel(compiledCode, language);
+        previewEditor.setModel({ original: compiledCodeModel, modified: expectedCodeModel });
+        applyIntellisense(language)
+
+    }
     // })()
 
     //Preview pane visibility:
@@ -196,7 +196,7 @@ import { applyIntellisense } from './intellisense'
     window.detectLanguageForExtension = detectLanguageForExtension
 
 
-    
+
 
     //Theme:
     function toggleTheme() {
