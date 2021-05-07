@@ -133,7 +133,8 @@ function editorConfig(options) {
 			new HtmlWebPackPlugin({
 				template: "./src/app/template-processing/monaco-editor.html",
 				filename: "./monaco-editor.html",
-				// chucks: ['ExternalServices'],
+				chucks: ['ExternalServices','monacoLanguage','editor'],
+				chunksSortMode:'manual',
 				inject: 'body',
 				scriptLoading: 'blocking'
 			}),
