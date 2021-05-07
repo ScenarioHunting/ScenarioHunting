@@ -3,7 +3,7 @@ import { ExternalServices } from '../../external-services'
 import { getLanguageForExtension } from './monaco-languages'
 import { defaultTestSpec } from './default-test-spec'
 import { applyIntellisense } from './intellisense'
-(async function () {
+async function setupEditor() {
     window.MonacoEnvironment = { getWorkerUrl: () => proxy };
     let proxy = URL.createObjectURL(new Blob([`
     self.MonacoEnvironment = {
@@ -249,4 +249,4 @@ import { applyIntellisense } from './intellisense'
 
 
 
-})()
+}
