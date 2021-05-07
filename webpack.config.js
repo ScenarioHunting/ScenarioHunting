@@ -105,9 +105,9 @@ function editorConfig(options) {
 		// mode: 'development',
 		mode: options.mode,
 		entry: {
-			editor: "./src/app/template-processing/editor.js",
+			ExternalServices: options.externalServicesPath,
 			monacoLanguage: './src/app/template-processing/monaco-languages.js',
-			ExternalServices: options.externalServicesPath
+			editor: "./src/app/template-processing/editor.js",
 
 		},
 		module: {
