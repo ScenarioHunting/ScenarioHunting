@@ -75,7 +75,7 @@ export let createGivenStepCollection =
 						onClick={add}>
 						+ Given
 					</button> */}
-					<button onClick={add}
+					<button title="Add a new Given step" onClick={add}
 						className={sharedStyles["image-button"] +
 							" miro-btn miro-btn--secondary miro-btn--small"}
 						disabled={!isActive || !canAdd || indexedSteps.length > 9}>
