@@ -23,17 +23,14 @@ export function TemplateList(props): JSX.Element {
     useEffect(loadTemplateNames, []);
     function openModal(iframeURL: string): Promise<void> {
         return boardService.openModal(iframeURL)
+            .then(loadTemplateNames)
     }
     function addTemplate() {
-        ExternalServices
         openModal(`./monaco-editor.html`)
     }
     function editTemplate(templateName: string) {
-        templateRepository.getTemplateByName(templateName).then(template => {
-            const queryString = `?templateName=${templateName}&templateContent=${JSON.stringify(template)}&templateContentObj=${template}`
-            openModal(`./monaco-editor.html${queryString}`)
-                .then(() => loadTemplateNames())
-        })
+        const queryString = `?templateName=${templateName}`
+        openModal(`./monaco-editor.html${queryString}`)
     }
     function deleteTemplate(templateName: string) {
         if (!confirm(`You are about deleting the template: ${templateName}.\n Are you sure?`))

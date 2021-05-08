@@ -53,7 +53,6 @@ class BoardMock implements IBoard {
                 return;
             }
         }
-
         return Promise.resolve()
     }
     closeModal() {
