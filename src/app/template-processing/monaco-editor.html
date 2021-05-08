@@ -139,19 +139,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/loader.min.js"></script>
 
 </body>
-<script>
-    setupEditor().then(() => {
-        console.log('Editor is set up.')
+<script type="module">
+    // import * as z from './editor.js'
+    // console.log(Object.keys(z))
+    window.setupEditor().then(() => {
         require.config({
             paths: {
                 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs'
             }
         });
 
-        require(["vs/editor/editor.main"],function(){ 
-            console.log('The editor is loaded.')
-            return window.editorMain()
-        })
+        require(["vs/editor/editor.main"], window.editorMain)
     })
 </script>
 
