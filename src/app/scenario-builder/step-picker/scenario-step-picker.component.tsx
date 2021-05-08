@@ -57,7 +57,8 @@ export function createTestStepRecorder({ stepType
         return (
             <div className={styles["step"]}>
                 {/* <h3 style={{ color: isActive ? 'inherit' : '#c3c2cf' }}>{stepType} </h3> */}
-                <button onClick={select}
+                <button title={"Select " + stepType}
+                    onClick={select}
 
                     className={sharedStyles["image-button"]
                         + " miro-btn miro-btn--secondary miro-btn--small"}
