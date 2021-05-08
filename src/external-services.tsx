@@ -55,8 +55,8 @@ const createMockedDependencies = (): IExternalServices => {
     }
 }
 
-// const ExternalServices = createMockedDependencies()
-const ExternalServices = createMiroDependencies()
+const ExternalServices = createMockedDependencies()
+// const ExternalServices = createMiroDependencies()
 setDefaultTemplatesToRepository(ExternalServices.templateRepository)
 
 export { ExternalServices }

@@ -43,12 +43,6 @@ window.setupEditor = async () => {
         window.closeModal()
     }
 
-
-
-
-
-
-
     //Preview:
     function showError(err, position, editorModel) {
 
