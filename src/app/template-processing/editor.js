@@ -3,31 +3,31 @@ import { ExternalServices } from '../../external-services'
 import { getLanguageForExtension } from './monaco-languages'
 import { defaultTestSpec } from './default-test-spec'
 import { applyIntellisense } from './intellisense'
+import { URLParameters } from './url-parameters'
+import { editorFactory } from './editor-factory'
+import { domElementClasses } from './dom-element-classes'
+
 window.setupEditor = async () => {
-    window.MonacoEnvironment = { getWorkerUrl: () => proxy };
     let proxy = URL.createObjectURL(new Blob([`
     self.MonacoEnvironment = {
         baseUrl: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min'
     };
     importScripts('https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/base/worker/workerMain.min.js');
-`], { type: 'text/javascript' }));
+    `], { type: 'text/javascript' }));
+    window.MonacoEnvironment = { getWorkerUrl: () => proxy };
 
     window.closeModal = ExternalServices.boardService.closeModal
 
 
-    function showNotification(message) {
-        ExternalServices.boardService.showNotification(message)
-    }
+    const showNotification = ExternalServices.boardService.showNotification
+
+
 
     // let templateContent = ""
     let editor//: monaco.editor.IStandaloneCodeEditor
     let previewEditor
-    const originalTemplateName = getParameterByName("templateName")
+    const originalTemplateName = URLParameters.getByName("templateName", window.location.href)
     document.getElementById("templateName").value = originalTemplateName
-
-
-
-
 
     window.save = async function () {
         const template = {
@@ -36,63 +36,21 @@ window.setupEditor = async () => {
             fileNameTemplate: document.getElementById('fileNameTemplate').value,
             fileExtension: document.getElementById('fileExtension').value,
         }
+        console.log("Template is being saved:", template.contentTemplate)
         await ExternalServices.templateRepository
             .createOrReplaceTemplate(originalTemplateName, template)
         await showNotification(`${template.templateName} saved.`)
         window.closeModal()
     }
 
-    // var repository=require("templateRepository").getTemplateRepository()
-    function getParameterByName(name, url = window.location.href) {
-        name = name.replace(/[\[\]]/g, '\\$&');
-        var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-            results = regex.exec(url);
-        if (!results) return null;
-        if (!results[2]) return '';
-        return decodeURIComponent(results[2].replace(/\+/g, ' '));
-    }
 
 
 
-    function createEditor(editorElement, templateContent) {
 
-        return monaco.editor.create(editorElement, {
-            value: templateContent,
-            language: 'handlebars',
-            // theme: 'vs-dark',
-            // theme: 'monokai',
-            lineHeight: 20,
-            fontSize: 14,
-            // wordWrap: "bounded",
-            automaticLayout: true,
-            wrappingIndent: 'indent',
-            minimap: { enabled: false },
-            scrollBeyondLastLine: false,
-            formatOnType: true//!important
-        });
-        // editor.trigger(A string to insert into the editor, 'editor.action.formatDocument'); 
-    }
-    function createPreviewEditor(editorElement) {
-        return monaco.editor.createDiffEditor(editorElement, {
-            enableSplitViewResizing: true,
-            renderSideBySide: true,
-            // value: templateContent,
-            language: 'handlebars',
-            // theme: 'vs-dark',
-            // theme: 'monokai',
-            lineHeight: 20,
-            fontSize: 14,
-            // wordWrap: "bounded",
-            automaticLayout: true,
-            // wrappingIndent: 'indent',
-            // minimap: { enabled: false },
-            scrollBeyondLastLine: false,
-            // overviewRulerLanes: 0,
-            formatOnType: true//!important
-        });
-    }
 
-    function showError(err, position) {
+
+    //Preview:
+    function showError(err, position, editorModel) {
 
         const newMarker = {
             startLineNumber: err.startLineNumber ?? position.lineNumber,
@@ -104,11 +62,10 @@ window.setupEditor = async () => {
         }
         monaco.editor.setModelMarkers(editorModel, null, [newMarker]);
     }
-    function clearErrors() {
+    function clearErrors(editorModel) {
         monaco.editor.setModelMarkers(editorModel, null, [])
     }
 
-    //Preview:
 
     // let preview
     // (async function () {
@@ -125,10 +82,10 @@ window.setupEditor = async () => {
 
         try {
             compiledCode = ExternalServices.templateCompiler.compileTemplate(template, sampleTestSpec)
-            clearErrors()
+            clearErrors(editorModel)
         }
         catch (err) {
-            showError(err, editor.getPosition())
+            showError(err, editor.getPosition(), editorModel)
         }
         const compiledCodeModel = monaco.editor.createModel(compiledCode, language);
         previewEditor.setModel({ original: compiledCodeModel, modified: expectedCodeModel });
@@ -160,40 +117,24 @@ window.setupEditor = async () => {
     showPreview()
     //eof preview
 
-    window.editorMain = async function () {
-        let templateContent = undefined;
-        if (originalTemplateName) {
-            const template = await ExternalServices.templateRepository
-                .getTemplateByName(originalTemplateName)
-            document.getElementById('fileNameTemplate').value = template.fileNameTemplate
-            document.getElementById('fileExtension').value = template.fileExtension
-            templateContent = template.contentTemplate
-        }
-
-        editor = createEditor(document.getElementById('monaco-editor'), templateContent)
-        previewEditor = createPreviewEditor(document.getElementById('preview-editor'))
-
-        await detectLanguageForExtension()
-        editor.onDidChangeModelContent(async function () {
-            await preview(document.getElementById("fileExtension").value, editorModel)
-        })
-
-        // monaco.languages.typescript.typescriptDefaults.addExtraLib(
-        //     'export declare function add(a: number, b: number): number', 
-        //     'file:///monaco.d.ts');
-        toggleTheme()
-    }
-
-    var editorModel
     //Language:
-    async function detectLanguageForExtension() {
-        const language = getLanguageForExtension(document.getElementById("fileExtension").value)
-        const template = editor.getValue()
-        editorModel = monaco.editor.createModel(template, language)
+    function getEditorModel(templateContent, fileExtension) {
+        const language = getLanguageForExtension(fileExtension)
+        return monaco.editor.createModel(templateContent, language)
+    }
+    var editorModel
+    function switchEditorModel(editor, fileExtension) {
+        editorModel = getEditorModel(editor.getValue(), fileExtension)
         editor.setModel(editorModel)
+    }
+    async function detectLanguageForExtension() {
+        switchEditorModel(editor, document.getElementById("fileExtension").value)
         await preview(document.getElementById("fileExtension").value, editorModel)
     }
     window.detectLanguageForExtension = detectLanguageForExtension
+
+
+
 
 
 
@@ -210,43 +151,59 @@ window.setupEditor = async () => {
             monaco.editor.setTheme('vs-dark')
             document.getElementById('theme-button').textContent = 'Lighten'
         }
+
         const oldClassPrefix = wasDark ? 'dark' : 'light';
         const newClassPrefix = wasDark ? 'light' : 'dark';
 
-        function changeClass(
-            {
-                elements,
-                classPostfix
-            }) {
-            const getClassName = (prefix, postfix) => `${prefix}-${postfix}`;
-
-            const oldClassName = getClassName(oldClassPrefix, classPostfix)
-                , newClassName = getClassName(newClassPrefix, classPostfix);
-
-            for (var i = elements.length - 1; i > -1; i--) {
-                const element = elements[i];
-
-                element.classList.remove(oldClassName)
-                element.classList.add(newClassName)
-
-            }
-        }
-
-        changeClass({
+        domElementClasses.changePrefixesByPostfix({
             elements: document.getElementsByTagName('body'),
-            classPostfix: 'body'
+            classPostfix: 'body',
+            oldClassPrefix,
+            newClassPrefix
         })
-        changeClass({
+        domElementClasses.changePrefixesByPostfix({
             elements: document.getElementsByTagName('input'),
-            classPostfix: 'text-input'
+            classPostfix: 'text-input',
+            oldClassPrefix,
+            newClassPrefix
         })
-        changeClass({
+        domElementClasses.changePrefixesByPostfix({
             elements: document.getElementsByTagName('button'),
-            classPostfix: 'button'
+            classPostfix: 'button',
+            oldClassPrefix,
+            newClassPrefix
         })
     }
     window.toggleTheme = toggleTheme
 
 
 
+    //On editor ready:
+
+    window.onEditorReady = async function () {
+        let templateContent = undefined;
+        if (originalTemplateName) {
+            const template = await ExternalServices.templateRepository
+                .getTemplateByName(originalTemplateName)
+            document.getElementById('fileNameTemplate').value = template.fileNameTemplate
+            document.getElementById('fileExtension').value = template.fileExtension
+            templateContent = template.contentTemplate
+        }
+
+        editor = editorFactory.createEditor(document.getElementById('monaco-editor'), templateContent)
+        previewEditor = editorFactory.createPreviewEditor(document.getElementById('preview-editor'))
+
+        await detectLanguageForExtension()
+        editor.onDidChangeModelContent(async function () {
+            await preview(document.getElementById("fileExtension").value, editorModel)
+        })
+
+        // monaco.languages.typescript.typescriptDefaults.addExtraLib(
+        //     'export declare function add(a: number, b: number): number', 
+        //     'file:///monaco.d.ts');
+        toggleTheme()
+    }
+
+
+    return window.save
 }
