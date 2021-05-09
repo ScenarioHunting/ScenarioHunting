@@ -29,12 +29,15 @@ export function createTestStepRecorder({ stepType
     return function StepRecorder(props: TestStepProps) {
 
         const [isActive, setIsActive] = React.useState<boolean>(false)
+        const [isWaitingForSelection, setIsWaitingForSelection] = React.useState(false)
         function select() {
+            setIsWaitingForSelection(true)
             log.log('Waiting...')
             board.unselectAll()
             board.showNotification(selectionWaitingMessage);
             board.onNextSingleSelection((selectedWidget: SelectedStep) => {
                 log.log(turn, 'Selected...')
+                setIsWaitingForSelection(false)
                 props.onStepSelection(selectedWidget)
                 stepNavigator.done(turn)
             });
@@ -65,7 +68,8 @@ export function createTestStepRecorder({ stepType
                     style={{ display: stepType != '' ? 'flex' : 'none' }}
                     disabled={!isActive}>
                     <svg className={sharedStyles["image-button-image"]} width="20px" viewBox="0 0 24 24">
-                        <path d="M1.7,8.2l4.9,3.5L0.3,18c-0.4,0.4-0.4,1,0,1.4l4.2,4.2c0.4,0.4,1,0.4,1.4,0l6.4-6.4l3.5,5L24,0L1.7,8.2z M15.1,17.3L12.8,14  l-7.5,7.5l-2.8-2.8l7.5-7.5L6.7,8.9l13.6-5.1L15.1,17.3z" ></path>
+                        <path fill={isActive && isWaitingForSelection ? "#7187fc" : ""}
+                            d="M1.7,8.2l4.9,3.5L0.3,18c-0.4,0.4-0.4,1,0,1.4l4.2,4.2c0.4,0.4,1,0.4,1.4,0l6.4-6.4l3.5,5L24,0L1.7,8.2z M15.1,17.3L12.8,14  l-7.5,7.5l-2.8-2.8l7.5-7.5L6.7,8.9l13.6-5.1L15.1,17.3z" ></path>
                     </svg>
                     <h4 className={sharedStyles["image-button-text"]}>
                         {stepType}

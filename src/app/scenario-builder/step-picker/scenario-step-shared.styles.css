@@ -1,11 +1,18 @@
 .image-button{
     display: flex;
-    width: 94px;
+    /* width: 94px; */
     padding: 0px !important;
-    padding-top: 10px !important;
+    padding-top: 8.3px !important;
+    background-color: unset;
+    border-style: solid;
+    border-width: .5px;
+    border-color: #0000003b;
+    height: 33px;
 }
 .image-button-image{
-    height: 16px;
+    height: 10px;
+    margin-top: 5px;
+    width: 13px;
 }
 .image-button-text{
     margin: 0px;

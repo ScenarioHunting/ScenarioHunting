@@ -217,7 +217,7 @@ export const createTestRecorder = (board = ExternalServices.boardService): React
                         ))}
                     </select>
                     <button
-                        title="Edit the template"
+                        title="Edit the selected template"
                         onClick={editTemplate}
                         className={" miro-btn miro-btn--secondary miro-btn--small " + styles['svg-button']}
 
