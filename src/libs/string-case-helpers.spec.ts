@@ -36,4 +36,22 @@ describe('string case helpers', function () {
     )
     it('returns empty string for null')
     it('returns empty string for undefined')
+
+    it('toSnakeCase replaces spaces with _', () =>
+        stringCaseHelpers.toSnakeCase(`separated by       space`)
+            .should.eq("separated_by_space")
+    )
+    it('toSnakeCase replaces - with _', () =>
+        stringCaseHelpers.toSnakeCase(`first-name-is-separated-by-dash`)
+
+            .should.eq("first_name_is_separated_by_dash")
+    )
+    it('toSnakeCase replaces multiple trailing __ with a single _', () =>
+        stringCaseHelpers.toSnakeCase(`first__name_____is__________separated___by_redundant_underlines`)
+            .should.eq("first_name_is_separated_by_redundant_underlines")
+    )
+    it('it de-capitalizes title', () =>
+        stringCaseHelpers.toSnakeCase(`DE_Capitalize_ME`)
+            .should.eq('de_capitalize_me')
+    )
 })

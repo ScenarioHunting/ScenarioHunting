@@ -15,7 +15,7 @@ describe('how the schema becomes extracted from text', function () {
         const schema = await extractStepSchema({
             abstractionWidgetText: `person`,
             exampleWidgetText: `person
-            first name: Mohsen`
+            first_name: Mohsen`
         })
         schema.properties.first_name.example.should.eq('Mohsen')
     })
@@ -23,12 +23,12 @@ describe('how the schema becomes extracted from text', function () {
         const schema = await extractStepSchema({
             abstractionWidgetText: `person`,
             exampleWidgetText: `person
-                        -first name: Mohsen
-                        -   last name:Bazmi`
+                        -first_name: Mohsen
+                        -   last_name:Bazmi`
         })
 
         schema.properties.first_name.example.should.eq('Mohsen')
-        schema.properties.last_name.example.should.eq('Bazmi')
+        schema.properties["last_name"].example.should.eq('Bazmi')
     })
     it('skips white spaces and empty lines', async () => {
         const schema = await extractStepSchema({
@@ -46,10 +46,10 @@ describe('how the schema becomes extracted from text', function () {
 
 
 
-                         first name: Mohsen
+                         first_name: Mohsen
              
                          
-                         last name:Bazmi
+                         last_name:Bazmi
 
 
                         `
@@ -58,16 +58,16 @@ describe('how the schema becomes extracted from text', function () {
         schema.properties.first_name.example.should.eq('Mohsen')
         schema.properties.last_name.example.should.eq('Bazmi')
     })
-    it('replaces property values with property titles when no property value is provided', async () => {
+    it('copies property titles as property values when no property value is provided', async () => {
         const schema = await extractStepSchema({
             abstractionWidgetText: `person`,
             exampleWidgetText: `person
-                              first name
-                              last name`
+                              first_name
+                              last_name`
         })
 
-        schema.properties.first_name.example.should.eq('first name')
-        schema.properties.last_name.example.should.eq('last name')
+        schema.properties.first_name.example.should.eq('first_name')
+        schema.properties.last_name.example.should.eq('last_name')
 
     })
     it('separates properties by ;', async () => {
@@ -77,13 +77,13 @@ describe('how the schema becomes extracted from text', function () {
                   first name: Mohsen;last name: Bazmi
             `
         })
-        schema.properties.first_name.example.should.eq('Mohsen')
+        schema.properties["first name"].example.should.eq('Mohsen')
     })
     it('separates properties by ,', async () => {
         const schema = await extractStepSchema({
             abstractionWidgetText: `person`,
             exampleWidgetText: `person
-                            first name: Mohsen,last name: Bazmi`
+                            first_name: Mohsen,last name: Bazmi`
         })
         schema.properties.first_name.example.should.eq('Mohsen')
     })
@@ -91,7 +91,7 @@ describe('how the schema becomes extracted from text', function () {
         const schema = await extractStepSchema({
             abstractionWidgetText: `person`,
             exampleWidgetText: `person
-                            first name: Mohsen/last name: Bazmi`
+                            first_name: Mohsen/last name: Bazmi`
         })
         schema.properties.first_name.example.should.eq('Mohsen')
     })
@@ -108,30 +108,30 @@ describe('how the schema becomes extracted from text', function () {
         })
         schema.title.should.eq('person')
     })
-    it('it replaces spaces in property names with _', async () => {
-        const schema = await extractStepSchema({
-            abstractionWidgetText: `person`,
-            exampleWidgetText: `person
-                            first name is separated by space`
-        })
-        schema.properties.first_name_is_separated_by_space.should.not.undefined
-    })
-    it('it replaces - in property names with _', async () => {
-        const schema = await extractStepSchema({
-            abstractionWidgetText: `person`,
-            exampleWidgetText: `person
-                            first-name-is-separated-by-dash`
-        })
-        schema.properties.first_name_is_separated_by_dash.should.not.undefined
-    })
-    it('it replaces redundant _s in property names with  a single_', async () => {
-        const schema = await extractStepSchema({
-            abstractionWidgetText: `person`,
-            exampleWidgetText: `person
-                            first__name_____is__________separated___by_redundant_underlines`
-        })
-        schema.properties.first_name_is_separated_by_redundant_underlines.should.not.undefined
-    })
+    // it('it replaces spaces in property names with _', async () => {
+    //     const schema = await extractStepSchema({
+    //         abstractionWidgetText: `person`,
+    //         exampleWidgetText: `person
+    //                         first name is separated by space`
+    //     })
+    //     schema.properties.first_name_is_separated_by_space.should.not.undefined
+    // })
+    // it('it replaces - in property names with _', async () => {
+    //     const schema = await extractStepSchema({
+    //         abstractionWidgetText: `person`,
+    //         exampleWidgetText: `person
+    //                         first-name-is-separated-by-dash`
+    //     })
+    //     schema.properties.first_name_is_separated_by_dash.should.not.undefined
+    // })
+    // it('it replaces redundant _s in property names with  a single_', async () => {
+    //     const schema = await extractStepSchema({
+    //         abstractionWidgetText: `person`,
+    //         exampleWidgetText: `person
+    //                         first__name_____is__________separated___by_redundant_underlines`
+    //     })
+    //     schema.properties.first_name_is_separated_by_redundant_underlines.should.not.undefined
+    // })
     xit('it splits camel case phrases in property names by _', async () => {
         const schema = await extractStepSchema({
             abstractionWidgetText: `person`,
@@ -148,12 +148,25 @@ describe('how the schema becomes extracted from text', function () {
         })
         schema.properties.first_name_is_separated_by_underline.should.not.undefined
     })
-    it('it de-capitalizes title',async ()=>{
+    // it('it de-capitalizes title',async ()=>{
+    //     const schema = await extractStepSchema({
+    //         abstractionWidgetText: `De_Capitalize_Me`,
+    //         exampleWidgetText: `De_Capitalize_Me
+    //                         first_name_is_separated_by_underline`
+    //     })
+    //     schema.title.should.eq('de_capitalize_me')
+    // })
+    it('detects arrays', async () => {
         const schema = await extractStepSchema({
-            abstractionWidgetText: `De_Capitalize_Me`,
-            exampleWidgetText: `De_Capitalize_Me
-                            first_name_is_separated_by_underline`
+            abstractionWidgetText: `Add Items to Basket`,
+            exampleWidgetText: `Add Items to Basket
+
+            Customer Id
+            
+            Items:[product id,
+            
+            amount]`
         })
-        schema.title.should.eq('de_capitalize_me')
+        schema.type.should.eq('array')
     })
 })

@@ -35,7 +35,6 @@ export async function extractStepSchema({
         if (purePropertyName == '')
             return
 
-        const propertyName = purePropertyName
         // const propertyName = toSnakeCase(purePropertyName)
 
         let propertyValue = kv[1]
@@ -43,6 +42,11 @@ export async function extractStepSchema({
             propertyValue = purePropertyName
         }
 
+        // if(propertyValue[0]=='['){
+
+        // }
+
+        const propertyName = purePropertyName.trim()
         props[propertyName] = {
             type: "string",
             description: propertyName,

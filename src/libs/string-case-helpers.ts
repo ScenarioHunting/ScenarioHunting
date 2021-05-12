@@ -21,8 +21,7 @@ export const stringCaseHelpers = {
     toSnakeCase(str: string) {
         return str.trim()
             .replace(/(([^A-Z0-9]+)(.)?)/ig, '_$1')
-            .replace(/-/g, '')
-            .replace(/\s/g, '')
+            .replace(/-|\s/g, '')
             .replace(/_+/g, '_')
             .toLowerCase()
     },
