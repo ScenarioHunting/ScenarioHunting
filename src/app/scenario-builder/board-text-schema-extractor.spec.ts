@@ -156,7 +156,7 @@ describe('how the schema becomes extracted from text', function () {
     //     })
     //     schema.title.should.eq('de_capitalize_me')
     // })
-    it('detects arrays', async () => {
+    it('detects [items in brackets] as arrays', async () => {
         const schema = await extractStepSchema({
             abstractionWidgetText: `Add Items to Basket`,
             exampleWidgetText: `Add Items to Basket
@@ -167,6 +167,19 @@ describe('how the schema becomes extracted from text', function () {
             
             amount]`
         })
-        schema.type.should.eq('array')
+        schema.properties.Items.type.should.eq('array')
+    })
+    it('does not detect a property value that does not end with ] as an array', async () => {
+        const schema = await extractStepSchema({
+            abstractionWidgetText: `Add Items to Basket`,
+            exampleWidgetText: `Add Items to Basket
+
+            Customer Id
+            
+            Items:[product id,
+            
+            amount`
+        })
+        schema.properties.Items.type.should.not.eq('array')
     })
 })

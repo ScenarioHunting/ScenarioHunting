@@ -1,9 +1,18 @@
+
+export type property = {
+    type: string,
+    description: string,
+}
+export interface singularProperty extends property {
+    type: "object",
+    example: any
+}
+export interface arrayProperty extends property {
+    type: "array"
+    items: property[]
+}
 export type properties = {
-    [title: string]: {
-        type: string,
-        description: string,
-        example: any
-    }
+    [title: string]: any//singularProperty | arrayProperty
 }
 export type stepSchema = {
     $schema: "http://json-schema.org/draft-07/schema#",
