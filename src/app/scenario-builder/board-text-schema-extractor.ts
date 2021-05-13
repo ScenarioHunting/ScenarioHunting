@@ -1,4 +1,4 @@
-import { properties, stepSchema, arrayProperty, singularProperty } from '../../app/spec';
+import { properties, stepSchema, arrayProperty, objectProperty, singularProperty } from '../../app/spec';
 
 const toSnakeCase = (str: string) => str.trim()
     .replace(/(([^A-Z0-9]+)(.)?)/ig, '_$1')
@@ -47,45 +47,54 @@ export async function extractStepSchema({
         }
         propertyValue = propertyValue.trim()
 
-        const propertyName = purePropertyName.trim()
+        let propertyName = purePropertyName.trim()
 
         if (isInArrayScope) {
             if (propertyValue.endsWith(']')) {//what if the '[' never closes => it wasn't an array.
                 propertyValue = propertyValue.slice(0, -1)
                 isInArrayScope = false
-            }
-            (<arrayProperty>props[parentArrayPropertyName]).items.concat([<singularProperty>{//It may not be singular
-                type: "object",
+                propertyName = propertyName.slice(0, -1)
+            } (<arrayProperty>props[parentArrayPropertyName]).items.push(<singularProperty>{//It may not be singular
+                type: "string",
                 description: propertyName,
                 example: propertyValue.trim()
-            }])
+            })
 
             return
         }
+
         if (propertyValue[0] == '[') {
-            console.log("The property " + propertyName + "is an array:", propertyValue  )
+            console.log("The property " + propertyName + " is an array: ", propertyValue)
             isInArrayScope = true
             const property: arrayProperty = {
                 type: "array",
-                description: propertyName.substring(1),
+                description: propertyName,
                 items: []
+            }
+            propertyValue = propertyValue.substring(1)
+
+            if (propertyValue) {
+                const prop = <singularProperty>{
+                    type: "string",
+                    description: propertyValue.trim(),
+                    example: propertyValue
+                }
+                property.items.push(prop)
             }
             props[propertyName] = property
             parentArrayPropertyName = propertyName
             return
         }
-        // if(isInArrayScope){
 
-        // }
-        console.log("dddddddd", propertyValue)
-        const property: singularProperty = {
-            type: "object",
+
+        const property = <singularProperty>{
+            type: "string",
             description: propertyName,
             example: propertyValue.trim()
         }
         props[propertyName] = property
     })
-
+    console.log("props:::::", JSON.stringify(props))
     return Promise.resolve({
         $schema: "http://json-schema.org/draft-07/schema#",
         type: 'object',
