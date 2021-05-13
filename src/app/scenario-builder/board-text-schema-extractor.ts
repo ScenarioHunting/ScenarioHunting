@@ -63,6 +63,7 @@ export async function extractStepSchema({
             return
         }
         if (propertyValue[0] == '[') {
+            console.log("The property " + propertyName + "is an array:", propertyValue)
             isInArrayScope = true
             const property: arrayProperty = {
                 type: "array",
