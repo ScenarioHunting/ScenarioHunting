@@ -1,4 +1,5 @@
 export const stringCaseHelpers = {
+    toString(s: any) { return s.toString() },
     sneakToCamelCase(str: string) {
         return str.replace(/_./g, x => x[1].toUpperCase())
     },
@@ -19,7 +20,7 @@ export const stringCaseHelpers = {
         return str.charAt(0).toUpperCase() + str.slice(1)
     },
     toSnakeCase(str: string) {
-        return str.trim()
+        return str.toString().trim()
             .replace(/(([^A-Z0-9]+)(.)?)/ig, '_$1')
             .replace(/-|\s/g, '')
             .replace(/_+/g, '_')

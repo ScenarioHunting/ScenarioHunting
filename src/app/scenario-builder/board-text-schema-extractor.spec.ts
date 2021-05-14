@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 // eslint-disable-next-line no-unused-vars
 const should = require('chai').should()
-import { arrayProperty, objectProperty, singularProperty } from "../../app/spec";
+import { arrayProperty, property, singularProperty } from "../../app/spec";
 import { extractStepSchema } from "./board-text-schema-extractor";
 
 describe('how the schema becomes extracted from text', function () {
@@ -10,7 +10,7 @@ describe('how the schema becomes extracted from text', function () {
             abstractionWidgetText: `title`,
             exampleWidgetText: `title`
         });
-        (schema.title.should as singularProperty).eq('title')
+        schema.title.should.eq('title')
     })
     it('extracts second line as property', async function name() {
         const schema = await extractStepSchema({
@@ -18,7 +18,7 @@ describe('how the schema becomes extracted from text', function () {
             exampleWidgetText: `person
             first_name: Mohsen`
         });
-        (schema.properties.first_name as objectProperty).example.should.eq('Mohsen')
+        (schema.properties.first_name as singularProperty).example.should.eq('Mohsen')
     })
     it('removes the dash as the first char of property names', async () => {
         const schema = await extractStepSchema({
@@ -170,32 +170,74 @@ describe('how the schema becomes extracted from text', function () {
         });
         (schema.properties.Items as arrayProperty).type.should.eq('array')
     })
-    it('does not detect a property value that does not end with ] as an array', async () => {
-        const schema = await extractStepSchema({
-            abstractionWidgetText: `Add Items to Basket`,
-            exampleWidgetText: `Add Items to Basket
 
-            Customer Id
-            
-            Items:[product id,
-            
-            amount`
-        });
-        (schema.properties.Items as arrayProperty).type.should.not.eq('array')
-    })
     it('detects the properties of the internal array', async () => {
-        const schema = await extractStepSchema({
+
+        const actual = await extractStepSchema({
             abstractionWidgetText: `Add Items to Basket`,
             exampleWidgetText: `Add Items to Basket
 
             Customer Id
             
-            array_sample:[product_id:val,
+            array_sample:[
+                product_id:val,
             
             amount],
             root_property`
         });
-        console.log(">>>>>>>>>>>>>>>>>>", schema.properties);
-        ((schema.properties.array_sample as arrayProperty).items[0] as objectProperty).type.should.be("object")
+
+        const expected = {
+            type: "array",
+            description: "array_sample",
+            items: [
+                {
+                    type: "string",
+                    description: "product_id",
+                    example: "val"
+                },
+                {
+                    type: "string",
+                    description: "amount",
+                    example: "amount"
+                } as singularProperty
+            ]
+        } as arrayProperty;
+        actual.properties.array_sample.should.deep.equal(expected);
     })
+    it('detects number type for digits', async () => {
+        const schema = await extractStepSchema({
+            abstractionWidgetText: `person`,
+            exampleWidgetText: `person
+                               age:23`
+        });
+        const expected = {
+            type: "number",
+            description: "age",
+            example: 23
+        } as singularProperty
+        schema.properties.age.should.deep.equal(expected)
+    })
+    it('detects boolean type for true or false', async () => {
+        const schema = await extractStepSchema({
+            abstractionWidgetText: `person`,
+            exampleWidgetText: `person
+                               isMarried:True
+                               isMale:fAlSe`
+        });
+
+        const expectedIsMarried = {
+            type: "boolean",
+            description: "isMarried",
+            example: true
+        } as singularProperty
+        schema.properties.isMarried.should.deep.equal(expectedIsMarried)
+
+        const expectedIsMale = {
+            type: "boolean",
+            description: "isMale",
+            example: false
+        } as singularProperty
+        schema.properties.isMale.should.deep.equal(expectedIsMale)
+    })
+
 })

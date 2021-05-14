@@ -94,6 +94,32 @@ export function UIComponent() {
                     description: "new address",
                     example: "Oak street"
                 },
+                number_sample:{
+                    type: "number",
+                    description: "num sample",
+                    example: 23
+                },
+                bool_sample:{
+                    type: "boolean",
+                    description: "boolean sample",
+                    example: false
+                },
+                array_sample: {
+                    type: "array",
+                    description: "array_sample",
+                    items: [
+                        {
+                            type: "string",
+                            description: "product_id",
+                            example: "product_id"
+                        },
+                        {
+                            type: "string",
+                            description: "amount",
+                            example: "amount"
+                        }
+                    ]
+                },
                 NewPhone_number: {
                     type: "string",
                     description: "New phonenumber",

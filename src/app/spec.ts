@@ -1,13 +1,9 @@
-type prop = singularProperty | objectProperty | arrayProperty
+export type prop = singularProperty | arrayProperty
 export type property = {
     type: string,
     description: string,
 }
 export interface singularProperty {
-    example: any
-}
-export interface objectProperty extends singularProperty {
-    type: "object",
     example: any
 }
 export interface arrayProperty extends property {
