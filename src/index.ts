@@ -156,7 +156,7 @@ miro.onReady(async () => {
 			// 	}
 			// },
 			bottomBar: {
-				title: 'Context Reflective Test',
+				title: 'Scenario Hunting',
 				svgIcon: testIcon,
 				onClick: () => {
 					miro.board.ui.openLeftSidebar('app.html')

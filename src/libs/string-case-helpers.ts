@@ -1,5 +1,6 @@
 export const stringCaseHelpers = {
     toString(s: any) { return s.toString() },
+    toLowerCase(str: string) { return str.toLocaleLowerCase() },
     sneakToCamelCase(str: string) {
         str = str.toString()
         return str.replace(/_./g, x => x[1].toUpperCase())

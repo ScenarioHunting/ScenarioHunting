@@ -32,11 +32,11 @@ export class miroTemplateRepository implements iTemplateRepository {
     }
     public async createOrReplaceTemplate(originalTemplateName: string, template: textTemplate) {
         log.log('createOrReplaceTemplate:')
-        log.log('finding widget for template:', originalTemplateName)
         var widgets = await this.findAllTemplateWidgets()
         var x: number;
         var y: number;
         if (widgets.length > 0) {
+
             const firstWidget = widgets[0]
             x = firstWidget.x
             y = firstWidget.y
@@ -45,8 +45,9 @@ export class miroTemplateRepository implements iTemplateRepository {
             x = viewport.x - 200
             y = viewport.y - 200
         }
+        log.log('Finding widget for template:', originalTemplateName)
         widgets = this.filterWidgetsByTemplateName(widgets, originalTemplateName)
-        log.log(`${widgets.length} widgets found for template with name: ${originalTemplateName}`)
+        log.log(`"${widgets.length}" widgets found for template originally named: ${originalTemplateName}`)
 
         // var dbWidgets = widgets.filter(i => !isNullOrUndefined(i.metadata[miro.getClientId()].templateName));
 
