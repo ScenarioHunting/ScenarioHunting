@@ -3,7 +3,7 @@ export type property = {
     type: string,
     description: string,
 }
-export interface singularProperty {
+export interface singularProperty extends property {
     example: any
 }
 export interface arrayProperty extends property {

@@ -1,7 +1,7 @@
 import { isNullOrUndefined } from "../../libs/isNullOrUndefined"
-import { spec, stepSchema } from "../../app/spec";
+import { spec } from "../../app/spec";
 import { ExternalServices, log } from "../../external-services";
-import { stringCaseHelpers } from "../../libs/string-case-helpers";
+import { specFormatterService } from "./spec-formatter.service";
 const templateRepository = ExternalServices.templateRepository
 const templateCompiler = ExternalServices.templateCompiler
 function downloadAs(fileName: string, data: string) {
@@ -19,32 +19,9 @@ function downloadAs(fileName: string, data: string) {
         window.navigator.msSaveBlob(blob, fileName);
     }
 }
-function formatText(text: string): string {
-    return stringCaseHelpers.toSnakeCase(text)
-}
-function formatStep(s: stepSchema) {
-    return <stepSchema>{
-        $schema: s.$schema,
-        title: formatText(s.title),
-        type: s.type,
-        properties: s.properties
-    }
-}
-function formatSpec(spec: spec): spec {
-    return <spec>{
-        context: formatText(spec.context),
-        sut: formatText(spec.sut),
-        scenario: formatText(spec.scenario),
-        givens: spec.givens.map(formatStep),
-        when: formatStep(spec.when),
-        thens: spec.thens.map(formatStep)
-    }
-}
-
 export class ScenarioBuilderService {
     static Save = async (templateName: string, spec: spec): Promise<string> => {
-        spec = formatSpec(spec)
-        log.info("Spec formatted:", spec)
+
         log.log("Saving the template for test:", spec.scenario)
 
         try {
@@ -57,6 +34,8 @@ export class ScenarioBuilderService {
         }
 
         try {
+            // spec = specFormatterService(template.fileExtension).formatSpec(spec)
+            // log.info("Spec formatted:", spec)
             var testCode = templateCompiler.compileTemplate(template.contentTemplate, spec)
             var testFileName = templateCompiler.compileTemplate(template.fileNameTemplate, spec)
             log.log("compiled testCode:", testCode, "testFileName", testFileName)

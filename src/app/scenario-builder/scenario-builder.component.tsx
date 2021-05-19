@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react';
 import { SelectableText } from './title-picker/title-picker.component';
 import { TestStepTurn } from './step-picker/scenario-step-turn';
 import { spec } from '../../app/spec';
-import { ExternalServices } from '../../external-services';
+import { ExternalServices, log } from '../../external-services';
 
 const templateRepository = ExternalServices.templateRepository
 const tempSharedStorage = ExternalServices.tempSharedStorage
@@ -115,7 +115,7 @@ export const createTestRecorder = (board = ExternalServices.boardService): React
         return true
     }
     const forceUpdate = React.useReducer((bool) => !bool, true)[1];
-    const saveAndRedirectToExplorer = async () => {
+    const save = async () => {
         var isFormValid = validateScenario(scenario)
             && validateContext(context)
             && validateSubject(subject)
@@ -136,7 +136,8 @@ export const createTestRecorder = (board = ExternalServices.boardService): React
         try {
             await ScenarioBuilderService.Save(selectedTemplateName, testSpec)
             board.showNotification('Test created successfully.')
-        } catch {
+        } catch (e) {
+            log.log(e)
             board.showNotification('Test creation error try again later.\n')
         }
     };
@@ -228,7 +229,7 @@ export const createTestRecorder = (board = ExternalServices.boardService): React
                         title="Generate the test and download it"
                         style={{ margin: '0px' }}
                         className='miro-btn miro-btn--primary miro-btn--small'
-                        onClick={saveAndRedirectToExplorer}
+                        onClick={save}
                     // disabled={[errors].flat().length > 0}
                     >Save</button>
                 </div>

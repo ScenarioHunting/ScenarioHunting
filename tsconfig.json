@@ -27,7 +27,7 @@
   ],
   "files": [
     "@types/miro.d.ts",
-    "@types/monaco.d.ts"
+    "@types/monaco.d.ts",
 
   ]
 }
