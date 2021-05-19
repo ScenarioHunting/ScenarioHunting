@@ -141,9 +141,8 @@ export const createTestRecorder = (board = ExternalServices.boardService): React
             board.showNotification('Test creation error try again later.\n')
         }
     };
-
-    async function editTemplate() {
-        const testSpec = {
+    function getSpec() {
+        return {
             sut: subject,
             context: context,
             scenario: scenario,
@@ -151,10 +150,18 @@ export const createTestRecorder = (board = ExternalServices.boardService): React
             when: when?.stepSchema,
             thens: [then?.stepSchema],
         } as spec
-        tempSharedStorage.setItem('sample-test-spec', testSpec)
+    }
+    async function editTemplate() {
+        tempSharedStorage.setItem('sample-test-spec', getSpec())
 
         const queryString = `?templateName=${selectedTemplateName}`
         await boardService.openModal(`./monaco-editor.html${queryString}`)
+            .then(loadTemplateNames)
+    }
+    async function newTemplate() {
+        tempSharedStorage.setItem('sample-test-spec', getSpec())
+
+        await boardService.openModal(`./monaco-editor.html`)
             .then(loadTemplateNames)
     }
 
@@ -203,7 +210,7 @@ export const createTestRecorder = (board = ExternalServices.boardService): React
                     <button
                         title="Add a new template"
                         className={styles['svg-button'] + " miro-btn miro-btn--secondary miro-btn--small"}
-                        onClick={() => alert('Not implemented yet.')}>
+                        onClick={newTemplate}>
                         <svg height="20px" fill="currentColor" fillRule="nonzero" className="image-button" viewBox="0 0 48 48"><g><path d="M37,43c0,0.6-0.4,1-1,1H12c-0.6,0-1-0.4-1-1V5c0-0.6,0.4-1,1-1h13V2H12c-1.7,0-3,1.3-3,3v38c0,1.7,1.3,3,3,3h24   c1.7,0,3-1.3,3-3V16h-2V43z"></path><polygon points="33,8 33,2 31,2 31,8 25,8 25,10 31,10 31,16 33,16 33,10 39,10 39,8  "></polygon><rect height="2" width="10" x="17" y="19"></rect><rect height="2" width="14" x="17" y="27"></rect><rect height="2" width="10" x="17" y="35"></rect></g></svg>
                     </button>
                     <select className={" miro-select miro-select--secondary-bordered miro-select--small"} value={selectedTemplateName}
