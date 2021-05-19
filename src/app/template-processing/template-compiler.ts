@@ -50,12 +50,12 @@ Handlebars.registerHelper('blockHelperMissing', (context, options) => {
 });
 
 export class TemplateCompiler {
-    compileTemplate(template: string, testSchema): string {
+    compileTemplate(template: string, model): string {
         try {
             var compiledTemplate = Handlebars.compile(template);
 
             //TODO: validate: the test must have When and Then at least.
-            return compiledTemplate(testSchema)
+            return compiledTemplate(model)
         } catch (err) {
             let wrappedError = {
                 startLineNumber: err.lineNumber,

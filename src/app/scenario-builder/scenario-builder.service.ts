@@ -26,7 +26,8 @@ function formatStep(s: stepSchema) {
     return <stepSchema>{
         $schema: s.$schema,
         title: formatText(s.title),
-        type: s.type
+        type: s.type,
+        properties: s.properties
     }
 }
 function formatSpec(spec: spec): spec {
