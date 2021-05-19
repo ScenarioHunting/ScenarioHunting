@@ -6,7 +6,7 @@ export type textTemplate = {
     fileExtension: string,
 }
 export interface iTemplateRepository {
-    createOrReplaceTemplate(originalTemplateName: string, template: textTemplate)
+    createOrReplaceTemplate(originalTemplateName: string, template: textTemplate): Promise<void>
     getAllTemplateNames(): Promise<string[]>
     removeTemplate(templateName: string)
     getTemplateByName(templateName: string): Promise<textTemplate>

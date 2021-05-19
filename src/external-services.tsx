@@ -11,11 +11,12 @@ import * as React from "react";
 import { iTemplateRepository as ITemplateRepository } from "./app/ports/itemplate-repository";
 import { miroTemplateRepository } from "./adopters/miro/miro-template-repository";
 import { localStorageTemplateRepository } from "./adopters/mocks/local-storage-template-repository";
-import { setDefaultTemplatesToRepository } from "./app/template-processing/default-templates-initializer";
+import { setDefaultTemplatesToRepository as addReadonlyTemplatesTo } from "./app/template-processing/default-templates-initializer";
 import { ITempStorage } from "./app/ports/itemp-storage";
 import { LocalTempStorage } from "./adopters/mocks/local-temp-storage";
 import { TemplateCompiler } from "./app/template-processing/template-compiler";
 import { MiroTempStorage } from "./adopters/miro/miro-temp-storage";
+import { defaultTemplates } from "./app/template-processing/default-templates";
 
 
 
@@ -25,12 +26,13 @@ export let testResultReports: ITestResultReports = new TestResultReports()
 export let log: iLog = console
 
 export interface IExternalServices {
-    boardService: IBoard
+    readonly boardService: IBoard
     // eslint-disable-next-line no-undef
     boardUi(): JSX.Element
-    templateRepository: ITemplateRepository
-    tempSharedStorage: ITempStorage
-    templateCompiler: TemplateCompiler
+
+    readonly templateRepository: ITemplateRepository
+    readonly tempSharedStorage: ITempStorage
+    readonly templateCompiler: TemplateCompiler
 }
 
 // eslint-disable-next-line no-unused-vars 
@@ -39,24 +41,23 @@ const createMiroDependencies = (): IExternalServices => {
     return {
         boardService: new MiroBoard(),
         boardUi: emptyComponent,
-        templateRepository: new miroTemplateRepository(),
+        templateRepository: addReadonlyTemplatesTo(new miroTemplateRepository(), defaultTemplates),
         tempSharedStorage: new MiroTempStorage(),
         templateCompiler: new TemplateCompiler(),
-    }
+    } as const
 }
 
 const createMockedDependencies = (): IExternalServices => {
     return {
         boardService: MockBoard(),
         boardUi: UIComponent,
-        templateRepository: new localStorageTemplateRepository(),
+        templateRepository: addReadonlyTemplatesTo(new localStorageTemplateRepository(), defaultTemplates),
         tempSharedStorage: new LocalTempStorage(),
         templateCompiler: new TemplateCompiler(),
-    }
+    } as const
 }
 
 // const ExternalServices = createMiroDependencies()
 const ExternalServices = createMockedDependencies()
-setDefaultTemplatesToRepository(ExternalServices.templateRepository)
 
 export { ExternalServices }

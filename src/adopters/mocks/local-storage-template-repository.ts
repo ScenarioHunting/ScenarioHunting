@@ -3,7 +3,7 @@ import { iTemplateRepository, textTemplate } from '../../app/ports/itemplate-rep
 const KeyPrefix = "TemplateRepository-"
 export class localStorageTemplateRepository implements iTemplateRepository {
 
-    createOrReplaceTemplate(originalTemplateName: string, newTemplate: textTemplate) {
+    async createOrReplaceTemplate(originalTemplateName: string, newTemplate: textTemplate) {
         console.log("Saving template to local storage:", newTemplate)
         if (originalTemplateName) this.removeTemplate(originalTemplateName)
         localStorage.setItem(KeyPrefix + newTemplate.templateName, JSON.stringify(newTemplate))

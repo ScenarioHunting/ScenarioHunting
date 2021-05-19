@@ -1,7 +1,9 @@
 import { iTemplateRepository } from "../../app/ports/itemplate-repository"
-import { defaultTemplates } from "./default-templates"
-
+import { textTemplate } from '../ports/itemplate-repository'
 export const setDefaultTemplatesToRepository =
-    async (repository: iTemplateRepository) =>
-        defaultTemplates
-            .forEach(async x => await repository.createOrReplaceTemplate(x.templateName, x))
+    (repository: iTemplateRepository, readonlyTemplates: textTemplate[]) => {
+        readonlyTemplates
+            .forEach(async t => await repository.createOrReplaceTemplate(t.templateName, t))
+        return repository
+    }
+
