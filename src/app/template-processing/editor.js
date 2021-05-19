@@ -71,7 +71,7 @@ window.setupEditor = async () => {
 
         const template = editor.getValue()
         const language = getLanguageForExtension(fileExtension)
-        const expectedCodeModel = monaco.editor.createModel(previewEditor.getModifiedEditor().getValue(), language);
+
         let compiledCode = ""
 
         try {
@@ -81,8 +81,15 @@ window.setupEditor = async () => {
         catch (err) {
             showError(err, editor.getPosition(), editorModel)
         }
-        const compiledCodeModel = monaco.editor.createModel(compiledCode, language);
-        previewEditor.setModel({ original: compiledCodeModel, modified: expectedCodeModel });
+
+        const actualCodeModel = monaco.editor.createModel(compiledCode, language);
+
+        const previousExpectedCode = previewEditor.getModifiedEditor().getValue();
+        let expectedCodeModel = previousExpectedCode == ""
+            ? actualCodeModel
+            : monaco.editor.createModel(previousExpectedCode, language);
+
+        previewEditor.setModel({ original: actualCodeModel, modified: expectedCodeModel });
         applyIntellisense(language)
 
     }
@@ -188,9 +195,8 @@ window.setupEditor = async () => {
         previewEditor = editorFactory.createPreviewEditor(document.getElementById('preview-editor'))
 
         await detectLanguageForExtension()
-        editor.onDidChangeModelContent(async function () {
-            await preview(document.getElementById("fileExtension").value, editorModel)
-        })
+        editor.onDidChangeModelContent(() =>
+            preview(document.getElementById("fileExtension").value, editorModel))
 
         // monaco.languages.typescript.typescriptDefaults.addExtraLib(
         //     'export declare function add(a: number, b: number): number', 
