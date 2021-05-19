@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { IBoard, SelectedStep, WidgetSnapshot } from "app/ports/iboard";
+import { IBoard, SelectedStep, WidgetSnapshot } from "../../app/ports/iboard";
 
 import * as React from 'react';
 
@@ -27,29 +27,43 @@ class BoardMock implements IBoard {
     showNotification: (message: string) => Promise<void> = (message) =>
         Promise.resolve(this.showStatus('Notification message:\n' + message))
 
-    openModal(iframeURL: string, options?: { width?: number; height?: number } | { fullscreen: boolean }): Promise<any> {
-        document!.getElementById("modal-dark-background")!.style.display = "block";
-        document!.getElementById("modal")!.style.display = "block";
+    openModal(iframeURL: string): Promise<any> {
+        const modal = document!.getElementById("modal")
+        const modalDarkBackground = document.getElementById("modal-dark-background")
+
+        modalDarkBackground!.style.display = "block";
+        modal!.style.display = "block";
         (document!.getElementById('modal-iframe')! as HTMLIFrameElement).src = iframeURL;
-        document!.getElementById('modal-dark-background')!.onclick = function () {
-            document.getElementById("modal")!.style.display = "none";
-            document.getElementById("modal-dark-background")!.style.display = "none";
+
+        modalDarkBackground!.onclick = function () {
+            modal!.style.display = "none";
+            modalDarkBackground!.style.display = "none";
         };
-
-        // window.onkeydown = function (e) {
-        //     if (e.keyCode == 27) {
-        //         // @ts-ignore: Object is possibly 'null'.
-        //         document.getElementById("modal").style.display = "none";
-        //         // @ts-ignore: Object is possibly 'null'.
-        //         document.getElementById("modal-dark-background").style.display = "none";
-        //         e.preventDefault();
-        //         return;
-        //     }
-        // }
-
+        window.onkeydown = function (e) {
+            if (e.keyCode == 27) {
+                if (document && document!.getElementById("modal")) {
+                    document!.getElementById("modal")!.style.display = "none";
+                    document!.getElementById("modal-dark-background")!.style.display = "none";
+                    return
+                }
+                window.parent.document.getElementById("modal")!.style.display = "none";
+                window.parent.document.getElementById("modal-dark-background")!.style.display = "none";
+                // this.closeModal()
+                e.preventDefault();
+                return;
+            }
+        }
         return Promise.resolve()
     }
-
+    closeModal() {
+        if (document && document!.getElementById("modal")) {
+            document!.getElementById("modal")!.style.display = "none";
+            document!.getElementById("modal-dark-background")!.style.display = "none";
+            return
+        }
+        window.parent.document.getElementById("modal")!.style.display = "none";
+        window.parent.document.getElementById("modal-dark-background")!.style.display = "none";
+    }
     zoomTo: (widget: WidgetSnapshot) => void = (widget: WidgetSnapshot) =>
         this.showStatus('Zooming to:\n' + widget.id)
 
@@ -79,6 +93,32 @@ export function UIComponent() {
                     type: "string",
                     description: "new address",
                     example: "Oak street"
+                },
+                number_sample:{
+                    type: "number",
+                    description: "num sample",
+                    example: 23
+                },
+                bool_sample:{
+                    type: "boolean",
+                    description: "boolean sample",
+                    example: false
+                },
+                array_sample: {
+                    type: "array",
+                    description: "array_sample",
+                    items: [
+                        {
+                            type: "string",
+                            description: "product_id",
+                            example: "product_id"
+                        },
+                        {
+                            type: "string",
+                            description: "amount",
+                            example: "amount"
+                        }
+                    ]
                 },
                 NewPhone_number: {
                     type: "string",
@@ -144,11 +184,10 @@ export function UIComponent() {
         <div id="modal" style={{
             display: 'none',
             position: 'fixed',
-            top: '12%',
-            left: '15%',
-            width: '70%',
-            height: '70%',
-            backgroundColor: 'white',
+            top: '0%',
+            left: '0%',
+            width: '100%',
+            height: '100%',
             zIndex: 10
         }}>
             <iframe id="modal-iframe" style={{

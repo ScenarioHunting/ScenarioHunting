@@ -7,6 +7,6 @@ export let ThenStep = createTestStepRecorder({
 	board: ExternalServices.boardService,
 	stepNavigator: queueingMachine,
 	stepType: TestStepTurn.Then,
-	selectionWaitingMessage: 'What should happen then?',
+	selectionWaitingMessage: 'Select post conditions.',
 	turn: TestStepTurn.Then,
 })

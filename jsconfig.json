@@ -13,10 +13,19 @@
       "es2019",
       "dom",
       "esnext"
+    ],
+    "paths": {
+      "*": [
+        "src/@types"
+      ]
+    },
+    "files": [
+      "@types/monaco.d.ts"
     ]
   },
   "include": [
     "src/**/*",
-    "miro.d.ts"
+    "@types/miro.d.ts",
+    "@types/monaco.d.ts"
   ]
 }

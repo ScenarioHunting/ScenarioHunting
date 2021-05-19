@@ -7,6 +7,6 @@ export let WhenStep = createTestStepRecorder({
 	board: ExternalServices.boardService,
 	stepNavigator: queueingMachine,
 	stepType: TestStepTurn.When,
-	selectionWaitingMessage: 'Select the exercise you want to test.',
+	selectionWaitingMessage: 'What does trigger the action?',
 	turn: TestStepTurn.When,
 })

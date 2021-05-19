@@ -1,15 +1,17 @@
 /* eslint-disable no-undef */
 import { extractStepSchema } from "../../app/scenario-builder/board-text-schema-extractor";
 import { CSSProperties } from "react";
-import { IBoard, SelectedStep, WidgetSnapshot } from "app/ports/iboard";
+import { IBoard, SelectedStep, WidgetSnapshot } from "../../app/ports/iboard";
 import { log } from "../../external-services";
 
 
 export class MiroBoard implements IBoard {
 
-    openModal(iframeURL: string, options?: { width?: number; height?: number } | { fullscreen: boolean }): Promise<any> {
-        return miro.board.ui.openModal(iframeURL, options)
+    openModal(iframeURL: string): Promise<any> {
+        return miro.board.ui.openModal(iframeURL, { fullscreen: true })
     }
+    closeModal() { miro.board.ui.closeModal()}
+
     private previouslySelectedWidgets: SDK.IWidget[]
 
     // eslint-disable-next-line no-unused-vars

@@ -3,7 +3,8 @@
 interface CssExports {
   'full-width': string;
   'input-group': string;
-  'save': string;
+  'svg-button': string;
+  'template-selection-panel': string;
   'test-form-details': string;
 }
 export const cssExports: CssExports;

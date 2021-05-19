@@ -17,13 +17,14 @@ export class miroTemplateRepository implements iTemplateRepository {
     //             miro.board.widgets.update(w).then(() => logger.log("The template widgets are hidden."))
     //         }))
     // }
-    public async getAllTemplateNames(): Promise<string[]> {
+    private async getAllTemplates() {
         var widgets = await this.findAllTemplateWidgets()
-        return widgets
-            .map(w => {
-                log.log('template:' + w.metadata[miro.getClientId()]["templateName"] + "found!")
-                return w.metadata[miro.getClientId()]["templateName"]
-            })
+        return widgets.map(w => w.metadata[miro.getClientId()])
+    }
+
+    public async getAllTemplateNames(): Promise<string[]> {
+        var widgets = await this.getAllTemplates()
+        return widgets.map(w => w["templateName"])
     }
     public async removeTemplate(templateName: string) {
         var widgets = await this.findWidgetByTemplateName(templateName)
@@ -31,11 +32,11 @@ export class miroTemplateRepository implements iTemplateRepository {
     }
     public async createOrReplaceTemplate(originalTemplateName: string, template: textTemplate) {
         log.log('createOrReplaceTemplate:')
-        log.log('finding widget for template:', originalTemplateName)
         var widgets = await this.findAllTemplateWidgets()
         var x: number;
         var y: number;
         if (widgets.length > 0) {
+
             const firstWidget = widgets[0]
             x = firstWidget.x
             y = firstWidget.y
@@ -44,8 +45,9 @@ export class miroTemplateRepository implements iTemplateRepository {
             x = viewport.x - 200
             y = viewport.y - 200
         }
+        log.log('Finding widget for template:', originalTemplateName)
         widgets = this.filterWidgetsByTemplateName(widgets, originalTemplateName)
-        log.log(`${widgets.length} widgets found for template with name: ${originalTemplateName}`)
+        log.log(`"${widgets.length}" widgets found for template originally named: ${originalTemplateName}`)
 
         // var dbWidgets = widgets.filter(i => !isNullOrUndefined(i.metadata[miro.getClientId()].templateName));
 
@@ -93,6 +95,7 @@ export class miroTemplateRepository implements iTemplateRepository {
             }, 100)
         })
     }
+
     private async findAllTemplateWidgets(): Promise<SDK.ITextWidget[]> {
         await this.waitUntil(() => miro.board)
         var widgets = await miro.board.widgets.get()
@@ -107,9 +110,8 @@ export class miroTemplateRepository implements iTemplateRepository {
         return widgets.filter(w => w.metadata[miro.getClientId()]["templateName"] == templateName)
     }
     private async findWidgetByTemplateName(templateName: string): Promise<SDK.IWidget[]> {
-        return this.filterWidgetsByTemplateName(
-            await this.findAllTemplateWidgets()
-            , templateName)
+        const widgets = await this.findAllTemplateWidgets()
+        return this.filterWidgetsByTemplateName(widgets, templateName)
     }
     public async getTemplateByName(templateName: string): Promise<textTemplate> {
         var widgets = await this.findWidgetByTemplateName(templateName)
