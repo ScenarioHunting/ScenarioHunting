@@ -4,29 +4,30 @@ const should = require('chai').should()
 import { stringCaseHelpers } from "./string-case-helpers"
 
 describe('string case helpers', function () {
-    it('camelCases sneak_case strings', () =>
+    it('camelCases snake_case strings', () =>
 
-        stringCaseHelpers.sneakToCamelCase('originally_sneak_case_string')
+        stringCaseHelpers.snakeToCamelCase('originally_snake_case_string')
 
-            .should.eq('originallySneakCaseString')
+            .should.eq('originallySnakeCaseString')
     )
-    it('PascalCases sneak_case strings', () =>
+    it('PascalCases snake_case strings', () =>
 
-        stringCaseHelpers.sneakToPascalCase('originally_sneak_case_string')
+        stringCaseHelpers.snakeToPascalCase('originally_snake_case_string')
 
-            .should.eq('OriginallySneakCaseString')
+            .should.eq('OriginallySnakeCaseString')
     )
-    it('kebab-cases sneak_case strings', () =>
 
-        stringCaseHelpers.sneakToKebabCase('originally_sneak_case_string')
+    it('kebab-cases snake_case strings', () =>
 
-            .should.eq('originally-sneak-case-string')
+        stringCaseHelpers.snakeToKebabCase('originally_snake_case_string')
+
+            .should.eq('originally-snake-case-string')
     )
-    it('space cases sneak_case strings', () =>
+    it('space cases snake_case strings', () =>
 
-        stringCaseHelpers.sneakToSpaceCase('originally_sneak_case_string')
+        stringCaseHelpers.snakeToSpaceCase('originally_snake_case_string')
 
-            .should.eq('originally sneak case string')
+            .should.eq('originally snake case string')
     )
     it('capitalizes the first letter', () =>
 
@@ -34,24 +35,30 @@ describe('string case helpers', function () {
 
             .should.eq('The first letter was originally small')
     )
-    it('returns empty string for null')
-    it('returns empty string for undefined')
-
     it('toSnakeCase replaces spaces with _', () =>
         stringCaseHelpers.toSnakeCase(`separated by       space`)
             .should.eq("separated_by_space")
     )
     it('toSnakeCase replaces - with _', () =>
-        stringCaseHelpers.toSnakeCase(`first-name-is-separated-by-dash`)
-
-            .should.eq("first_name_is_separated_by_dash")
+        stringCaseHelpers.toSnakeCase(`the-string-you-see-here`)
+            .should.eq(`the_string_you_see_here`)
     )
     it('toSnakeCase replaces multiple trailing __ with a single _', () =>
         stringCaseHelpers.toSnakeCase(`first__name_____is__________separated___by_redundant_underlines`)
             .should.eq("first_name_is_separated_by_redundant_underlines")
     )
+    it('Space cases the PascalCase', () =>
+        stringCaseHelpers.pascalToSpaceCase('I0AmAGuy1')
+            .should.eq('I 0 Am A Guy 1')
+    )
+    it('snake_cases the PascalCase', () =>
+        stringCaseHelpers.toSnakeCase('I 0 Am A Guy 1')
+            .should.eq('i_0_am_a_guy_1')
+    )
     it('it de-capitalizes title', () =>
         stringCaseHelpers.toSnakeCase(`DE_Capitalize_ME`)
             .should.eq('de_capitalize_me')
     )
+    it('returns empty string for null')
+    it('returns empty string for undefined')
 })

@@ -170,8 +170,6 @@ async function extractSchemaFrom(exampleWidget: SDK.IWidget): Promise<SelectedSt
     try {
         const getPlainText = (originalText: string): string =>
             originalText.split('</p><p>').join('\n')
-                // .replace('<p>', '')
-                // .replace('</p>', '')
                 .replace('&#43;', '+')
                 .replace(/(<([^>]+)>)/ig,'')
 
