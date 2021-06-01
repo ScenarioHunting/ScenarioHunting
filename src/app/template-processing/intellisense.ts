@@ -182,7 +182,7 @@ const specSuggestions: EditorSuggestion[] = [
     },
     {
         label: "subject",
-        insertText: "sut",
+        insertText: "subject",
         detail: "The name of the subject (system under test)"
     },
     {
@@ -198,8 +198,8 @@ const specSuggestions: EditorSuggestion[] = [
     },
     //Collections:
     {
-        label: "givens",//givens.+\}(\r\n|\r|\n)+.+\{\{
-        insertText: "givens",
+        label: "given",//given.+\}(\r\n|\r|\n)+.+\{\{
+        insertText: "given",
         detail: "given steps",
         children: [{
             label: "first",
@@ -208,8 +208,8 @@ const specSuggestions: EditorSuggestion[] = [
         }]
     },
     {
-        label: "thens",//thens.+\}(\r\n|\r|\n)+.+\{\{
-        insertText: "thens",
+        label: "then",//then.+\}(\r\n|\r|\n)+.+\{\{
+        insertText: "then",
         detail: "then steps",
         children: [{
             label: "first",
@@ -221,7 +221,7 @@ const specSuggestions: EditorSuggestion[] = [
 
     // //Collection Items
     {
-        label: "step",//\{\{#each.*givens\sas\s\|step\|\}\}(\r\n|\r|\n)+.+\{\{
+        label: "step",//\{\{#each.*given\sas\s\|step\|\}\}(\r\n|\r|\n)+.+\{\{
         insertText: "step",
         detail: "A scenario step",
         children: stepSchemaSuggestions
@@ -309,8 +309,8 @@ export const applyIntellisense = (language: string) => {
                     range: null as any
                 }
                 const stepSnippets = [
-                    getStepSnippet('givens'),
-                    getStepSnippet('thens'),
+                    getStepSnippet('given'),
+                    getStepSnippet('then'),
                     whenSnippet
                 ].flatMap(ss => appendSharpLabelTo(addBlocksIfMissing(ss)))
 

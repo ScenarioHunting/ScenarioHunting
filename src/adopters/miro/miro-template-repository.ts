@@ -1,8 +1,9 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
-import { iTemplateRepository, textTemplate } from '../../app/ports/itemplate-repository'
+import { ITemplateRepository } from '../../app/ports/itemplate-repository'
+import { textTemplate } from "../../app/ports/text-template";
 import { log } from "../../external-services";
-export class miroTemplateRepository implements iTemplateRepository {
+export class miroTemplateRepository implements ITemplateRepository {
     // constructor() {
     //     miro.board.widgets.get({
     //         metadata: {
@@ -26,11 +27,12 @@ export class miroTemplateRepository implements iTemplateRepository {
         var widgets = await this.getAllTemplates()
         return widgets.map(w => w["templateName"])
     }
-    public async removeTemplate(templateName: string) {
+    public async removeTemplate(templateName: string): Promise<void> {
         var widgets = await this.findWidgetByTemplateName(templateName)
-        widgets.forEach(async widget => await miro.board.widgets.deleteById(widget.id))
+        for (const widget of widgets)
+            await miro.board.widgets.deleteById(widget.id)
     }
-    public async createOrReplaceTemplate(originalTemplateName: string, template: textTemplate) {
+    public async createOrReplaceTemplate(template: textTemplate) {
         log.log('createOrReplaceTemplate:')
         var widgets = await this.findAllTemplateWidgets()
         var x: number;
@@ -45,9 +47,9 @@ export class miroTemplateRepository implements iTemplateRepository {
             x = viewport.x - 200
             y = viewport.y - 200
         }
-        log.log('Finding widget for template:', originalTemplateName)
-        widgets = this.filterWidgetsByTemplateName(widgets, originalTemplateName)
-        log.log(`"${widgets.length}" widgets found for template originally named: ${originalTemplateName}`)
+        log.log('Finding widget for template:', template.templateName)
+        widgets = this.filterWidgetsByTemplateName(widgets, template.templateName)
+        log.log(`"${widgets.length}" widgets found for template originally named: ${template.templateName}`)
 
         // var dbWidgets = widgets.filter(i => !isNullOrUndefined(i.metadata[miro.getClientId()].templateName));
 

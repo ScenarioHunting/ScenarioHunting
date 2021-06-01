@@ -1,30 +1,30 @@
-export type prop = singularProperty | arrayProperty
-export type property = {
+export type Prop = SingularProperty | ArrayProperty
+export type Property = {
     type: string,
     description: string,
 }
-export interface singularProperty extends property {
+export interface SingularProperty extends Property {
     example: any
 }
-export interface arrayProperty extends property {
+export interface ArrayProperty extends Property {
     type: "array"
-    items: prop[]
+    items: Prop[]
 }
 
-export type properties = {
-    [title: string]: prop
+export type Properties = {
+    [title: string]: Prop
 }
-export type stepSchema = {
+export type StepSchema = {
     $schema: "http://json-schema.org/draft-07/schema#",
     title: string,
     type: string,
-    properties: properties
+    properties: Properties
 }
-export type spec = {
+export type Spec = {
     scenario: string,
     context: string,
-    sut: string,
-    givens: stepSchema[],
-    when: stepSchema,
-    thens: stepSchema[],
+    subject: string,
+    given: StepSchema[],
+    when: StepSchema,
+    then: StepSchema[],
 }

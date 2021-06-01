@@ -9,7 +9,7 @@ import { queueingMachine } from './local-dependency-container';
 import { useEffect, useState } from 'react';
 import { SelectableText } from './title-picker/title-picker.component';
 import { TestStepTurn } from './step-picker/scenario-step-turn';
-import { spec } from '../../app/spec';
+import { Spec } from '../../app/spec';
 import { ExternalServices, log } from '../../external-services';
 
 const templateRepository = ExternalServices.templateRepository
@@ -21,7 +21,7 @@ export const createTestRecorder = (board = ExternalServices.boardService): React
         //TODO: Implement guard
     }
 
-    const [givens, recordGiven] = useState<OrderedSelectedStep[]>([]);
+    const [givenSteps, recordGivenSteps] = useState<OrderedSelectedStep[]>([]);
     const [when, recordWhen] = useState<SelectedStep>();
     const [then, recordThen] = useState<SelectedStep>();
     const [scenario, recordScenario] = useState<string>("");
@@ -126,13 +126,13 @@ export const createTestRecorder = (board = ExternalServices.boardService): React
             return
 
         const testSpec = {
-            sut: subject,
+            subject: subject,
             context: context,
             scenario: scenario,
-            givens: givens.map(given => given.step.stepSchema),
+            given: givenSteps.map(given => given.step.stepSchema),
             when: when?.stepSchema,
-            thens: [then?.stepSchema],
-        } as spec
+            then: [then?.stepSchema],
+        } as Spec
         try {
             await ScenarioBuilderService.Save(selectedTemplateName, testSpec)
             board.showNotification('Test created successfully.')
@@ -143,13 +143,13 @@ export const createTestRecorder = (board = ExternalServices.boardService): React
     };
     function getSpec() {
         return {
-            sut: subject,
+            subject: subject,
             context: context,
             scenario: scenario,
-            givens: givens.map(given => given.step.stepSchema),
+            given: givenSteps.map(given => given.step.stepSchema),
             when: when?.stepSchema,
-            thens: [then?.stepSchema],
-        } as spec
+            then: [then?.stepSchema],
+        } as Spec
     }
     async function editTemplate() {
         tempSharedStorage.setItem('sample-test-spec', getSpec())
@@ -167,7 +167,7 @@ export const createTestRecorder = (board = ExternalServices.boardService): React
 
     return (
         <div className={styles["test-recorder"]}>
-            <Givens onStepSelectionChange={recordGiven} steps={givens} />
+            <Givens onStepSelectionChange={recordGivenSteps} steps={givenSteps} />
             <When onStepSelection={recordWhen} step={when} />
 
             <SelectableText

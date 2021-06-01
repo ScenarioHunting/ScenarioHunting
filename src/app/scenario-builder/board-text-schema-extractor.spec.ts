@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 // eslint-disable-next-line no-unused-vars
 const should = require('chai').should()
-import { arrayProperty, property, singularProperty } from "../../app/spec";
+import { ArrayProperty, Property, SingularProperty } from "../../app/spec";
 import { extractStepSchema } from "./board-text-schema-extractor";
 
 describe('how the schema becomes extracted from text', function () {
@@ -18,7 +18,7 @@ describe('how the schema becomes extracted from text', function () {
             exampleWidgetText: `person
             first_name: Mohsen`
         });
-        (schema.properties.first_name as singularProperty).example.should.eq('Mohsen')
+        (schema.properties.first_name as SingularProperty).example.should.eq('Mohsen')
     })
     it('removes the dash as the first char of property names', async () => {
         const schema = await extractStepSchema({
@@ -28,8 +28,8 @@ describe('how the schema becomes extracted from text', function () {
                         -   last_name:Bazmi`
         });
 
-        (schema.properties.first_name as singularProperty).example.should.eq('Mohsen');
-        (schema.properties["last_name"] as singularProperty).example.should.eq('Bazmi');
+        (schema.properties.first_name as SingularProperty).example.should.eq('Mohsen');
+        (schema.properties["last_name"] as SingularProperty).example.should.eq('Bazmi');
     })
     it('skips white spaces and empty lines', async () => {
         const schema = await extractStepSchema({
@@ -56,8 +56,8 @@ describe('how the schema becomes extracted from text', function () {
                         `
         });
 
-        (schema.properties.first_name as singularProperty).example.should.eq('Mohsen');
-        (schema.properties.last_name as singularProperty).example.should.eq('Bazmi')
+        (schema.properties.first_name as SingularProperty).example.should.eq('Mohsen');
+        (schema.properties.last_name as SingularProperty).example.should.eq('Bazmi')
     })
     it('copies property titles as property values when no property value is provided', async () => {
         const schema = await extractStepSchema({
@@ -67,8 +67,8 @@ describe('how the schema becomes extracted from text', function () {
                               last_name`
         });
 
-        (schema.properties.first_name as singularProperty).example.should.eq('first_name');
-        (schema.properties.last_name as singularProperty).example.should.eq('last_name');
+        (schema.properties.first_name as SingularProperty).example.should.eq('first_name');
+        (schema.properties.last_name as SingularProperty).example.should.eq('last_name');
 
     })
     it('separates properties by ;', async () => {
@@ -78,7 +78,7 @@ describe('how the schema becomes extracted from text', function () {
                   first name: Mohsen;last name: Bazmi
             `
         });
-        (schema.properties["first name"] as singularProperty).example.should.eq('Mohsen')
+        (schema.properties["first name"] as SingularProperty).example.should.eq('Mohsen')
     })
     it('separates properties by ,', async () => {
         const schema = await extractStepSchema({
@@ -86,7 +86,7 @@ describe('how the schema becomes extracted from text', function () {
             exampleWidgetText: `person
                             first_name: Mohsen,last name: Bazmi`
         });
-        (schema.properties.first_name as singularProperty).example.should.eq('Mohsen')
+        (schema.properties.first_name as SingularProperty).example.should.eq('Mohsen')
     })
     it('separates properties by /', async () => {
         const schema = await extractStepSchema({
@@ -94,7 +94,7 @@ describe('how the schema becomes extracted from text', function () {
             exampleWidgetText: `person
                             first_name: Mohsen/last name: Bazmi`
         });
-        (schema.properties.first_name as singularProperty).example.should.eq('Mohsen')
+        (schema.properties.first_name as SingularProperty).example.should.eq('Mohsen')
     })
     it('rejects when the title is not in abstraction widget or example widget', async () => {
         extractStepSchema({
@@ -139,7 +139,7 @@ describe('how the schema becomes extracted from text', function () {
             exampleWidgetText: `person
                                firstName`
         });
-        (schema.properties.first_name as singularProperty).should.not.undefined
+        (schema.properties.first_name as SingularProperty).should.not.undefined
     })
     it('it does not change property names with words that are separated by _ already', async () => {
         const schema = await extractStepSchema({
@@ -147,7 +147,7 @@ describe('how the schema becomes extracted from text', function () {
             exampleWidgetText: `person
                             first_name_is_separated_by_underline`
         });
-        (schema.properties.first_name_is_separated_by_underline as singularProperty).should.not.undefined
+        (schema.properties.first_name_is_separated_by_underline as SingularProperty).should.not.undefined
     })
     // it('it de-capitalizes title',async ()=>{
     //     const schema = await extractStepSchema({
@@ -168,7 +168,7 @@ describe('how the schema becomes extracted from text', function () {
             
             amount]`
         });
-        (schema.properties.Items as arrayProperty).type.should.eq('array')
+        (schema.properties.Items as ArrayProperty).type.should.eq('array')
     })
 
     it('detects the properties of the internal array', async () => {
@@ -199,9 +199,9 @@ describe('how the schema becomes extracted from text', function () {
                     type: "string",
                     description: "amount",
                     example: "amount"
-                } as singularProperty
+                } as SingularProperty
             ]
-        } as arrayProperty;
+        } as ArrayProperty;
         actual.properties.array_sample.should.deep.equal(expected);
     })
     it('detects number type for digits', async () => {
@@ -214,7 +214,7 @@ describe('how the schema becomes extracted from text', function () {
             type: "number",
             description: "age",
             example: 23
-        } as singularProperty
+        } as SingularProperty
         schema.properties.age.should.deep.equal(expected)
     })
     it('detects boolean type for true or false', async () => {
@@ -229,15 +229,25 @@ describe('how the schema becomes extracted from text', function () {
             type: "boolean",
             description: "isMarried",
             example: true
-        } as singularProperty
+        } as SingularProperty
         schema.properties.isMarried.should.deep.equal(expectedIsMarried)
 
         const expectedIsMale = {
             type: "boolean",
             description: "isMale",
             example: false
-        } as singularProperty
+        } as SingularProperty
         schema.properties.isMale.should.deep.equal(expectedIsMale)
+    })
+    it('skips the initial empty line before the extraction',async()=>{
+        const schema = await extractStepSchema({
+            abstractionWidgetText: `
+            person`,
+            exampleWidgetText: `
+            person`
+        });
+        schema.title.should.eq(`person`)
+        schema.properties.should.empty
     })
 
 })

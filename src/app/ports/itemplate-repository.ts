@@ -1,13 +1,9 @@
 /* eslint-disable no-unused-vars */
-export type textTemplate = {
-    templateName: string,
-    contentTemplate: string,
-    fileNameTemplate: string
-    fileExtension: string,
-}
-export interface iTemplateRepository {
-    createOrReplaceTemplate(originalTemplateName: string, template: textTemplate): Promise<void>
+import { textTemplate} from "./text-template"
+
+export interface ITemplateRepository {
+    createOrReplaceTemplate(template: textTemplate): Promise<void>
     getAllTemplateNames(): Promise<string[]>
-    removeTemplate(templateName: string)
+    removeTemplate(templateName: string): Promise<void>
     getTemplateByName(templateName: string): Promise<textTemplate>
 }

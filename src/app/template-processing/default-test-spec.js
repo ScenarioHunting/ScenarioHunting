@@ -1,8 +1,8 @@
 export const defaultTestSpec = {
-    sut: 'Your-subject-under-test',
+    subject: 'Your-subject-under-test',
     context: 'Your-context',
     scenario: 'Your-scenario',
-    givens: [{
+    given: [{
         $schema: "http://json-schema.org/draft-07/schema#",
         type: "object",
         title: "Given-title-1",
@@ -46,7 +46,7 @@ export const defaultTestSpec = {
             }
         }
     },
-    thens: [{
+    then: [{
         $schema: "http://json-schema.org/draft-07/schema#",
         type: "object",
         title: "Customer registered",

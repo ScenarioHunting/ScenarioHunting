@@ -5,8 +5,8 @@
     "strictNullChecks": true,
     "allowUnreachableCode": true,
     "experimentalDecorators": true,
-    "module": "es6",
-    "target": "es6",
+    "module": "esnext",
+    "target": "es2017",
     "moduleResolution": "node",
     "jsx": "react",
     "allowJs": true,
@@ -28,6 +28,5 @@
   "files": [
     "@types/miro.d.ts",
     "@types/monaco.d.ts",
-
   ]
 }

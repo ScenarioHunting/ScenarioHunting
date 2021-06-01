@@ -1,14 +1,14 @@
 export const defaultTemplates = [
     {
-        templateName: "sample-template",
+        templateName: "cs-aggregate-gwt",
         fileNameTemplate: "{{scenario}}",
         fileExtension: "cs",
         contentTemplate: `using StoryTest;
 using Vlerx.Es.Messaging;
 using Vlerx.Es.Persistence;
-using Vlerx.SampleContracts.{{sut}};
-using Vlerx.{{toCamelCase context}}.{{sut}};
-using Vlerx.{{toPascalCase context}}.{{sut}}.Commands;
+using Vlerx.SampleContracts.{{subject}};
+using Vlerx.{{toCamelCase context}}.{{subject}};
+using Vlerx.{{toPascalCase context}}.{{subject}}.Commands;
 using Vlerx.{{toKebabCase context}}.Tests.StoryTests;
 using Vlerx.{{toSpaceCase context}}.Tests.StoryTests;
 using Vlerx.{{toSentenceCase context}}.Tests.StoryTests;
@@ -17,13 +17,13 @@ using Xunit;
 namespace {{context}}.Tests
 {
 {{#* inline "callConstructor"}}
-new {{title}}({{#each properties}}"{{example}}"{{#skipLast}},{{/skipLast}}{{/each}}){{/inline}}
+new {{title}}({{#each properties}}"{{this.example}}"{{#skipLast}},{{/skipLast}}{{/each}}){{/inline}}
 
 public class {{scenario}} : IStorySpecification
 {
     public IDomainEvent[] Given
     => new IDomainEvent[]{
-{{#each givens}}
+{{#each given}}
     {{> callConstructor .}},
 {{/each}}
     };
@@ -33,68 +33,61 @@ public class {{scenario}} : IStorySpecification
 
     public IDomainEvent[] Then
     => new IDomainEvent[]{
-{{#each thens}}
+{{#each then}}
     {{> callConstructor .}},
 {{/each}}
     };
 
-    public string Sut { get; } = nameof({{sut}});
+    public string Subject { get; } = nameof({{subject}});
 
     [Fact]
     public void Run()
     => TestAdapter.Test(this
             , setupUseCases: eventStore =>
                     new[] {
-                    new {{sut}}UseCases(new Repository<{{sut}}.State>(eventStore))
+                    new {{subject}}UseCases(new Repository<{{subject}}.State>(eventStore))
                     });
 }
 }`
     },
     {
-        templateName: "sample-template2",
+        templateName: "cs-aggregate",
+        fileNameTemplate: "{{scenario}}",
+        fileExtension: "cs",
+        contentTemplate: `using Xunit;
+        using FluentAssertions;
+        using {{context}};
+        
+        namespace {{toPascalCase context}}
+        {
+            public class {{toPascalCase scenario}}Spec
+            {
+                [Fact]
+                public void {{toPascalCase scenario}}()
+                {
+                    var {{toCamelCase subject}} = {{toPascalCase subject}}.{{toPascalCase when.title}}({{#each when.properties as |property propertyName|}}"{{property.example}}"{{#skipLast}},{{/skipLast}}{{/each}});
+                    
+                    {{toCamelCase subject}}.Events.Should().ContainInOrder(
+                        {{#each then as |step|}}
+                            new {{toPascalCase step.title}}({{#each step.properties as |property propertyName|}}"{{property.example}}"{{#skipLast}},{{/skipLast}}{{/each}}){{#skipLast}},{{/skipLast}}
+                        {{/each}});
+                }
+            }
+        }`
+    },
+    {
+        templateName: "gherkin-scenario",
         fileNameTemplate: "{{scenario}}",
         fileExtension: "features",
-        contentTemplate: `using StoryTest;
-using Vlerx.Es.Messaging;
-using Vlerx.Es.Persistence;
-using Vlerx.SampleContracts.{{sut}};
-using Vlerx.{{context}}.{{sut}};
-using Vlerx.{{context}}.{{sut}}.Commands;
-using Vlerx.{{context}}.Tests.StoryTests;
-using Xunit;
-
-namespace {{context}}.Tests
-{
-{{#* inline "callConstructor"}}
-new {{title}}({{#each properties}}"{{example}}"{{#skipLast}},{{/skipLast}}{{/each}}){{/inline}}
-
-public class {{scenario}} : IStorySpecification
-{
-    public IDomainEvent[] Given
-    => new IDomainEvent[]{
-{{#each givens}}
-    {{> callConstructor .}},
-{{/each}}
-    };
-    public ICommand When
-    => {{> callConstructor when}};
-    public IDomainEvent[] Then
-    => new IDomainEvent[]{
-{{#each thens}}
-    {{> callConstructor .}},
-{{/each}}
-    };
-
-    public string Sut { get; } = nameof({{sut}});
-
-    [Fact]
-    public void Run()
-    => TestAdapter.Test(this
-            , setupUseCases: eventStore =>
-                    new[] {
-                    new {{sut}}UseCases(new Repository<{{sut}}.State>(eventStore))
-                    });
-}
-}`
+        contentTemplate: `Scenario Outline: {{toSpaceCase scenario}}
+        Given {{#each given as |step|}}{{toSpaceCase title}} {{#each step.properties as |property propertyName|}}
+          | {{toSpaceCase propertyName}} | "{{example}}" |{{/each}}
+        {{#skipLast}} And {{/skipLast}}{{/each}}
+        When {{#with when as |step|}} {{toSpaceCase title}} {{#each step.properties as |property propertyName|}}
+          | {{toSpaceCase propertyName}} | "{{example}}" |{{/each}}
+        {{/with}}
+        Then {{#each then as |step|}}{{toSpaceCase title}} {{#each step.properties as |property propertyName|}}
+          | {{toSpaceCase propertyName}} | "{{example}}" |{{/each}}
+        {{#skipLast}} And {{/skipLast}}{{/each}}`
     },
 ]

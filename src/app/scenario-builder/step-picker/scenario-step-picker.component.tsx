@@ -5,7 +5,7 @@ import { IBoard, SelectedStep } from '../../ports/iboard';
 import { IQueuingMachine } from "../../../libs/queuing-machine/iqueuing-machine";
 import { TestStepTurn } from './scenario-step-turn';
 import { log } from "../../../external-services";
-import { arrayProperty, singularProperty, prop } from '../../../app/spec';
+import { ArrayProperty, SingularProperty, Prop } from '../../../app/spec';
 
 export class TestStepDependencies {
     stepType: string
@@ -54,7 +54,7 @@ export function createTestStepRecorder({ stepType
 
 
         const onPropertyValueTextChange = (index: number, event: React.ChangeEvent<HTMLInputElement>) => {
-            (props.step!.stepSchema.properties[index] as singularProperty).example
+            (props.step!.stepSchema.properties[index] as SingularProperty).example
                 = event.currentTarget.value;
         }
 
@@ -102,19 +102,19 @@ export function createTestStepRecorder({ stepType
     };
 }
 // eslint-disable-next-line no-unused-vars
-function PropertyComponent(props: { property: prop, onTextChanged: ((event: React.ChangeEvent<HTMLInputElement>) => void) }) {
-    return ((props.property as arrayProperty).items)
+function PropertyComponent(props: { property: Prop, onTextChanged: ((event: React.ChangeEvent<HTMLInputElement>) => void) }) {
+    return ((props.property as ArrayProperty).items)
         ?
         <ArrayPropertyComponent
-            arrayProperty={props.property as arrayProperty}
+            arrayProperty={props.property as ArrayProperty}
             onTextChanged={props.onTextChanged} />
         :
         <SingularPropertyComponent
-            property={props.property as singularProperty}
+            property={props.property as SingularProperty}
             onTextChanged={props.onTextChanged} />
 }
 // eslint-disable-next-line no-unused-vars
-function SingularPropertyComponent(props: { property: singularProperty, onTextChanged: ((event: React.ChangeEvent<HTMLInputElement>) => void) }) {
+function SingularPropertyComponent(props: { property: SingularProperty, onTextChanged: ((event: React.ChangeEvent<HTMLInputElement>) => void) }) {
     return <input readOnly={false} onChange={props.onTextChanged}
         className={styles["property-value"]
             + " miro-input miro-input--small miro-input--primary"}
@@ -124,13 +124,13 @@ function SingularPropertyComponent(props: { property: singularProperty, onTextCh
 }
 
 // eslint-disable-next-line no-unused-vars
-function ArrayPropertyComponent(props: { arrayProperty: arrayProperty, onTextChanged: ((event: React.ChangeEvent<HTMLInputElement>) => void) }) {
+function ArrayPropertyComponent(props: { arrayProperty: ArrayProperty, onTextChanged: ((event: React.ChangeEvent<HTMLInputElement>) => void) }) {
     return <div style={{ paddingLeft: '14px', width: '115px' }}>
         [{
             props.arrayProperty.items.map((item, i) =>
                 <PropertyComponent
                     key={i}
-                    property={item as singularProperty}
+                    property={item as SingularProperty}
                     onTextChanged={e => props.onTextChanged(e)} />
             )
         }]

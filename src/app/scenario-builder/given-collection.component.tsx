@@ -90,15 +90,15 @@ export let createGivenStepCollection =
 					</button>
 
 					{
-						indexedSteps.map(data =>
+						indexedSteps.map((data,index) =>
 							<GivenStep
 								onStepSelection={onStepSelection}
 								step={data.step}
-								key={data.index}
+								key={index}
 							/>)
 					}
 					{indexedSteps.length > 9 &&
-						<div className={sharedStyles["status-text"]}>More than 10 givens are not allowed</div>
+						<div className={sharedStyles["status-text"]}>More than 10 given steps are not allowed</div>
 					}
 
 

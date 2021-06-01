@@ -1,18 +1,19 @@
-import { iTemplateRepository, textTemplate } from '../../app/ports/itemplate-repository';
+import { ITemplateRepository } from '../../app/ports/itemplate-repository';
+import { textTemplate } from "../../app/ports/text-template";
 
 const KeyPrefix = "TemplateRepository-"
-export class localStorageTemplateRepository implements iTemplateRepository {
+export class localStorageTemplateRepository implements ITemplateRepository {
 
-    async createOrReplaceTemplate(originalTemplateName: string, newTemplate: textTemplate) {
+    async createOrReplaceTemplate(newTemplate: textTemplate) {
         console.log("Saving template to local storage:", newTemplate)
-        if (originalTemplateName) this.removeTemplate(originalTemplateName)
+        if (newTemplate.templateName) this.removeTemplate(newTemplate.templateName)
         localStorage.setItem(KeyPrefix + newTemplate.templateName, JSON.stringify(newTemplate))
     }
     getAllTemplateNames(): Promise<string[]> {
         return Promise.resolve(Object.keys(localStorage).map(t => t.substr(KeyPrefix.length)))
     }
     removeTemplate(templateName: string) {
-        localStorage.removeItem(KeyPrefix + templateName)
+        return Promise.resolve(localStorage.removeItem(KeyPrefix + templateName))
     }
     getTemplateByName(templateName: string): Promise<textTemplate> {
         const item = localStorage.getItem(KeyPrefix + templateName)
@@ -21,6 +22,6 @@ export class localStorageTemplateRepository implements iTemplateRepository {
     }
     private dumpAll = async () =>
         (await this.getAllTemplateNames())
-        .forEach(t => this.getTemplateByName(t).then(console.log))
+            .forEach(t => this.getTemplateByName(t).then(console.log))
 
 }

@@ -1,11 +1,12 @@
 /* eslint-disable no-undef */
-import { ExternalServices } from '../../external-services'
+import { ExternalServices, log } from '../../external-services'
 import { getLanguageForExtension } from './monaco-languages'
 import { defaultTestSpec } from './default-test-spec'
 import { applyIntellisense } from './intellisense'
 import { URLParameters } from './url-parameters'
 import { editorFactory } from './editor-factory'
 import { domElementClasses } from './dom-element-classes'
+// import { validTextTemplate } from "../ports/text-template"
 
 window.setupEditor = async () => {
     let proxy = URL.createObjectURL(new Blob([`
@@ -28,19 +29,25 @@ window.setupEditor = async () => {
     let previewEditor
     const originalTemplateName = URLParameters.getByName("templateName", window.location.href)
     document.getElementById("templateName").value = originalTemplateName
+    const isInEditMode = originalTemplateName && originalTemplateName.trim() != ""
+    document.getElementById('templateName').disabled = isInEditMode
 
     window.save = async function () {
-        const template = {
-            templateName: document.getElementById("templateName").value,
-            contentTemplate: editor.getValue(),
-            fileNameTemplate: document.getElementById('fileNameTemplate').value,
-            fileExtension: document.getElementById('fileExtension').value,
+        try {
+            const template = {
+                templateName: document.getElementById("templateName").value,
+                contentTemplate: editor.getValue(),
+                fileNameTemplate: document.getElementById('fileNameTemplate').value,
+                fileExtension: document.getElementById('fileExtension').value,
+            }
+            log.log("Template is being saved:", template.contentTemplate)
+            await ExternalServices.templateRepository
+                .createOrReplaceTemplate(template)
+            await showNotification(`${template.templateName} saved.`)
+            window.closeModal()
+        } catch (e) {
+            alert(e)
         }
-        console.log("Template is being saved:", template.contentTemplate)
-        await ExternalServices.templateRepository
-            .createOrReplaceTemplate(originalTemplateName, template)
-        await showNotification(`${template.templateName} saved.`)
-        window.closeModal()
     }
 
     //Preview:
@@ -85,7 +92,7 @@ window.setupEditor = async () => {
         const actualCodeModel = monaco.editor.createModel(compiledCode, language);
 
         const previousExpectedCode = previewEditor.getModifiedEditor().getValue();
-        let expectedCodeModel = previousExpectedCode == ""
+        let expectedCodeModel = isInEditMode && previousExpectedCode == ""
             ? actualCodeModel
             : monaco.editor.createModel(previousExpectedCode, language);
 
@@ -185,7 +192,8 @@ window.setupEditor = async () => {
         let templateContent = undefined;
         if (originalTemplateName) {
             const template = await ExternalServices.templateRepository
-                .getTemplateByName(originalTemplateName)
+                .getTemplateByName(originalTemplateName)//.textTemplate
+            log.log(`Template ${originalTemplateName} is being loaded to the editor:`, template)
             document.getElementById('fileNameTemplate').value = template.fileNameTemplate
             document.getElementById('fileExtension').value = template.fileExtension
             templateContent = template.contentTemplate

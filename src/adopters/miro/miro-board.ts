@@ -173,6 +173,7 @@ async function extractSchemaFrom(exampleWidget: SDK.IWidget): Promise<SelectedSt
                 .replace('<p>', '')
                 .replace('</p>', '')
                 .replace('&#43;', '+')
+                .replace('<br>','')
 
         exampleText = getPlainText(await extractWidgetText(exampleWidget))
         abstractionText = getPlainText(await extractWidgetText(abstractionWidget))

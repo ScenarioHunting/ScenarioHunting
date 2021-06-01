@@ -8,10 +8,10 @@ import { MockBoard } from "./adopters/mocks/board-mock";
 import { MiroBoard } from "./adopters/miro/miro-board";
 import { UIComponent } from "./adopters/mocks/board-mock";
 import * as React from "react";
-import { iTemplateRepository as ITemplateRepository } from "./app/ports/itemplate-repository";
+import { ITemplateRepository as ITemplateRepository } from "./app/ports/itemplate-repository";
 import { miroTemplateRepository } from "./adopters/miro/miro-template-repository";
 import { localStorageTemplateRepository } from "./adopters/mocks/local-storage-template-repository";
-import { setDefaultTemplatesToRepository as addReadonlyTemplatesTo } from "./app/template-processing/default-templates-initializer";
+import { decorateRepositoryWithTemplates } from "./app/template-processing/default-template-repository-decorator";
 import { ITempStorage } from "./app/ports/itemp-storage";
 import { LocalTempStorage } from "./adopters/mocks/local-temp-storage";
 import { TemplateCompiler } from "./app/template-processing/template-compiler";
@@ -41,7 +41,7 @@ const createMiroDependencies = (): IExternalServices => {
     return {
         boardService: new MiroBoard(),
         boardUi: emptyComponent,
-        templateRepository: addReadonlyTemplatesTo(new miroTemplateRepository(), defaultTemplates),
+        templateRepository: decorateRepositoryWithTemplates(new miroTemplateRepository(), defaultTemplates),
         tempSharedStorage: new MiroTempStorage(),
         templateCompiler: new TemplateCompiler(),
     } as const
@@ -51,13 +51,13 @@ const createMockedDependencies = (): IExternalServices => {
     return {
         boardService: MockBoard(),
         boardUi: UIComponent,
-        templateRepository: addReadonlyTemplatesTo(new localStorageTemplateRepository(), defaultTemplates),
+        templateRepository: decorateRepositoryWithTemplates(new localStorageTemplateRepository(), defaultTemplates),
         tempSharedStorage: new LocalTempStorage(),
         templateCompiler: new TemplateCompiler(),
     } as const
 }
 
-// const ExternalServices = createMiroDependencies()
-const ExternalServices = createMockedDependencies()
+const ExternalServices = createMiroDependencies()
+// const ExternalServices = createMockedDependencies()
 
 export { ExternalServices }

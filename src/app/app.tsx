@@ -10,6 +10,6 @@ const app = <div style={{ display: 'flex' }}>
 </div>
 
 ReactDOM.render(app, document.getElementById('react-app'))
-
+alert('Hi')
 
 navigate('/')

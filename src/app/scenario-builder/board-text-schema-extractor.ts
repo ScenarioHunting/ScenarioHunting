@@ -1,48 +1,48 @@
-import { properties, stepSchema, arrayProperty, singularProperty } from '../../app/spec';
+import { Properties, StepSchema, ArrayProperty, SingularProperty } from '../../app/spec';
 
 const removeStartingDash = (str: string): string =>
     str[0] == '-' ? str.substring(1) : str;
 
-function createSingularProperty(description: string, example: any): singularProperty {
+function createSingularProperty(description: string, example: any): SingularProperty {
     if (!isNaN(parseFloat(example))) {
         return {
             type: "number",
             description: description,
             example: parseFloat(example)
-        } as singularProperty
+        } as SingularProperty
     }
     if (["true", "false"].includes(example.toLowerCase())) {
         return {
             type: "boolean",
             description: description,
             example: example.toLowerCase() == "true"
-        } as singularProperty
+        } as SingularProperty
     }
     
     return {
         type: "string",
         description: description,
         example: example
-    } as singularProperty
+    } as SingularProperty
 }
 export async function extractStepSchema({
     abstractionWidgetText
     , exampleWidgetText
-}: { abstractionWidgetText: string, exampleWidgetText: string }): Promise<stepSchema> {
+}: { abstractionWidgetText: string, exampleWidgetText: string }): Promise<StepSchema> {
 
     let title = abstractionWidgetText.trim().split('\n').shift()
     if (!title) {
         return Promise.reject("Unknown text format.")
     }
 
-    const rows = exampleWidgetText.split(/\n|;|,|\//)
+    const rows = exampleWidgetText.trim().split(/\n|;|,|\//)
     if (rows[0] == title) {
         rows.shift()
     }
 
     // title = toSnakeCase(title!).trim()
 
-    var props: properties = {}
+    var props: Properties = {}
     //
     let isInArrayScope = false //Pass it as a recursive parameter
     let parentArrayPropertyName = ""//Pass it as a recursive parameter
@@ -70,7 +70,7 @@ export async function extractStepSchema({
                 isInArrayScope = false
                 propertyName = propertyName.slice(0, -1)
             }
-            (<arrayProperty>props[parentArrayPropertyName]).items.push(
+            (<ArrayProperty>props[parentArrayPropertyName]).items.push(
                 createSingularProperty(propertyName, propertyValue))
 
             return
@@ -78,7 +78,7 @@ export async function extractStepSchema({
 
         if (propertyValue[0] == '[') {
             isInArrayScope = true
-            const property: arrayProperty = {
+            const property: ArrayProperty = {
                 type: "array",
                 description: propertyName,
                 items: []
