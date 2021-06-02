@@ -15,7 +15,7 @@ const helpers = {
         return JSON.stringify(o, null, 4)
     },
     yaml(o: any): string {
-        return stringify(o)
+        return stringify(o, { indent: 4 })
     },
     /**
      * Returns the argument every time but in the last iteration.
