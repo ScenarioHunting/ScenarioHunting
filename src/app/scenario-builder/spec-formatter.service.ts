@@ -3,7 +3,7 @@ import { stringCaseHelpers } from "../../libs/string-case-helpers";
 
 export function specFormatterService(language: string) {
 
-    const getTextFormatterForLanguage = (fileExtension: string) => stringCaseHelpers.toSnakeCase;
+    const getTextFormatterForLanguage = (fileExtension: string) => stringCaseHelpers.snakeCase;
     const formatText = getTextFormatterForLanguage(language);
 
     function formatProperty(p: Prop): Prop {

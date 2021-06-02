@@ -40,7 +40,7 @@ export async function extractStepSchema({
         rows.shift()
     }
 
-    // title = toSnakeCase(title!).trim()
+    // title = snakeCase(title!).trim()
 
     var props: Properties = {}
     //
@@ -54,7 +54,7 @@ export async function extractStepSchema({
         if (purePropertyName == '')
             return
 
-        // const propertyName = toSnakeCase(purePropertyName)
+        // const propertyName = snakeCase(purePropertyName)
 
         let propertyValue = kv[1]
         if (!propertyValue) {

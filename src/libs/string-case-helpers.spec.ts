@@ -5,27 +5,23 @@ import { stringCaseHelpers } from "./string-case-helpers"
 
 describe('string case helpers', function () {
     it('camelCases snake_case strings', () =>
-
-        stringCaseHelpers.snakeToCamelCase('originally_snake_case_string')
-
+        stringCaseHelpers.camelCase('originally_snake_case_string')
             .should.eq('originallySnakeCaseString')
     )
     it('PascalCases snake_case strings', () =>
-
-        stringCaseHelpers.snakeToPascalCase('originally_snake_case_string')
-
+        stringCaseHelpers.pascalCase('originally_snake_case_string')
             .should.eq('OriginallySnakeCaseString')
     )
 
     it('kebab-cases snake_case strings', () =>
 
-        stringCaseHelpers.snakeToKebabCase('originally_snake_case_string')
+        stringCaseHelpers.kebabCase('originally_snake_case_string')
 
             .should.eq('originally-snake-case-string')
     )
     it('space cases snake_case strings', () =>
 
-        stringCaseHelpers.snakeToSpaceCase('originally_snake_case_string')
+        stringCaseHelpers.spaceCase('originally_snake_case_string')
 
             .should.eq('originally snake case string')
     )
@@ -35,28 +31,25 @@ describe('string case helpers', function () {
 
             .should.eq('The first letter was originally small')
     )
-    it('toSnakeCase replaces spaces with _', () =>
-        stringCaseHelpers.toSnakeCase(`separated by       space`)
+    it('snakeCase replaces spaces with _', () =>
+        stringCaseHelpers.snakeCase(`separated by       space`)
             .should.eq("separated_by_space")
     )
-    it('toSnakeCase replaces - with _', () =>
-        stringCaseHelpers.toSnakeCase(`the-string-you-see-here`)
+    it('snakeCase replaces - with _', () =>
+        stringCaseHelpers.snakeCase(`the-string-you-see-here`)
             .should.eq(`the_string_you_see_here`)
     )
-    it('toSnakeCase replaces multiple trailing __ with a single _', () =>
-        stringCaseHelpers.toSnakeCase(`first__name_____is__________separated___by_redundant_underlines`)
+    it('snakeCase replaces multiple trailing __ with a single _', () =>
+        stringCaseHelpers.snakeCase(`first__name_____is__________separated___by_redundant_underlines`)
             .should.eq("first_name_is_separated_by_redundant_underlines")
     )
-    it('Space cases the PascalCase', () =>
-        stringCaseHelpers.pascalToSpaceCase('I0AmAGuy1')
-            .should.eq('I 0 Am A Guy 1')
-    )
+    
     it('snake_cases the PascalCase', () =>
-        stringCaseHelpers.toSnakeCase('I 0 Am A Guy 1')
+        stringCaseHelpers.snakeCase('I 0 Am A Guy 1')
             .should.eq('i_0_am_a_guy_1')
     )
     it('it de-capitalizes title', () =>
-        stringCaseHelpers.toSnakeCase(`DE_Capitalize_ME`)
+        stringCaseHelpers.snakeCase(`DE_Capitalize_ME`)
             .should.eq('de_capitalize_me')
     )
     it('returns empty string for null')

@@ -7,11 +7,11 @@ export const defaultTemplates = [
 using Vlerx.Es.Messaging;
 using Vlerx.Es.Persistence;
 using Vlerx.SampleContracts.{{subject}};
-using Vlerx.{{toCamelCase context}}.{{subject}};
-using Vlerx.{{toPascalCase context}}.{{subject}}.Commands;
-using Vlerx.{{toKebabCase context}}.Tests.StoryTests;
-using Vlerx.{{toSpaceCase context}}.Tests.StoryTests;
-using Vlerx.{{toSentenceCase context}}.Tests.StoryTests;
+using Vlerx.{{camelCase context}}.{{subject}};
+using Vlerx.{{pascalCase context}}.{{subject}}.Commands;
+using Vlerx.{{kebabCase context}}.Tests.StoryTests;
+using Vlerx.{{spaceCase context}}.Tests.StoryTests;
+using Vlerx.{{sentenceCase context}}.Tests.StoryTests;
 using Xunit;
 
 namespace {{context}}.Tests
@@ -58,18 +58,18 @@ public class {{scenario}} : IStorySpecification
         using FluentAssertions;
         using {{context}};
         
-        namespace {{toPascalCase context}}
+        namespace {{pascalCase context}}
         {
-            public class {{toPascalCase scenario}}Spec
+            public class {{pascalCase scenario}}Spec
             {
                 [Fact]
-                public void {{toPascalCase scenario}}()
+                public void {{pascalCase scenario}}()
                 {
-                    var {{toCamelCase subject}} = {{toPascalCase subject}}.{{toPascalCase when.title}}({{#each when.properties as |property propertyName|}}"{{property.example}}"{{#skipLast}},{{/skipLast}}{{/each}});
+                    var {{camelCase subject}} = {{pascalCase subject}}.{{pascalCase when.title}}({{#each when.properties as |property propertyName|}}"{{property.example}}"{{#skipLast}},{{/skipLast}}{{/each}});
                     
-                    {{toCamelCase subject}}.Events.Should().ContainInOrder(
+                    {{camelCase subject}}.Events.Should().ContainInOrder(
                         {{#each then as |step|}}
-                            new {{toPascalCase step.title}}({{#each step.properties as |property propertyName|}}"{{property.example}}"{{#skipLast}},{{/skipLast}}{{/each}}){{#skipLast}},{{/skipLast}}
+                            new {{pascalCase step.title}}({{#each step.properties as |property propertyName|}}"{{property.example}}"{{#skipLast}},{{/skipLast}}{{/each}}){{#skipLast}},{{/skipLast}}
                         {{/each}});
                 }
             }
@@ -79,15 +79,15 @@ public class {{scenario}} : IStorySpecification
         templateName: "gherkin-scenario",
         fileNameTemplate: "{{scenario}}",
         fileExtension: "features",
-        contentTemplate: `Scenario Outline: {{toSpaceCase scenario}}
-        Given {{#each given as |step|}}{{toSpaceCase title}} {{#each step.properties as |property propertyName|}}
-          | {{toSpaceCase propertyName}} | "{{example}}" |{{/each}}
+        contentTemplate: `Scenario Outline: {{spaceCase scenario}}
+        Given {{#each given as |step|}}{{spaceCase title}} {{#each step.properties as |property propertyName|}}
+          | {{spaceCase propertyName}} | "{{example}}" |{{/each}}
         {{#skipLast}} And {{/skipLast}}{{/each}}
-        When {{#with when as |step|}} {{toSpaceCase title}} {{#each step.properties as |property propertyName|}}
-          | {{toSpaceCase propertyName}} | "{{example}}" |{{/each}}
+        When {{#with when as |step|}} {{spaceCase title}} {{#each step.properties as |property propertyName|}}
+          | {{spaceCase propertyName}} | "{{example}}" |{{/each}}
         {{/with}}
-        Then {{#each then as |step|}}{{toSpaceCase title}} {{#each step.properties as |property propertyName|}}
-          | {{toSpaceCase propertyName}} | "{{example}}" |{{/each}}
+        Then {{#each then as |step|}}{{spaceCase title}} {{#each step.properties as |property propertyName|}}
+          | {{spaceCase propertyName}} | "{{example}}" |{{/each}}
         {{#skipLast}} And {{/skipLast}}{{/each}}`
     },
 ]
