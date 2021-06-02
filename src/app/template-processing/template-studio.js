@@ -4,7 +4,7 @@ import { getLanguageForExtension } from './monaco-languages'
 import { defaultTestSpec } from './default-test-spec'
 import { applyIntellisense } from './intellisense'
 import { URLParameters } from './url-parameters'
-import { editorFactory } from './editor-factory'
+import { editorFactory } from './template-studio-factory'
 import { domElementClasses } from './dom-element-classes'
 // import { validTextTemplate } from "../ports/text-template"
 

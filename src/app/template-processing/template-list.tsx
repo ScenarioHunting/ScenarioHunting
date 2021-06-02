@@ -26,11 +26,11 @@ export function TemplateList(props): JSX.Element {
             .then(loadTemplateNames)
     }
     function addTemplate() {
-        openModal(`./monaco-editor.html`)
+        openModal(`./template-studio.html`)
     }
     function editTemplate(templateName: string) {
         const queryString = `?templateName=${templateName}`
-        openModal(`./monaco-editor.html${queryString}`)
+        openModal(`./template-studio.html${queryString}`)
     }
     async function deleteTemplate(templateName: string) {
         if (!confirm(`You are about deleting the template: ${templateName}.\n Are you sure?`))

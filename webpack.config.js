@@ -23,11 +23,11 @@ function appConfig(options) {
 			index: './src/index.ts',
 			app: {
 				import: './src/app/app.tsx',
-				//To split this file in order to be able to access it by the template editor:
+				//To split this file in order to be able to access it by the template studio:
 				dependOn: ['ExternalServices']
 
 			},
-			//To split this file in order to be able to access it by the template editor:
+			//To split this file in order to be able to access it by the template studio:
 			ExternalServices: options.externalServicesPath
 		},
 		module: {
@@ -66,7 +66,7 @@ function appConfig(options) {
 					]
 				},
 				{
-					test: '/src/template-processing/monaco-editor.js',
+					test: '/src/template-processing/monaco-template-studio.js',
 					use: [
 						'file-loader',
 					]
@@ -107,7 +107,7 @@ function editorConfig(options) {
 		entry: {
 			ExternalServices: options.externalServicesPath,
 			monacoLanguage: './src/app/template-processing/monaco-languages.js',
-			editor: "./src/app/template-processing/editor.js",
+			editor: "./src/app/template-processing/template-studio.js",
 
 		},
 		module: {
@@ -131,8 +131,8 @@ function editorConfig(options) {
 		},
 		plugins: [
 			new HtmlWebPackPlugin({
-				template: "./src/app/template-processing/monaco-editor.html",
-				filename: "./monaco-editor.html",
+				template: "./src/app/template-processing/template-studio.html",
+				filename: "./template-studio.html",
 				chucks: ['ExternalServices','monacoLanguage','editor'],
 				chunksSortMode:'manual',
 				inject: 'body',

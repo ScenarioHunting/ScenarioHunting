@@ -155,13 +155,13 @@ export const createTestRecorder = (board = ExternalServices.boardService): React
         tempSharedStorage.setItem('sample-test-spec', getSpec())
 
         const queryString = `?templateName=${selectedTemplateName}`
-        await boardService.openModal(`./monaco-editor.html${queryString}`)
+        await boardService.openModal(`./template-studio.html${queryString}`)
             .then(loadTemplateNames)
     }
     async function newTemplate() {
         tempSharedStorage.setItem('sample-test-spec', getSpec())
 
-        await boardService.openModal(`./monaco-editor.html`)
+        await boardService.openModal(`./template-studio.html`)
             .then(loadTemplateNames)
     }
 
