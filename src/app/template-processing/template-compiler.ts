@@ -2,7 +2,8 @@ import { log } from "../../external-services";
 // import Handlebars from "handlebars/dist/handlebars.js"
 // import "handlebars/types/index"
 import { stringCaseHelpers } from "../../libs/string-case-helpers";
-import Handlebars from 'handlebars/dist/cjs/handlebars'
+import Handlebars from 'handlebars/dist/cjs/handlebars';
+import { stringify } from 'yaml'
 
 const helpers = {
 
@@ -13,8 +14,11 @@ const helpers = {
     json(o: any): string {
         return JSON.stringify(o, null, 4)
     },
+    yaml(o: any): string {
+        return stringify(o)
+    },
     /**
-     * Run the content every time but in the last iteration.
+     * Returns the argument every time but in the last iteration.
      */
     skipLast(options) {
         return options.data.last
@@ -22,9 +26,11 @@ const helpers = {
             : options.fn()
     }
 }
+const customHelpers = Object.entries(stringCaseHelpers).concat(Object.entries(helpers))
+customHelpers.map(([name, fn]) => Handlebars.registerHelper(name, fn))
 
-Object.entries(stringCaseHelpers).map(([name, fn]) => Handlebars.registerHelper(name, fn))
-Object.entries(helpers).map(([name, fn]) => Handlebars.registerHelper(name, fn))
+// Object.entries(stringCaseHelpers).map(([name, fn]) => Handlebars.registerHelper(name, fn))
+// Object.entries(helpers).map(([name, fn]) => Handlebars.registerHelper(name, fn))
 
 Handlebars.registerHelper('helperMissing', function ( /* dynamic arguments */) {
     var options = arguments[arguments.length - 1];

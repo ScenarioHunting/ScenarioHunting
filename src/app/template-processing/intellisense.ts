@@ -264,14 +264,14 @@ export const applyIntellisense = (language: string) => {
             triggerCharacters: ['#'],
             provideCompletionItems: (model, currentPosition) => {
 
-                const stepInsertText =`{{step.title}}:
+                const stepInsertText = `{{step.title}}:
     {{#each step.properties as |property propertyName|}}
         {{#if @first}}({{/if}}
         {{propertyName}} = {{property.example}}
         {{#skipLast}},{{/skipLast}}
         {{#if @last}}){{/if}}
     {{/each}}`
-                
+
                 function getStepSnippet(collection: string): monaco.languages.CompletionItem {
                     return {
                         label: `each ${collection}`,
@@ -315,15 +315,22 @@ export const applyIntellisense = (language: string) => {
                 ].flatMap(ss => appendSharpLabelTo(addBlocksIfMissing(ss)))
 
                 let customHelperSnippets: monaco.languages.CompletionItem[] = []
-                if (!isPositionBetween('{{', currentPosition, '}}', model))
+                if (!isPositionBetween('{{', currentPosition, '}}', model)) {
                     customHelperSnippets.push({
                         label: 'json',
                         insertText: '\n{{{json .}}}\n',
                         kind: monaco.languages.CompletionItemKind.Function,
-                        detail: `Print json`,
+                        // detail: `Print json`,
                         range: null as any
                     })
-
+                    customHelperSnippets.push({
+                        label: 'yaml',
+                        insertText: '\n{{{yaml .}}}\n',
+                        kind: monaco.languages.CompletionItemKind.Function,
+                        // detail: `Print yaml`,
+                        range: null as any
+                    })
+                }
 
                 return {
                     suggestions:
