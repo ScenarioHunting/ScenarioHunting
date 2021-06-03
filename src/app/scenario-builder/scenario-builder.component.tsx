@@ -154,14 +154,19 @@ export const createTestRecorder = (board = ExternalServices.boardService): React
     async function editTemplate() {
         tempSharedStorage.setItem('sample-test-spec', getSpec())
 
-        const queryString = `?templateName=${selectedTemplateName}`
+        const queryString = `?mode=edit?templateName=${selectedTemplateName}`
         await boardService.openModal(`./template-studio.html${queryString}`)
             .then(loadTemplateNames)
     }
     async function newTemplate() {
         tempSharedStorage.setItem('sample-test-spec', getSpec())
+        // tempSharedStorage.setItem('sample-template', {
+        //     contentTemplate: '{{{yaml .}}}',
+        //     fileExtension: 'yaml',
+        //     fileNameTemplate: '{{snakeCase scenario}}',
+        // } as textTemplate)
 
-        await boardService.openModal(`./template-studio.html`)
+        await boardService.openModal(`./template-studio.html?mode=new`)
             .then(loadTemplateNames)
     }
 
