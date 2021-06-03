@@ -25,7 +25,6 @@ export function specFormatterService(language: string) {
     }
     function formatStep(s: StepSchema) {
         const result = <StepSchema>{
-            $schema: s.$schema,
             title: formatText(s.title),
             type: s.type,
             properties: {}

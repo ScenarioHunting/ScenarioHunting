@@ -80,7 +80,6 @@ export function UIComponent() {
     board.showStatus = message => setStatusMessage(message)
     const [step, changeStep] = React.useState<string>(JSON.stringify({
         stepSchema: {
-            $schema: "http://json-schema.org/draft-07/schema#",
             type: "object",
             title: "Customer registered",
             properties: {

@@ -3,7 +3,6 @@ export const defaultTestSpec = {
     context: 'Your-context',
     scenario: 'Your-scenario',
     given: [{
-        $schema: "http://json-schema.org/draft-07/schema#",
         type: "object",
         title: "Given-title-1",
         properties: {
@@ -25,7 +24,6 @@ export const defaultTestSpec = {
         }
     }],
     when: {
-        $schema: "http://json-schema.org/draft-07/schema#",
         type: "object",
         title: "Customer registered",
         properties: {
@@ -47,7 +45,6 @@ export const defaultTestSpec = {
         }
     },
     then: [{
-        $schema: "http://json-schema.org/draft-07/schema#",
         type: "object",
         title: "Customer registered",
         properties: {

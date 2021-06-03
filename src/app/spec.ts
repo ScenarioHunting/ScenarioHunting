@@ -15,7 +15,6 @@ export type Properties = {
     [title: string]: Prop
 }
 export type StepSchema = {
-    $schema: "http://json-schema.org/draft-07/schema#",
     title: string,
     type: string,
     properties: Properties

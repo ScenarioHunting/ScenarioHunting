@@ -98,7 +98,6 @@ export async function extractStepSchema({
         props[propertyName] = createSingularProperty(propertyName, propertyValue)
     })
     return Promise.resolve({
-        $schema: "http://json-schema.org/draft-07/schema#",
         type: 'object',
         title: title,
         properties: props,
