@@ -1,5 +1,11 @@
 export const defaultTemplates = [
     {
+        templateName: 'new',
+        contentTemplate: '{{{yaml .}}}',
+        fileExtension: 'yaml',
+        fileNameTemplate: '{{snakeCase scenario}}',
+    },
+    {
         templateName: "cs-aggregate-gwt",
         fileNameTemplate: "{{scenario}}",
         fileExtension: "cs",

@@ -27,8 +27,13 @@ window.setupEditor = async () => {
     // let templateContent = ""
     let editor//: monaco.editor.IStandaloneCodeEditor
     let previewEditor
-    const originalTemplateName = URLParameters.getByName("templateName", window.location.href)
+    const defaultTemplateName = "new"
+    var originalTemplateName = URLParameters.getByName("templateName", window.location.href)
+        ?? defaultTemplateName
+    originalTemplateName = originalTemplateName.trim()
     document.getElementById("templateName").value = originalTemplateName
+
+    // const isInEditMode = URLParameters.getByName("mode", window.location.href) == "edit"
     const isInEditMode = originalTemplateName && originalTemplateName.trim() != ""
     document.getElementById('templateName').disabled = isInEditMode
 
