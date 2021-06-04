@@ -82,17 +82,41 @@
             border-color: #454545 !important;
         }
 
-        .dark-button {
+        /* .dark-button {
             background-color: #737373 !important;
             color: white !important;
             border-color: #454545 !important;
-        }
+        } */
 
 
         /*light*/
         .light-body {
             background-color: #ebeaf1;
         }
+
+        .image-button {
+            min-width: 22px !important;
+            padding: 0px !important;
+            border: none;
+            background: none;
+            cursor: pointer;
+        }
+
+        .image-button svg {
+            width: 26px;
+            stroke: #737373;
+            stroke-width: 2px !important;
+            stroke-miterlimit: 10;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+
+        }
+
+        .image-button svg:hover {
+            stroke: #929292;
+        }
+
 
         .light-text-input {}
 
@@ -124,9 +148,23 @@
 
                 <input class="miro-input miro-input--primary" id="templateName"
                     placeholder="aggregate-unit-test"></input>
-                <button class="save-button miro-btn miro-btn--primary miro-btn--small" onclick="saveIt()">Save</button>
-                <button id="close-button" class="miro-btn miro-btn--secondary miro-btn--small"
-                    onclick="closeModal()">Close</button>
+                <button class="image-button" onclick="saveIt()">
+                    <svg id="Icons" version="1.1" viewBox="0 0 32 32" xml:space="preserve"
+                        xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+                        <rect height="11" width="14" x="9" y="17"></rect>
+                        <line x1="18" x2="18" y1="7" y2="9"></line>
+                        <path d="M21,4v6c0,1.1-0.9,2-2,2h-8c-1.1,0-2-0.9-2-2l0-6H4v24h24V9l-5-5H9"></path>
+                    </svg>
+                </button>
+                <button id="close-button" class="image-button" onclick="closeModal()">
+                    <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                        <g id="cross">
+                            <line x1="7" x2="25" y1="7" y2="25" />
+                            <line x1="7" x2="25" y1="25" y2="7" />
+                        </g>
+                    </svg>
+                </button>
             </div>
 
         </div>
