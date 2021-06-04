@@ -27,15 +27,16 @@ window.setupEditor = async () => {
     // let templateContent = ""
     let editor//: monaco.editor.IStandaloneCodeEditor
     let previewEditor
-    const defaultTemplateName = "new"
     var originalTemplateName = URLParameters.getByName("templateName", window.location.href)
-        ?? defaultTemplateName
     originalTemplateName = originalTemplateName.trim()
-    document.getElementById("templateName").value = originalTemplateName
-
     // const isInEditMode = URLParameters.getByName("mode", window.location.href) == "edit"
-    const isInEditMode = originalTemplateName && originalTemplateName.trim() != ""
-    document.getElementById('templateName').disabled = isInEditMode
+    const isInEditMode = originalTemplateName
+        && originalTemplateName != ""
+        && originalTemplateName != "new"
+    if (isInEditMode) {
+        document.getElementById("templateName").value = originalTemplateName
+        document.getElementById('templateName').disabled = true
+    }
 
     window.save = async function () {
         try {
@@ -195,15 +196,16 @@ window.setupEditor = async () => {
 
     window.onEditorReady = async function () {
         let templateContent = undefined;
-        if (originalTemplateName) {
+        try {
             const template = await ExternalServices.templateRepository
-                .getTemplateByName(originalTemplateName)//.textTemplate
+                .getTemplateByName(isInEditMode ? originalTemplateName : "new")//.textTemplate
             log.log(`Template ${originalTemplateName} is being loaded to the editor:`, template)
             document.getElementById('fileNameTemplate').value = template.fileNameTemplate
             document.getElementById('fileExtension').value = template.fileExtension
             templateContent = template.contentTemplate
+        } catch {
+            log.warn("The template 'new' does not exists in the repository")
         }
-
         editor = editorFactory.createEditor(document.getElementById('monaco-editor'), templateContent)
         previewEditor = editorFactory.createPreviewEditor(document.getElementById('preview-editor'))
 
