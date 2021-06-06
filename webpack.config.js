@@ -53,9 +53,6 @@ function appConfig(options) {
 							}
 						}
 					},
-						// {
-						// 	loader: "less-loader"
-						// }
 					],
 					exclude: /node_modules/
 				},
@@ -71,6 +68,12 @@ function appConfig(options) {
 						'file-loader',
 					]
 				},
+				{
+
+					test: /\.(png|svg|jpg|jpeg|gif)$/i,
+					type: 'asset/resource',
+
+				}
 			]
 		},
 		resolve: {
@@ -117,6 +120,12 @@ function editorConfig(options) {
 					use: 'ts-loader',
 					exclude: /node_modules/
 				},
+				{
+
+					test: /\.(png|svg|jpg|jpeg|gif)$/i,
+					type: 'asset/resource',
+
+				}
 			]
 		},
 		resolve: {
@@ -133,8 +142,8 @@ function editorConfig(options) {
 			new HtmlWebPackPlugin({
 				template: "./src/app/template-processing/template-studio.html",
 				filename: "./template-studio.html",
-				chucks: ['ExternalServices','monacoLanguage','editor'],
-				chunksSortMode:'manual',
+				chucks: ['ExternalServices', 'monacoLanguage', 'editor'],
+				chunksSortMode: 'manual',
 				inject: 'body',
 				scriptLoading: 'blocking'
 			}),
