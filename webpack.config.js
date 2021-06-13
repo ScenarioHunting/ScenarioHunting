@@ -124,6 +124,7 @@ function editorConfig(options) {
 
 					test: /\.(png|svg|jpg|jpeg|gif)$/i,
 					type: 'asset/resource',
+					exclude: /node_modules/
 
 				}
 			]

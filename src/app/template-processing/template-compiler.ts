@@ -81,3 +81,5 @@ export class TemplateCompiler {
         }
     }
 }
+
+//https://github.com/helpers/handlebars-helpers#install
