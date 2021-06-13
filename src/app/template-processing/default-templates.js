@@ -64,19 +64,23 @@ public class {{scenario}} : IStorySpecification
         using FluentAssertions;
         using {{context}};
         
-        namespace {{pascalCase context}}
+        namespace {{toPascalCase context}}
         {
-            public class {{pascalCase scenario}}Spec
+            public class {{toPascalCase scenario}}Spec
             {
                 [Fact]
-                public void {{pascalCase scenario}}()
+                public void {{toPascalCase scenario}}()
                 {
-                    var {{camelCase subject}} = {{pascalCase subject}}.{{pascalCase when.title}}({{#each when.properties as |property propertyName|}}"{{property.example}}"{{#skipLast}},{{/skipLast}}{{/each}});
+                    var {{toCamelCase subject}} = new {{toPascalCase subject}}();
+                    {{#each given as |step|}}
+                    {{toCamelCase @root.subject}}.On(new {{toPascalCase step.title}}({{#each step.properties as |property propertyName|}}"{{property.example}}"{{#skipLast}}, {{/skipLast}}{{/each}}));
+                    {{/each}}
+        
+                    {{toCamelCase subject}}.{{toPascalCase when.title}}({{#each when.properties as |property propertyName|}}"{{property.example}}"{{#skipLast}}, {{/skipLast}}{{/each}});
                     
-                    {{camelCase subject}}.Events.Should().ContainInOrder(
+                    {{toCamelCase subject}}.Events.Should().ContainEquivalentOf(
                         {{#each then as |step|}}
-                            new {{pascalCase step.title}}({{#each step.properties as |property propertyName|}}"{{property.example}}"{{#skipLast}},{{/skipLast}}{{/each}}){{#skipLast}},{{/skipLast}}
-                        {{/each}});
+                            new {{toPascalCase step.title}}({{#each step.properties as |property propertyName|}}"{{property.example}}"{{#skipLast}}, {{/skipLast}}{{/each}}){{#skipLast}},{{/skipLast}}{{/each}});
                 }
             }
         }`
