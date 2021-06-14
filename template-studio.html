@@ -433,8 +433,7 @@
                     </style>
                     <a href="https://handlebarsjs.com/" target="_blank">Handlebars</a>
                     <label class="switch">
-                        <input type="checkbox" id="editor-uses-preview-language-checkbox"
-                            onchange="onEditorLanguagePreferenceChange()">
+                        <input type="checkbox" id="editor-uses-preview-language-checkbox" onchange="onEditorLanguagePreferenceChange()">
                         <span class="slider">
                             <svg id="slider-handle" xmlns="http://www.w3.org/2000/svg"
                                 xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="350" height="350"
@@ -536,21 +535,19 @@
 
 <script src="ExternalServices.js"></script><script src="monacoLanguage.js"></script><script src="editor.js"></script></body>
 <script>
-    miro.onEditorReady(() =>
-        console.log("==========================>", miro.board)
-    )
+    console.log( miro.board)
     var saveIt
 
-    // window.setupEditor().then(saveOut => {
-    //     require.config({
-    //         paths: {
-    //             'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs'
-    //         }
-    //     });
+    window.setupEditor().then(saveOut => {
+        require.config({
+            paths: {
+                'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs'
+            }
+        });
 
-    //     require(["vs/editor/editor.main"], window.onEditorReady)
-    //     saveIt = saveOut
-    // })
+        require(["vs/editor/editor.main"], window.onEditorReady)
+        saveIt = saveOut
+    })
 
     //Modal:
     // Get the modal
