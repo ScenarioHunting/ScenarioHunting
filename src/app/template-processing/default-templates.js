@@ -2,7 +2,7 @@ export const defaultTemplates = [
     {
         templateName: 'new',
         contentTemplate: '{{{yaml .}}}',
-        fileExtension: 'yaml',
+        fileExtension: 'yml',
         fileNameTemplate: '{{snakeCase scenario}}',
     },
     {
@@ -61,43 +61,43 @@ public class {{scenario}} : IStorySpecification
         fileNameTemplate: "{{scenario}}",
         fileExtension: "cs",
         contentTemplate: `using Xunit;
-        using FluentAssertions;
-        using {{context}};
-        
-        namespace {{toPascalCase context}}
+using FluentAssertions;
+using {{context}};
+
+namespace {{toPascalCase context}}
+{
+    public class {{toPascalCase scenario}}Spec
+    {
+        [Fact]
+        public void {{toPascalCase scenario}}()
         {
-            public class {{toPascalCase scenario}}Spec
-            {
-                [Fact]
-                public void {{toPascalCase scenario}}()
-                {
-                    var {{toCamelCase subject}} = new {{toPascalCase subject}}();
-                    {{#each given as |step|}}
-                    {{toCamelCase @root.subject}}.On(new {{toPascalCase step.title}}({{#each step.properties as |property propertyName|}}"{{property.example}}"{{#skipLast}}, {{/skipLast}}{{/each}}));
-                    {{/each}}
-        
-                    {{toCamelCase subject}}.{{toPascalCase when.title}}({{#each when.properties as |property propertyName|}}"{{property.example}}"{{#skipLast}}, {{/skipLast}}{{/each}});
-                    
-                    {{toCamelCase subject}}.Events.Should().ContainEquivalentOf(
-                        {{#each then as |step|}}
-                            new {{toPascalCase step.title}}({{#each step.properties as |property propertyName|}}"{{property.example}}"{{#skipLast}}, {{/skipLast}}{{/each}}){{#skipLast}},{{/skipLast}}{{/each}});
-                }
-            }
-        }`
+            var {{toCamelCase subject}} = new {{toPascalCase subject}}();
+            {{#each given as |step|}}
+            {{toCamelCase @root.subject}}.On(new {{toPascalCase step.title}}({{#each step.properties as |property propertyName|}}"{{property.example}}"{{#skipLast}}, {{/skipLast}}{{/each}}));
+            {{/each}}
+
+            {{toCamelCase subject}}.{{toPascalCase when.title}}({{#each when.properties as |property propertyName|}}"{{property.example}}"{{#skipLast}}, {{/skipLast}}{{/each}});
+            
+            {{toCamelCase subject}}.Events.Should().ContainEquivalentOf(
+                {{#each then as |step|}}
+                    new {{toPascalCase step.title}}({{#each step.properties as |property propertyName|}}"{{property.example}}"{{#skipLast}}, {{/skipLast}}{{/each}}){{#skipLast}},{{/skipLast}}{{/each}});
+        }
+    }
+}`
     },
     {
         templateName: "gherkin-scenario",
         fileNameTemplate: "{{scenario}}",
         fileExtension: "features",
         contentTemplate: `Scenario Outline: {{spaceCase scenario}}
-        Given {{#each given as |step|}}{{spaceCase title}} {{#each step.properties as |property propertyName|}}
-          | {{spaceCase propertyName}} | "{{example}}" |{{/each}}
-        {{#skipLast}} And {{/skipLast}}{{/each}}
-        When {{#with when as |step|}} {{spaceCase title}} {{#each step.properties as |property propertyName|}}
-          | {{spaceCase propertyName}} | "{{example}}" |{{/each}}
-        {{/with}}
-        Then {{#each then as |step|}}{{spaceCase title}} {{#each step.properties as |property propertyName|}}
-          | {{spaceCase propertyName}} | "{{example}}" |{{/each}}
-        {{#skipLast}} And {{/skipLast}}{{/each}}`
+    Given {{#each given as |step|}}{{spaceCase title}} {{#each step.properties as |property propertyName|}}
+        | {{spaceCase propertyName}} | "{{example}}" |{{/each}}
+    {{#skipLast}} And {{/skipLast}}{{/each}}
+    When {{#with when as |step|}} {{spaceCase title}} {{#each step.properties as |property propertyName|}}
+        | {{spaceCase propertyName}} | "{{example}}" |{{/each}}
+    {{/with}}
+    Then {{#each then as |step|}}{{spaceCase title}} {{#each step.properties as |property propertyName|}}
+        | {{spaceCase propertyName}} | "{{example}}" |{{/each}}
+    {{#skipLast}} And {{/skipLast}}{{/each}}`
     },
 ]

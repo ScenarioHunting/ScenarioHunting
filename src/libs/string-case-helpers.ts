@@ -58,7 +58,8 @@ export const stringCaseHelpers = {
     sentenceCase(str: string) {
         return snakeToSentenceCase(stringCaseHelpers.snakeCase(str.toString()))
     },
-    toCamelCase(str: string) { return stringCaseHelpers.camelCase(str)},
-    toSentenceCase(str: string) { return stringCaseHelpers.sentenceCase(str)}
+    toCamelCase(str: string) { return stringCaseHelpers.camelCase(str) },
+    toSentenceCase(str: string) { return stringCaseHelpers.sentenceCase(str) },
+    toPascalCase(str: string) { return stringCaseHelpers.pascalCase(str) }
 
 }

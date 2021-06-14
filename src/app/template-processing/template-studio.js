@@ -5,6 +5,7 @@ import { applyIntellisense } from './intellisense'
 import { URLParameters } from './url-parameters'
 import { editorFactory } from './template-studio-factory'
 import { domElementClasses } from './dom-element-classes'
+import { getLanguageForExtension } from './monaco-languages'
 // import svg from './template-studio.images/show-preview.svg'
 // console.log("SVG:", svg)
 // import { validTextTemplate } from "../ports/text-template"
@@ -221,10 +222,11 @@ window.setupEditor = async () => {
 
     window.onEditorReady = async function () {
 
-        let select_elem = document.getElementById("language-select");
-        monaco.languages.getLanguages().map(l => new Option(l.aliases[0], l.id))
-            .forEach(o => select_elem.add(o))
-        select_elem.value = 'yaml'
+        let languageSelect = document.getElementById("language-select");
+        const monacoLanguages = monaco.languages.getLanguages()
+        monacoLanguages.forEach(l => languageSelect.add(new Option(l.aliases[0], l.id)))
+
+        // select_elem.value = 'yaml'
         let templateContent = undefined;
         try {
             const template = await ExternalServices.templateRepository
@@ -233,6 +235,12 @@ window.setupEditor = async () => {
             document.getElementById('fileNameTemplate').value = template.fileNameTemplate
             document.getElementById("target-file-extension").value = template.fileExtension
             templateContent = template.contentTemplate
+            languageSelect.value = getLanguageForExtension(template.fileExtension)
+            
+            // lang = monacoLanguages.filter(l => l.extensions.includes(template.fileExtension))[0].aliases[0];// 
+            //  getLanguageForExtension(template.fileExtension)
+            // log.log(`Language: found for ext:`, template.fileExtension)
+            // languageSelect.value = lang
         } catch {
             log.warn("The template 'new' does not exists in the repository")
         }
@@ -240,7 +248,7 @@ window.setupEditor = async () => {
         previewEditor = editorFactory.createPreviewEditor(document.getElementById('preview-editor'))
 
         // await detectLanguageForExtension()
-        const languageSelect = document.getElementById("language-select")
+        // const languageSelect = document.getElementById("language-select")
         switchEditorLanguage(editor, 'handlebars')
         await preview(languageSelect.value, editorModel)
         editor.onDidChangeModelContent(async () => {
