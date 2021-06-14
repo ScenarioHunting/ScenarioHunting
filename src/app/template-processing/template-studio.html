@@ -10,7 +10,7 @@
 <head>
     <meta charset="utf-8">
     <title>Template Studio</title>
-<script src="https://miro.com/app/static/sdk.1.1.js"></script>
+    <script src="https://miro.com/app/static/sdk.1.1.js"></script>
 
     <link rel="stylesheet" data-name="vs/editor/editor.main"
         href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/editor/editor.main.min.css">
@@ -538,12 +538,6 @@
 
 </body>
 <script>
-    (async () => {
-
-        miro.onEditorReady(() =>
-            console.log("==========================>", miro.board)
-        )
-    })
     var saveIt
 
     window.setupEditor().then(saveOut => {
