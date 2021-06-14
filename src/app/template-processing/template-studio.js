@@ -77,35 +77,35 @@ window.setupEditor = async () => {
 
 
     // let preview
-    (async function () {
-        let sampleTestSpec = await ExternalServices.tempSharedStorage.getItem('sample-test-spec')
-        await ExternalServices.tempSharedStorage.removeItem('sample-test-spec')
-        if (!sampleTestSpec)
-            sampleTestSpec = defaultTestSpec
-        let preview = async function (language, editorModel) {
-            //<On editor text change(not preview)
-            const template = editor.getValue()
-            let compiledCode = ""
+    // (async function () {
+    let sampleTestSpec = await ExternalServices.tempSharedStorage.getItem('sample-test-spec')
+    await ExternalServices.tempSharedStorage.removeItem('sample-test-spec')
+    if (!sampleTestSpec)
+        sampleTestSpec = defaultTestSpec
+    let preview = async function (language, editorModel) {
+        //<On editor text change(not preview)
+        const template = editor.getValue()
+        let compiledCode = ""
 
-            try {
-                compiledCode = ExternalServices.templateCompiler.compileTemplate(template, sampleTestSpec)
-                clearErrors(editorModel)
-            }
-            catch (err) {
-                showError(err, editor.getPosition(), editorModel)
-            }
-            //</On editor text change(not preview)
-
-            const actualCodeModel = monaco.editor.createModel(compiledCode, language);
-
-            const previousExpectedCode = previewEditor.getModifiedEditor().getValue();
-            let expectedCodeModel = isInEditMode && previousExpectedCode == ""
-                ? actualCodeModel
-                : monaco.editor.createModel(previousExpectedCode, language);
-
-            previewEditor.setModel({ original: actualCodeModel, modified: expectedCodeModel });
+        try {
+            compiledCode = ExternalServices.templateCompiler.compileTemplate(template, sampleTestSpec)
+            clearErrors(editorModel)
         }
-    })()
+        catch (err) {
+            showError(err, editor.getPosition(), editorModel)
+        }
+        //</On editor text change(not preview)
+
+        const actualCodeModel = monaco.editor.createModel(compiledCode, language);
+
+        const previousExpectedCode = previewEditor.getModifiedEditor().getValue();
+        let expectedCodeModel = isInEditMode && previousExpectedCode == ""
+            ? actualCodeModel
+            : monaco.editor.createModel(previousExpectedCode, language);
+
+        previewEditor.setModel({ original: actualCodeModel, modified: expectedCodeModel });
+    }
+    // })()
 
     //Preview pane visibility:
     var isPreviewOpen = true;
@@ -236,7 +236,7 @@ window.setupEditor = async () => {
             document.getElementById("target-file-extension").value = template.fileExtension
             templateContent = template.contentTemplate
             languageSelect.value = getLanguageForExtension(template.fileExtension)
-
+            
             // lang = monacoLanguages.filter(l => l.extensions.includes(template.fileExtension))[0].aliases[0];// 
             //  getLanguageForExtension(template.fileExtension)
             // log.log(`Language: found for ext:`, template.fileExtension)
