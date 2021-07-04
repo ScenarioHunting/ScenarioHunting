@@ -1,4 +1,4 @@
-# ScenarioHunting
+# Scenario Hunting
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 A software design workflow which maximizes knowledge discovery by asking to clarify causality across design elements, then automatically forges the artifacts into test code to get instant feedback from the design decisions, and streamline communication and training.
