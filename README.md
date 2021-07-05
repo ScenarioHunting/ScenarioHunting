@@ -1,7 +1,7 @@
 # Scenario Hunting
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-A software design workflow which maximizes knowledge discovery by asking to clarify causality across design elements, then automatically forges the artifacts into test code to get instant feedback from the design decisions, and streamline communication and training.
+Scenario Hunting is a smart way of witching from modeling space into implementation which maximizes knowledge discovery by asking to clarify causality across design elements before starting to code, and then automatically forges the artifacts into test code to get instant feedback from the design decisions, and streamline communication and training.
 
 
 ![Demo](Demo.png "Demo image")
@@ -12,6 +12,7 @@ Simply click [here](https://miro.com/oauth/authorize/?response_type=code&client_
 ### Privacy
 
 The application is hosted by github pages, runs on your browser, and stores the data on your miro board. 
+
 No backend, no data collection, no worries. 
 
 
