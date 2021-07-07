@@ -2,7 +2,7 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 
-Scenario Hunting is the smartest way of switching from modeling space into implementation. It asks to verify the causality between design elements before starting to code, and then automatically forge the abstract artifacts into concrete test code, to get instant feedback from the design decisions, and streamline communication and training.
+Scenario Hunting is about switching from modeling space into implementation. It asks to verify the causality between design elements before starting to code, and then automatically forge the abstract artifacts into concrete test code, to get instant feedback from the design decisions, and streamline communication and training.
 
 
 ![Demo](Demo.png "Demo image")
