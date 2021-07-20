@@ -1,4 +1,4 @@
-import { Properties, StepSchema, ArrayProperty, SingularProperty } from '../../app/spec';
+import { Properties, Schema, ArrayProperty, SingularProperty } from '../../app/spec';
 
 const removeStartingDash = (str: string): string =>
     str[0] == '-' ? str.substring(1) : str;
@@ -28,7 +28,7 @@ function createSingularProperty(description: string, example: any): SingularProp
 export async function extractStepSchema({
     abstractionWidgetText
     , exampleWidgetText
-}: { abstractionWidgetText: string, exampleWidgetText: string }): Promise<StepSchema> {
+}: { abstractionWidgetText: string, exampleWidgetText: string }): Promise<Schema> {
 
     let title = abstractionWidgetText.trim().split('\n').shift()
     if (!title) {
@@ -101,5 +101,5 @@ export async function extractStepSchema({
         type: 'object',
         title: title,
         properties: props,
-    })
+    } as Schema)
 }

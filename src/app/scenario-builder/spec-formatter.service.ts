@@ -1,4 +1,4 @@
-import { ArrayProperty, Prop, SingularProperty, Spec, StepSchema } from "../spec";
+import { ArrayProperty, Prop, SingularProperty, Spec, Step, Schema } from "../spec";
 import { stringCaseHelpers } from "../../libs/string-case-helpers";
 
 export function specFormatterService(language: string) {
@@ -23,16 +23,16 @@ export function specFormatterService(language: string) {
             };
         }
     }
-    function formatStep(s: StepSchema) {
-        const result = <StepSchema>{
-            title: formatText(s.title),
-            type: s.type,
+    function formatStep(s: Step) {
+        const data = <Schema>{
+            title: formatText(s.data.title),//TODO: Consider the Low of demeter
+            type: s.data.type,//TODO: Consider the Low of demeter
             properties: {}
         };
-        for (let [k, v] of Object.entries(s.properties)) {
-            result.properties[k] = formatProperty(v);
+        for (let [k, v] of Object.entries(s.data.properties)) {
+            data.properties[k] = formatProperty(v);
         }
-        return result;
+        return <Step>{ data: data };
     }
 
     return {

@@ -150,27 +150,36 @@ const propertySuggestions: EditorSuggestion[] = [
     },
 ]
 
-const stepSchemaSuggestions: EditorSuggestion[] = [
+const stepDataSuggestions: EditorSuggestion[] = [
     {
-        label: "title",
-        insertText: "title",
-        detail: "Step title (type of the step in it's context)"
-    },
-    {
-        label: "type",
-        insertText: "type",
-        detail: "The type of the step from json schema specification"
-    },
-    {
-        label: "properties",
-        insertText: "properties",
-        detail: "Step properties",
-        children: [{
-            label: "first",
-            insertText: "[0]",
-            children: propertySuggestions,
-        }],
-    },
+        label: "data",
+        insertText: "data",
+        detail: "The schema and data required at this step",
+        children: [
+
+
+            {
+                label: "title",
+                insertText: "title",
+                detail: "Step title (type of the step in it's context)"
+            },
+            {
+                label: "type",
+                insertText: "type",
+                detail: "The type of the step based on json schema specification"
+            },
+            {
+                label: "properties",
+                insertText: "properties",
+                detail: "Step properties",
+                children: [{
+                    label: "first",
+                    insertText: "[0]",
+                    children: propertySuggestions,
+                }],
+            },
+        ]
+    }
 
 ]
 
@@ -194,7 +203,7 @@ const specSuggestions: EditorSuggestion[] = [
         label: "when",
         insertText: "when",
         detail: "when step",
-        children: stepSchemaSuggestions,
+        children: stepDataSuggestions,
     },
     //Collections:
     {
@@ -204,7 +213,7 @@ const specSuggestions: EditorSuggestion[] = [
         children: [{
             label: "first",
             insertText: "[0]",
-            children: stepSchemaSuggestions,
+            children: stepDataSuggestions,
         }]
     },
     {
@@ -214,7 +223,7 @@ const specSuggestions: EditorSuggestion[] = [
         children: [{
             label: "first",
             insertText: "[0]",
-            children: stepSchemaSuggestions,
+            children: stepDataSuggestions,
         }]
     },
     //collections:
@@ -224,7 +233,7 @@ const specSuggestions: EditorSuggestion[] = [
         label: "step",//\{\{#each.*given\sas\s\|step\|\}\}(\r\n|\r|\n)+.+\{\{
         insertText: "step",
         detail: "A scenario step",
-        children: stepSchemaSuggestions
+        children: stepDataSuggestions
     },
     {
         label: "property",

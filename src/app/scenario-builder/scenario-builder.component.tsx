@@ -9,7 +9,7 @@ import { queueingMachine } from './local-dependency-container';
 import { useEffect, useState } from 'react';
 import { SelectableText } from './title-picker/title-picker.component';
 import { TestStepTurn } from './step-picker/scenario-step-turn';
-import { Spec } from '../../app/spec';
+import { Spec, Step } from '../../app/spec';
 import { ExternalServices, log } from '../../external-services';
 
 const templateRepository = ExternalServices.templateRepository
@@ -129,9 +129,9 @@ export const createTestRecorder = (board = ExternalServices.boardService): React
             subject: subject,
             context: context,
             scenario: scenario,
-            given: givenSteps.map(given => given.step.stepSchema),
-            when: when?.stepSchema,
-            then: [then?.stepSchema],
+            given: givenSteps.map(given => { return { data: given.step.stepSchema } as Step }),
+            when: { data: when?.stepSchema },
+            then: [{ data: then?.stepSchema }],
         } as Spec
         try {
             await ScenarioBuilderService.Save(selectedTemplateName, testSpec)
@@ -146,9 +146,9 @@ export const createTestRecorder = (board = ExternalServices.boardService): React
             subject: subject,
             context: context,
             scenario: scenario,
-            given: givenSteps.map(given => given.step.stepSchema),
-            when: when?.stepSchema,
-            then: [then?.stepSchema],
+            given: givenSteps.map(given => { return { data: given.step.stepSchema } as Step }),
+            when: { data: when?.stepSchema },
+            then: [{ data: then?.stepSchema }],
         } as Spec
     }
     async function editTemplate() {

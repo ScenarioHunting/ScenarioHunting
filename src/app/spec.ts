@@ -14,16 +14,22 @@ export interface ArrayProperty extends Property {
 export type Properties = {
     [title: string]: Prop
 }
-export type StepSchema = {
+export type Schema = //SingularProperty & //Deferred this decision because it's not necessary now
+{
     title: string,
     type: string,
+    // description: string,
     properties: Properties
 }
+export type Step = {
+    data: Schema
+}
+export type Steps = Step[]
 export type Spec = {
     scenario: string,
     context: string,
     subject: string,
-    given: StepSchema[],
-    when: StepSchema,
-    then: StepSchema[],
+    given: Steps,
+    when: Step,
+    then: Steps,
 }

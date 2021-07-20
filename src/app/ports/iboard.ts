@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { CSSProperties } from "react"
-import { StepSchema } from "../spec"
+import { Schema } from "../spec"
 
 
 export type WidgetSnapshot = {
@@ -9,7 +9,7 @@ export type WidgetSnapshot = {
 }
 export type SelectedStep = {
     widgetSnapshot: WidgetSnapshot
-    stepSchema: StepSchema
+    stepSchema: Schema
 }
 export interface IBoard {
     updateWidgetText(widgetId: string, newWidgetText: string): Promise<void>;
