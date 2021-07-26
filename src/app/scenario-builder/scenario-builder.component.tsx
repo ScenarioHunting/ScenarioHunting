@@ -9,14 +9,14 @@ import { queueingMachine } from './local-dependency-container';
 import { useEffect, useState } from 'react';
 import { SelectableText } from './title-picker/title-picker.component';
 import { TestStepTurn } from './step-picker/scenario-step-turn';
-import { Spec, Step } from '../../app/spec';
+import { Spec } from '../../app/spec';
 import { ExternalServices, log } from '../../external-services';
 
 const templateRepository = ExternalServices.templateRepository
 const tempSharedStorage = ExternalServices.tempSharedStorage
 const boardService = ExternalServices.boardService
 
-export const createTestRecorder = (board = ExternalServices.boardService): React.FC<any> => () => {
+export const createTestBuilder = (board = ExternalServices.boardService): React.FC<any> => () => {
     if (!board) {
         //TODO: Implement guard
     }
@@ -114,6 +114,24 @@ export const createTestRecorder = (board = ExternalServices.boardService): React
         }
         return true
     }
+    function getSpec() {
+        //TODO: validate the data against schema
+        //Only the scenario required fields should exist
+        //Add a generate data button
+        return {
+            subject: subject,
+            context: context,
+            scenario: scenario,
+            given: givenSteps.map(given => { return { schema: given.step.schema } }),
+            when: { schema: when?.schema },
+            then: [{ schema: then?.schema }],
+            data: [{//TODO: It may be generated (based on the schema), added to, removed from, after hunting the scenario & before saving it
+                given: givenSteps.map(g => { return g.step.data }),
+                when: when?.data,
+                then: [then?.data]
+            }],
+        } as Spec
+    }
     const forceUpdate = React.useReducer((bool) => !bool, true)[1];
     const save = async () => {
         var isFormValid = validateScenario(scenario)
@@ -125,32 +143,15 @@ export const createTestRecorder = (board = ExternalServices.boardService): React
         if (!isFormValid)
             return
 
-        const testSpec = {
-            subject: subject,
-            context: context,
-            scenario: scenario,
-            given: givenSteps.map(given => { return { data: given.step.stepSchema } as Step }),
-            when: { data: when?.stepSchema },
-            then: [{ data: then?.stepSchema }],
-        } as Spec
         try {
-            await ScenarioBuilderService.Save(selectedTemplateName, testSpec)
+            await ScenarioBuilderService.Save(selectedTemplateName, getSpec())
             board.showNotification('Test created successfully.')
         } catch (e) {
             log.log(e)
             board.showNotification('Test creation error try again later.\n')
         }
     };
-    function getSpec() {
-        return {
-            subject: subject,
-            context: context,
-            scenario: scenario,
-            given: givenSteps.map(given => { return { data: given.step.stepSchema } as Step }),
-            when: { data: when?.stepSchema },
-            then: [{ data: then?.stepSchema }],
-        } as Spec
-    }
+
     async function editTemplate() {
         tempSharedStorage.setItem('sample-test-spec', getSpec())
 
@@ -253,4 +254,4 @@ export const createTestRecorder = (board = ExternalServices.boardService): React
 }
 
 
-export let TestRecorder = createTestRecorder()
+export let TestRecorder = createTestBuilder()

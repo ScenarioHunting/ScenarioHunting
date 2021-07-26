@@ -8,28 +8,35 @@ export interface SingularProperty extends Property {
 }
 export interface ArrayProperty extends Property {
     type: "array"
-    items: Prop[]
+    items: Prop | Prop[]
 }
 
 export type Properties = {
     [title: string]: Prop
 }
 export type Schema = //SingularProperty & //Deferred this decision because it's not necessary now
-{
-    title: string,
-    type: string,
-    // description: string,
-    properties: Properties
-}
+    {
+        title: string,
+        type: string,
+        // description: string,
+        properties: Properties
+    }
 export type Step = {
-    data: Schema
+    // data: any
+    schema: Schema
 }
-export type Steps = Step[]
+export type StepData = {
+    given: any[],
+    when: any,
+    then: any[]
+}
+
 export type Spec = {
     scenario: string,
     context: string,
     subject: string,
-    given: Steps,
+    given: Step[],
     when: Step,
-    then: Steps,
+    then: Step[],
+    data: StepData[]
 }

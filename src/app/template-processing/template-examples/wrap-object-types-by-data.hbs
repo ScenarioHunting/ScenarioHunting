@@ -1,0 +1,15 @@
+{{#*inline "raw_string" data}}"{{data}}"{{/inline}}
+{{#*inline "raw_number" data}}{{data}}{{/inline}}
+{{#*inline "raw_boolean" data}}{{data}}{{/inline}}
+{{#*inline "raw_object" schema data}}{
+    {{#each data as |value key|}}
+    {{key}}: {{> wrapType schema=(lookup ../schema.properties key) data=value }}{{#unless @last}},{{/unless}}
+{{/each}} 
+}{{/inline}}
+{{#*inline "raw_array" schema data}}[
+    {{#each data as |value key|}}
+       {{>wrapType schema=(lookup ../schema.items key) data=value}}{{#unless @last}},{{/unless}}
+    {{/each}}   
+]{{/inline}}
+{{#*inline "wrapType" schema data}}{{>(concat 'raw_' type) schema=schema data=data}}{{/inline}}
+{{>raw_object schema=schema.when data=data.[0].when}}

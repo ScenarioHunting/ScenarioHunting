@@ -1,4 +1,4 @@
-import { Properties, Schema, ArrayProperty, SingularProperty } from '../../app/spec';
+import { Properties, ArrayProperty, SingularProperty, Prop, Schema } from '../../app/spec';
 
 const removeStartingDash = (str: string): string =>
     str[0] == '-' ? str.substring(1) : str;
@@ -18,31 +18,41 @@ function createSingularProperty(description: string, example: any): SingularProp
             example: example.toLowerCase() == "true"
         } as SingularProperty
     }
-    
+
     return {
         type: "string",
         description: description,
         example: example
     } as SingularProperty
 }
-export async function extractStepSchema({
-    abstractionWidgetText
-    , exampleWidgetText
-}: { abstractionWidgetText: string, exampleWidgetText: string }): Promise<Schema> {
+// function areAllItemsTheSame(array: any[]) {
+//     return new Set(array).size == 1
+// }
+export async function extractStepFromText({
+    schemaText
+    , dataText
+}: { schemaText: string, dataText: string }): Promise<{ schema: Schema; data: any }> {
 
-    let title = abstractionWidgetText.trim().split('\n').shift()
+    let title = schemaText.trim().split('\n').shift()
     if (!title) {
         return Promise.reject("Unknown text format.")
     }
-
-    const rows = exampleWidgetText.trim().split(/\n|;|,|\//)
+    let result = {
+        schema: {
+            type: 'object',
+            title: title,
+            properties: <Properties>{}
+        },
+        data: {}
+    }
+    const rows = dataText.trim().split(/\n|;|,|\//)
     if (rows[0] == title) {
         rows.shift()
     }
 
     // title = snakeCase(title!).trim()
 
-    var props: Properties = {}
+    // var props: Properties = {}
     //
     let isInArrayScope = false //Pass it as a recursive parameter
     let parentArrayPropertyName = ""//Pass it as a recursive parameter
@@ -70,9 +80,13 @@ export async function extractStepSchema({
                 isInArrayScope = false
                 propertyName = propertyName.slice(0, -1)
             }
-            (<ArrayProperty>props[parentArrayPropertyName]).items.push(
-                createSingularProperty(propertyName, propertyValue))
-
+            result.data[propertyName] = propertyValue;
+            if (Array.isArray((<ArrayProperty>result.schema.properties[parentArrayPropertyName]).items))
+                (<Prop[]>(<ArrayProperty>result.schema.properties[parentArrayPropertyName]).items).push(
+                    createSingularProperty(propertyName, propertyValue))
+            else
+                (<Prop>(<ArrayProperty>result.schema.properties[parentArrayPropertyName]).items)
+                    = createSingularProperty(propertyName, propertyValue)
             return
         }
 
@@ -85,21 +99,22 @@ export async function extractStepSchema({
             }
             const firstItemsPropertyName = propertyValue.substring(1)
 
-            if (firstItemsPropertyName) {
-                property.items.push(
-                    createSingularProperty(firstItemsPropertyName, firstItemsPropertyName))
-            }
-            props[propertyName] = property
+            //TODO: support value objects as arrays:
+            // if (firstItemsPropertyName) {
+            //     (property.items as Prop[]).push(
+            //         createSingularProperty(firstItemsPropertyName, firstItemsPropertyName))
+            // }
+
+            // if (areAllItemsTheSame(property.items as Prop[]))
+            property.items = createSingularProperty(firstItemsPropertyName, firstItemsPropertyName)
+
+            result.schema.properties[propertyName] = property
             parentArrayPropertyName = propertyName
             return
         }
 
 
-        props[propertyName] = createSingularProperty(propertyName, propertyValue)
+        result.schema.properties[propertyName] = createSingularProperty(propertyName, propertyValue)
     })
-    return Promise.resolve({
-        type: 'object',
-        title: title,
-        properties: props,
-    } as Schema)
+    return Promise.resolve(result)
 }

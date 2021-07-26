@@ -24,6 +24,15 @@ const helpers = {
         return options.data.last
             ? options.inverse()
             : options.fn()
+    },
+    concat(){
+        var outStr = '';
+            for(var arg in arguments){
+                if(typeof arguments[arg]!='object'){
+                    outStr += arguments[arg];
+                }
+            }
+            return outStr;
     }
 }
 const customHelpers = Object.entries(stringCaseHelpers).concat(Object.entries(helpers))

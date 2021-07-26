@@ -9,7 +9,8 @@ export type WidgetSnapshot = {
 }
 export type SelectedStep = {
     widgetSnapshot: WidgetSnapshot
-    stepSchema: Schema
+    schema: Schema
+    data: any
 }
 export interface IBoard {
     updateWidgetText(widgetId: string, newWidgetText: string): Promise<void>;

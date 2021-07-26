@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import { extractStepSchema } from "../../app/scenario-builder/board-text-schema-extractor";
+import { extractStepFromText } from "../../app/scenario-builder/board-text-schema-extractor";
 import { CSSProperties } from "react";
 import { IBoard, SelectedStep, WidgetSnapshot } from "../../app/ports/iboard";
 import { log } from "../../external-services";
@@ -81,7 +81,7 @@ export class MiroBoard implements IBoard {
             var widget = (await miro.board.widgets.get({ id: widgets[0].id }))[0];
             log.log("Converting the widget")
 
-            extractSchemaFrom(widget)
+            extractStepFrom(widget)
                 .then(selected => {
                     // if (typeof dto == 'string')
                     //     logger.log(dto)
@@ -153,19 +153,19 @@ function getWidgetStyle(widget: SDK.IWidget): CSSProperties {
     }
     return style
 }
-async function extractSchemaFrom(exampleWidget: SDK.IWidget): Promise<SelectedStep> {
+async function extractStepFrom(dataWidget: SDK.IWidget): Promise<SelectedStep> {
     var snapshot = {
-        id: exampleWidget.id,
+        id: dataWidget.id,
         // type: widget.type,
     } as WidgetSnapshot
 
-    const abstractionWidget = await getAbstractionWidgetFor(exampleWidget)
+    const schemaWidget = await getAbstractionWidgetFor(dataWidget)
     //
     log.log('Selection dto initiated.', snapshot)
 
-    snapshot.style = getWidgetStyle(abstractionWidget)
-    let exampleText: string
-    let abstractionText: string
+    snapshot.style = getWidgetStyle(schemaWidget)
+    let dataText: string
+    let schemaText: string
 
     try {
         const getPlainText = (originalText: string): string =>
@@ -173,24 +173,26 @@ async function extractSchemaFrom(exampleWidget: SDK.IWidget): Promise<SelectedSt
                 .replace('&#43;', '+')
                 .replace(/(<([^>]+)>)/ig,'')
 
-        exampleText = getPlainText(await extractWidgetText(exampleWidget))
-        abstractionText = getPlainText(await extractWidgetText(abstractionWidget))
+        dataText = getPlainText(await extractWidgetText(dataWidget))
+        schemaText = getPlainText(await extractWidgetText(schemaWidget))
 
     }
     catch (e) {
-        return Promise.reject('The widget ' + JSON.stringify(exampleWidget) + ' does not have any text.')
+        return Promise.reject('The widget ' + JSON.stringify(dataWidget) + ' does not have any text.')
     }
 
 
-    log.log('Widget text converted by board:', exampleText)
+    log.log('Widget text converted by board:', dataText)
 
     try {
+        const s = await extractStepFromText({
+            schemaText: schemaText,
+            dataText: dataText
+        });
         const step: SelectedStep = {
             widgetSnapshot: snapshot
-            , stepSchema: await extractStepSchema({
-                abstractionWidgetText: abstractionText,
-                exampleWidgetText: exampleText
-            })
+            , data: s.data
+            , schema: s.schema
         }
 
         return step

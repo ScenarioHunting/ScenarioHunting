@@ -1,0 +1,15 @@
+{{#*inline "raw_string" }}"{{example}}"{{/inline}}
+{{#*inline "raw_number" }}{{example}}{{/inline}}
+{{#*inline "raw_boolean"}}{{example}}{{/inline}}
+{{#*inline "raw_object" }}{
+{{#each properties as |value key|}}
+{{key}}: {{> wrap value }}{{#unless @last}},{{/unless}}
+{{/each}}
+}{{/inline}}
+{{#*inline "raw_array"}}[
+{{#each items as |value|}}
+{{>wrap value}}{{#unless @last}},{{/unless}}
+{{/each}}
+]{{/inline}}
+{{#*inline "wrap" }}{{>(concat 'raw_'(lookup . 'type')) }}{{/inline}}
+{{>raw_object when.schema }}

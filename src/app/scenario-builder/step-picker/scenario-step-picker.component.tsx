@@ -54,7 +54,7 @@ export function createTestStepRecorder({ stepType
 
 
         const onPropertyValueTextChange = (index: number, event: React.ChangeEvent<HTMLInputElement>) => {
-            (props.step!.stepSchema.properties[index] as SingularProperty).example
+            (props.step!.schema.properties[index] as SingularProperty).example
                 = event.currentTarget.value;
         }
 
@@ -77,13 +77,13 @@ export function createTestStepRecorder({ stepType
                     </h4>
                 </button>
                 {
-                    (!props.step?.stepSchema) ? <div className={styles["waiting-for-step"]} style={{ display: isActive ? 'block' : 'none' }}> <h1 >?</h1> </div> :
+                    (!props.step?.schema) ? <div className={styles["waiting-for-step"]} style={{ display: isActive ? 'block' : 'none' }}> <h1 >?</h1> </div> :
 
                         <div style={props.step?.widgetSnapshot.style}>
-                            <span className={styles["step-title"]}>{props.step?.stepSchema.title}</span>
+                            <span className={styles["step-title"]}>{props.step?.schema.title}</span>
 
                             <div className={styles["key-value-row"]}>
-                                {Object.entries(props.step?.stepSchema.properties)?.map(
+                                {Object.entries(props.step?.schema.properties)?.map(
                                     ([title, property], index) => <div className={styles["step-data-properties"]} key={`${property}~${index}`}>
                                         <label className={styles["property-key"]}>{title}</label>
 
@@ -126,13 +126,17 @@ function SingularPropertyComponent(props: { property: SingularProperty, onTextCh
 // eslint-disable-next-line no-unused-vars
 function ArrayPropertyComponent(props: { arrayProperty: ArrayProperty, onTextChanged: ((event: React.ChangeEvent<HTMLInputElement>) => void) }) {
     return <div style={{ paddingLeft: '14px', width: '115px' }}>
-        [{
-            props.arrayProperty.items.map((item, i) =>
-                <PropertyComponent
-                    key={i}
-                    property={item as SingularProperty}
-                    onTextChanged={e => props.onTextChanged(e)} />
-            )
+        [{Array.isArray(props.arrayProperty.items) ?
+            [ 
+                (props.arrayProperty.items as Prop[]).map((item, i) =>
+                    <PropertyComponent
+                        key={i}
+                        property={item as SingularProperty}
+                        onTextChanged={e => props.onTextChanged(e)} />
+                )
+            ] : <PropertyComponent
+                property={props.arrayProperty.items as SingularProperty}
+                onTextChanged={e => props.onTextChanged(e)} />
         }]
     </div>
 }

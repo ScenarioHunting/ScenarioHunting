@@ -1,4 +1,4 @@
-import { ArrayProperty, Prop, SingularProperty, Spec, Step, Schema } from "../spec";
+import { ArrayProperty, Prop, SingularProperty, Spec, Schema, Step } from "../spec";
 import { stringCaseHelpers } from "../../libs/string-case-helpers";
 
 export function specFormatterService(language: string) {
@@ -12,7 +12,9 @@ export function specFormatterService(language: string) {
             return <ArrayProperty>{
                 type: s.type,
                 description: s.description,
-                items: s.items.map(formatProperty),
+                items: Array.isArray(s.items)
+                    ? (s.items as Prop[]).map(formatProperty)
+                    : formatProperty(s.items),
             };
         } else {
             const s = (p as SingularProperty);
@@ -23,27 +25,30 @@ export function specFormatterService(language: string) {
             };
         }
     }
-    function formatStep(s: Step) {
-        const data = <Schema>{
-            title: formatText(s.data.title),//TODO: Consider the Low of demeter
-            type: s.data.type,//TODO: Consider the Low of demeter
+    function formatStep(step: Step): Step {
+        const schema = step.schema //TODO: Consider the Low of demeter
+        const result = <Schema>{
+            title: formatText(schema.title),
+            type: schema.type,
             properties: {}
         };
-        for (let [k, v] of Object.entries(s.data.properties)) {
-            data.properties[k] = formatProperty(v);
+        for (let [k, v] of Object.entries(schema.properties)) {
+            result.properties[k] = formatProperty(v);
         }
-        return <Step>{ data: data };
+        return { schema: result };
     }
 
     return {
         formatSpec(spec: Spec): Spec {
-            return <Spec>{
+            return {
                 context: formatText(spec.context),
                 subject: formatText(spec.subject),
                 scenario: formatText(spec.scenario),
                 given: spec.given.map(formatStep),
                 when: formatStep(spec.when),
-                then: spec.then.map(formatStep)
+                then: spec.then.map(formatStep),
+                data: spec.data,
+
             };
         }
     };

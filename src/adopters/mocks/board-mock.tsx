@@ -79,7 +79,18 @@ export function UIComponent() {
     const [statusMessage, setStatusMessage] = React.useState("status")
     board.showStatus = message => setStatusMessage(message)
     const [step, changeStep] = React.useState<string>(JSON.stringify({
-        stepSchema: {
+        data: {
+            customer_id: "customerId",
+            newAddress: "Oak street",
+            number_sample: 23,
+            bool_sample: false,
+            array_sample: [
+                "1nd item",
+                "2nd item",
+            ],
+            NewPhone_number: "+44555112100"
+        },
+        schema: {
             type: "object",
             title: "Customer registered",
             properties: {
@@ -93,12 +104,12 @@ export function UIComponent() {
                     description: "new address",
                     example: "Oak street"
                 },
-                number_sample:{
+                number_sample: {
                     type: "number",
                     description: "num sample",
                     example: 23
                 },
-                bool_sample:{
+                bool_sample: {
                     type: "boolean",
                     description: "boolean sample",
                     example: false
@@ -109,13 +120,13 @@ export function UIComponent() {
                     items: [
                         {
                             type: "string",
-                            description: "product_id",
-                            example: "product_id"
+                            description: "1st item",
+                            example: "1st item"
                         },
                         {
                             type: "string",
-                            description: "amount",
-                            example: "amount"
+                            description: "2nd item",
+                            example: "2nd item"
                         }
                     ]
                 },

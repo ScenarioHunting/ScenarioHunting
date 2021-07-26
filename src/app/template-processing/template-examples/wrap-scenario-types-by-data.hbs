@@ -1,0 +1,32 @@
+{{> main}}
+{{#*inline "wrap_string" data}}"{{data}}"{{/inline}}
+{{#*inline "wrap_number" data}}{{data}}{{/inline}}
+{{#*inline "wrap_boolean" data}}{{data}}{{/inline}}
+{{#*inline "wrap_object" schema data}}{
+    {{#each data as |value key|}}
+    {{key}}: {{> wrap schema=(lookup ../schema.properties key) data=value }}{{#unless @last}},{{/unless}}
+{{/each}} 
+}{{/inline}}
+{{#*inline "wrap_array" schema data}}[
+    {{#each data as |value key|}}
+       {{>wrap schema=../schema.items data=value}}{{#unless @last}},{{/unless}}
+    {{/each}}   
+]{{/inline}}
+
+{{#*inline "wrap" schema data}}
+     {{>(concat 'wrap_' schema.type) schema=schema data=data}}
+{{/inline}}
+{{#*inline 'main'}}
+    {{#each data as |example key|}}
+        Given:
+        {{#each example.given as |value key|}}
+            {{>wrap schema=(lookup ../../schema.given key) data=value }}
+        {{/each}}
+        When:
+            {{>wrap schema=../schema.when data=example.when }}
+        Then:
+        {{#each example.then as |value key|}}
+            {{>wrap schema=(lookup ../../schema.then key) data=value }}
+        {{/each}}
+    {{/each}}
+{{/inline}}
