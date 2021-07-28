@@ -17,14 +17,6 @@ const helpers = {
     yaml(o: any): string {
         return stringify(o, { indent: 4 })
     },
-    /**
-     * Returns the argument every time but in the last iteration.
-     */
-    skipLast(options) {
-        return options.data.last
-            ? options.inverse()
-            : options.fn()
-    },
     concat() {
         var outStr = '';
         for (var arg in arguments) {

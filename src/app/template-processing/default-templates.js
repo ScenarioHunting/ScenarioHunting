@@ -12,18 +12,16 @@ export const defaultTemplates = [
         contentTemplate: `using StoryTest;
         using Vlerx.Es.Messaging;
         using Vlerx.Es.Persistence;
-        using Vlerx.SampleContracts.{{subject}};
-        using Vlerx.{{camelCase context}}.{{subject}};
+        using Vlerx.SampleContracts.{{pascalCase subject}};
+        using Vlerx.{{pascalCase context}}.{{subject}};
         using Vlerx.{{pascalCase context}}.{{subject}}.Commands;
-        using Vlerx.{{kebabCase context}}.Tests.StoryTests;
-        using Vlerx.{{spaceCase context}}.Tests.StoryTests;
-        using Vlerx.{{sentenceCase context}}.Tests.StoryTests;
+        using Vlerx.{{pascalCase context}}.Tests.StoryTests;
         using Xunit;
         
         namespace {{pascalCase context}}.Tests
         {
         {{#* inline "callConstructor"}}
-        new {{pascalCase title}}({{#each properties}}"{{this.example}}"{{#skipLast}},{{/skipLast}}{{/each}}){{/inline}}    public class {{pascalCase scenario}} : IStorySpecification
+        new {{pascalCase title}}({{#each properties}}"{{this.example}}"{{#if @last}},{{/if}}{{/each}}){{/inline}}    public class {{pascalCase scenario}} : IStorySpecification
             {
                 public IDomainEvent[] Given
                 => new IDomainEvent[]{
