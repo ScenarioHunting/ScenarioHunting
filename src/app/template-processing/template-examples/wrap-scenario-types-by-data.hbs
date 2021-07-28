@@ -1,32 +1,52 @@
 {{> main}}
-{{#*inline "wrap_string" data}}"{{data}}"{{/inline}}
-{{#*inline "wrap_number" data}}{{data}}{{/inline}}
-{{#*inline "wrap_boolean" data}}{{data}}{{/inline}}
-{{#*inline "wrap_object" schema data}}{
+{{#*inline "format_string" data}}"{{data}}"{{/inline}}
+{{#*inline "format_number" data}}{{data}}{{/inline}}
+{{#*inline "format_boolean" data}}{{data}}{{/inline}}
+{{#*inline "format_object"  data schema}}{
     {{#each data as |value key|}}
-    {{key}}: {{> wrap schema=(lookup ../schema.properties key) data=value }}{{#unless @last}},{{/unless}}
+    {{key}}: {{> format data=value schema=(lookup ../schema.properties key) }}{{#unless @last}},{{/unless}}
 {{/each}} 
 }{{/inline}}
-{{#*inline "wrap_array" schema data}}[
+{{#*inline "format_array" data schema }}[
     {{#each data as |value key|}}
-       {{>wrap schema=../schema.items data=value}}{{#unless @last}},{{/unless}}
+        {{#if ../schema.items.[0]}}
+{{>format data=value schema=(lookup ../schema.items key)}}
+        {{else}}
+{{>format  data=value schema=../schema.items}}{{/if}}{{#unless @last}},{{/unless}}
     {{/each}}   
 ]{{/inline}}
 
-{{#*inline "wrap" schema data}}
-     {{>(concat 'wrap_' schema.type) schema=schema data=data}}
+
+{{#*inline "format" data schema}}
+     {{>(concat 'format_' schema.type) data=data schema=schema}}
 {{/inline}}
 {{#*inline 'main'}}
     {{#each data as |example key|}}
+        
         Given:
         {{#each example.given as |value key|}}
-            {{>wrap schema=(lookup ../../schema.given key) data=value }}
+            {{>format data=value schema=(lookup (lookup ../../given key) schema)  }}
         {{/each}}
+
         When:
-            {{>wrap schema=../schema.when data=example.when }}
+            {{>format data=example.when schema=../when.schema  }}
+
         Then:
         {{#each example.then as |value key|}}
-            {{>wrap schema=(lookup ../../schema.then key) data=value }}
+            {{>format data=value schema=(lookup (lookup ../../then key) 'schema')  }}
         {{/each}}
     {{/each}}
+{{/inline}}
+
+
+
+
+{{#*inline "format_undefined" data schema}}
+STRUCTURAL ERROR: UNKNOWN SCHEMA TYPE 
+---------Internal-SCHEMA:------------
+{{{yaml schema}}}
+---------INTERNAL-DATA:--------------------
+{{{yaml data}}}
+------------THIS:--------------------
+{{{yaml .}}}
 {{/inline}}

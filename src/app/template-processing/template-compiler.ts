@@ -25,16 +25,23 @@ const helpers = {
             ? options.inverse()
             : options.fn()
     },
-    concat(){
+    concat() {
         var outStr = '';
-            for(var arg in arguments){
-                if(typeof arguments[arg]!='object'){
-                    outStr += arguments[arg];
-                }
+        for (var arg in arguments) {
+            if (typeof arguments[arg] != 'object') {
+                outStr += arguments[arg];
             }
-            return outStr;
+        }
+        return outStr;
+    },
+    subtract() {
+        return (arguments[0] - arguments[1]).toString()
+    },
+    repeat(text:string) {
+        return text.repeat(arguments[1])
     }
 }
+// const customHelpers = Object.entries(Object.entries(helpers) as any).concat(stringCaseHelpers as any[])
 const customHelpers = Object.entries(stringCaseHelpers).concat(Object.entries(helpers))
 customHelpers.map(([name, fn]) => Handlebars.registerHelper(name, fn))
 

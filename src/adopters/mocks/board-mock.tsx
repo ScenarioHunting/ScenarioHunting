@@ -84,9 +84,13 @@ export function UIComponent() {
             newAddress: "Oak street",
             number_sample: 23,
             bool_sample: false,
+            tuple_sample: [
+                "str",
+                12
+            ],
             array_sample: [
-                "1nd item",
-                "2nd item",
+                "1st item",
+                "2nd item"
             ],
             NewPhone_number: "+44555112100"
         },
@@ -117,6 +121,15 @@ export function UIComponent() {
                 array_sample: {
                     type: "array",
                     description: "array_sample",
+                    items: {
+                        type: "string",
+                        description: "1st item",
+                        example: "1st item"
+                    }
+                },
+                tuple_sample: {
+                    type: "array",
+                    description: "array_sample",
                     items: [
                         {
                             type: "string",
@@ -124,7 +137,7 @@ export function UIComponent() {
                             example: "1st item"
                         },
                         {
-                            type: "string",
+                            type: "number",
                             description: "2nd item",
                             example: "2nd item"
                         }
@@ -142,83 +155,82 @@ export function UIComponent() {
             style: {
                 backgroundColor: "#ff9d48"
             }
-        }
-
+        },
     }, null, 2))
-    function select() {
-        if (!step) {
-            alert("No selection!")
-            return
-        }
-        const selected: SelectedStep = JSON.parse(step)
-        if (!selected) {
-            alert("Invalid format.")
-            return
-        }
-        board.select(selected)
+function select() {
+    if (!step) {
+        alert("No selection!")
+        return
     }
-    return <div style={{
-        width: '100%',
-        backgroundColor: '#454545',
-        marginLeft: '10px'
-    }}>
-        <h4 style={{
-            backgroundColor: 'white',
-            textAlign: 'center',
-            margin: '0px'
-        }}>Widget Data To Be Selected</h4>
-        <textarea
-            style={{
-                width: '100%',
-                height: '512px',
-                backgroundColor: '#454545',
-                color: '#ffffffd9',
-                borderStyle: 'none'
-            }}
-            onChange={x => changeStep(x.target.value)} value={step}>
-        </textarea>
-        <button style={{ width: '100%', height: '36px' }}
-            onClick={select}>Select</button>
-
-        <pre style={{
-            backgroundColor: '#4262ff',
-            color: 'white',
-            marginBottom: 'auto',
-            margin: '0px'
+    const selected: SelectedStep = JSON.parse(step)
+    if (!selected) {
+        alert("Invalid format.")
+        return
+    }
+    board.select(selected)
+}
+return <div style={{
+    width: '100%',
+    backgroundColor: '#454545',
+    marginLeft: '10px'
+}}>
+    <h4 style={{
+        backgroundColor: 'white',
+        textAlign: 'center',
+        margin: '0px'
+    }}>Widget Data To Be Selected</h4>
+    <textarea
+        style={{
+            width: '100%',
+            height: '512px',
+            backgroundColor: '#454545',
+            color: '#ffffffd9',
+            borderStyle: 'none'
         }}
+        onChange={x => changeStep(x.target.value)} value={step}>
+    </textarea>
+    <button style={{ width: '100%', height: '36px' }}
+        onClick={select}>Select</button>
+
+    <pre style={{
+        backgroundColor: '#4262ff',
+        color: 'white',
+        marginBottom: 'auto',
+        margin: '0px'
+    }}
 
 
 
 
-        >{statusMessage}</pre>
-        <div id="modal" style={{
-            display: 'none',
-            position: 'fixed',
-            top: '0%',
-            left: '0%',
+    >{statusMessage}</pre>
+    <div id="modal" style={{
+        display: 'none',
+        position: 'fixed',
+        top: '0%',
+        left: '0%',
+        width: '100%',
+        height: '100%',
+        zIndex: 10
+    }}>
+        <iframe id="modal-iframe" style={{
             width: '100%',
             height: '100%',
-            zIndex: 10
+            border: 0
         }}>
-            <iframe id="modal-iframe" style={{
-                width: '100%',
-                height: '100%',
-                border: 0
-            }}>
-            </iframe>
-        </div>
-        <div id="modal-dark-background" style={{
-            position: 'fixed',
-            zIndex: 5,
-            left: 0,
-            top: 0,
-            width: '100%',
-            height: '100%',
-            overflow: 'hidden',
-            backgroundColor: 'rgba(0,0,0,.75)',
-            display: 'none'
-        }}></div>
-    </div >
+        </iframe>
+    </div>
+    <div id="modal-dark-background" style={{
+        position: 'fixed',
+        zIndex: 5,
+        left: 0,
+        top: 0,
+        width: '100%',
+        height: '100%',
+        overflow: 'hidden',
+        backgroundColor: 'rgba(0,0,0,.75)',
+        display: 'none'
+    }}></div>
+</div >
 }
 export class BoardUi {
     component = UIComponent;

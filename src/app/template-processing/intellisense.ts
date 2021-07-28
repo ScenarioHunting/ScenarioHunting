@@ -1,5 +1,7 @@
 /* eslint-disable no-undef */
 
+import { Children } from "react";
+
 
 
 interface EditorSuggestion {
@@ -150,14 +152,12 @@ const propertySuggestions: EditorSuggestion[] = [
     },
 ]
 
-const stepDataSuggestions: EditorSuggestion[] = [
+const stepSchemaSuggestions: EditorSuggestion[] = [
     {
-        label: "data",
-        insertText: "data",
-        detail: "The schema and data required at this step",
+        label: "schema",
+        insertText: "schema",
+        detail: "The schema that describes the type of this step",
         children: [
-
-
             {
                 label: "title",
                 insertText: "title",
@@ -203,7 +203,7 @@ const specSuggestions: EditorSuggestion[] = [
         label: "when",
         insertText: "when",
         detail: "when step",
-        children: stepDataSuggestions,
+        children: stepSchemaSuggestions,
     },
     //Collections:
     {
@@ -213,7 +213,7 @@ const specSuggestions: EditorSuggestion[] = [
         children: [{
             label: "first",
             insertText: "[0]",
-            children: stepDataSuggestions,
+            children: stepSchemaSuggestions,
         }]
     },
     {
@@ -223,7 +223,7 @@ const specSuggestions: EditorSuggestion[] = [
         children: [{
             label: "first",
             insertText: "[0]",
-            children: stepDataSuggestions,
+            children: stepSchemaSuggestions,
         }]
     },
     //collections:
@@ -233,7 +233,7 @@ const specSuggestions: EditorSuggestion[] = [
         label: "step",//\{\{#each.*given\sas\s\|step\|\}\}(\r\n|\r|\n)+.+\{\{
         insertText: "step",
         detail: "A scenario step",
-        children: stepDataSuggestions
+        children: stepSchemaSuggestions
     },
     {
         label: "property",
@@ -241,6 +241,28 @@ const specSuggestions: EditorSuggestion[] = [
         detail: "Step property",
         children: propertySuggestions,
     },
+    {
+        label: "data",
+        insertText: "data",
+        detail: "Test data",
+        children: [{
+            label: "given",
+            insertText: "given",
+            detail: "Given step test data"
+        },
+        {
+            label: "when",
+            insertText: "when",
+            detail: "When step test data"
+        },
+        {
+            label: "then",
+            insertText: "then",
+            detail: "Then step test data"
+        },
+
+        ]
+    }
 ]
 
 //////////////////////////////
@@ -273,17 +295,15 @@ export const applyIntellisense = (language: string) => {
             triggerCharacters: ['#'],
             provideCompletionItems: (model, currentPosition) => {
 
-                const stepInsertText = `{{step.title}}:
-    {{#each step.properties as |property propertyName|}}
-        {{#if @first}}({{/if}}
+                const stepInsertText = `{{step.schema.title}}:
+    {{#each step.schema.properties as |property propertyName|}}
         {{propertyName}} = {{property.example}}
-        {{#skipLast}},{{/skipLast}}
-        {{#if @last}}){{/if}}
+        {{#unless @last}},{{/unless}}
     {{/each}}`
 
                 function getStepSnippet(collection: string): monaco.languages.CompletionItem {
                     return {
-                        label: `each ${collection}`,
+                        label: `each ${collection} schema`,
                         insertText: `#each ${collection} as |step|}}
     ${stepInsertText}
 {{/each`,
@@ -309,7 +329,7 @@ export const applyIntellisense = (language: string) => {
                     }
                 }
                 const whenSnippet = {
-                    label: `with when`,
+                    label: `with when.schema`,
                     insertText: `#with when as |step|}}
     ${stepInsertText}
 {{/with`,
