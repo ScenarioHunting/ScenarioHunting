@@ -65,8 +65,6 @@ export async function extractStepFromText({
         if (purePropertyName == '')
             return
 
-        // const propertyName = snakeCase(purePropertyName)
-
         let propertyValue = kv[1]
         if (!propertyValue) {
             propertyValue = purePropertyName
@@ -82,13 +80,15 @@ export async function extractStepFromText({
                 propertyName = propertyName.slice(0, -1)
             }
             result.data[propertyName] = propertyValue;
-            log.log("The property: "+ propertyName + "set to: " + propertyValue+"=> result:"+result.data[propertyName])
-            if (Array.isArray((<ArrayProperty>result.schema.properties[parentArrayPropertyName]).items))
+            log.log("The property: " + propertyName + " set to: " + propertyValue + "=> result:" + result.data[propertyName])
+            if (Array.isArray((<ArrayProperty>result.schema.properties[parentArrayPropertyName]).items)) {
                 (<Prop[]>(<ArrayProperty>result.schema.properties[parentArrayPropertyName]).items).push(
                     createSingularProperty(propertyName, propertyValue))
-            else
+            }
+            else {
                 (<Prop>(<ArrayProperty>result.schema.properties[parentArrayPropertyName]).items)
                     = createSingularProperty(propertyName, propertyValue)
+            }
             return
         }
 

@@ -199,7 +199,7 @@ async function extractStepFrom(dataWidget: SDK.IWidget): Promise<SelectedStep> {
         return step
     }
     catch (e) {
-        console.error(e)
+        log.error(e)
         return Promise.reject(e)
     }
 }
