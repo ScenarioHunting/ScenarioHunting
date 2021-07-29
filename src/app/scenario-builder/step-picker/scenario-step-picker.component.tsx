@@ -32,7 +32,7 @@ export function createTestStepRecorder({ stepType
         const [isActive, setIsActive] = React.useState<boolean>(false)
         const [isWaitingForSelection, setIsWaitingForSelection] = React.useState(false)
         function select() {
-            
+
             setIsWaitingForSelection(true)
             log.log('Waiting...')
             board.unselectAll()
@@ -89,6 +89,7 @@ export function createTestStepRecorder({ stepType
                                         <label className={styles["property-key"]}>{title}</label>
 
                                         <PropertyComponent
+                                            data={props.step?.data[title]}
                                             property={property}
                                             onTextChanged={e => onPropertyValueTextChange(index, e)} />
 
@@ -103,29 +104,43 @@ export function createTestStepRecorder({ stepType
     };
 }
 // eslint-disable-next-line no-unused-vars
-function PropertyComponent(props: { property: Prop, onTextChanged: ((event: React.ChangeEvent<HTMLInputElement>) => void) }) {
+function PropertyComponent(props: {
+    property: Prop,
+    data: any,
+    onTextChanged: ((event: React.ChangeEvent<HTMLInputElement>) => void)
+}) {
     return ((props.property as ArrayProperty).items)
         ?
         <ArrayPropertyComponent
+            data={props.data}
             arrayProperty={props.property as ArrayProperty}
             onTextChanged={props.onTextChanged} />
         :
         <SingularPropertyComponent
+            data={props.data}
             property={props.property as SingularProperty}
             onTextChanged={props.onTextChanged} />
 }
 // eslint-disable-next-line no-unused-vars
-function SingularPropertyComponent(props: { property: SingularProperty, onTextChanged: ((event: React.ChangeEvent<HTMLInputElement>) => void) }) {
+function SingularPropertyComponent(props: {
+    property: SingularProperty,
+    data: string,
+    onTextChanged: ((event: React.ChangeEvent<HTMLInputElement>) => void)
+}) {
     return <input readOnly={false} onChange={props.onTextChanged}
         className={styles["property-value"]
             + " miro-input miro-input--small miro-input--primary"}
-        type="text" value={props.property.example}
+        type="text" value={props.data}
         disabled={true}>
     </input>
 }
 
 // eslint-disable-next-line no-unused-vars
-function ArrayPropertyComponent(props: { arrayProperty: ArrayProperty, onTextChanged: ((event: React.ChangeEvent<HTMLInputElement>) => void) }) {
+function ArrayPropertyComponent(props: {
+    arrayProperty: ArrayProperty,
+    data: any,
+    onTextChanged: ((event: React.ChangeEvent<HTMLInputElement>) => void)
+}) {
     return <div style={{
         padding: '14px',
         width: '115px',
@@ -136,20 +151,25 @@ function ArrayPropertyComponent(props: { arrayProperty: ArrayProperty, onTextCha
         borderRadius: '1px'
     }}>
         {
-        
+
             Array.isArray(props.arrayProperty.items) ?
-            [
-                (props.arrayProperty.items as Prop[]).map((item, i) =>
-                    <PropertyComponent
-                        key={i}
-                        property={item as SingularProperty}
-                        onTextChanged={e => props.onTextChanged(e)} />
-                )
-            ] : <PropertyComponent
-                property={props.arrayProperty.items as SingularProperty}
-                onTextChanged={e => props.onTextChanged(e)} />
+                [
+                    (props.arrayProperty.items as Prop[]).map((item, i) =>
+                        <PropertyComponent
+                            key={i}
+                            data={props.data[i]}
+                            property={item as SingularProperty}
+                            onTextChanged={e => props.onTextChanged(e)} />
+                    )
+                ] : <PropertyComponent
+                    data={props.data}
+                    property={props.arrayProperty.items as SingularProperty}
+                    onTextChanged={e => props.onTextChanged(e)} />
+
 
         }
-        
+
     </div>
 }
+
+
