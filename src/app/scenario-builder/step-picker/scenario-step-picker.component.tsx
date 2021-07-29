@@ -5,7 +5,7 @@ import { IBoard, SelectedStep } from '../../ports/iboard';
 import { IQueuingMachine } from "../../../libs/queuing-machine/iqueuing-machine";
 import { TestStepTurn } from './scenario-step-turn';
 import { log } from "../../../external-services";
-import { ArrayProperty, SingularProperty, Prop } from '../../../app/spec';
+import { ArrayProperty, SingularProperty, Prop } from '../../api';
 
 export class TestStepDependencies {
     stepType: string
@@ -125,9 +125,19 @@ function SingularPropertyComponent(props: { property: SingularProperty, onTextCh
 
 // eslint-disable-next-line no-unused-vars
 function ArrayPropertyComponent(props: { arrayProperty: ArrayProperty, onTextChanged: ((event: React.ChangeEvent<HTMLInputElement>) => void) }) {
-    return <div style={{ paddingLeft: '14px', width: '115px' }}>
-        [{Array.isArray(props.arrayProperty.items) ?
-            [ 
+    return <div style={{
+        padding: '14px',
+        width: '115px',
+
+        borderStyle: 'solid',
+        borderWidth: 'thin',
+        borderColor: '#45454542',
+        borderRadius: '1px'
+    }}>
+        {
+        
+            Array.isArray(props.arrayProperty.items) ?
+            [
                 (props.arrayProperty.items as Prop[]).map((item, i) =>
                     <PropertyComponent
                         key={i}
@@ -137,6 +147,8 @@ function ArrayPropertyComponent(props: { arrayProperty: ArrayProperty, onTextCha
             ] : <PropertyComponent
                 property={props.arrayProperty.items as SingularProperty}
                 onTextChanged={e => props.onTextChanged(e)} />
-        }]
+
+        }
+        
     </div>
 }

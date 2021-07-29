@@ -1,5 +1,5 @@
 import { isNullOrUndefined } from "../../libs/isNullOrUndefined"
-import { Spec } from "../../app/spec";
+import { Api } from "../api";
 import { ExternalServices, log } from "../../external-services";
 import { specFormatterService } from "./spec-formatter.service";
 const templateRepository = ExternalServices.templateRepository
@@ -20,7 +20,7 @@ function downloadAs(fileName: string, data: string) {
     }
 }
 export class ScenarioBuilderService {
-    static Save = async (templateName: string, spec: Spec): Promise<string> => {
+    static Save = async (templateName: string, spec: Api): Promise<string> => {
 
         log.log("Saving the template for test:", spec.scenario)
 

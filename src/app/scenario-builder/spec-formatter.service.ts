@@ -1,10 +1,23 @@
-import { ArrayProperty, Prop, SingularProperty, Spec, Schema, Step } from "../spec";
+import { ArrayProperty, Prop, SingularProperty, Api, Schema, Step } from "../api";
 import { stringCaseHelpers } from "../../libs/string-case-helpers";
 
 export function specFormatterService(language: string) {
 
-    const getTextFormatterForLanguage = (fileExtension: string) => stringCaseHelpers.snakeCase;
-    const formatText = getTextFormatterForLanguage(language);
+    const buildTextFormatterForLanguage = (fileExtension: string) => {
+        switch (fileExtension) {
+            case 'cs':
+                return stringCaseHelpers.pascalCase
+            case 'yml':
+            case 'json':
+                return stringCaseHelpers.snakeCase;
+            case 'js':
+            case 'ts':
+                return stringCaseHelpers.camelCase
+            default:
+                return x => x
+        }
+    }
+    const formatText = buildTextFormatterForLanguage(language);
 
     function formatProperty(p: Prop): Prop {
         if (p.type == "array") {
@@ -39,10 +52,10 @@ export function specFormatterService(language: string) {
     }
 
     return {
-        formatSpec(spec: Spec): Spec {
+        formatSpec(spec: Api): Api {
             return {
-                context: formatText(spec.context),
-                subject: formatText(spec.subject),
+                context: { title: formatText(spec.context.title) },
+                subject: { title: formatText(spec.subject.title) },
                 scenario: formatText(spec.scenario),
                 given: spec.given.map(formatStep),
                 when: formatStep(spec.when),

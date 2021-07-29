@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { CSSProperties } from "react"
-import { Schema } from "../spec"
+import { Schema } from "../api"
 
 
 export type WidgetSnapshot = {

@@ -9,7 +9,7 @@ import { queueingMachine } from './local-dependency-container';
 import { useEffect, useState } from 'react';
 import { SelectableText } from './title-picker/title-picker.component';
 import { TestStepTurn } from './step-picker/scenario-step-turn';
-import { Spec } from '../../app/spec';
+import { Api } from '../api';
 import { ExternalServices, log } from '../../external-services';
 
 const templateRepository = ExternalServices.templateRepository
@@ -119,8 +119,7 @@ export const createTestBuilder = (board = ExternalServices.boardService): React.
         //Only the scenario required fields should exist
         //Add a generate data button
         return {
-            subject: subject,
-            context: context,
+            scenarioapi: "1.0.0",
             scenario: scenario,
             given: givenSteps.map(given => { return { schema: given.step.schema } }),
             when: { schema: when?.schema },
@@ -130,7 +129,9 @@ export const createTestBuilder = (board = ExternalServices.boardService): React.
                 when: when?.data,
                 then: [then?.data]
             }],
-        } as Spec
+            subject: { title: subject },
+            context: { title: context },
+        } as Api
     }
     const forceUpdate = React.useReducer((bool) => !bool, true)[1];
     const save = async () => {

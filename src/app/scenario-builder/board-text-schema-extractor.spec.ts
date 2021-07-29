@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 // eslint-disable-next-line no-unused-vars
 const should = require('chai').should()
-import { ArrayProperty, SingularProperty } from "../../app/spec";
+import { ArrayProperty, SingularProperty } from "../api";
 import { extractStepFromText } from "./board-text-schema-extractor";
 // import { extractStepFromText } from "./board-text-step-extractor";
 

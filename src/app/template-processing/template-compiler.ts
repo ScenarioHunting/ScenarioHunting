@@ -1,39 +1,10 @@
+import { helpers } from "./template-helpers";
 import { log } from "../../external-services";
 // import Handlebars from "handlebars/dist/handlebars.js"
 // import "handlebars/types/index"
 import { stringCaseHelpers } from "../../libs/string-case-helpers";
 import Handlebars from 'handlebars/dist/cjs/handlebars';
-import { stringify } from 'yaml'
 
-const helpers = {
-
-    /**
-     * Object to JSON
-     * @param o Object to be converted to JSON.
-     */
-    json(o: any): string {
-        return JSON.stringify(o, null, 4)
-    },
-    yaml(o: any): string {
-        return stringify(o, { indent: 4 })
-    },
-    concat() {
-        var outStr = '';
-        for (var arg in arguments) {
-            if (typeof arguments[arg] != 'object') {
-                outStr += arguments[arg];
-            }
-        }
-        return outStr;
-    },
-    subtract() {
-        return (arguments[0] - arguments[1]).toString()
-    },
-    repeat(text:string) {
-        return text.repeat(arguments[1])
-    }
-}
-// const customHelpers = Object.entries(Object.entries(helpers) as any).concat(stringCaseHelpers as any[])
 const customHelpers = Object.entries(stringCaseHelpers).concat(Object.entries(helpers))
 customHelpers.map(([name, fn]) => Handlebars.registerHelper(name, fn))
 

@@ -34,6 +34,9 @@ export const editorFactory = {
             // minimap: { enabled: false },
             scrollBeyondLastLine: false,
             // overviewRulerLanes: 0,
+            folding: true,
+            showFoldingControls: "always",
+            foldingStrategy:"indentation",
             formatOnType: true//!important
         });
     }

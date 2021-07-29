@@ -1,8 +1,12 @@
-import { Spec } from "../spec";
+import { Api } from "../api";
 
-export const defaultTestSpec: Spec = {
-    subject: 'Your-subject-under-test',
-    context: 'Your-context',
+export const defaultTestSpec: Api = {
+    subject: {
+        title: 'Your-subject-under-test',
+    },
+    context: {
+        title: 'Your-context',
+    },
     scenario: 'Your-scenario',
     given: [{
         schema: {

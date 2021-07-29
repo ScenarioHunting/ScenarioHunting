@@ -1,4 +1,4 @@
-import { Properties, ArrayProperty, SingularProperty, Prop, Schema } from '../../app/spec';
+import { Properties, ArrayProperty, SingularProperty, Prop, Schema } from '../api';
 
 const removeStartingDash = (str: string): string =>
     str[0] == '-' ? str.substring(1) : str;

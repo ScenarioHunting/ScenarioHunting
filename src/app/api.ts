@@ -1,7 +1,7 @@
 export type Prop = SingularProperty | ArrayProperty
 export type Property = {
-    type: string,
-    description: string,
+    type: string
+    description: string
 }
 export interface SingularProperty extends Property {
     example: any
@@ -30,13 +30,19 @@ export type StepData = {
     when: any,
     then: any[]
 }
+export type Context = {
+    title: string
+}
+export type Subject = {
+    title: string
+}
 
-export type Spec = {
-    scenario: string,
-    context: string,
-    subject: string,
-    given: Step[],
-    when: Step,
-    then: Step[],
+export type Api = {
+    scenario: string
+    given: Step[]
+    when: Step
+    then: Step[]
     data: StepData[]
+    context: Context
+    subject: Subject
 }
