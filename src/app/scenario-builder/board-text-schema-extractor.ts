@@ -1,3 +1,4 @@
+import { log } from '../../external-services';
 import { Properties, ArrayProperty, SingularProperty, Prop, Schema } from '../api';
 
 const removeStartingDash = (str: string): string =>
@@ -81,6 +82,7 @@ export async function extractStepFromText({
                 propertyName = propertyName.slice(0, -1)
             }
             result.data[propertyName] = propertyValue;
+            log.log("The property: "+ propertyName + "set to: " + propertyValue+"=> result:"+result.data[propertyName])
             if (Array.isArray((<ArrayProperty>result.schema.properties[parentArrayPropertyName]).items))
                 (<Prop[]>(<ArrayProperty>result.schema.properties[parentArrayPropertyName]).items).push(
                     createSingularProperty(propertyName, propertyValue))

@@ -10,7 +10,7 @@ export class MiroBoard implements IBoard {
     openModal(iframeURL: string): Promise<any> {
         return miro.board.ui.openModal(iframeURL, { fullscreen: true })
     }
-    closeModal() { miro.board.ui.closeModal()}
+    closeModal() { miro.board.ui.closeModal() }
 
     private previouslySelectedWidgets: SDK.IWidget[]
 
@@ -171,7 +171,7 @@ async function extractStepFrom(dataWidget: SDK.IWidget): Promise<SelectedStep> {
         const getPlainText = (originalText: string): string =>
             originalText.split('</p><p>').join('\n')
                 .replace('&#43;', '+')
-                .replace(/(<([^>]+)>)/ig,'')
+                .replace(/(<([^>]+)>)/ig, '')
 
         dataText = getPlainText(await extractWidgetText(dataWidget))
         schemaText = getPlainText(await extractWidgetText(schemaWidget))
@@ -189,6 +189,7 @@ async function extractStepFrom(dataWidget: SDK.IWidget): Promise<SelectedStep> {
             schemaText: schemaText,
             dataText: dataText
         });
+        log.log('The step extracted from text:', s)
         const step: SelectedStep = {
             widgetSnapshot: snapshot
             , data: s.data
