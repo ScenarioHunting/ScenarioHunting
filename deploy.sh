@@ -4,7 +4,7 @@ sed -i 's|ExternalServices = createMockedDependencies|ExternalServices = createM
 git add . 
 git commit -m 'chore:Setup miro dependencies' 
 npm run build 
-gh-pages -d dist --repo https://github.com/ScenarioHunting/ScenarioHunting 
+npx gh-pages -d dist --repo https://github.com/ScenarioHunting/ScenarioHunting 
 sed -i 's|ExternalServices = createMiroDependencies|ExternalServices = createMockedDependencies|g' ./src/external-services.tsx 
 git add . 
 git commit -m 'chore: setup development dependencies' 
