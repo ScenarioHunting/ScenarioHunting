@@ -32,6 +32,7 @@ export function createTestStepRecorder({ stepType
         const [isActive, setIsActive] = React.useState<boolean>(false)
         const [isWaitingForSelection, setIsWaitingForSelection] = React.useState(false)
         function select() {
+            
             setIsWaitingForSelection(true)
             log.log('Waiting...')
             board.unselectAll()
