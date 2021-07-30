@@ -397,7 +397,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
   \*****************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"localStorageTemplateRepository\": () => (/* binding */ localStorageTemplateRepository)\n/* harmony export */ });\nconst KeyPrefix = \"TemplateRepository-\";\nclass localStorageTemplateRepository {\n    constructor() {\n        this.dumpAll = async () => (await this.getAllTemplateNames())\n            .forEach(t => this.getTemplateByName(t).then(console.log));\n    }\n    async createOrReplaceTemplate(newTemplate) {\n        console.log(\"Saving template to local storage:\", newTemplate);\n        if (newTemplate.templateName)\n            this.removeTemplate(newTemplate.templateName);\n        localStorage.setItem(KeyPrefix + newTemplate.templateName, JSON.stringify(newTemplate));\n    }\n    getAllTemplateNames() {\n        return Promise.resolve(Object.keys(localStorage).map(t => t.substr(KeyPrefix.length)));\n    }\n    removeTemplate(templateName) {\n        return Promise.resolve(localStorage.removeItem(KeyPrefix + templateName));\n    }\n    getTemplateByName(templateName) {\n        const item = localStorage.getItem(KeyPrefix + templateName);\n        if (!item)\n            return Promise.reject(\"Template not found!\");\n        return Promise.resolve(JSON.parse(item));\n    }\n}\n\n\n//# sourceURL=webpack://ExternalServices/./src/adopters/mocks/local-storage-template-repository.ts?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"localStorageTemplateRepository\": () => (/* binding */ localStorageTemplateRepository)\n/* harmony export */ });\n/* harmony import */ var _external_services__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../external-services */ \"./src/external-services.tsx\");\n\nconst KeyPrefix = \"TemplateRepository-\";\nclass localStorageTemplateRepository {\n    constructor() {\n        this.dumpAll = async () => (await this.getAllTemplateNames())\n            .forEach(t => this.getTemplateByName(t).then(_external_services__WEBPACK_IMPORTED_MODULE_0__.log.log));\n    }\n    async createOrReplaceTemplate(newTemplate) {\n        _external_services__WEBPACK_IMPORTED_MODULE_0__.log.log(\"Saving template to local storage:\", newTemplate);\n        if (newTemplate.templateName)\n            this.removeTemplate(newTemplate.templateName);\n        localStorage.setItem(KeyPrefix + newTemplate.templateName, JSON.stringify(newTemplate));\n    }\n    getAllTemplateNames() {\n        return Promise.resolve(Object.keys(localStorage).map(t => t.substr(KeyPrefix.length)));\n    }\n    removeTemplate(templateName) {\n        return Promise.resolve(localStorage.removeItem(KeyPrefix + templateName));\n    }\n    getTemplateByName(templateName) {\n        const item = localStorage.getItem(KeyPrefix + templateName);\n        if (!item)\n            return Promise.reject(\"Template not found!\");\n        return Promise.resolve(JSON.parse(item));\n    }\n}\n\n\n//# sourceURL=webpack://ExternalServices/./src/adopters/mocks/local-storage-template-repository.ts?");
 
 /***/ }),
 
@@ -417,7 +417,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
   \*****************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"extractStepFromText\": () => (/* binding */ extractStepFromText)\n/* harmony export */ });\n/* harmony import */ var _external_services__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../external-services */ \"./src/external-services.tsx\");\n\nconst removeStartingDash = (str) => str[0] == '-' ? str.substring(1) : str;\nfunction createSingularProperty(description, example) {\n    if (!isNaN(parseFloat(example))) {\n        return {\n            type: \"number\",\n            description: description,\n            example: parseFloat(example)\n        };\n    }\n    if ([\"true\", \"false\"].includes(example.toLowerCase())) {\n        return {\n            type: \"boolean\",\n            description: description,\n            example: example.toLowerCase() == \"true\"\n        };\n    }\n    return {\n        type: \"string\",\n        description: description,\n        example: example\n    };\n}\n// function areAllItemsTheSame(array: any[]) {\n//     return new Set(array).size == 1\n// }\nasync function extractStepFromText({ schemaText, dataText }) {\n    let title = schemaText.trim().split('\\n').shift();\n    if (!title) {\n        return Promise.reject(\"Unknown text format.\");\n    }\n    let result = {\n        schema: {\n            type: 'object',\n            title: title,\n            properties: {}\n        },\n        data: {}\n    };\n    const rows = dataText.trim().split(/\\n|;|,|\\//);\n    if (rows[0] == title) {\n        rows.shift();\n    }\n    // title = snakeCase(title!).trim()\n    // var props: Properties = {}\n    //\n    let isInArrayScope = false; //Pass it as a recursive parameter\n    let parentArrayPropertyName = \"\"; //Pass it as a recursive parameter\n    //^Refactor to a stack\n    rows.map(row => row.split(\":\")).forEach(kv => {\n        var _a, _b;\n        let propertyName = (_a = removeStartingDash(kv[0].trim())) === null || _a === void 0 ? void 0 : _a.trim();\n        if (propertyName == '')\n            return;\n        let propertyValue = (_b = kv[1]) === null || _b === void 0 ? void 0 : _b.trim();\n        if (!propertyValue) {\n            propertyValue = propertyName;\n        }\n        if (isInArrayScope) {\n            if (propertyValue.endsWith(']')) {\n                propertyValue = propertyValue.slice(0, -1);\n                isInArrayScope = false;\n                propertyName = propertyName.slice(0, -1);\n            }\n            // result.data[propertyName] = propertyValue;\n            if (!Array.isArray(result.data[parentArrayPropertyName]))\n                result.data[parentArrayPropertyName] = [];\n            result.data[parentArrayPropertyName].push(propertyValue);\n            const s = createSingularProperty(propertyName, propertyValue);\n            let items = result.schema.properties[parentArrayPropertyName].items;\n            if (!items)\n                items = s;\n            else if (Array.isArray(items))\n                items.push(s);\n            else if (items != s)\n                items = [items, s];\n            result.schema.properties[parentArrayPropertyName].items = items;\n            _external_services__WEBPACK_IMPORTED_MODULE_0__.log.log(propertyName + \" The property: \" + parentArrayPropertyName + \" schema set to: \"\n                + propertyValue + \"=> result:\", result.schema.properties[parentArrayPropertyName].items);\n            _external_services__WEBPACK_IMPORTED_MODULE_0__.log.log(\"The property: \" + parentArrayPropertyName + \" data set to: \" + propertyValue + \"=> result:\", result.data[parentArrayPropertyName]);\n            return;\n        }\n        if (propertyValue[0] == '[') {\n            isInArrayScope = true;\n            const property = {\n                type: \"array\",\n                description: propertyName,\n                items: []\n            };\n            const firstItemsPropertyName = propertyValue.substring(1);\n            //TODO: support value objects as arrays:\n            // if (firstItemsPropertyName) {\n            //     (property.items as Prop[]).push(\n            //         createSingularProperty(firstItemsPropertyName, firstItemsPropertyName))\n            // }\n            // if (areAllItemsTheSame(property.items as Prop[]))\n            const s = createSingularProperty(firstItemsPropertyName, firstItemsPropertyName);\n            // property.items = s;\n            result.schema.properties[propertyName] = property;\n            result.data[propertyName] = {};\n            result.data[propertyName][firstItemsPropertyName] = [s.example];\n            parentArrayPropertyName = propertyName;\n            return;\n        }\n        result.data[propertyName] = propertyValue;\n        const s = createSingularProperty(propertyName, propertyValue);\n        result.schema.properties[propertyName] = s;\n    });\n    return Promise.resolve(result);\n}\n\n\n//# sourceURL=webpack://ExternalServices/./src/app/scenario-builder/board-text-schema-extractor.ts?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"extractStepFromText\": () => (/* binding */ extractStepFromText)\n/* harmony export */ });\n/* harmony import */ var _external_services__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../external-services */ \"./src/external-services.tsx\");\n\nconst removeStartingDash = (str) => str[0] == '-' ? str.substring(1) : str;\nfunction createSingularProperty(description, example) {\n    if (!isNaN(parseFloat(example))) {\n        return {\n            type: \"number\",\n            description: description,\n            example: parseFloat(example)\n        };\n    }\n    if ([\"true\", \"false\"].includes(example.toLowerCase())) {\n        return {\n            type: \"boolean\",\n            description: description,\n            example: example.toLowerCase() == \"true\"\n        };\n    }\n    return {\n        type: \"string\",\n        description: description,\n        example: example\n    };\n}\n// function areAllItemsTheSame(array: any[]) {\n//     return new Set(array).size == 1\n// }\nasync function extractStepFromText({ schemaText, dataText }) {\n    let title = schemaText.trim().split('\\n')[0];\n    if (!title) {\n        return Promise.reject(\"Unknown text format.\");\n    }\n    let result = {\n        schema: {\n            type: 'object',\n            title: title,\n            properties: {}\n        },\n        data: {}\n    };\n    const rows = dataText.trim().split(/\\n|;|,|\\//);\n    if (rows[0] == title) {\n        rows.shift();\n    }\n    // title = snakeCase(title!).trim()\n    // var props: Properties = {}\n    //\n    let isInArrayScope = false; //Pass it as a recursive parameter\n    let parentArrayPropertyName = \"\"; //Pass it as a recursive parameter\n    //^Refactor to a stack\n    rows.map(row => row.split(\":\"))\n        .forEach(kv => {\n        var _a, _b;\n        let propertyName = (_a = removeStartingDash(kv[0].trim())) === null || _a === void 0 ? void 0 : _a.trim();\n        if (propertyName == '')\n            return;\n        let propertyValue = (_b = kv[1]) === null || _b === void 0 ? void 0 : _b.trim();\n        if (!propertyValue) {\n            propertyValue = propertyName;\n        }\n        if (isInArrayScope) {\n            if (propertyValue.endsWith(']')) {\n                propertyValue = propertyValue.slice(0, -1);\n                isInArrayScope = false;\n                propertyName = propertyName.slice(0, -1);\n            }\n            // result.data[propertyName] = propertyValue;\n            if (!Array.isArray(result.data[parentArrayPropertyName]))\n                result.data[parentArrayPropertyName] = [];\n            result.data[parentArrayPropertyName].push(propertyValue);\n            const s = createSingularProperty(propertyName, propertyValue);\n            let items = result.schema.properties[parentArrayPropertyName].items;\n            if (!items)\n                items = s;\n            else if (Array.isArray(items))\n                items.push(s);\n            else if (items != s)\n                items = [items, s];\n            result.schema.properties[parentArrayPropertyName].items = items;\n            _external_services__WEBPACK_IMPORTED_MODULE_0__.log.log(propertyName + \" The property: \" + parentArrayPropertyName + \" schema set to: \"\n                + propertyValue + \"=> result:\", result.schema.properties[parentArrayPropertyName].items);\n            _external_services__WEBPACK_IMPORTED_MODULE_0__.log.log(\"The property: \" + parentArrayPropertyName + \" data set to: \" + propertyValue + \"=> result:\", result.data[parentArrayPropertyName]);\n            return;\n        }\n        if (propertyValue[0] == '[') {\n            isInArrayScope = true;\n            const property = {\n                type: \"array\",\n                description: propertyName,\n                items: []\n            };\n            const firstItemsPropertyName = propertyValue.substring(1);\n            //TODO: support value objects as arrays:\n            // if (firstItemsPropertyName) {\n            //     (property.items as Prop[]).push(\n            //         createSingularProperty(firstItemsPropertyName, firstItemsPropertyName))\n            // }\n            // if (areAllItemsTheSame(property.items as Prop[]))\n            const s = createSingularProperty(firstItemsPropertyName, firstItemsPropertyName);\n            // property.items = s;\n            result.schema.properties[propertyName] = property;\n            result.data[propertyName] = {};\n            result.data[propertyName][firstItemsPropertyName] = [s.example];\n            parentArrayPropertyName = propertyName;\n            return;\n        }\n        result.data[propertyName] = propertyValue;\n        const s = createSingularProperty(propertyName, propertyValue);\n        result.schema.properties[propertyName] = s;\n    });\n    return Promise.resolve(result);\n}\n\n\n//# sourceURL=webpack://ExternalServices/./src/app/scenario-builder/board-text-schema-extractor.ts?");
 
 /***/ }),
 
@@ -1205,7 +1205,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = __webpack_module_cache__[moduleId] = {
-/******/ 			id: moduleId,
+/******/ 			// no module.id needed
 /******/ 			// no module.loaded needed
 /******/ 			exports: {}
 /******/ 		};
@@ -1217,41 +1217,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /******/ 		return module.exports;
 /******/ 	}
 /******/ 	
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = __webpack_modules__;
-/******/ 	
 /************************************************************************/
-/******/ 	/* webpack/runtime/chunk loaded */
-/******/ 	(() => {
-/******/ 		var deferred = [];
-/******/ 		__webpack_require__.O = (result, chunkIds, fn, priority) => {
-/******/ 			if(chunkIds) {
-/******/ 				priority = priority || 0;
-/******/ 				for(var i = deferred.length; i > 0 && deferred[i - 1][2] > priority; i--) deferred[i] = deferred[i - 1];
-/******/ 				deferred[i] = [chunkIds, fn, priority];
-/******/ 				return;
-/******/ 			}
-/******/ 			var notFulfilled = Infinity;
-/******/ 			for (var i = 0; i < deferred.length; i++) {
-/******/ 				var [chunkIds, fn, priority] = deferred[i];
-/******/ 				var fulfilled = true;
-/******/ 				for (var j = 0; j < chunkIds.length; j++) {
-/******/ 					if ((priority & 1 === 0 || notFulfilled >= priority) && Object.keys(__webpack_require__.O).every((key) => (__webpack_require__.O[key](chunkIds[j])))) {
-/******/ 						chunkIds.splice(j--, 1);
-/******/ 					} else {
-/******/ 						fulfilled = false;
-/******/ 						if(priority < notFulfilled) notFulfilled = priority;
-/******/ 					}
-/******/ 				}
-/******/ 				if(fulfilled) {
-/******/ 					deferred.splice(i--, 1)
-/******/ 					result = fn();
-/******/ 				}
-/******/ 			}
-/******/ 			return result;
-/******/ 		};
-/******/ 	})();
-/******/ 	
 /******/ 	/* webpack/runtime/compat get default export */
 /******/ 	(() => {
 /******/ 		// getDefaultExport function for compatibility with non-harmony modules
@@ -1279,6 +1245,41 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /******/ 	/* webpack/runtime/global */
 /******/ 	(() => {
 /******/ 		__webpack_require__.g = (function() {
+/******/ 			if (typeof globalThis === 'object') return globalThis;
+/******/ 			try {
+/******/ 				return this || new Function('return this')();
+/******/ 			} catch (e) {
+/******/ 				if (typeof window === 'object') return window;
+/******/ 			}
+/******/ 		})();
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/************************************************************************/
+/******/ 	
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	// This entry module is referenced by other modules so it can't be inlined
+/******/ 	var __webpack_exports__ = __webpack_require__("./src/external-services.tsx");
+/******/ 	ExternalServices = __webpack_exports__;
+/******/ 	
+/******/ })()
+;tion() {
 /******/ 			if (typeof globalThis === 'object') return globalThis;
 /******/ 			try {
 /******/ 				return this || new Function('return this')();
