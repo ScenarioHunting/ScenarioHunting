@@ -1,3 +1,4 @@
+import { log } from '../../external-services';
 import { ITemplateRepository } from '../../app/ports/itemplate-repository';
 import { textTemplate } from "../../app/ports/text-template";
 
@@ -5,7 +6,7 @@ const KeyPrefix = "TemplateRepository-"
 export class localStorageTemplateRepository implements ITemplateRepository {
 
     async createOrReplaceTemplate(newTemplate: textTemplate) {
-        console.log("Saving template to local storage:", newTemplate)
+        log.log("Saving template to local storage:", newTemplate)
         if (newTemplate.templateName) this.removeTemplate(newTemplate.templateName)
         localStorage.setItem(KeyPrefix + newTemplate.templateName, JSON.stringify(newTemplate))
     }
@@ -22,6 +23,6 @@ export class localStorageTemplateRepository implements ITemplateRepository {
     }
     private dumpAll = async () =>
         (await this.getAllTemplateNames())
-            .forEach(t => this.getTemplateByName(t).then(console.log))
+            .forEach(t => this.getTemplateByName(t).then(log.log))
 
 }

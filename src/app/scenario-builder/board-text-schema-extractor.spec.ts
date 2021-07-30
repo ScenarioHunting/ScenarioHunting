@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 // eslint-disable-next-line no-unused-vars
 const should = require('chai').should()
-import { ArrayProperty, SingularProperty } from "../api";
+import { ArrayProperty, Prop, SingularProperty } from "../api";
 import { extractStepFromText } from "./board-text-schema-extractor";
 // import { extractStepFromText } from "./board-text-step-extractor";
 
@@ -186,7 +186,7 @@ describe('how the step becomes extracted from text', function () {
 
             amount],
             root_property`
-        });
+        })
 
         const expected = {
             type: "array",
@@ -205,6 +205,60 @@ describe('how the step becomes extracted from text', function () {
             ]
         } as ArrayProperty;
         actual.schema.properties.array_sample.should.deep.equal(expected);
+    })
+    it('detects an inline property of an internal array', async () => {
+
+        const actual = await extractStepFromText({
+            schemaText: `Add Items to Basket`,
+            dataText: `Add Items to Basket
+            array_sample:[product_id:val]`
+        })
+
+        const expected = {
+            type: "array",
+            description: "array_sample",
+            items: [
+                {
+                    type: "string",
+                    description: "product_id",
+                    example: "val"
+                } as SingularProperty
+            ]
+        } as ArrayProperty;
+        actual.schema.properties.array_sample.should.deep.equal(expected);
+    })
+    it('detects all inline properties of an internal array', async () => {
+
+        const actual = await extractStepFromText({
+            schemaText: `Add Items to Basket`,
+            dataText: `Add Items to Basket
+            array_sample:[str1,str2]`
+        })
+
+        const expected = {
+            type: "array",
+            description: "array_sample",
+            items: {
+                type: "string",
+                description: "str1",
+                example: "str1"
+            } as SingularProperty
+
+        } as ArrayProperty;
+        actual.schema.properties.array_sample.should.deep.equal(expected);
+    })
+    it('allows "]" to be in the next line', async () => {
+
+        const actual = await extractStepFromText({
+            schemaText: `Add Items to Basket`,
+            dataText: `Add Items to Basket
+            array_sample:[str1,str2
+            ]`
+        });
+
+        (<Prop>(<ArrayProperty>actual.schema.properties.array_sample).items).type
+            .should.deep.equal('string');
+        actual.data.array_sample.should.contain('str1').and('str2')
     })
     it('detects number type for digits', async () => {
         const step = await extractStepFromText({
@@ -241,7 +295,7 @@ describe('how the step becomes extracted from text', function () {
         } as SingularProperty
         step.schema.properties.isMale.should.deep.equal(expectedIsMale)
     })
-    it('skips the initial empty line before the extraction',async()=>{
+    it('skips the initial empty line before the extraction', async () => {
         const step = await extractStepFromText({
             schemaText: `
             person`,

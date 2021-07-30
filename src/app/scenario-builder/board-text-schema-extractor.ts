@@ -34,7 +34,7 @@ export async function extractStepFromText({
     , dataText
 }: { schemaText: string, dataText: string }): Promise<{ schema: Schema; data: any }> {
 
-    let title = schemaText.trim().split('\n').shift()
+    let title = schemaText.trim().split('\n')[0]
     if (!title) {
         return Promise.reject("Unknown text format.")
     }
@@ -59,7 +59,8 @@ export async function extractStepFromText({
     let parentArrayPropertyName = ""//Pass it as a recursive parameter
     //^Refactor to a stack
 
-    rows.map(row => row.split(":")).forEach(kv => {
+    rows.map(row => row.split(":"))
+        .forEach(kv => {
 
         let propertyName = removeStartingDash(kv[0].trim())?.trim()
         if (propertyName == '')

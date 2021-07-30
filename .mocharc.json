@@ -6,5 +6,6 @@
     "recursive": true,
     "spec": [
         "src/**/*.spec.ts"
-    ]
+    ],
+    "reporter":"min"
 }
