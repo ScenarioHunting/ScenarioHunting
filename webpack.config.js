@@ -156,13 +156,16 @@ function editorConfig(options) {
 //=>webpack --env= production
 module.exports = (env) => {
 	console.log('Webpack env:', env)
+	
 	if (!['production', 'development'].includes(env))
 		env = 'production'
+
 	const options = {
 		mode: 'development',
 		externalServicesPath: './src/external-services.tsx'
 	}
 	console.log('Webpack options:', options)
+
 	return [appConfig(options), editorConfig(options)]
 }
 module.exports.parallelism = 1;

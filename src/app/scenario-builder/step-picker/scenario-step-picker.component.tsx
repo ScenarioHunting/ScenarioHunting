@@ -28,7 +28,6 @@ export function createTestStepRecorder({ stepType
     , stepNavigator
 }: TestStepDependencies) {
     return function StepRecorder(props: TestStepProps) {
-
         const [isActive, setIsActive] = React.useState<boolean>(false)
         const [isWaitingForSelection, setIsWaitingForSelection] = React.useState(false)
         function select() {

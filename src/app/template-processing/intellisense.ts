@@ -183,12 +183,26 @@ const specSuggestions: EditorSuggestion[] = [
     {
         label: "context",
         insertText: "context",
-        detail: "The Bounded context of the scenario"
+        detail: "The bounded context of the scenario",
+        children: [
+            {
+                label: "title",
+                insertText: "title",
+                detail: "The title of the bounded context"
+            }
+        ]
     },
     {
         label: "subject",
         insertText: "subject",
-        detail: "The name of the subject (system under test)"
+        detail: "The name of the subject (system under test)",
+        children: [
+            {
+                label: "title",
+                insertText: "title",
+                detail: "The title of the subject"
+            }
+        ]
     },
     {
         label: "scenario",
@@ -242,22 +256,27 @@ const specSuggestions: EditorSuggestion[] = [
         insertText: "data",
         detail: "Test data",
         children: [{
-            label: "given",
-            insertText: "given",
-            detail: "Given step test data"
-        },
-        {
-            label: "when",
-            insertText: "when",
-            detail: "When step test data"
-        },
-        {
-            label: "then",
-            insertText: "then",
-            detail: "Then step test data"
-        },
+            label: "first",
+            insertText: "[0]",
+            detail: "The first data item",
+            children: [{
+                label: "given",
+                insertText: "given",
+                detail: "Given step test data"
+            },
+            {
+                label: "when",
+                insertText: "when",
+                detail: "When step test data"
+            },
+            {
+                label: "then",
+                insertText: "then",
+                detail: "Then step test data"
+            },
 
-        ]
+            ]
+        }]
     }
 ]
 

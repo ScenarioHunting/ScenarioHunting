@@ -7,6 +7,7 @@ import { ExternalServices, log } from "../../../external-services"
 const boardService = ExternalServices.boardService
 
 export function SelectableText(props: {
+    
     value: string,
     turn: TestStepTurn,
     // eslint-disable-next-line no-unused-vars
