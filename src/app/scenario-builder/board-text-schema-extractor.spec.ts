@@ -20,6 +20,7 @@ describe('how the step becomes extracted from text', function () {
             first_name: Mohsen`
         });
         (step.schema.properties.first_name as SingularProperty).example.should.eq('Mohsen')
+        step.data.first_name.should.eq('Mohsen')
     })
     it('removes the dash as the first char of property names', async () => {
         const step = await extractStepFromText({
@@ -182,7 +183,7 @@ describe('how the step becomes extracted from text', function () {
             
             array_sample:[
                 product_id:val,
-            
+
             amount],
             root_property`
         });

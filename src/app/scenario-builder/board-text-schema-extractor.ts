@@ -61,17 +61,14 @@ export async function extractStepFromText({
 
     rows.map(row => row.split(":")).forEach(kv => {
 
-        const purePropertyName = removeStartingDash(kv[0].trim())
-        if (purePropertyName == '')
+        let propertyName = removeStartingDash(kv[0].trim())?.trim()
+        if (propertyName == '')
             return
 
-        let propertyValue = kv[1]
+        let propertyValue = kv[1]?.trim()
         if (!propertyValue) {
-            propertyValue = purePropertyName
+            propertyValue = propertyName
         }
-        propertyValue = propertyValue.trim()
-
-        let propertyName = purePropertyName.trim()
 
         if (isInArrayScope) {
             if (propertyValue.endsWith(']')) {
@@ -80,16 +77,25 @@ export async function extractStepFromText({
                 propertyName = propertyName.slice(0, -1)
             }
             // result.data[propertyName] = propertyValue;
-            log.log("The property: " + propertyName + " set to: " + propertyValue + "=> result:" + result.data[propertyName])
+            if (!Array.isArray(result.data[parentArrayPropertyName]!))
+                result.data[parentArrayPropertyName] = []
+            result.data[parentArrayPropertyName].push(propertyValue)
+
             const s = createSingularProperty(propertyName, propertyValue);
-            if (Array.isArray((<ArrayProperty>result.schema.properties[parentArrayPropertyName]).items)) {
-                (<Prop[]>(<ArrayProperty>result.schema.properties[parentArrayPropertyName]).items).push(s)
-            }
-            else {
-                (<Prop>(<ArrayProperty>result.schema.properties[parentArrayPropertyName]).items)
-                    = s
-            }
-            result.data[propertyName].push(s)
+
+
+            let items = (<ArrayProperty>result.schema.properties[parentArrayPropertyName]).items;
+
+            if (!items) (<Prop>items) = s
+            else if (Array.isArray(items)) (<Prop[]>items).push(s)
+            else if (items != s) items = [items, s];
+
+            (<ArrayProperty>result.schema.properties[parentArrayPropertyName]).items = items
+            log.log(propertyName + " The property: " + parentArrayPropertyName + " schema set to: "
+                + propertyValue + "=> result:", (<ArrayProperty>result.schema.properties[parentArrayPropertyName]).items)
+
+
+            log.log("The property: " + parentArrayPropertyName + " data set to: " + propertyValue + "=> result:", result.data[parentArrayPropertyName])
             return
         }
 
@@ -110,16 +116,18 @@ export async function extractStepFromText({
 
             // if (areAllItemsTheSame(property.items as Prop[]))
             const s = createSingularProperty(firstItemsPropertyName, firstItemsPropertyName)
-            property.items = s;
-
-            result.data[propertyName] = s;
+            // property.items = s;
+            
             result.schema.properties[propertyName] = property
+            result.data[propertyName] = {}
+            result.data[propertyName][firstItemsPropertyName] = [s.example];
             parentArrayPropertyName = propertyName
             return
         }
 
-
-        result.schema.properties[propertyName] = createSingularProperty(propertyName, propertyValue)
+        result.data[propertyName] = propertyValue
+        const s = createSingularProperty(propertyName, propertyValue);
+        result.schema.properties[propertyName] = s
     })
     return Promise.resolve(result)
 }
