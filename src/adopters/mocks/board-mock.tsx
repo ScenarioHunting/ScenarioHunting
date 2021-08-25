@@ -2,6 +2,7 @@
 import { IBoard, SelectedStep, WidgetSnapshot } from "../../app/ports/iboard";
 
 import * as React from 'react';
+import { Step } from "../../app/api";
 
 class BoardMock implements IBoard {
     updateWidgetText = (widgetId: string, newWidgetText: string): Promise<void> =>
@@ -79,76 +80,93 @@ export function UIComponent() {
     const [statusMessage, setStatusMessage] = React.useState("status")
     board.showStatus = message => setStatusMessage(message)
     const [step, changeStep] = React.useState<string>(JSON.stringify({
-        data: {
-            customer_id: "customerId",
-            newAddress: "Oak street",
-            number_sample: 23,
-            bool_sample: false,
-            tuple_sample: [
-                "str",
-                12
-            ],
-            array_sample: [
-                "1st item",
-                "2nd item"
-            ],
-            NewPhone_number: "+44555112100"
-        },
-        schema: {
-            type: "object",
+        // example: {
+        //     customer_id: "customerId",
+        //     newAddress: "Oak street",
+        //     number_sample: 23,
+        //     bool_sample: false,
+        //     tuple_sample: [
+        //         "str",
+        //         12
+        //     ],
+        //     array_sample: [
+        //         "1st item",
+        //         "2nd item"
+        //     ],
+        //     NewPhone_number: "+44555112100"
+        // },
+        step: {
             title: "Customer registered",
-            properties: {
-                customer_id: {
-                    type: "string",
-                    description: "customer_id",
-                    example: "customerId"
-                },
-                newAddress: {
-                    type: "string",
-                    description: "new address",
-                    example: "Oak street"
-                },
-                number_sample: {
-                    type: "number",
-                    description: "num sample",
-                    example: 23
-                },
-                bool_sample: {
-                    type: "boolean",
-                    description: "boolean sample",
-                    example: false
-                },
-                array_sample: {
-                    type: "array",
-                    description: "array_sample",
-                    items: {
+            schema: {
+                type: "object",
+                properties: {
+                    customer_id: {
                         type: "string",
-                        description: "1st item",
-                        example: "1st item"
-                    }
-                },
-                tuple_sample: {
-                    type: "array",
-                    description: "array_sample",
-                    items: [
-                        {
+                        description: "customer_id",
+                        example: "customerId"
+                    },
+                    newAddress: {
+                        type: "string",
+                        description: "new address",
+                        example: "Oak street"
+                    },
+                    number_sample: {
+                        type: "number",
+                        description: "num sample",
+                        example: 23
+                    },
+                    bool_sample: {
+                        type: "boolean",
+                        description: "boolean sample",
+                        example: false
+                    },
+                    array_sample: {
+                        type: "array",
+                        description: "array_sample",
+                        items: {
                             type: "string",
                             description: "1st item",
                             example: "1st item"
-                        },
-                        {
-                            type: "number",
-                            description: "2nd item",
-                            example: "2nd item"
                         }
-                    ]
-                },
-                NewPhone_number: {
-                    type: "string",
-                    description: "New phonenumber",
-                    example: "+44555112100"
+                    },
+                    tuple_sample: {
+                        type: "array",
+                        description: "array_sample",
+                        items: [
+                            {
+                                type: "string",
+                                description: "1st item",
+                                example: "1st item"
+                            },
+                            {
+                                type: "number",
+                                description: "2nd item",
+                                example: "2nd item"
+                            }
+                        ]
+                    },
+                    NewPhone_number: {
+                        type: "string",
+                        description: "New phonenumber",
+                        example: "+44555112100"
+                    }
                 }
-            }
+            },
+            example: {
+                customer_id: "customerId",
+                newAddress: "Oak street",
+                number_sample: 23,
+                bool_sample: false,
+                tuple_sample: [
+                    "str",
+                    12
+                ],
+                array_sample: [
+                    "1st item",
+                    "2nd item"
+                ],
+                NewPhone_number: "+44555112100"
+            },
         },
         widgetSnapshot: {
             id: "3074457354846911652",
@@ -156,81 +174,81 @@ export function UIComponent() {
                 backgroundColor: "#ff9d48"
             }
         },
-    }, null, 2))
-function select() {
-    if (!step) {
-        alert("No selection!")
-        return
+    } as SelectedStep, null, 2))
+    function select() {
+        if (!step) {
+            alert("No selection!")
+            return
+        }
+        const selected: SelectedStep = JSON.parse(step)
+        if (!selected) {
+            alert("Invalid format.")
+            return
+        }
+        board.select(selected)
     }
-    const selected: SelectedStep = JSON.parse(step)
-    if (!selected) {
-        alert("Invalid format.")
-        return
-    }
-    board.select(selected)
-}
-return <div style={{
-    width: '100%',
-    backgroundColor: '#454545',
-    marginLeft: '10px'
-}}>
-    <h4 style={{
-        backgroundColor: 'white',
-        textAlign: 'center',
-        margin: '0px'
-    }}>Widget Data To Be Selected</h4>
-    <textarea
-        style={{
-            width: '100%',
-            height: '512px',
-            backgroundColor: '#454545',
-            color: '#ffffffd9',
-            borderStyle: 'none'
-        }}
-        onChange={x => changeStep(x.target.value)} value={step}>
-    </textarea>
-    <button style={{ width: '100%', height: '36px' }}
-        onClick={select}>Select</button>
-
-    <pre style={{
-        backgroundColor: '#4262ff',
-        color: 'white',
-        marginBottom: 'auto',
-        margin: '0px'
-    }}
-
-
-
-
-    >{statusMessage}</pre>
-    <div id="modal" style={{
-        display: 'none',
-        position: 'fixed',
-        top: '0%',
-        left: '0%',
+    return <div style={{
         width: '100%',
-        height: '100%',
-        zIndex: 10
+        backgroundColor: '#454545',
+        marginLeft: '10px'
     }}>
-        <iframe id="modal-iframe" style={{
+        <h4 style={{
+            backgroundColor: 'white',
+            textAlign: 'center',
+            margin: '0px'
+        }}>Widget Data To Be Selected</h4>
+        <textarea
+            style={{
+                width: '100%',
+                height: '512px',
+                backgroundColor: '#454545',
+                color: '#ffffffd9',
+                borderStyle: 'none'
+            }}
+            onChange={x => changeStep(x.target.value)} value={step}>
+        </textarea>
+        <button style={{ width: '100%', height: '36px' }}
+            onClick={select}>Select</button>
+
+        <pre style={{
+            backgroundColor: '#4262ff',
+            color: 'white',
+            marginBottom: 'auto',
+            margin: '0px'
+        }}
+
+
+
+
+        >{statusMessage}</pre>
+        <div id="modal" style={{
+            display: 'none',
+            position: 'fixed',
+            top: '0%',
+            left: '0%',
             width: '100%',
             height: '100%',
-            border: 0
+            zIndex: 10
         }}>
-        </iframe>
-    </div>
-    <div id="modal-dark-background" style={{
-        position: 'fixed',
-        zIndex: 5,
-        left: 0,
-        top: 0,
-        width: '100%',
-        height: '100%',
-        overflow: 'hidden',
-        backgroundColor: 'rgba(0,0,0,.75)',
-        display: 'none'
-    }}></div>
-</div >
+            <iframe id="modal-iframe" style={{
+                width: '100%',
+                height: '100%',
+                border: 0
+            }}>
+            </iframe>
+        </div>
+        <div id="modal-dark-background" style={{
+            position: 'fixed',
+            zIndex: 5,
+            left: 0,
+            top: 0,
+            width: '100%',
+            height: '100%',
+            overflow: 'hidden',
+            backgroundColor: 'rgba(0,0,0,.75)',
+            display: 'none'
+        }}></div>
+    </div >
 }
 export class BoardUi {
     component = UIComponent;

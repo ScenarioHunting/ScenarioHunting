@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 // eslint-disable-next-line no-unused-vars
 const should = require('chai').should()
-import { ArrayProperty, Prop, SingularProperty } from "../api";
+import { ArrayProperty, AbstractProperty, SingularProperty } from "../api";
 import { extractStepFromText } from "./board-text-schema-extractor";
 // import { extractStepFromText } from "./board-text-step-extractor";
 
@@ -9,29 +9,29 @@ describe('how the step becomes extracted from text', function () {
     it('extracts the first line as title', async function () {
         const step = await extractStepFromText({
             schemaText: `title`,
-            dataText: `title`
+            exampleText: `title`
         });
-        step.schema.title.should.eq('title')
+        step.title.should.eq('title')
     })
     it('extracts second line as property', async function name() {
         const step = await extractStepFromText({
             schemaText: `person`,
-            dataText: `person
+            exampleText: `person
             first_name: Mohsen`
         });
-        (step.schema.properties.first_name as SingularProperty).example.should.eq('Mohsen')
-        step.data.first_name.should.eq('Mohsen')
+        (step.schema.properties.first_name as SingularProperty).example?.should.eq('Mohsen')
+        step.example!['first_name'].should.eq('Mohsen')
     })
     it('removes the dash as the first char of property names', async () => {
         const step = await extractStepFromText({
             schemaText: `person`,
-            dataText: `person
+            exampleText: `person
                         -first_name: Mohsen
                         -   last_name:Bazmi`
         });
 
-        (step.schema.properties.first_name as SingularProperty).example.should.eq('Mohsen');
-        (step.schema.properties["last_name"] as SingularProperty).example.should.eq('Bazmi');
+        (step.schema.properties.first_name as SingularProperty).example?.should.eq('Mohsen');
+        (step.schema.properties["last_name"] as SingularProperty).example?.should.eq('Bazmi');
     })
     it('skips white spaces and empty lines', async () => {
         const step = await extractStepFromText({
@@ -42,7 +42,7 @@ describe('how the step becomes extracted from text', function () {
             
             
             `,
-            dataText: `
+            exampleText: `
             
             
                               person
@@ -58,58 +58,58 @@ describe('how the step becomes extracted from text', function () {
                         `
         });
 
-        (step.schema.properties.first_name as SingularProperty).example.should.eq('Mohsen');
-        (step.schema.properties.last_name as SingularProperty).example.should.eq('Bazmi')
+        (step.schema.properties.first_name as SingularProperty).example?.should.eq('Mohsen');
+        (step.schema.properties.last_name as SingularProperty).example?.should.eq('Bazmi')
     })
     it('copies property titles as property values when no property value is provided', async () => {
         const step = await extractStepFromText({
             schemaText: `person`,
-            dataText: `person
+            exampleText: `person
                               first_name
                               last_name`
         });
 
-        (step.schema.properties.first_name as SingularProperty).example.should.eq('first_name');
-        (step.schema.properties.last_name as SingularProperty).example.should.eq('last_name');
+        (step.schema.properties.first_name as SingularProperty).example?.should.eq('first_name');
+        (step.schema.properties.last_name as SingularProperty).example?.should.eq('last_name');
 
     })
     it('separates properties by ;', async () => {
         const step = await extractStepFromText({
             schemaText: `person`,
-            dataText: `person
+            exampleText: `person
                   first name: Mohsen;last name: Bazmi
             `
         });
-        (step.schema.properties["first name"] as SingularProperty).example.should.eq('Mohsen')
+        (step.schema.properties["first name"] as SingularProperty).example?.should.eq('Mohsen')
     })
     it('separates properties by ,', async () => {
         const step = await extractStepFromText({
             schemaText: `person`,
-            dataText: `person
+            exampleText: `person
                             first_name: Mohsen,last name: Bazmi`
         });
-        (step.schema.properties.first_name as SingularProperty).example.should.eq('Mohsen')
+        (step.schema.properties.first_name as SingularProperty).example?.should.eq('Mohsen')
     })
     it('separates properties by /', async () => {
         const step = await extractStepFromText({
             schemaText: `person`,
-            dataText: `person
+            exampleText: `person
                             first_name: Mohsen/last name: Bazmi`
         });
-        (step.schema.properties.first_name as SingularProperty).example.should.eq('Mohsen')
+        (step.schema.properties.first_name as SingularProperty).example?.should.eq('Mohsen')
     })
     it('rejects when the title is not in abstraction widget or example widget', async () => {
         extractStepFromText({
             schemaText: ``,
-            dataText: `first name: Mohsen/last name: Bazmi`
+            exampleText: `first name: Mohsen/last name: Bazmi`
         }).catch(err => err.should.not.be.null)
     })
     it('skips white spaces from abstraction title', async () => {
         const step = await extractStepFromText({
             schemaText: `                person                 `,
-            dataText: ``
+            exampleText: ``
         });
-        step.schema.title.should.eq('person')
+        step.title.should.eq('person')
     })
     // it('it replaces spaces in property names with _', async () => {
     //     const step = await extractStepstep({
@@ -138,7 +138,7 @@ describe('how the step becomes extracted from text', function () {
     xit('it splits camel case phrases in property names by _', async () => {
         const step = await extractStepFromText({
             schemaText: `person`,
-            dataText: `person
+            exampleText: `person
                                firstName`
         });
         (step.schema.properties.first_name as SingularProperty).should.not.undefined
@@ -146,7 +146,7 @@ describe('how the step becomes extracted from text', function () {
     it('it does not change property names with words that are separated by _ already', async () => {
         const step = await extractStepFromText({
             schemaText: `person`,
-            dataText: `person
+            exampleText: `person
                             first_name_is_separated_by_underline`
         });
         (step.schema.properties.first_name_is_separated_by_underline as SingularProperty).should.not.undefined
@@ -162,7 +162,7 @@ describe('how the step becomes extracted from text', function () {
     it('detects [items in brackets] as arrays', async () => {
         const step = await extractStepFromText({
             schemaText: `Add Items to Basket`,
-            dataText: `Add Items to Basket
+            exampleText: `Add Items to Basket
 
             Customer Id
             
@@ -177,7 +177,7 @@ describe('how the step becomes extracted from text', function () {
 
         const actual = await extractStepFromText({
             schemaText: `Add Items to Basket`,
-            dataText: `Add Items to Basket
+            exampleText: `Add Items to Basket
 
             Customer Id
             
@@ -210,7 +210,7 @@ describe('how the step becomes extracted from text', function () {
 
         const actual = await extractStepFromText({
             schemaText: `Add Items to Basket`,
-            dataText: `Add Items to Basket
+            exampleText: `Add Items to Basket
             array_sample:[product_id:val]`
         })
 
@@ -231,7 +231,7 @@ describe('how the step becomes extracted from text', function () {
 
         const actual = await extractStepFromText({
             schemaText: `Add Items to Basket`,
-            dataText: `Add Items to Basket
+            exampleText: `Add Items to Basket
             array_sample:[str1,str2]`
         })
 
@@ -251,19 +251,19 @@ describe('how the step becomes extracted from text', function () {
 
         const actual = await extractStepFromText({
             schemaText: `Add Items to Basket`,
-            dataText: `Add Items to Basket
+            exampleText: `Add Items to Basket
             array_sample:[str1,str2
             ]`
         });
 
-        (<Prop>(<ArrayProperty>actual.schema.properties.array_sample).items).type
+        (<AbstractProperty>(<ArrayProperty>actual.schema.properties.array_sample).items).type
             .should.deep.equal('string');
-        actual.data.array_sample.should.contain('str1').and('str2')
+        actual.example!['array_sample'].should.contain('str1').and('str2')
     })
     it('detects number type for digits', async () => {
         const step = await extractStepFromText({
             schemaText: `person`,
-            dataText: `person
+            exampleText: `person
                                age:23`
         });
         const expected = {
@@ -276,7 +276,7 @@ describe('how the step becomes extracted from text', function () {
     it('detects boolean type for true or false', async () => {
         const step = await extractStepFromText({
             schemaText: `person`,
-            dataText: `person
+            exampleText: `person
                                isMarried:True
                                isMale:fAlSe`
         });
@@ -299,10 +299,10 @@ describe('how the step becomes extracted from text', function () {
         const step = await extractStepFromText({
             schemaText: `
             person`,
-            dataText: `
+            exampleText: `
             person`
         });
-        step.schema.title.should.eq(`person`)
+        step.title.should.eq(`person`)
         step.schema.properties.should.empty
     })
 

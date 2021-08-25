@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { CSSProperties } from "react"
-import { Schema } from "../api"
+import { ObjectProperty, Step } from "../api"
 
 
 export type WidgetSnapshot = {
@@ -9,8 +9,7 @@ export type WidgetSnapshot = {
 }
 export type SelectedStep = {
     widgetSnapshot: WidgetSnapshot
-    schema: Schema
-    data: any
+    step: Step
 }
 export interface IBoard {
     updateWidgetText(widgetId: string, newWidgetText: string): Promise<void>;

@@ -4,7 +4,7 @@
   "description": "Helps to pick scenarios from modeling artifacts, and generate custom based on them",
   "private": true,
   "scripts": {
-    "kill":"sudo netstat -tulpn |grep 3001 |awk `{split($7,a,'/');print a[1]}`|xargs kill",
+    "kill": "sudo netstat -tulpn |grep 3001 |awk `{split($7,a,'/');print a[1]}`|xargs kill",
     "watch": "nodemon --exec 'npm run build && npm start' --config nodemon.json",
     "wtest": "mocha --config .mocharc.json -watch --R min",
     "prebuild": "npm run clean",
@@ -57,6 +57,7 @@
     "style-loader": "^2.0.0",
     "ts-loader": "^8.0.18",
     "ts-node": "^9.1.1",
+    "typedoc": "^0.21.6",
     "typescript": "^4.2.4",
     "webpack": "^5.28.0",
     "webpack-cli": "^4.5.0"

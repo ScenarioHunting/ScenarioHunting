@@ -1,4 +1,4 @@
-import { Api } from "../api";
+import { Api, ObjectProperty } from "../api";
 
 export const defaultTestSpec: Api = {
     subject: {
@@ -7,11 +7,13 @@ export const defaultTestSpec: Api = {
     context: {
         title: 'Your-context',
     },
-    scenario: 'Your-scenario',
+    scenario: {
+        title: 'Your-scenario',
+    },
     given: [{
+        title: "Given_step_title",
         schema: {
             type: "object",
-            title: "Given_step_title",
             properties: {
                 string_sample: {
                     type: "string",
@@ -24,12 +26,13 @@ export const defaultTestSpec: Api = {
                     example: 23
                 },
             }
-        }
+        },
+        example:{}
     }],
     when: {
+        title: "When_step_title",
         schema: {
             type: "object",
-            title: "When_step_title",
             properties: {
                 bool_sample: {
                     type: "boolean",
@@ -46,12 +49,13 @@ export const defaultTestSpec: Api = {
                     }
                 },
             }
-        }
+        },
+        example:{}
     },
     then: [{
+        title: "Then_step_title",
         schema: {
             type: "object",
-            title: "Then_step_title",
             properties: {
                 tuple_sample: {
                     type: "array",
@@ -69,28 +73,30 @@ export const defaultTestSpec: Api = {
                         }
                     ]
                 }
-            }
-        }
-    }],
-    data: [
-        {
-            given: [{
-                string_sample: "string data",
-                number_sample: 2000,
-            }],
-            when: {
-                bool_sample: true,
-                array_sample: [
-                    "1st item",
-                    "2nd item"
-                ],
             },
-            then: [{
-                tuple_sample: [
-                    "str",
-                    12
-                ],
-            }]
-        },
-    ]
+            description: "",
+        } as ObjectProperty,
+        example:{}
+    }],
+    // data: [
+    //     {
+    //         given: [{
+    //             string_sample: "string data",
+    //             number_sample: 2000,
+    //         }],
+    //         when: {
+    //             bool_sample: true,
+    //             array_sample: [
+    //                 "1st item",
+    //                 "2nd item"
+    //             ],
+    //         },
+    //         then: [{
+    //             tuple_sample: [
+    //                 "str",
+    //                 12
+    //             ],
+    //         }]
+    //     },
+    // ]
 }

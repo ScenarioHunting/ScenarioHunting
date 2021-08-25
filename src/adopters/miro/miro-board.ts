@@ -153,18 +153,18 @@ function getWidgetStyle(widget: SDK.IWidget): CSSProperties {
     }
     return style
 }
-async function extractStepFrom(dataWidget: SDK.IWidget): Promise<SelectedStep> {
+async function extractStepFrom(exampleWidget: SDK.IWidget): Promise<SelectedStep> {
     var snapshot = {
-        id: dataWidget.id,
+        id: exampleWidget.id,
         // type: widget.type,
     } as WidgetSnapshot
 
-    const schemaWidget = await getAbstractionWidgetFor(dataWidget)
+    const schemaWidget = await getAbstractionWidgetFor(exampleWidget)
     //
     log.log('Selection dto initiated.', snapshot)
 
     snapshot.style = getWidgetStyle(schemaWidget)
-    let dataText: string
+    let exampleText: string
     let schemaText: string
 
     try {
@@ -173,27 +173,26 @@ async function extractStepFrom(dataWidget: SDK.IWidget): Promise<SelectedStep> {
                 .replace('&#43;', '+')
                 .replace(/(<([^>]+)>)/ig, '')
 
-        dataText = getPlainText(await extractWidgetText(dataWidget))
+        exampleText = getPlainText(await extractWidgetText(exampleWidget))
         schemaText = getPlainText(await extractWidgetText(schemaWidget))
 
     }
     catch (e) {
-        return Promise.reject('The widget ' + JSON.stringify(dataWidget) + ' does not have any text.')
+        return Promise.reject('The widget ' + JSON.stringify(exampleWidget) + ' does not have any text.')
     }
 
 
-    log.log('Widget text converted by board:', dataText)
+    log.log('Widget text converted by board:', exampleText)
 
     try {
         const s = await extractStepFromText({
             schemaText: schemaText,
-            dataText: dataText
+            exampleText: exampleText
         });
         log.log('The step extracted from text:', s)
         const step: SelectedStep = {
             widgetSnapshot: snapshot
-            , data: s.data
-            , schema: s.schema
+            , step: s
         }
 
         return step
