@@ -1,4 +1,4 @@
-import { ArrayProperty, Prop, SingularProperty, Api, Schema, Step } from "../api";
+import { ArrayProperty, AbstractProperty, SingularProperty, Api, ObjectProperty, Step } from "../api";
 import { stringCaseHelpers } from "../../libs/string-case-helpers";
 
 export function specFormatterService(language: string) {
@@ -19,14 +19,14 @@ export function specFormatterService(language: string) {
     }
     const formatText = buildTextFormatterForLanguage(language);
 
-    function formatProperty(p: Prop): Prop {
+    function formatProperty(p: AbstractProperty): AbstractProperty {
         if (p.type == "array") {
             const s = p as ArrayProperty;
             return <ArrayProperty>{
                 type: s.type,
                 description: s.description,
                 items: Array.isArray(s.items)
-                    ? (s.items as Prop[]).map(formatProperty)
+                    ? (s.items as AbstractProperty[]).map(formatProperty)
                     : formatProperty(s.items),
             };
         } else {
@@ -40,15 +40,18 @@ export function specFormatterService(language: string) {
     }
     function formatStep(step: Step): Step {
         const schema = step.schema //TODO: Consider the Low of demeter
-        const result = <Schema>{
-            title: formatText(schema.title),
+        const result = <ObjectProperty>{
             type: schema.type,
             properties: {}
         };
         for (let [k, v] of Object.entries(schema.properties)) {
             result.properties[k] = formatProperty(v);
         }
-        return { schema: result };
+        return {
+            schema: result,
+            title: formatText(step.title),
+            example: step.example
+        };
     }
 
     return {
@@ -60,7 +63,7 @@ export function specFormatterService(language: string) {
                 given: spec.given.map(formatStep),
                 when: formatStep(spec.when),
                 then: spec.then.map(formatStep),
-                data: spec.data,
+                // data: spec.data,
 
             };
         }

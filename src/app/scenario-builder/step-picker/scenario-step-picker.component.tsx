@@ -5,7 +5,7 @@ import { IBoard, SelectedStep } from '../../ports/iboard';
 import { IQueuingMachine } from "../../../libs/queuing-machine/iqueuing-machine";
 import { TestStepTurn } from './scenario-step-turn';
 import { log } from "../../../external-services";
-import { ArrayProperty, SingularProperty, Prop } from '../../api';
+import { ArrayProperty, SingularProperty, AbstractProperty } from '../../api';
 
 export class TestStepDependencies {
     stepType: string
@@ -54,7 +54,7 @@ export function createTestStepRecorder({ stepType
 
 
         const onPropertyValueTextChange = (index: number, event: React.ChangeEvent<HTMLInputElement>) => {
-            (props.step!.schema.properties[index] as SingularProperty).example
+            (props.step!.step.schema.properties[index] as SingularProperty).example
                 = event.currentTarget.value;
         }
 
@@ -77,18 +77,18 @@ export function createTestStepRecorder({ stepType
                     </h4>
                 </button>
                 {
-                    (!props.step?.schema) ? <div className={styles["waiting-for-step"]} style={{ display: isActive ? 'block' : 'none' }}> <h1 >?</h1> </div> :
+                    (!props.step?.step) ? <div className={styles["waiting-for-step"]} style={{ display: isActive ? 'block' : 'none' }}> <h1 >?</h1> </div> :
 
                         <div style={props.step?.widgetSnapshot.style}>
-                            <span className={styles["step-title"]}>{props.step?.schema.title}</span>
+                            <span className={styles["step-title"]}>{props.step?.step.title}</span>
 
                             <div className={styles["key-value-row"]}>
-                                {Object.entries(props.step?.schema.properties)?.map(
+                                {Object.entries(props.step?.step.schema.properties)?.map(
                                     ([title, property], index) => <div className={styles["step-data-properties"]} key={`${property}~${index}`}>
                                         <label className={styles["property-key"]}>{title}</label>
 
                                         <PropertyComponent
-                                            data={props.step?.data[title]}
+                                            data={props.step?.step.example![title]}
                                             property={property}
                                             onTextChanged={e => onPropertyValueTextChange(index, e)} />
 
@@ -104,7 +104,7 @@ export function createTestStepRecorder({ stepType
 }
 // eslint-disable-next-line no-unused-vars
 function PropertyComponent(props: {
-    property: Prop,
+    property: AbstractProperty,
     data: any,
     onTextChanged: ((event: React.ChangeEvent<HTMLInputElement>) => void)
 }) {
@@ -153,10 +153,11 @@ function ArrayPropertyComponent(props: {
 
             Array.isArray(props.arrayProperty.items) ?
                 [
-                    (props.arrayProperty.items as Prop[]).map((item, i) =>
+                    (props.arrayProperty.items as AbstractProperty[]).map((item, i) =>
                         <PropertyComponent
                             key={i}
-                            data={props.data[i]}
+                            // data={props.data[i]}
+                            data={(item as SingularProperty).example}
                             property={item as SingularProperty}
                             onTextChanged={e => props.onTextChanged(e)} />
                     )

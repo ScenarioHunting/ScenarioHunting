@@ -119,16 +119,15 @@ export const createTestBuilder = (board = ExternalServices.boardService): React.
         //Only the scenario required fields should exist
         //Add a generate data button
         return {
-            
-            scenario: scenario,
-            given: givenSteps.map(given => { return { schema: given.step.schema } }),
-            when: { schema: when?.schema },
-            then: [{ schema: then?.schema }],
-            data: [{//TODO: It may be generated (based on the schema), added to, removed from, after hunting the scenario & before saving it
-                given: givenSteps.map(g => { return g.step.data }),
-                when: when?.data,
-                then: [then?.data]
-            }],
+            scenario: { title: scenario },
+            given: givenSteps.map(given => given.step.step),
+            when: when?.step,
+            then: [then?.step],
+            // data: [{//TODO: It may be generated (based on the schema), added to, removed from, after hunting the scenario & before saving it
+            //     given: givenSteps.map(g => { return g.step.example }),
+            //     when: when?.example,
+            //     then: [then?.example]
+            // }],
             subject: { title: subject },
             context: { title: context },
         } as Api

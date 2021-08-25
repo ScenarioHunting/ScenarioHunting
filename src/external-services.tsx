@@ -57,6 +57,7 @@ const createMockedDependencies = (): IExternalServices => {
     } as const
 }
 
-const ExternalServices = createMiroDependencies()
+//const ExternalServices = createMiroDependencies()
+ const ExternalServices = createMockedDependencies()
 
 export { ExternalServices }
