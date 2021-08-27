@@ -17,7 +17,7 @@ The application is hosted by github pages, runs on your browser, and stores the 
 No backend, no data collection, no worries. 
 
 ### Documentation
-[See](https://github.com/ScenarioHunting/ScenarioHunting/wiki) the documentation.
+[See](https://github.com/ScenarioHunting/Documentation/blob/main/README.md) the documentation.
 
 ## License
 
