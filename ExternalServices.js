@@ -477,7 +477,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
   \***********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"testResultReports\": () => (/* binding */ testResultReports),\n/* harmony export */   \"log\": () => (/* binding */ log),\n/* harmony export */   \"ExternalServices\": () => (/* binding */ ExternalServices)\n/* harmony export */ });\n/* harmony import */ var _test_result_reports__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./test-result-reports */ \"./src/test-result-reports.ts\");\n/* harmony import */ var _adopters_mocks_board_mock__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./adopters/mocks/board-mock */ \"./src/adopters/mocks/board-mock.tsx\");\n/* harmony import */ var _adopters_miro_miro_board__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./adopters/miro/miro-board */ \"./src/adopters/miro/miro-board.ts\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\n/* harmony import */ var _adopters_miro_miro_template_repository__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./adopters/miro/miro-template-repository */ \"./src/adopters/miro/miro-template-repository.ts\");\n/* harmony import */ var _adopters_mocks_local_storage_template_repository__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./adopters/mocks/local-storage-template-repository */ \"./src/adopters/mocks/local-storage-template-repository.ts\");\n/* harmony import */ var _app_template_processing_default_template_repository_decorator__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./app/template-processing/default-template-repository-decorator */ \"./src/app/template-processing/default-template-repository-decorator.ts\");\n/* harmony import */ var _adopters_mocks_local_temp_storage__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./adopters/mocks/local-temp-storage */ \"./src/adopters/mocks/local-temp-storage.ts\");\n/* harmony import */ var _app_template_processing_template_compiler__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./app/template-processing/template-compiler */ \"./src/app/template-processing/template-compiler.ts\");\n/* harmony import */ var _adopters_miro_miro_temp_storage__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./adopters/miro/miro-temp-storage */ \"./src/adopters/miro/miro-temp-storage.ts\");\n/* harmony import */ var _app_template_processing_default_templates__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./app/template-processing/default-templates */ \"./src/app/template-processing/default-templates.js\");\n\n\n\n\n\n\n\n\n\n\n\n\nlet testResultReports = new _test_result_reports__WEBPACK_IMPORTED_MODULE_0__.TestResultReports();\n// export let singletonBoard: IBoard = new MiroBoard()\nlet log = console;\n// eslint-disable-next-line no-unused-vars \nconst createMiroDependencies = () => {\n    const emptyComponent = () => react__WEBPACK_IMPORTED_MODULE_3__.createElement(react__WEBPACK_IMPORTED_MODULE_3__.Fragment, null);\n    return {\n        boardService: new _adopters_miro_miro_board__WEBPACK_IMPORTED_MODULE_2__.MiroBoard(),\n        boardUi: emptyComponent,\n        templateRepository: (0,_app_template_processing_default_template_repository_decorator__WEBPACK_IMPORTED_MODULE_6__.decorateRepositoryWithTemplates)(new _adopters_miro_miro_template_repository__WEBPACK_IMPORTED_MODULE_4__.miroTemplateRepository(), _app_template_processing_default_templates__WEBPACK_IMPORTED_MODULE_10__.defaultTemplates),\n        tempSharedStorage: new _adopters_miro_miro_temp_storage__WEBPACK_IMPORTED_MODULE_9__.MiroTempStorage(),\n        templateCompiler: new _app_template_processing_template_compiler__WEBPACK_IMPORTED_MODULE_8__.TemplateCompiler(),\n    };\n};\nconst createMockedDependencies = () => {\n    return {\n        boardService: (0,_adopters_mocks_board_mock__WEBPACK_IMPORTED_MODULE_1__.MockBoard)(),\n        boardUi: _adopters_mocks_board_mock__WEBPACK_IMPORTED_MODULE_1__.UIComponent,\n        templateRepository: (0,_app_template_processing_default_template_repository_decorator__WEBPACK_IMPORTED_MODULE_6__.decorateRepositoryWithTemplates)(new _adopters_mocks_local_storage_template_repository__WEBPACK_IMPORTED_MODULE_5__.localStorageTemplateRepository(), _app_template_processing_default_templates__WEBPACK_IMPORTED_MODULE_10__.defaultTemplates),\n        tempSharedStorage: new _adopters_mocks_local_temp_storage__WEBPACK_IMPORTED_MODULE_7__.LocalTempStorage(),\n        templateCompiler: new _app_template_processing_template_compiler__WEBPACK_IMPORTED_MODULE_8__.TemplateCompiler(),\n    };\n};\n//const ExternalServices = createMiroDependencies()\nconst ExternalServices = createMiroDependencies();\n\n\n\n//# sourceURL=webpack://ExternalServices/./src/external-services.tsx?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"testResultReports\": () => (/* binding */ testResultReports),\n/* harmony export */   \"log\": () => (/* binding */ log),\n/* harmony export */   \"ExternalServices\": () => (/* binding */ ExternalServices)\n/* harmony export */ });\n/* harmony import */ var _test_result_reports__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./test-result-reports */ \"./src/test-result-reports.ts\");\n/* harmony import */ var _adopters_mocks_board_mock__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./adopters/mocks/board-mock */ \"./src/adopters/mocks/board-mock.tsx\");\n/* harmony import */ var _adopters_miro_miro_board__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./adopters/miro/miro-board */ \"./src/adopters/miro/miro-board.ts\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\n/* harmony import */ var _adopters_miro_miro_template_repository__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./adopters/miro/miro-template-repository */ \"./src/adopters/miro/miro-template-repository.ts\");\n/* harmony import */ var _adopters_mocks_local_storage_template_repository__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./adopters/mocks/local-storage-template-repository */ \"./src/adopters/mocks/local-storage-template-repository.ts\");\n/* harmony import */ var _app_template_processing_default_template_repository_decorator__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./app/template-processing/default-template-repository-decorator */ \"./src/app/template-processing/default-template-repository-decorator.ts\");\n/* harmony import */ var _adopters_mocks_local_temp_storage__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./adopters/mocks/local-temp-storage */ \"./src/adopters/mocks/local-temp-storage.ts\");\n/* harmony import */ var _app_template_processing_template_compiler__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./app/template-processing/template-compiler */ \"./src/app/template-processing/template-compiler.ts\");\n/* harmony import */ var _adopters_miro_miro_temp_storage__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./adopters/miro/miro-temp-storage */ \"./src/adopters/miro/miro-temp-storage.ts\");\n/* harmony import */ var _app_template_processing_default_templates__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./app/template-processing/default-templates */ \"./src/app/template-processing/default-templates.js\");\n\n\n\n\n\n\n\n\n\n\n\n\nlet testResultReports = new _test_result_reports__WEBPACK_IMPORTED_MODULE_0__.TestResultReports();\n// export let singletonBoard: IBoard = new MiroBoard()\nlet log = console;\n// eslint-disable-next-line no-unused-vars \nconst createMiroDependencies = () => {\n    const emptyComponent = () => react__WEBPACK_IMPORTED_MODULE_3__.createElement(react__WEBPACK_IMPORTED_MODULE_3__.Fragment, null);\n    return {\n        boardService: new _adopters_miro_miro_board__WEBPACK_IMPORTED_MODULE_2__.MiroBoard(),\n        boardUi: emptyComponent,\n        templateRepository: (0,_app_template_processing_default_template_repository_decorator__WEBPACK_IMPORTED_MODULE_6__.decorateRepositoryWithTemplates)(new _adopters_miro_miro_template_repository__WEBPACK_IMPORTED_MODULE_4__.miroTemplateRepository(), _app_template_processing_default_templates__WEBPACK_IMPORTED_MODULE_10__.defaultTemplates),\n        tempSharedStorage: new _adopters_miro_miro_temp_storage__WEBPACK_IMPORTED_MODULE_9__.MiroTempStorage(),\n        templateCompiler: new _app_template_processing_template_compiler__WEBPACK_IMPORTED_MODULE_8__.TemplateCompiler(),\n    };\n};\nconst createMockedDependencies = () => {\n    return {\n        boardService: (0,_adopters_mocks_board_mock__WEBPACK_IMPORTED_MODULE_1__.MockBoard)(),\n        boardUi: _adopters_mocks_board_mock__WEBPACK_IMPORTED_MODULE_1__.UIComponent,\n        templateRepository: (0,_app_template_processing_default_template_repository_decorator__WEBPACK_IMPORTED_MODULE_6__.decorateRepositoryWithTemplates)(new _adopters_mocks_local_storage_template_repository__WEBPACK_IMPORTED_MODULE_5__.localStorageTemplateRepository(), _app_template_processing_default_templates__WEBPACK_IMPORTED_MODULE_10__.defaultTemplates),\n        tempSharedStorage: new _adopters_mocks_local_temp_storage__WEBPACK_IMPORTED_MODULE_7__.LocalTempStorage(),\n        templateCompiler: new _app_template_processing_template_compiler__WEBPACK_IMPORTED_MODULE_8__.TemplateCompiler(),\n    };\n};\nconst ExternalServices = createMiroDependencies();\n\n\n\n//# sourceURL=webpack://ExternalServices/./src/external-services.tsx?");
 
 /***/ }),
 
@@ -1286,6 +1286,96 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module is referenced by other modules so it can't be inlined
 /******/ 	var __webpack_exports__ = __webpack_require__("./src/external-services.tsx");
+/******/ 	ExternalServices = __webpack_exports__;
+/******/ 	
+/******/ })()
+; => {
+/******/ 		__webpack_require__.g = (function() {
+/******/ 			if (typeof globalThis === 'object') return globalThis;
+/******/ 			try {
+/******/ 				return this || new Function('return this')();
+/******/ 			} catch (e) {
+/******/ 				if (typeof window === 'object') return window;
+/******/ 			}
+/******/ 		})();
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/jsonp chunk loading */
+/******/ 	(() => {
+/******/ 		// no baseURI
+/******/ 		
+/******/ 		// object to store loaded and loading chunks
+/******/ 		// undefined = chunk not loaded, null = chunk preloaded/prefetched
+/******/ 		// [resolve, reject, Promise] = chunk loading, 0 = chunk loaded
+/******/ 		var installedChunks = {
+/******/ 			"ExternalServices": 0
+/******/ 		};
+/******/ 		
+/******/ 		// no chunk on demand loading
+/******/ 		
+/******/ 		// no prefetching
+/******/ 		
+/******/ 		// no preloaded
+/******/ 		
+/******/ 		// no HMR
+/******/ 		
+/******/ 		// no HMR manifest
+/******/ 		
+/******/ 		__webpack_require__.O.j = (chunkId) => (installedChunks[chunkId] === 0);
+/******/ 		
+/******/ 		// install a JSONP callback for chunk loading
+/******/ 		var webpackJsonpCallback = (parentChunkLoadingFunction, data) => {
+/******/ 			var [chunkIds, moreModules, runtime] = data;
+/******/ 			// add "moreModules" to the modules object,
+/******/ 			// then flag all "chunkIds" as loaded and fire callback
+/******/ 			var moduleId, chunkId, i = 0;
+/******/ 			if(chunkIds.some((id) => (installedChunks[id] !== 0))) {
+/******/ 				for(moduleId in moreModules) {
+/******/ 					if(__webpack_require__.o(moreModules, moduleId)) {
+/******/ 						__webpack_require__.m[moduleId] = moreModules[moduleId];
+/******/ 					}
+/******/ 				}
+/******/ 				if(runtime) var result = runtime(__webpack_require__);
+/******/ 			}
+/******/ 			if(parentChunkLoadingFunction) parentChunkLoadingFunction(data);
+/******/ 			for(;i < chunkIds.length; i++) {
+/******/ 				chunkId = chunkIds[i];
+/******/ 				if(__webpack_require__.o(installedChunks, chunkId) && installedChunks[chunkId]) {
+/******/ 					installedChunks[chunkId][0]();
+/******/ 				}
+/******/ 				installedChunks[chunkIds[i]] = 0;
+/******/ 			}
+/******/ 			return __webpack_require__.O(result);
+/******/ 		}
+/******/ 		
+/******/ 		var chunkLoadingGlobal = self["webpackChunkExternalServices"] = self["webpackChunkExternalServices"] || [];
+/******/ 		chunkLoadingGlobal.forEach(webpackJsonpCallback.bind(null, 0));
+/******/ 		chunkLoadingGlobal.push = webpackJsonpCallback.bind(null, chunkLoadingGlobal.push.bind(chunkLoadingGlobal));
+/******/ 	})();
+/******/ 	
+/************************************************************************/
+/******/ 	
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	// This entry module is referenced by other modules so it can't be inlined
+/******/ 	var __webpack_exports__ = __webpack_require__("./src/external-services.tsx");
+/******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
 /******/ 	ExternalServices = __webpack_exports__;
 /******/ 	
 /******/ })()
