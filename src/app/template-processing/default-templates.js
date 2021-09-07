@@ -133,8 +133,8 @@ Then {{#each then as |step|}} {{spaceCase step.title}} {{>table object=step.sche
 {{#unless @last}} And {{/unless}}{{/each}}
 
 
-{{#*inline 'table' object}}{{#each object as |value title|}}
-        {{>row title=title  value=value}}{{/each}}{{/inline}}
+{{#*inline 'table' object}}{{#each object.properties as |property title|}}
+        {{>row title=title  value=property.example}}{{/each}}{{/inline}}
 
 {{#*inline 'row' title value}}
 | {{>column (spaceCase title)}} | {{>column value}} |{{/inline}}
@@ -143,7 +143,8 @@ Then {{#each then as |step|}} {{spaceCase step.title}} {{>table object=step.sche
 {{.}} {{>fill_rest}}{{/inline}}
 
 {{#*inline 'fill_rest'}}
-{{repeat ' ' (subtract 20 (lookup (lowerCase . ) 'length'))}}{{/inline}}`
+{{repeat ' ' (subtract 15 (lookup (lowerCase .) 'length'))}}{{/inline}}
+`
     },
 ]
 
