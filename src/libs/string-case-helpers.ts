@@ -27,15 +27,15 @@ const pascalToSpaceCase = (str: string) =>
         .trim()
 
 export const stringCaseHelpers = {
-    lowerCase(str: string) { return str.toString().toLocaleLowerCase() },
-    upperCase(str: string) { return str.toString().toLocaleUpperCase() },
+    lowerCase(str: string):string { return str?.toString()?.toLocaleLowerCase() },
+    upperCase(str: string):string { return str.toString().toLocaleUpperCase() },
 
-    capitalize(str: string) {
+    capitalize(str: string):string {
         str = str.toString()
         return str.charAt(0).toUpperCase() + str.slice(1)
     },
 
-    snakeCase(str: string) {
+    snakeCase(str: string):string {
         return pascalToSpaceCase(str.toString())
             .replace(/(([^A-Z0-9]+)(.)?)/ig, '_$1')
             .replace(/-|\s/g, '')
@@ -43,23 +43,19 @@ export const stringCaseHelpers = {
             .toLowerCase()
     },
 
-    camelCase(str: string) {
+    camelCase(str: string):string {
         return snakeToCamelCase(stringCaseHelpers.snakeCase(str.toString()))
     },
-    pascalCase(str: string) {
+    pascalCase(str: string):string {
         return snakeToPascalCase(stringCaseHelpers.snakeCase(str.toString()))
     },
-    kebabCase(str: string) {
+    kebabCase(str: string):string {
         return snakeToKebabCase(stringCaseHelpers.snakeCase(str.toString()))
     },
-    spaceCase(str: string) {
+    spaceCase(str: string):string {
         return snakeToSpaceCase(stringCaseHelpers.snakeCase(str.toString()))
     },
-    sentenceCase(str: string) {
+    sentenceCase(str: string):string {
         return snakeToSentenceCase(stringCaseHelpers.snakeCase(str.toString()))
     },
-    toCamelCase(str: string) { return stringCaseHelpers.camelCase(str) },
-    toSentenceCase(str: string) { return stringCaseHelpers.sentenceCase(str) },
-    toPascalCase(str: string) { return stringCaseHelpers.pascalCase(str) }
-
 }

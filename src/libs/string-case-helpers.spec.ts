@@ -43,7 +43,7 @@ describe('string case helpers', function () {
         stringCaseHelpers.snakeCase(`first__name_____is__________separated___by_redundant_underlines`)
             .should.eq("first_name_is_separated_by_redundant_underlines")
     )
-    
+
     it('snake_cases the PascalCase', () =>
         stringCaseHelpers.snakeCase('I 0 Am A Guy 1')
             .should.eq('i_0_am_a_guy_1')
@@ -52,6 +52,13 @@ describe('string case helpers', function () {
         stringCaseHelpers.snakeCase(`DE_Capitalize_ME`)
             .should.eq('de_capitalize_me')
     )
-    it('returns empty string for null')
-    it('returns empty string for undefined')
+    it('can lowercase strings', () =>
+        stringCaseHelpers.lowerCase('THIS')
+            .should.eq('this')
+    )
+    // it('returns empty string for null', () =>
+    //      stringCaseHelpers.lowerCase(!null?'':'' as any)
+    //         .should.eq('')
+    // )
+    // it('returns empty string for undefined')
 })
