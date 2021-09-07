@@ -447,7 +447,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
   \**********************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"defaultTemplates\": () => (/* binding */ defaultTemplates)\n/* harmony export */ });\nconst defaultTemplates = [\n    {\n        templateName: 'new',\n        contentTemplate: '{{{yaml .}}}',\n        fileExtension: 'yml',\n        fileNameTemplate: '{{snakeCase scenario}}',\n    },\n    {\n        templateName: \"cs-aggregate-gwt\",\n        fileNameTemplate: \"{{pascalCase scenario}}\",\n        fileExtension: \"cs\",\n        contentTemplate: `using StoryTest;\nusing Vlerx.Es.Messaging;\nusing Vlerx.Es.Persistence;\nusing Vlerx.SampleContracts.{{pascalCase subject.title}};\nusing Vlerx.{{pascalCase context.title}}.{{pascalCase subject.title}};\nusing Vlerx.{{pascalCase context.title}}.{{pascalCase subject.title}}.Commands;\nusing Vlerx.{{pascalCase context.title}}.Tests.StoryTests;\nusing Xunit;\n\nnamespace {{pascalCase context.title}}.Tests\n{\n{{#* inline \"callConstructor\"}}\nnew {{pascalCase title}}({{#each properties}}\"{{this.example}}\"{{#unless @last}},{{/unless}}{{/each}}){{/inline}}    public class {{pascalCase scenario}} : IStorySpecification\n    {\n        public IDomainEvent[] Given\n        => new IDomainEvent[]{\n    {{#each given.schema}}\n        {{> callConstructor .}},\n    {{/each}}\n        };\n\n        public ICommand When\n        => {{> callConstructor when.schema}};\n\n        public IDomainEvent[] Then\n        => new IDomainEvent[]{\n    {{#each then.schema}}\n        {{> callConstructor .}},\n    {{/each}}\n        };\n\n        public object subject.title { get; } = new { Title = nameof({{pascalCase subject.title}}) };\n\n        [Fact]\n        public void Run()\n        => TestAdapter.Test(this\n                , setupUseCases: eventStore => new[] { \n                    new {{pascalCase subject.title}}UseCases(new Repository<{{pascalCase subject.title}}.State>(eventStore)) });\n    }\n}`\n    },\n    {\n        templateName: \"cs-aggregate\",\n        fileNameTemplate: \"{{scenario}}\",\n        fileExtension: \"cs\",\n        contentTemplate: `{{> main}}\n{{#*inline 'main'}}\nusing Xunit;\nusing FluentAssertions;\nusing {{context.title}};\n\nnamespace {{toPascalCase context.title}}\n{\n    public class {{toPascalCase scenario}}Spec\n    {\n        [Fact]\n    {{#each data as |example key|}}\n        public void {{toPascalCase @root.scenario}}{{#if key}}{{key}}{{/if}}()\n        {\n            var {{toCamelCase @root.subject.title}} = new {{toPascalCase @root.subject.title}}();\n            \n            //Given\n        {{#each example.given as |value key|}}\n            {{toCamelCase @root.subject.title}}.On({{>format data=value schema=(lookup (lookup ../../given key) 'schema')  }});\n        {{/each}}\n\n            //When            \n            {{toCamelCase @root.subject.title}}.{{>object data=example.when schema=../when.schema }};\n            {{!-- {{toCamelCase @root.subject.title}}.{{toPascalCase @root.when.schema.title}}({{>format data=example.when schema=../when.schema  }}); --}}\n\n            //Then\n            {{#each example.then as |value key|}}\n            {{toCamelCase  @root.subject.title}}.Events.Should().ContainEquivalentOf(\n                {{>format data=value schema=(lookup (lookup ../../then key) 'schema')  }}\n);\n            {{/each}}\n        }\n    {{/each}}\n    }\n}\n{{/inline}}\n\n{{#*inline \"format\" data schema}}\n{{>(concat 'format_' schema.type) data=data schema=schema}}\n{{/inline}}\n\n{{#*inline \"format_string\" data}}\"{{data}}\"{{/inline}}\n{{#*inline \"format_number\" data}}{{data}}{{/inline}}\n{{#*inline \"format_boolean\" data}}{{data}}{{/inline}}\n{{#*inline \"format_object\"  data schema}}new {{>object data=data schema=schema}}{{/inline}}\n\n{{#*inline \"format_array\" data schema }}\n        {{#if schema.items.[0]}}\nnew[]{ {{#each data as |value key|}}\n                                {{>format data=value schema=(lookup ../schema.items key)}}{{#unless @last}},{{/unless}}{{/each}}   \n                            }{{else}}new({{#each data as |value key|}}\n                                {{>format  data=value schema=../schema.items}}{{#unless @last}},{{/unless}}{{/each}}\n                            ){{/if}}{{/inline}}\n\n{{#*inline 'object' data schema}}{{pascalCase schema.title}}(\n    {{#each data as |value key|}}\n                        {{key}}: {{> format data=value schema=(lookup ../schema.properties key) }}{{#unless @last}},{{/unless}}\n{{/each}}\n            ){{/inline}}\n\n{{#*inline \"format_undefined\" data schema}}\nSTRUCTURAL ERROR: UNKNOWN SCHEMA TYPE:\nThe field 'type' is not found in the schema\n---------Internal-SCHEMA:------------\n{{{yaml schema}}}\n---------INTERNAL-DATA:--------------------\n{{{yaml data}}}\n------------THIS:--------------------\n{{{yaml .}}}\n{{/inline}}`\n    },\n    {\n        templateName: \"gherkin-scenario\",\n        fileNameTemplate: \"{{scenario}}\",\n        fileExtension: \"features\",\n        contentTemplate: `Scenario Outline: {{spaceCase scenario}}\n{{#each data}}\n        Given {{#each given as |step index|}}{{spaceCase (lookup (lookup (lookup @root.given index) 'schema') 'title')}} {{>table object=step}}\n        {{#unless @last}} And {{/unless}}{{/each}}When {{#with when as |step|}} {{spaceCase @root.when.schema.title}} {{>table object=step}}\n        {{/with}}\n        Then {{#each then as |step index|}}{{spaceCase (lookup (lookup (lookup @root.then index) 'schema') 'title')}} {{>table object=step}}\n        {{#unless @last}} And {{/unless}}{{/each}}\n{{/each}}\n\n{{#*inline 'table' object}}{{#each object as |value title|}}\n        {{>row title=title  value=value}}{{/each}}{{/inline}}\n\n{{#*inline 'row' title value}}\n| {{>column (spaceCase title)}} | {{>column value}} |{{/inline}}\n\n{{#*inline 'column'}}\n{{.}} {{>fill_rest}}{{/inline}}\n\n{{#*inline 'fill_rest'}}\n{{repeat ' ' (subtract 20 (lookup (lowerCase . ) 'length'))}}{{/inline}}`\n    },\n];\n\n\n//# sourceURL=webpack://ExternalServices/./src/app/template-processing/default-templates.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"defaultTemplates\": () => (/* binding */ defaultTemplates)\n/* harmony export */ });\nconst defaultTemplates = [\n    {\n        templateName: 'new',\n        contentTemplate: '{{{yaml .}}}',\n        fileExtension: 'yml',\n        fileNameTemplate: '{{snakeCase scenario}}',\n    },\n    {\n        templateName: \"cs-aggregate-gwt\",\n        fileNameTemplate: \"{{pascalCase scenario}}\",\n        fileExtension: \"cs\",\n        contentTemplate: `using StoryTest;\nusing Vlerx.Es.Messaging;\nusing Vlerx.Es.Persistence;\nusing Vlerx.SampleContracts.{{pascalCase subject.title}};\nusing Vlerx.{{pascalCase context.title}}.{{pascalCase subject.title}};\nusing Vlerx.{{pascalCase context.title}}.{{pascalCase subject.title}}.Commands;\nusing Vlerx.{{pascalCase context.title}}.Tests.StoryTests;\nusing Xunit;\n\nnamespace {{pascalCase context.title}}.Tests\n{\n {{#* inline \"callConstructor\"}}\nnew {{pascalCase title}}({{#each schema.properties}}\"{{this.example}}\"{{#unless @last}},{{/unless}}{{/each}}){{/inline}}    public class {{pascalCase scenario.title}} : IStorySpecification\n    {\n        public IDomainEvent[] Given\n        => new IDomainEvent[]{\n    {{#each given}}\n        {{> callConstructor .}},\n    {{/each}}\n        };\n\n        public ICommand When\n        => {{> callConstructor when}};\n\n        public IDomainEvent[] Then\n        => new IDomainEvent[]{\n    {{#each then}}\n        {{> callConstructor .}},\n    {{/each}}\n        };\n\n        public object subject.title { get; } = new { Title = nameof({{pascalCase subject.title}}) };\n\n        [Fact]\n        public void Run()\n        => TestAdapter.Test(this\n                , setupUseCases: eventStore => new[] { \n                    new {{pascalCase subject.title}}UseCases(new Repository<{{pascalCase subject.title}}.State>(eventStore)) });\n    }\n}\n`\n    },\n    {\n        templateName: \"cs-aggregate\",\n        fileNameTemplate: \"{{scenario.title}}\",\n        fileExtension: \"cs\",\n        contentTemplate: `{{> main}}\n{{#*inline 'main'}}\nusing Xunit;\nusing FluentAssertions;\nusing {{pascalCase context.title}};\n\nnamespace {{pascalCase context.title}}\n{\n    public class {{pascalCase scenario.title}}Spec\n    {\n        [Fact]\n        public void {{pascalCase scenario.title}}()\n        {\n            var {{camelCase @root.subject.title}} = new {{pascalCase @root.subject.title}}();\n\n            //Given\n        {{#each given as |step|}}\n            {{camelCase @root.subject.title}}.On({{>format schema=step.schema }});\n        {{/each}}\n\n            //When            \n            {{camelCase @root.subject.title}}.{{>object schema=when.schema title=when.title}}\n           \n            //Then\n            {{#each then as |step|}}\n            {{camelCase  @root.subject.title}}.Events.Should().ContainEquivalentOf(\n                {{>format schema=step.schema }}\n);\n            {{/each}}\n        }\n    }\n}\n{{/inline}}\n\n{{#*inline \"format\" schema}}\n{{>(concat 'format_' schema.type) schema=schema}}\n{{/inline}}\n\n{{#*inline \"format_string\" schema}}\"{{schema.example}}\"{{/inline}}\n{{#*inline \"format_number\" schema}}{{schema.example}}{{/inline}}\n{{#*inline \"format_boolean\" schema}}{{schema.example}}{{/inline}}\n{{#*inline \"format_object\"  schema}}new {{>object schema=schema title=title}}{{/inline}}\n\n{{#*inline \"format_array\" schema }}\n         {{#if schema.items.[0]}}\nnew[]{ {{#each schema.items as |value key|}}\n                                {{>format schema=value }}{{#unless @last}},{{/unless}}{{/each}}\n                            }{{else}}{{>format  schema=schema.items }}{{/if}}{{/inline}}\n\n{{#*inline \"object\" schema title}}{{pascalCase title}}(\n    {{!-- TODO: It should be title of object not scenario's --}}\n    {{#each schema.properties as |value key|}}\n                        {{key}}: {{> format schema=value }}{{#unless @last}},{{/unless}}\n{{/each}}\n            ){{/inline}}\n\n{{#*inline \"format_undefined\" schema}}\nSTRUCTURAL ERROR: UNKNOWN SCHEMA TYPE:\nThe field 'type' is not found in the schema\n---------INTERNAL-SCHEMA:--------------------\n{{{yaml schema}}}\n------------THIS:--------------------\n{{{yaml .}}}\n{{/inline}}`\n    },\n    {\n        templateName: \"gherkin-scenario\",\n        fileNameTemplate: \"{{scenario.title}}\",\n        fileExtension: \"features\",\n        contentTemplate: `Scenario Outline: {{spaceCase scenario.title}}\nGiven {{#each given as |step index|}}{{spaceCase step.title}} {{>table object=step.schema}}\n{{#unless @last}} And {{/unless}}{{/each}}\nWhen {{#with when as |step|}} {{spaceCase step.title}} {{>table object=step.schema}}\n{{/with}}\nThen {{#each then as |step|}} {{spaceCase step.title}} {{>table object=step.schema}}\n{{#unless @last}} And {{/unless}}{{/each}}\n\n\n{{#*inline 'table' object}}{{#each object as |value title|}}\n        {{>row title=title  value=value}}{{/each}}{{/inline}}\n\n{{#*inline 'row' title value}}\n| {{>column (spaceCase title)}} | {{>column value}} |{{/inline}}\n\n{{#*inline 'column'}}\n{{.}} {{>fill_rest}}{{/inline}}\n\n{{#*inline 'fill_rest'}}\n{{repeat ' ' (subtract 20 (lookup (lowerCase . ) 'length'))}}{{/inline}}`\n    },\n];\n\n\n//# sourceURL=webpack://ExternalServices/./src/app/template-processing/default-templates.js?");
 
 /***/ }),
 
@@ -1215,7 +1215,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = __webpack_module_cache__[moduleId] = {
-/******/ 			id: moduleId,
+/******/ 			// no module.id needed
 /******/ 			// no module.loaded needed
 /******/ 			exports: {}
 /******/ 		};
@@ -1227,42 +1227,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /******/ 		return module.exports;
 /******/ 	}
 /******/ 	
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = __webpack_modules__;
-/******/ 	
 /************************************************************************/
-/******/ 	/* webpack/runtime/chunk loaded */
-/******/ 	(() => {
-/******/ 		var deferred = [];
-/******/ 		__webpack_require__.O = (result, chunkIds, fn, priority) => {
-/******/ 			if(chunkIds) {
-/******/ 				priority = priority || 0;
-/******/ 				for(var i = deferred.length; i > 0 && deferred[i - 1][2] > priority; i--) deferred[i] = deferred[i - 1];
-/******/ 				deferred[i] = [chunkIds, fn, priority];
-/******/ 				return;
-/******/ 			}
-/******/ 			var notFulfilled = Infinity;
-/******/ 			for (var i = 0; i < deferred.length; i++) {
-/******/ 				var [chunkIds, fn, priority] = deferred[i];
-/******/ 				var fulfilled = true;
-/******/ 				for (var j = 0; j < chunkIds.length; j++) {
-/******/ 					if ((priority & 1 === 0 || notFulfilled >= priority) && Object.keys(__webpack_require__.O).every((key) => (__webpack_require__.O[key](chunkIds[j])))) {
-/******/ 						chunkIds.splice(j--, 1);
-/******/ 					} else {
-/******/ 						fulfilled = false;
-/******/ 						if(priority < notFulfilled) notFulfilled = priority;
-/******/ 					}
-/******/ 				}
-/******/ 				if(fulfilled) {
-/******/ 					deferred.splice(i--, 1)
-/******/ 					var r = fn();
-/******/ 					if (r !== undefined) result = r;
-/******/ 				}
-/******/ 			}
-/******/ 			return result;
-/******/ 		};
-/******/ 	})();
-/******/ 	
 /******/ 	/* webpack/runtime/compat get default export */
 /******/ 	(() => {
 /******/ 		// getDefaultExport function for compatibility with non-harmony modules
@@ -1289,6 +1254,42 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /******/ 	
 /******/ 	/* webpack/runtime/global */
 /******/ 	(() => {
+/******/ 		__webpack_require__.g = (function() {
+/******/ 			if (typeof globalThis === 'object') return globalThis;
+/******/ 			try {
+/******/ 				return this || new Function('return this')();
+/******/ 			} catch (e) {
+/******/ 				if (typeof window === 'object') return window;
+/******/ 			}
+/******/ 		})();
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/************************************************************************/
+/******/ 	
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	// This entry module is referenced by other modules so it can't be inlined
+/******/ 	var __webpack_exports__ = __webpack_require__("./src/external-services.tsx");
+/******/ 	ExternalServices = __webpack_exports__;
+/******/ 	
+/******/ })()
+; => {
 /******/ 		__webpack_require__.g = (function() {
 /******/ 			if (typeof globalThis === 'object') return globalThis;
 /******/ 			try {
