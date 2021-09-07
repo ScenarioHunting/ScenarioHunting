@@ -457,7 +457,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
   \**********************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"TemplateCompiler\": () => (/* binding */ TemplateCompiler)\n/* harmony export */ });\n/* harmony import */ var _template_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./template-helpers */ \"./src/app/template-processing/template-helpers.ts\");\n/* harmony import */ var _libs_string_case_helpers__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../libs/string-case-helpers */ \"./src/libs/string-case-helpers.ts\");\n/* harmony import */ var handlebars_dist_cjs_handlebars__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! handlebars/dist/cjs/handlebars */ \"./node_modules/handlebars/dist/cjs/handlebars.js\");\n/* harmony import */ var handlebars_dist_cjs_handlebars__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(handlebars_dist_cjs_handlebars__WEBPACK_IMPORTED_MODULE_2__);\n\n// import Handlebars from \"handlebars/dist/handlebars.js\"\n// import \"handlebars/types/index\"\n\n\nconst customHelpers = Object.entries(_libs_string_case_helpers__WEBPACK_IMPORTED_MODULE_1__.stringCaseHelpers).concat(Object.entries(_template_helpers__WEBPACK_IMPORTED_MODULE_0__.helpers));\ncustomHelpers.map(([name, fn]) => handlebars_dist_cjs_handlebars__WEBPACK_IMPORTED_MODULE_2___default().registerHelper(name, fn));\n// Object.entries(stringCaseHelpers).map(([name, fn]) => Handlebars.registerHelper(name, fn))\n// Object.entries(helpers).map(([name, fn]) => Handlebars.registerHelper(name, fn))\nhandlebars_dist_cjs_handlebars__WEBPACK_IMPORTED_MODULE_2___default().registerHelper('helperMissing', function ( /* dynamic arguments */) {\n    var options = arguments[arguments.length - 1];\n    // const userArgs = Array.prototype.slice.call(arguments, 0, arguments.length - 1)\n    throw {\n        lineNumber: options.loc.start.line,\n        endLineNumber: options.loc.end.line,\n        column: options.loc.start.column,\n        endColumn: options.loc.end.column,\n        name: \"Error\",\n        message: options.name + \" is not defined\"\n    };\n});\nhandlebars_dist_cjs_handlebars__WEBPACK_IMPORTED_MODULE_2___default().registerHelper('blockHelperMissing', (context, options) => {\n    throw {\n        lineNumber: options.loc.start.line,\n        endLineNumber: options.loc.end.line,\n        column: options.loc.start.column,\n        endColumn: options.loc.end.column,\n        name: \"Error\",\n        message: options.name + \" is not defined in the block: \" + options.fn(context)\n    };\n});\nclass TemplateCompiler {\n    compileTemplate(template, model) {\n        try {\n            var compiledTemplate = handlebars_dist_cjs_handlebars__WEBPACK_IMPORTED_MODULE_2___default().compile(template);\n            //TODO: validate: the test must have When and Then at least.\n            return compiledTemplate(model);\n        }\n        catch (err) {\n            let wrappedError = {\n                startLineNumber: err.lineNumber,\n                endLineNumber: err.endLineNumber,\n                startColumn: err.column,\n                endColumn: err.endColumn,\n                message: err.message\n            };\n            if (!wrappedError.startLineNumber) {\n                const lineNumberMatch = String(err).match(/error on line (\\d+)/);\n                if (lineNumberMatch && lineNumberMatch.length > 1) {\n                    wrappedError.startLineNumber = parseInt(lineNumberMatch[1]);\n                    wrappedError.endLineNumber = wrappedError.startLineNumber + 1;\n                }\n            }\n            throw wrappedError;\n        }\n    }\n}\n//https://github.com/helpers/handlebars-helpers#install\n\n\n//# sourceURL=webpack://ExternalServices/./src/app/template-processing/template-compiler.ts?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"TemplateCompiler\": () => (/* binding */ TemplateCompiler)\n/* harmony export */ });\n/* harmony import */ var _template_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./template-helpers */ \"./src/app/template-processing/template-helpers.ts\");\n/* harmony import */ var _libs_string_case_helpers__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../libs/string-case-helpers */ \"./src/libs/string-case-helpers.ts\");\n/* harmony import */ var handlebars_dist_cjs_handlebars__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! handlebars/dist/cjs/handlebars */ \"./node_modules/handlebars/dist/cjs/handlebars.js\");\n/* harmony import */ var handlebars_dist_cjs_handlebars__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(handlebars_dist_cjs_handlebars__WEBPACK_IMPORTED_MODULE_2__);\n\n// import Handlebars from \"handlebars/dist/handlebars.js\"\n// import \"handlebars/types/index\"\n\n\nconst customHelpers = Object.entries(_libs_string_case_helpers__WEBPACK_IMPORTED_MODULE_1__.stringCaseHelpers)\n    .map((h) => [h[0], (x) => h[1](!x ? '' : x)])\n    .concat(Object.entries(_template_helpers__WEBPACK_IMPORTED_MODULE_0__.helpers));\ncustomHelpers.forEach(([name, fn]) => handlebars_dist_cjs_handlebars__WEBPACK_IMPORTED_MODULE_2___default().registerHelper(name, fn));\n// Object.entries(stringCaseHelpers).map(([name, fn]) => Handlebars.registerHelper(name, fn))\n// Object.entries(helpers).map(([name, fn]) => Handlebars.registerHelper(name, fn))\nhandlebars_dist_cjs_handlebars__WEBPACK_IMPORTED_MODULE_2___default().registerHelper('helperMissing', function ( /* dynamic arguments */) {\n    var options = arguments[arguments.length - 1];\n    // const userArgs = Array.prototype.slice.call(arguments, 0, arguments.length - 1)\n    throw {\n        lineNumber: options.loc.start.line,\n        endLineNumber: options.loc.end.line,\n        column: options.loc.start.column,\n        endColumn: options.loc.end.column,\n        name: \"Error\",\n        message: options.name + \" is not defined\"\n    };\n});\nhandlebars_dist_cjs_handlebars__WEBPACK_IMPORTED_MODULE_2___default().registerHelper('blockHelperMissing', (context, options) => {\n    throw {\n        lineNumber: options.loc.start.line,\n        endLineNumber: options.loc.end.line,\n        column: options.loc.start.column,\n        endColumn: options.loc.end.column,\n        name: \"Error\",\n        message: options.name + \" is not defined in the block: \" + options.fn(context)\n    };\n});\nclass TemplateCompiler {\n    compileTemplate(template, model) {\n        try {\n            var compiledTemplate = handlebars_dist_cjs_handlebars__WEBPACK_IMPORTED_MODULE_2___default().compile(template);\n            //TODO: validate: the test must have When and Then at least.\n            return compiledTemplate(model);\n        }\n        catch (err) {\n            let wrappedError = {\n                startLineNumber: err.lineNumber,\n                endLineNumber: err.endLineNumber,\n                startColumn: err.column,\n                endColumn: err.endColumn,\n                message: err.message\n            };\n            if (!wrappedError.startLineNumber) {\n                const lineNumberMatch = String(err).match(/error on line (\\d+)/);\n                if (lineNumberMatch && lineNumberMatch.length > 1) {\n                    wrappedError.startLineNumber = parseInt(lineNumberMatch[1]);\n                    wrappedError.endLineNumber = wrappedError.startLineNumber + 1;\n                }\n            }\n            throw wrappedError;\n        }\n    }\n}\n//https://github.com/helpers/handlebars-helpers#install\n\n\n//# sourceURL=webpack://ExternalServices/./src/app/template-processing/template-compiler.ts?");
 
 /***/ }),
 
@@ -487,7 +487,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
   \*****************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"stringCaseHelpers\": () => (/* binding */ stringCaseHelpers)\n/* harmony export */ });\n//    const toString=(s: any):string => s.toString() \nconst snakeToCamelCase = (str) => str.toString().replace(/_./g, x => x[1].toUpperCase());\nconst snakeToPascalCase = (str) => str.toString().replace(/(^|_)./g, str => str.toUpperCase())\n    .replace(/_*/g, '');\nconst snakeToKebabCase = (str) => str.toString().replace(/_/g, '-');\nconst snakeToSpaceCase = (str) => str.toString().replace(/_/g, ' ');\nconst snakeToSentenceCase = (str) => stringCaseHelpers.capitalize(snakeToSpaceCase(str.toString()));\nconst pascalToSpaceCase = (str) => str\n    // Look for long acronyms and filter out the last letter\n    .replace(/([A-Z]+)([A-Z][a-z])/g, ' $1 $2')\n    // Look for lower-case letters followed by upper-case letters\n    .replace(/([a-z\\d])([A-Z])/g, '$1 $2')\n    // Look for lower-case letters followed by numbers\n    .replace(/([a-zA-Z])(\\d)/g, '$1 $2')\n    .replace(/^./, function (str) { return str.toUpperCase(); })\n    .trim();\nconst stringCaseHelpers = {\n    lowerCase(str) { return str.toString().toLocaleLowerCase(); },\n    upperCase(str) { return str.toString().toLocaleUpperCase(); },\n    capitalize(str) {\n        str = str.toString();\n        return str.charAt(0).toUpperCase() + str.slice(1);\n    },\n    snakeCase(str) {\n        return pascalToSpaceCase(str.toString())\n            .replace(/(([^A-Z0-9]+)(.)?)/ig, '_$1')\n            .replace(/-|\\s/g, '')\n            .replace(/_+/g, '_')\n            .toLowerCase();\n    },\n    camelCase(str) {\n        return snakeToCamelCase(stringCaseHelpers.snakeCase(str.toString()));\n    },\n    pascalCase(str) {\n        return snakeToPascalCase(stringCaseHelpers.snakeCase(str.toString()));\n    },\n    kebabCase(str) {\n        return snakeToKebabCase(stringCaseHelpers.snakeCase(str.toString()));\n    },\n    spaceCase(str) {\n        return snakeToSpaceCase(stringCaseHelpers.snakeCase(str.toString()));\n    },\n    sentenceCase(str) {\n        return snakeToSentenceCase(stringCaseHelpers.snakeCase(str.toString()));\n    },\n    toCamelCase(str) { return stringCaseHelpers.camelCase(str); },\n    toSentenceCase(str) { return stringCaseHelpers.sentenceCase(str); },\n    toPascalCase(str) { return stringCaseHelpers.pascalCase(str); }\n};\n\n\n//# sourceURL=webpack://ExternalServices/./src/libs/string-case-helpers.ts?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"stringCaseHelpers\": () => (/* binding */ stringCaseHelpers)\n/* harmony export */ });\n//    const toString=(s: any):string => s.toString() \nconst snakeToCamelCase = (str) => str.toString().replace(/_./g, x => x[1].toUpperCase());\nconst snakeToPascalCase = (str) => str.toString().replace(/(^|_)./g, str => str.toUpperCase())\n    .replace(/_*/g, '');\nconst snakeToKebabCase = (str) => str.toString().replace(/_/g, '-');\nconst snakeToSpaceCase = (str) => str.toString().replace(/_/g, ' ');\nconst snakeToSentenceCase = (str) => stringCaseHelpers.capitalize(snakeToSpaceCase(str.toString()));\nconst pascalToSpaceCase = (str) => str\n    // Look for long acronyms and filter out the last letter\n    .replace(/([A-Z]+)([A-Z][a-z])/g, ' $1 $2')\n    // Look for lower-case letters followed by upper-case letters\n    .replace(/([a-z\\d])([A-Z])/g, '$1 $2')\n    // Look for lower-case letters followed by numbers\n    .replace(/([a-zA-Z])(\\d)/g, '$1 $2')\n    .replace(/^./, function (str) { return str.toUpperCase(); })\n    .trim();\nconst stringCaseHelpers = {\n    lowerCase(str) { var _a; return (_a = str === null || str === void 0 ? void 0 : str.toString()) === null || _a === void 0 ? void 0 : _a.toLocaleLowerCase(); },\n    upperCase(str) { return str.toString().toLocaleUpperCase(); },\n    capitalize(str) {\n        str = str.toString();\n        return str.charAt(0).toUpperCase() + str.slice(1);\n    },\n    snakeCase(str) {\n        return pascalToSpaceCase(str.toString())\n            .replace(/(([^A-Z0-9]+)(.)?)/ig, '_$1')\n            .replace(/-|\\s/g, '')\n            .replace(/_+/g, '_')\n            .toLowerCase();\n    },\n    camelCase(str) {\n        return snakeToCamelCase(stringCaseHelpers.snakeCase(str.toString()));\n    },\n    pascalCase(str) {\n        return snakeToPascalCase(stringCaseHelpers.snakeCase(str.toString()));\n    },\n    kebabCase(str) {\n        return snakeToKebabCase(stringCaseHelpers.snakeCase(str.toString()));\n    },\n    spaceCase(str) {\n        return snakeToSpaceCase(stringCaseHelpers.snakeCase(str.toString()));\n    },\n    sentenceCase(str) {\n        return snakeToSentenceCase(stringCaseHelpers.snakeCase(str.toString()));\n    },\n};\n\n\n//# sourceURL=webpack://ExternalServices/./src/libs/string-case-helpers.ts?");
 
 /***/ }),
 
@@ -1215,7 +1215,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = __webpack_module_cache__[moduleId] = {
-/******/ 			id: moduleId,
+/******/ 			// no module.id needed
 /******/ 			// no module.loaded needed
 /******/ 			exports: {}
 /******/ 		};
@@ -1227,42 +1227,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /******/ 		return module.exports;
 /******/ 	}
 /******/ 	
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = __webpack_modules__;
-/******/ 	
 /************************************************************************/
-/******/ 	/* webpack/runtime/chunk loaded */
-/******/ 	(() => {
-/******/ 		var deferred = [];
-/******/ 		__webpack_require__.O = (result, chunkIds, fn, priority) => {
-/******/ 			if(chunkIds) {
-/******/ 				priority = priority || 0;
-/******/ 				for(var i = deferred.length; i > 0 && deferred[i - 1][2] > priority; i--) deferred[i] = deferred[i - 1];
-/******/ 				deferred[i] = [chunkIds, fn, priority];
-/******/ 				return;
-/******/ 			}
-/******/ 			var notFulfilled = Infinity;
-/******/ 			for (var i = 0; i < deferred.length; i++) {
-/******/ 				var [chunkIds, fn, priority] = deferred[i];
-/******/ 				var fulfilled = true;
-/******/ 				for (var j = 0; j < chunkIds.length; j++) {
-/******/ 					if ((priority & 1 === 0 || notFulfilled >= priority) && Object.keys(__webpack_require__.O).every((key) => (__webpack_require__.O[key](chunkIds[j])))) {
-/******/ 						chunkIds.splice(j--, 1);
-/******/ 					} else {
-/******/ 						fulfilled = false;
-/******/ 						if(priority < notFulfilled) notFulfilled = priority;
-/******/ 					}
-/******/ 				}
-/******/ 				if(fulfilled) {
-/******/ 					deferred.splice(i--, 1)
-/******/ 					var r = fn();
-/******/ 					if (r !== undefined) result = r;
-/******/ 				}
-/******/ 			}
-/******/ 			return result;
-/******/ 		};
-/******/ 	})();
-/******/ 	
 /******/ 	/* webpack/runtime/compat get default export */
 /******/ 	(() => {
 /******/ 		// getDefaultExport function for compatibility with non-harmony modules
@@ -1289,6 +1254,42 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /******/ 	
 /******/ 	/* webpack/runtime/global */
 /******/ 	(() => {
+/******/ 		__webpack_require__.g = (function() {
+/******/ 			if (typeof globalThis === 'object') return globalThis;
+/******/ 			try {
+/******/ 				return this || new Function('return this')();
+/******/ 			} catch (e) {
+/******/ 				if (typeof window === 'object') return window;
+/******/ 			}
+/******/ 		})();
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/************************************************************************/
+/******/ 	
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	// This entry module is referenced by other modules so it can't be inlined
+/******/ 	var __webpack_exports__ = __webpack_require__("./src/external-services.tsx");
+/******/ 	ExternalServices = __webpack_exports__;
+/******/ 	
+/******/ })()
+; => {
 /******/ 		__webpack_require__.g = (function() {
 /******/ 			if (typeof globalThis === 'object') return globalThis;
 /******/ 			try {
