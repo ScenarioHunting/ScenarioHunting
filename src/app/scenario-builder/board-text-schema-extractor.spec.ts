@@ -305,5 +305,6 @@ describe('how the step becomes extracted from text', function () {
         step.title.should.eq(`person`)
         step.schema.properties.should.empty
     })
+    it(`removes "|'|\`|& from texts`)
 
 })

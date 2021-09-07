@@ -126,12 +126,10 @@ The field 'type' is not found in the schema
         fileExtension: "features",
         contentTemplate: `Scenario Outline: {{spaceCase scenario.title}}
 Given {{#each given as |step index|}}{{spaceCase step.title}} {{>table object=step.schema}}
-{{#unless @last}} And {{/unless}}{{/each}}
-When {{#with when as |step|}} {{spaceCase step.title}} {{>table object=step.schema}}
+{{#unless @last}} And {{/unless}}{{/each}}When {{#with when as |step|}} {{spaceCase step.title}} {{>table object=step.schema}}
 {{/with}}
 Then {{#each then as |step|}} {{spaceCase step.title}} {{>table object=step.schema}}
 {{#unless @last}} And {{/unless}}{{/each}}
-
 
 {{#*inline 'table' object}}{{#each object.properties as |property title|}}
         {{>row title=title  value=property.example}}{{/each}}{{/inline}}
