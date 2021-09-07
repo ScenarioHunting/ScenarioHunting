@@ -20,22 +20,22 @@ using Xunit;
 
 namespace {{pascalCase context.title}}.Tests
 {
-{{#* inline "callConstructor"}}
-new {{pascalCase title}}({{#each properties}}"{{this.example}}"{{#unless @last}},{{/unless}}{{/each}}){{/inline}}    public class {{pascalCase scenario}} : IStorySpecification
+ {{#* inline "callConstructor"}}
+new {{pascalCase title}}({{#each schema.properties}}"{{this.example}}"{{#unless @last}},{{/unless}}{{/each}}){{/inline}}    public class {{pascalCase scenario.title}} : IStorySpecification
     {
         public IDomainEvent[] Given
         => new IDomainEvent[]{
-    {{#each given.schema}}
+    {{#each given}}
         {{> callConstructor .}},
     {{/each}}
         };
 
         public ICommand When
-        => {{> callConstructor when.schema}};
+        => {{> callConstructor when}};
 
         public IDomainEvent[] Then
         => new IDomainEvent[]{
-    {{#each then.schema}}
+    {{#each then}}
         {{> callConstructor .}},
     {{/each}}
         };
@@ -48,95 +48,90 @@ new {{pascalCase title}}({{#each properties}}"{{this.example}}"{{#unless @last}}
                 , setupUseCases: eventStore => new[] { 
                     new {{pascalCase subject.title}}UseCases(new Repository<{{pascalCase subject.title}}.State>(eventStore)) });
     }
-}`
+}
+`
     },
     {
         templateName: "cs-aggregate",
-        fileNameTemplate: "{{scenario}}",
+        fileNameTemplate: "{{scenario.title}}",
         fileExtension: "cs",
         contentTemplate: `{{> main}}
 {{#*inline 'main'}}
 using Xunit;
 using FluentAssertions;
-using {{context.title}};
+using {{pascalCase context.title}};
 
-namespace {{toPascalCase context.title}}
+namespace {{pascalCase context.title}}
 {
-    public class {{toPascalCase scenario}}Spec
+    public class {{pascalCase scenario.title}}Spec
     {
         [Fact]
-    {{#each data as |example key|}}
-        public void {{toPascalCase @root.scenario}}{{#if key}}{{key}}{{/if}}()
+        public void {{pascalCase scenario.title}}()
         {
-            var {{toCamelCase @root.subject.title}} = new {{toPascalCase @root.subject.title}}();
-            
+            var {{camelCase @root.subject.title}} = new {{pascalCase @root.subject.title}}();
+
             //Given
-        {{#each example.given as |value key|}}
-            {{toCamelCase @root.subject.title}}.On({{>format data=value schema=(lookup (lookup ../../given key) 'schema')  }});
+        {{#each given as |step|}}
+            {{camelCase @root.subject.title}}.On({{>format schema=step.schema }});
         {{/each}}
 
             //When            
-            {{toCamelCase @root.subject.title}}.{{>object data=example.when schema=../when.schema }};
-            {{!-- {{toCamelCase @root.subject.title}}.{{toPascalCase @root.when.schema.title}}({{>format data=example.when schema=../when.schema  }}); --}}
-
+            {{camelCase @root.subject.title}}.{{>object schema=when.schema title=when.title}}
+           
             //Then
-            {{#each example.then as |value key|}}
-            {{toCamelCase  @root.subject.title}}.Events.Should().ContainEquivalentOf(
-                {{>format data=value schema=(lookup (lookup ../../then key) 'schema')  }}
+            {{#each then as |step|}}
+            {{camelCase  @root.subject.title}}.Events.Should().ContainEquivalentOf(
+                {{>format schema=step.schema }}
 );
             {{/each}}
         }
-    {{/each}}
     }
 }
 {{/inline}}
 
-{{#*inline "format" data schema}}
-{{>(concat 'format_' schema.type) data=data schema=schema}}
+{{#*inline "format" schema}}
+{{>(concat 'format_' schema.type) schema=schema}}
 {{/inline}}
 
-{{#*inline "format_string" data}}"{{data}}"{{/inline}}
-{{#*inline "format_number" data}}{{data}}{{/inline}}
-{{#*inline "format_boolean" data}}{{data}}{{/inline}}
-{{#*inline "format_object"  data schema}}new {{>object data=data schema=schema}}{{/inline}}
+{{#*inline "format_string" schema}}"{{schema.example}}"{{/inline}}
+{{#*inline "format_number" schema}}{{schema.example}}{{/inline}}
+{{#*inline "format_boolean" schema}}{{schema.example}}{{/inline}}
+{{#*inline "format_object"  schema}}new {{>object schema=schema title=title}}{{/inline}}
 
-{{#*inline "format_array" data schema }}
-        {{#if schema.items.[0]}}
-new[]{ {{#each data as |value key|}}
-                                {{>format data=value schema=(lookup ../schema.items key)}}{{#unless @last}},{{/unless}}{{/each}}   
-                            }{{else}}new({{#each data as |value key|}}
-                                {{>format  data=value schema=../schema.items}}{{#unless @last}},{{/unless}}{{/each}}
-                            ){{/if}}{{/inline}}
+{{#*inline "format_array" schema }}
+         {{#if schema.items.[0]}}
+new[]{ {{#each schema.items as |value key|}}
+                                {{>format schema=value }}{{#unless @last}},{{/unless}}{{/each}}
+                            }{{else}}{{>format  schema=schema.items }}{{/if}}{{/inline}}
 
-{{#*inline 'object' data schema}}{{pascalCase schema.title}}(
-    {{#each data as |value key|}}
-                        {{key}}: {{> format data=value schema=(lookup ../schema.properties key) }}{{#unless @last}},{{/unless}}
+{{#*inline "object" schema title}}{{pascalCase title}}(
+    {{!-- TODO: It should be title of object not scenario's --}}
+    {{#each schema.properties as |value key|}}
+                        {{key}}: {{> format schema=value }}{{#unless @last}},{{/unless}}
 {{/each}}
             ){{/inline}}
 
-{{#*inline "format_undefined" data schema}}
+{{#*inline "format_undefined" schema}}
 STRUCTURAL ERROR: UNKNOWN SCHEMA TYPE:
 The field 'type' is not found in the schema
----------Internal-SCHEMA:------------
+---------INTERNAL-SCHEMA:--------------------
 {{{yaml schema}}}
----------INTERNAL-DATA:--------------------
-{{{yaml data}}}
 ------------THIS:--------------------
 {{{yaml .}}}
 {{/inline}}`
     },
     {
         templateName: "gherkin-scenario",
-        fileNameTemplate: "{{scenario}}",
+        fileNameTemplate: "{{scenario.title}}",
         fileExtension: "features",
-        contentTemplate: `Scenario Outline: {{spaceCase scenario}}
-{{#each data}}
-        Given {{#each given as |step index|}}{{spaceCase (lookup (lookup (lookup @root.given index) 'schema') 'title')}} {{>table object=step}}
-        {{#unless @last}} And {{/unless}}{{/each}}When {{#with when as |step|}} {{spaceCase @root.when.schema.title}} {{>table object=step}}
-        {{/with}}
-        Then {{#each then as |step index|}}{{spaceCase (lookup (lookup (lookup @root.then index) 'schema') 'title')}} {{>table object=step}}
-        {{#unless @last}} And {{/unless}}{{/each}}
-{{/each}}
+        contentTemplate: `Scenario Outline: {{spaceCase scenario.title}}
+Given {{#each given as |step index|}}{{spaceCase step.title}} {{>table object=step.schema}}
+{{#unless @last}} And {{/unless}}{{/each}}
+When {{#with when as |step|}} {{spaceCase step.title}} {{>table object=step.schema}}
+{{/with}}
+Then {{#each then as |step|}} {{spaceCase step.title}} {{>table object=step.schema}}
+{{#unless @last}} And {{/unless}}{{/each}}
+
 
 {{#*inline 'table' object}}{{#each object as |value title|}}
         {{>row title=title  value=value}}{{/each}}{{/inline}}
