@@ -372,11 +372,11 @@
         templateName: 'new',
         contentTemplate: '{{{yaml .}}}',
         fileExtension: 'yml',
-        fileNameTemplate: '{{snakeCase scenario}}',
+        fileNameTemplate: '{{snakeCase scenario.title}}',
     },
     {
         templateName: "cs-aggregate-gwt",
-        fileNameTemplate: "{{pascalCase scenario}}",
+        fileNameTemplate: "{{pascalCase scenario.title}}",
         fileExtension: "cs",
         contentTemplate: `using StoryTest;
 using Vlerx.Es.Messaging;
@@ -390,7 +390,7 @@ using Xunit;
 namespace {{pascalCase context.title}}.Tests
 {
 {{#* inline "callConstructor"}}
-new {{pascalCase title}}({{#each properties}}"{{this.example}}"{{#unless @last}},{{/unless}}{{/each}}){{/inline}}    public class {{pascalCase scenario}} : IStorySpecification
+new {{pascalCase title}}({{#each properties}}"{{this.example}}"{{#unless @last}},{{/unless}}{{/each}}){{/inline}}    public class {{pascalCase scenario.title}} : IStorySpecification
     {
         public IDomainEvent[] Given
         =&gt; new IDomainEvent[]{
@@ -421,7 +421,7 @@ new {{pascalCase title}}({{#each properties}}"{{this.example}}"{{#unless @last}}
     },
     {
         templateName: "cs-aggregate",
-        fileNameTemplate: "{{scenario}}",
+        fileNameTemplate: "{{scenario.title}}",
         fileExtension: "cs",
         contentTemplate: `{{&gt; main}}
 {{#*inline 'main'}}
@@ -431,11 +431,11 @@ using {{context.title}};
 &nbsp;
 namespace {{toPascalCase context.title}}
 {
-    public class {{toPascalCase scenario}}Spec
+    public class {{toPascalCase scenario.title}}Spec
     {
         [Fact]
     {{#each data as |example key|}}
-        public void {{toPascalCase @root.scenario}}{{#if key}}{{key}}{{/if}}()
+        public void {{toPascalCase @root.scenario.title}}{{#if key}}{{key}}{{/if}}()
         {
             var {{toCamelCase @root.subject.title}} = new {{toPascalCase @root.subject.title}}();
             
@@ -496,9 +496,9 @@ The field 'type' is not found in the schema
     },
     {
         templateName: "gherkin-scenario",
-        fileNameTemplate: "{{scenario}}",
+        fileNameTemplate: "{{scenario.title}}",
         fileExtension: "features",
-        contentTemplate: `Scenario Outline: {{spaceCase scenario}}
+        contentTemplate: `Scenario Outline: {{spaceCase scenario.title}}
 {{#each data}}
         Given {{#each given as |step index|}}{{spaceCase (lookup (lookup (lookup @root.given index) 'schema') 'title')}} {{&gt;table object=step}}
         {{#unless @last}} And {{/unless}}{{/each}}When {{#with when as |step|}} {{spaceCase @root.when.schema.title}} {{&gt;table object=step}}

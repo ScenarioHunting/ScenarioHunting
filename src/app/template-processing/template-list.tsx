@@ -16,7 +16,8 @@ export function TemplateList(props): JSX.Element {
         log.log('Repository instantiated.')
         templateRepository.getAllTemplateNames().then(templateNames => {
             log.log('Templates loaded from repository:', templateNames)
-            setAvailableTemplateNames(templateNames)
+            setAvailableTemplateNames(templateNames
+                .filter((value,index,self)=>self.indexOf(value)===index))//distinct
             log.log('Templates set to the component:', templateNames)
         }).catch(e => { throw e })
     }
@@ -36,7 +37,9 @@ export function TemplateList(props): JSX.Element {
         if (!confirm(`You are about deleting the template: ${templateName}.\n Are you sure?`))
             return;
         await templateRepository.removeTemplate(templateName)
-        setAvailableTemplateNames(templateNames.filter(t => t != templateName))
+        setAvailableTemplateNames(templateNames
+            .filter(t => t != templateName)
+            .filter((value,index,self)=>self.indexOf(value)===index))//distinct
         log.log("Template: " + templateName + " deleted.")
     }
     return <>

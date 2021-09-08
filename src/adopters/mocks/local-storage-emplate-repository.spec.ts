@@ -7,7 +7,7 @@
 //     const templateRepository = new localStorageTemplateRepository()
 //     const sampleTemplate = {
 //         templateName: "sample-template",
-//         fileNameTemplate: "{{scenario}}",
+//         fileNameTemplate: "{{scenario.title}}",
 //         fileExtension: "cs",
 //         contentTemplate: `code body`
 //     }
@@ -30,7 +30,7 @@
 //     it('updates the newly created template', async () => {
 //         const expected = {
 //             templateName: "updated-template",
-//             fileNameTemplate: "{{scenario}}",
+//             fileNameTemplate: "{{scenario.title}}",
 //             fileExtension: "cs",
 //             contentTemplate: `new code body`
 //         }

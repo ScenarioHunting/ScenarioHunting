@@ -164,7 +164,7 @@ export const createTestBuilder = (board = ExternalServices.boardService): React.
         // tempSharedStorage.setItem('sample-template', {
         //     contentTemplate: '{{{yaml .}}}',
         //     fileExtension: 'yaml',
-        //     fileNameTemplate: '{{snakeCase scenario}}',
+        //     fileNameTemplate: '{{snakeCase scenario.title}}',
         // } as textTemplate)
 
         await boardService.openModal(`./template-studio.html?mode=new`)

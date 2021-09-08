@@ -3,11 +3,11 @@ export const defaultTemplates = [
         templateName: 'new',
         contentTemplate: '{{{yaml .}}}',
         fileExtension: 'yml',
-        fileNameTemplate: '{{snakeCase scenario}}',
+        fileNameTemplate: '{{snakeCase scenario.title}}',
     },
     {
         templateName: "cs-aggregate-gwt",
-        fileNameTemplate: "{{pascalCase scenario}}",
+        fileNameTemplate: "{{pascalCase scenario.title}}",
         fileExtension: "cs",
         contentTemplate: `using StoryTest;
 using Vlerx.Es.Messaging;

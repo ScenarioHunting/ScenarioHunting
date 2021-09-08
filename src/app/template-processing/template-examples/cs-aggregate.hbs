@@ -7,11 +7,11 @@ using {{context}};
 
 namespace {{toPascalCase context}}
 {
-    public class {{toPascalCase scenario}}Spec
+    public class {{toPascalCase scenario.title}}Spec
     {
         [Fact]
     {{#each data as |example key|}}
-        public void {{toPascalCase @root.scenario}}{{#if key}}{{key}}{{/if}}()
+        public void {{toPascalCase @root.scenario.title}}{{#if key}}{{key}}{{/if}}()
         {
             var {{toCamelCase @root.subject}} = new {{toPascalCase @root.subject}}();
            
