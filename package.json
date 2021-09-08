@@ -7,6 +7,7 @@
     "kill": "sudo netstat -tulpn |grep 3001 |awk `{split($7,a,'/');print a[1]}`|xargs kill",
     "watch": "nodemon --exec 'npm run build && npm start' --config nodemon.json",
     "wtest": "mocha --config .mocharc.json -watch --R min",
+    "prebuild": "npm run clean ",
     "build": "webpack",
     "dev-server": "webpack-dev-server --open",
     "start": "node server.js",
