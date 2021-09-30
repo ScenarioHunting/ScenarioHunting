@@ -116,3 +116,36 @@ export type AbstractProperty = SingularProperty | ArrayProperty
 type ExamplesOf<T extends SingularType> = {
     [subScenario: string]: T
 }
+
+
+
+//Human readable api:
+// Removes items from basket:
+// given:
+//     - Items added to Basket:
+//           Customer id: Customer id
+//           product id: product id
+//           amount: "20"
+// when:
+//     Remove Items From Basket:
+//         Customer id: Customer id
+//         product id: product id
+//         amount: "12"
+// then:
+//     - Items Removed From Basket:
+//           Customer id: Customer id
+//           product id: product id
+//           amount: "12"
+// subject: Basket
+// context: Sales
+
+
+
+
+
+
+
+
+
+
+
