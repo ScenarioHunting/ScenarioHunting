@@ -23,7 +23,7 @@ import { defaultTemplates } from "./app/template-processing/default-templates";
 
 export let testResultReports: ITestResultReports = new TestResultReports()
 // export let singletonBoard: IBoard = new MiroBoard()
-export let log: iLog = console
+export let log: iLog = noLog
 
 export interface IExternalServices {
     readonly boardService: IBoard
@@ -49,6 +49,7 @@ const createMiroDependencies = (): IExternalServices => {
 
 const createMockedDependencies = (): IExternalServices => {
     return {
+        
         boardService: MockBoard(),
         boardUi: UIComponent,
         templateRepository: decorateRepositoryWithTemplates(new localStorageTemplateRepository(), defaultTemplates),

@@ -9,19 +9,13 @@ export const defaultTemplates = [
         templateName: "cs-aggregate-gwt",
         fileNameTemplate: "{{pascalCase scenario.title}}",
         fileExtension: "cs",
-        contentTemplate: `using StoryTest;
-using Vlerx.Es.Messaging;
-using Vlerx.Es.Persistence;
-using Vlerx.SampleContracts.{{pascalCase subject.title}};
-using Vlerx.{{pascalCase context.title}}.{{pascalCase subject.title}};
-using Vlerx.{{pascalCase context.title}}.{{pascalCase subject.title}}.Commands;
-using Vlerx.{{pascalCase context.title}}.Tests.StoryTests;
+        contentTemplate: `using {{pascalCase context.title}};
 using Xunit;
 
 namespace {{pascalCase context.title}}.Tests
 {
  {{#* inline "callConstructor"}}
-new {{pascalCase title}}({{#each schema.properties}}"{{this.example}}"{{#unless @last}},{{/unless}}{{/each}}){{/inline}}    public class {{pascalCase scenario.title}} : IStorySpecification
+new {{pascalCase title}}({{#each schema.properties}}"{{this.example}}"{{#unless @last}},{{/unless}}{{/each}}){{/inline}}    public class {{pascalCase scenario.title}}
     {
         public IDomainEvent[] Given
         => new IDomainEvent[]{
@@ -40,15 +34,23 @@ new {{pascalCase title}}({{#each schema.properties}}"{{this.example}}"{{#unless 
     {{/each}}
         };
 
-        public object subject.title { get; } = new { Title = nameof({{pascalCase subject.title}}) };
+        public object Subject { get; } = new { Title = nameof({{pascalCase subject.title}}) };
 
         [Fact]
         public void Run()
-        => TestAdapter.Test(this
-                , setupUseCases: eventStore => new[] { 
-                    new {{pascalCase subject.title}}UseCases(new Repository<{{pascalCase subject.title}}.State>(eventStore)) });
+        {
+            //The "Run" function can be abstracted away.
+
+            var dbSpy = new dbSpy();
+            var cmdHandler = new {{pascalCase subject.title}}CommandHandler(new {{pascalCase subject.title}}Repository(dbSpy));
+
+            Given.ForEach(cmdHandler.Handle);
+            cmdHandler.Handle(When);
+            Then.ForEach(then => dbSpy.Events.Should().ContainEquivalentOf(then));
+        }
     }
 }
+
 `
     },
     {
@@ -75,8 +77,8 @@ namespace {{pascalCase context.title}}
             {{camelCase @root.subject.title}}.On({{>format schema=step.schema }});
         {{/each}}
 
-            //When            
-            {{camelCase @root.subject.title}}.{{>object schema=when.schema title=when.title}}
+            //When
+            {{camelCase @root.subject.title}}.{{>object schema=when.schema title=when.title}};
            
             //Then
             {{#each then as |step|}}
@@ -107,7 +109,7 @@ new[]{ {{#each schema.items as |value key|}}
 {{#*inline "object" schema title}}{{pascalCase title}}(
     {{!-- TODO: It should be title of object not scenario's --}}
     {{#each schema.properties as |value key|}}
-                        {{key}}: {{> format schema=value }}{{#unless @last}},{{/unless}}
+                        {{camelCase key}}: {{> format schema=value }}{{#unless @last}},{{/unless}}
 {{/each}}
             ){{/inline}}
 
