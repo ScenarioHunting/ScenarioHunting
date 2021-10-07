@@ -1,13 +1,10 @@
-import { helpers } from "./template-helpers";
+import { customHelpers } from "./template-helpers";
 import { log } from "../../external-services";
 // import Handlebars from "handlebars/dist/handlebars.js"
 // import "handlebars/types/index"
-import { stringCaseHelpers } from "../../libs/string-case-helpers";
 import Handlebars from 'handlebars/dist/cjs/handlebars';
 
-const customHelpers = Object.entries(stringCaseHelpers)
-                    .map((h:[string, ((str: string) => string)])=>[h[0],(x:string)=>h[1](!x?'':x)])
-                    .concat(Object.entries(helpers))
+
 customHelpers.forEach(([name, fn]) => Handlebars.registerHelper(name, fn))
 
 // Object.entries(stringCaseHelpers).map(([name, fn]) => Handlebars.registerHelper(name, fn))

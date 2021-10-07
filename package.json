@@ -35,7 +35,6 @@
     "chai": "^4.3.4",
     "chai-as-promised": "^7.1.1",
     "css-loader": "^5.2.0",
-    "del-cli": "^3.0.1",
     "eslint": "^7.22.0",
     "eslint-config-standard": "^16.0.2",
     "eslint-plugin-import": "^2.22.1",
@@ -55,9 +54,11 @@
     "style-loader": "^2.0.0",
     "ts-loader": "^8.0.18",
     "ts-node": "^9.1.1",
-    "typedoc": "^0.21.6",
+    "typedoc": "^0.22.5",
+    "typedoc-plugin-markdown": "^3.11.3",
     "typescript": "^4.2.4",
     "webpack": "^5.28.0",
+    "express": "^4.17.1",
     "webpack-cli": "^4.5.0"
   },
   "dependencies": {
@@ -67,12 +68,10 @@
     "@reach/router": "^1.3.4",
     "@types/node": "^14.14.36",
     "css-modules-typescript-loader": "^4.0.1",
-    "express": "^4.17.1",
     "handlebars": "^4.7.7",
     "npm": "^7.7.5",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "ts-mockito": "^2.6.1",
     "yaml": "2.0.0-5"
   }
 }

@@ -70,15 +70,19 @@ namespace {{pascalCase context.title}}
         [Fact]
         public void {{pascalCase scenario.title}}()
         {
-            var {{camelCase @root.subject.title}} = new {{pascalCase @root.subject.title}}();
-
             //Given
-        {{#each given as |step|}}
-            {{camelCase @root.subject.title}}.On({{>format schema=step.schema }});
-        {{/each}}
-
+            {{#if given}}
+            {{pascalCase @root.subject.title}} {{camelCase @root.subject.title}} = {{pascalCase @root.subject.title}}.CreateFromHistory(new IDomainEvent[]{
+                {{#each given as |step|}}
+            {{>format schema=step.schema }},
+                {{/each}} });
+            {{/if}} 
+            
+        
             //When
-            {{camelCase @root.subject.title}}.{{>object schema=when.schema title=when.title}};
+            {{#if given}}
+            {{camelCase @root.subject.title}}{{else}}
+            {{pascalCase @root.subject.title}} {{camelCase @root.subject.title}} = {{pascalCase @root.subject.title}}{{/if}}.{{>object schema=when.schema title=when.title}};
            
             //Then
             {{#each then as |step|}}
@@ -120,13 +124,15 @@ The field 'type' is not found in the schema
 {{{yaml schema}}}
 ------------THIS:--------------------
 {{{yaml .}}}
-{{/inline}}`
+{{/inline}}
+
+`
     },
     {
         templateName: "gherkin-scenario",
         fileNameTemplate: "{{scenario.title}}",
         fileExtension: "features",
-        contentTemplate: `Scenario Outline: {{spaceCase scenario.title}}
+        contentTemplate: `Scenario Outline: {{sentenceCase scenario.title}}
 Given {{#each given as |step index|}}{{spaceCase step.title}} {{>table object=step.schema}}
 {{#unless @last}} And {{/unless}}{{/each}}When {{#with when as |step|}} {{spaceCase step.title}} {{>table object=step.schema}}
 {{/with}}
