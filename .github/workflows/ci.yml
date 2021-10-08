@@ -84,9 +84,9 @@ jobs:
     - name: Create PR
       uses: peter-evans/create-pull-request@v3 
       
-    - name: Deploy
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        personal_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: dist
-        persist-credentials: false
+
+
+
+
+
+
