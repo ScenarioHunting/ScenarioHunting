@@ -27,9 +27,4 @@ jobs:
         CI: "" 
       run: npm run release
 
-    - name: Run Semantic Release
-      run: npx semantic-release
-      env:
-        GH_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-        
     
