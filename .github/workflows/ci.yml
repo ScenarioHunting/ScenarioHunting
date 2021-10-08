@@ -19,10 +19,10 @@ jobs:
     - name: Install Pacakges 
       run: npm ci
       
-    - name: Release Step 
+    - name: Deploy Step 
       env: 
         CI: "" 
-      run: npm run release
+      run: npm run deploy
 
     - name: Run Semantic Release
       run: npx semantic-release
