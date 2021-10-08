@@ -25,10 +25,55 @@ jobs:
         git config user.name "github-actions"
         git config user.email "github-actions@github.com"
   
-    - name: Deploy Step 
+    - name: Deploy Step 1
       env: 
         CI: "" 
-      run: npm run deploy
+      run: git checkout -b release 
+
+    - name: Deploy Step 2
+      env: 
+        CI: "" 
+      run:  npm run build 
+    - name: Deploy Step 3
+      env: 
+        CI: "" 
+      run:    sed -i 's|ExternalServices = createMockedDependencies|ExternalServices = createMiroDependencies|g' ./src/external-services.tsx 
+    - name: Deploy Step 4
+      env: 
+        CI: "" 
+      run:    git add . 
+     - name: Deploy Step 5
+      env: 
+        CI: "" 
+      run:   git commit -m 'chore: Setup miro dependencies' 
+    - name: Deploy Step 6
+      env: 
+        CI: "" 
+      run:    npm run build && gh-pages -d dist --repo https://github.com/ScenarioHunting/ScenarioHunting 
+    - name: Deploy Step 7
+      env: 
+        CI: "" 
+      run:    sed -i 's|ExternalServices = createMiroDependencies|ExternalServices = createMockedDependencies|g' ./src/external-services.tsx 
+    - name: Deploy Step 8
+      env: 
+        CI: "" 
+      run:    git add . 
+    - name: Deploy Step 9
+      env: 
+        CI: "" 
+      run:    git commit -m 'chore: setup development dependencies' 
+    - name: Deploy Step 10
+      env: 
+        CI: "" 
+      run:    git checkout develop 
+    - name: Deploy Step 11
+      env: 
+        CI: "" 
+      run:    git merge release 
+    - name: Deploy Step 12
+      env: 
+        CI: "" 
+      run:    git branch -d release
 
     - name: Run Semantic Release
       run: npx semantic-release
