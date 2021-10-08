@@ -22,8 +22,8 @@ jobs:
     - name: setup git config
       run: |
         # setup the username and email. I tend to use 'GitHub Actions Bot' with no email by default
-        git config user.name "GitHub Actions Bot"
-        git config user.email "actions@github.com"
+        git config user.name "github-actions"
+        git config user.email "github-actions@github.com"
   
     - name: Deploy Step 
       env: 
