@@ -5,7 +5,7 @@
     "ignore": [
         "*.spec.*", 
         "*.d.ts",
-        "*.json"
-    ]
-    
+        "*.json",
+        "dist/*"
+    ]    
 }
