@@ -81,6 +81,9 @@ jobs:
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
+    - name: Create PR
+      uses: peter-evans/create-pull-request@v3 
+      
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3
       with:
