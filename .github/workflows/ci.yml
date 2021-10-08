@@ -11,6 +11,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     
+    
     - name: Use Node.js (16.10.0)
       uses: actions/setup-node@v2
       with:
@@ -85,3 +86,4 @@ jobs:
       with:
         personal_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: dist
+        persist-credentials: false
