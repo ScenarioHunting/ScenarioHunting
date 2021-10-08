@@ -18,7 +18,13 @@ jobs:
 
     - name: Install Pacakges 
       run: npm ci
-      
+    
+    - name: setup git config
+      run: |
+        # setup the username and email. I tend to use 'GitHub Actions Bot' with no email by default
+        git config user.name "GitHub Actions Bot"
+        git config user.email "<>"
+  
     - name: Deploy Step 
       env: 
         CI: "" 
