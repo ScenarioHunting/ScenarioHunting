@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Helps to pick scenarios from modeling artifacts, and generate custom based on them",
   "private": true,
+  "homepage": "https://scenariohunting.com",
   "scripts": {
     "kill": "sudo netstat -tulpn |grep 3001 |awk `{split($7,a,'/');print a[1]}`|xargs kill",
     "watch": "nodemon --exec 'npm run build && npm start' --config nodemon.json",
@@ -23,10 +24,11 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@semantic-release/changelog": "^6.0.0",
+    "@semantic-release/git": "^10.0.0",
     "@types/chai": "^4.2.15",
     "@types/chai-as-promised": "^7.1.4",
     "@types/file-saver": "^2.0.1",
-    "@types/handlebars": "^4.1.0",
     "@types/mocha": "^8.2.2",
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.3",
@@ -43,6 +45,7 @@
     "eslint-plugin-react": "^7.23.1",
     "eslint-plugin-react-hooks": "^4.2.0",
     "esm": "^3.2.25",
+    "express": "^4.17.1",
     "file-loader": "^6.2.0",
     "gh-pages": "^3.1.0",
     "html-webpack-plugin": "^5.3.1",
@@ -51,6 +54,7 @@
     "mocha": "^8.3.2",
     "npm-watch": "^0.7.0",
     "nyc": "^15.1.0",
+    "semantic-release": "^18.0.0",
     "style-loader": "^2.0.0",
     "ts-loader": "^8.0.18",
     "ts-node": "^9.1.1",
@@ -58,7 +62,6 @@
     "typedoc-plugin-markdown": "^3.11.3",
     "typescript": "^4.2.4",
     "webpack": "^5.28.0",
-    "express": "^4.17.1",
     "webpack-cli": "^4.5.0"
   },
   "dependencies": {
