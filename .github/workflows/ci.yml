@@ -45,7 +45,7 @@ jobs:
     - name: Deploy Step 5
       env: 
         CI: "" 
-      run:   git commit -m 'chore: Setup miro dependencies' 
+      run: "git commit -m 'chore: Setup miro dependencies'"
     - name: Deploy Step 6
       env: 
         CI: "" 
@@ -61,8 +61,8 @@ jobs:
     - name: Deploy Step 9
       env: 
         CI: "" 
-      run:    git commit -m 'chore: setup development dependencies' 
-    - name: Deploy Step 10
+      run:    "git commit -m 'chore: setup development dependencies'"
+    - name: Deploy Step 1
       env: 
         CI: "" 
       run:    git checkout develop 
