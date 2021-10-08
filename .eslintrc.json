@@ -26,4 +26,5 @@
     "react/display-name":[0],
     "@typescript-eslint/no-use-before-define": [1]
   }
+  
 }
