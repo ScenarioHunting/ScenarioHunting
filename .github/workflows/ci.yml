@@ -49,7 +49,7 @@ jobs:
     - name: Deploy Step 6
       env: 
         CI: "" 
-      run:    npm run build && gh-pages -d dist --repo https://github.com/ScenarioHunting/ScenarioHunting 
+      run:    npm run build 
     - name: Deploy Step 7
       env: 
         CI: "" 
@@ -84,4 +84,4 @@ jobs:
       uses: peaceiris/actions-gh-pages@v3
       with:
         personal_token: ${{ secrets.SEMANTIC_RELEASE_GH_TOKEN }}
-        publish_dir: .
+        publish_dir: dist
