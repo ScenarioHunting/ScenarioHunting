@@ -1,0 +1,55 @@
+{
+  "name": "css-modules-typescript-loader",
+  "version": "4.0.1",
+  "description": "Webpack loader to create TypeScript declarations for CSS Modules",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/seek-oss/css-modules-typescript-loader.git"
+  },
+  "author": "SEEK",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/seek-oss/css-modules-typescript-loader/issues"
+  },
+  "scripts": {
+    "commit": "git-cz",
+    "travis-deploy-once": "travis-deploy-once",
+    "semantic-release": "semantic-release",
+    "test": "jest"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint --edit --extends seek"
+    }
+  },
+  "homepage": "https://github.com/seek-oss/css-modules-typescript-loader#readme",
+  "dependencies": {
+    "line-diff": "^2.0.1",
+    "loader-utils": "^1.2.3"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^7.2.1",
+    "commitizen": "^3.0.2",
+    "commitlint-config-seek": "^1.0.0",
+    "css-loader": "^4.2.1",
+    "cz-conventional-changelog": "^2.1.0",
+    "husky": "^1.1.2",
+    "jest": "^24.7.1",
+    "memory-fs": "^0.4.1",
+    "semantic-release": "^15.9.17",
+    "travis-deploy-once": "^5.0.9",
+    "webpack": "^4.21.0"
+  },
+  "release": {
+    "success": false
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}
