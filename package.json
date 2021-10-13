@@ -9,7 +9,7 @@
     "wtest": "mocha --config .mocharc.json -watch --R min",
     "build": "webpack",
     "start": "node server.js",
-    "clean": "del-cli --force dist",
+    "clean": "rm -rf dist && mkdir dist",
     "test": "mocha --config .mocharc.json",
     "coverage": "nyc -r lcov -e .ts -x \"*.test.ts\" npm run test",
     "deploy": "./ci/deploy.sh",
