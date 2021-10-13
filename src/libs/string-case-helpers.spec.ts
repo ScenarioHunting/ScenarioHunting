@@ -52,9 +52,13 @@ describe('string case helpers', function () {
         stringCaseHelpers.snakeCase(`DE_Capitalize_ME`)
             .should.eq('de_capitalize_me')
     )
-    it('can lowercase strings', () =>
+    it('lowercases strings', () =>
         stringCaseHelpers.lowerCase('THIS')
             .should.eq('this')
+    )
+    it('lowercases boolean', () =>
+        stringCaseHelpers.lowerCase(false as any)
+            .should.eq("false")
     )
     // it('returns empty string for null', () =>
     //      stringCaseHelpers.lowerCase(!null?'':'' as any)

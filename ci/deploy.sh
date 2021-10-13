@@ -1,4 +1,9 @@
-git checkout -b release
+#!/bin/bash
+
+SCRIPTPATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
+cd $SCRIPTPATH/../;
+
+git checkout -b deployment
 npm run build 
 sed -i 's|ExternalServices = createMockedDependencies|ExternalServices = createMiroDependencies|g' ./src/external-services.tsx 
 git add . 
@@ -8,6 +13,8 @@ npx gh-pages -d dist --repo https://github.com/ScenarioHunting/ScenarioHunting
 sed -i 's|ExternalServices = createMiroDependencies|ExternalServices = createMockedDependencies|g' ./src/external-services.tsx 
 git add . 
 git commit -m 'chore: setup development dependencies' 
-git checkout develop 
-git merge release 
-git branch -d release
+git checkout deployment
+git merge deployment
+git branch -d deployment
+
+cd -

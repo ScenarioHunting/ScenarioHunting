@@ -3,25 +3,19 @@ export const defaultTemplates = [
         templateName: 'new',
         contentTemplate: '{{{yaml .}}}',
         fileExtension: 'yml',
-        fileNameTemplate: '{{snakeCase scenario}}',
+        fileNameTemplate: '{{snakeCase scenario.title}}',
     },
     {
         templateName: "cs-aggregate-gwt",
-        fileNameTemplate: "{{pascalCase scenario}}",
+        fileNameTemplate: "{{pascalCase scenario.title}}",
         fileExtension: "cs",
-        contentTemplate: `using StoryTest;
-using Vlerx.Es.Messaging;
-using Vlerx.Es.Persistence;
-using Vlerx.SampleContracts.{{pascalCase subject.title}};
-using Vlerx.{{pascalCase context.title}}.{{pascalCase subject.title}};
-using Vlerx.{{pascalCase context.title}}.{{pascalCase subject.title}}.Commands;
-using Vlerx.{{pascalCase context.title}}.Tests.StoryTests;
+        contentTemplate: `using {{pascalCase context.title}};
 using Xunit;
 
 namespace {{pascalCase context.title}}.Tests
 {
  {{#* inline "callConstructor"}}
-new {{pascalCase title}}({{#each schema.properties}}"{{this.example}}"{{#unless @last}},{{/unless}}{{/each}}){{/inline}}    public class {{pascalCase scenario.title}} : IStorySpecification
+new {{pascalCase title}}({{#each schema.properties}}"{{this.example}}"{{#unless @last}},{{/unless}}{{/each}}){{/inline}}    public class {{pascalCase scenario.title}}
     {
         public IDomainEvent[] Given
         => new IDomainEvent[]{
@@ -40,15 +34,23 @@ new {{pascalCase title}}({{#each schema.properties}}"{{this.example}}"{{#unless 
     {{/each}}
         };
 
-        public object subject.title { get; } = new { Title = nameof({{pascalCase subject.title}}) };
+        public object Subject { get; } = new { Title = nameof({{pascalCase subject.title}}) };
 
         [Fact]
         public void Run()
-        => TestAdapter.Test(this
-                , setupUseCases: eventStore => new[] { 
-                    new {{pascalCase subject.title}}UseCases(new Repository<{{pascalCase subject.title}}.State>(eventStore)) });
+        {
+            //The "Run" function can be abstracted away.
+
+            var dbSpy = new dbSpy();
+            var cmdHandler = new {{pascalCase subject.title}}CommandHandler(new {{pascalCase subject.title}}Repository(dbSpy));
+
+            Given.ForEach(cmdHandler.Handle);
+            cmdHandler.Handle(When);
+            Then.ForEach(then => dbSpy.Events.Should().ContainEquivalentOf(then));
+        }
     }
 }
+
 `
     },
     {
@@ -68,15 +70,19 @@ namespace {{pascalCase context.title}}
         [Fact]
         public void {{pascalCase scenario.title}}()
         {
-            var {{camelCase @root.subject.title}} = new {{pascalCase @root.subject.title}}();
-
             //Given
-        {{#each given as |step|}}
-            {{camelCase @root.subject.title}}.On({{>format schema=step.schema }});
-        {{/each}}
-
-            //When            
-            {{camelCase @root.subject.title}}.{{>object schema=when.schema title=when.title}}
+            {{#if given}}
+            {{pascalCase @root.subject.title}} {{camelCase @root.subject.title}} = {{pascalCase @root.subject.title}}.CreateFromHistory(new IDomainEvent[]{
+                {{#each given as |step|}}
+            {{>format schema=step.schema }},
+                {{/each}} });
+            {{/if}} 
+            
+        
+            //When
+            {{#if given}}
+            {{camelCase @root.subject.title}}{{else}}
+            {{pascalCase @root.subject.title}} {{camelCase @root.subject.title}} = {{pascalCase @root.subject.title}}{{/if}}.{{>object schema=when.schema title=when.title}};
            
             //Then
             {{#each then as |step|}}
@@ -107,7 +113,7 @@ new[]{ {{#each schema.items as |value key|}}
 {{#*inline "object" schema title}}{{pascalCase title}}(
     {{!-- TODO: It should be title of object not scenario's --}}
     {{#each schema.properties as |value key|}}
-                        {{key}}: {{> format schema=value }}{{#unless @last}},{{/unless}}
+                        {{camelCase key}}: {{> format schema=value }}{{#unless @last}},{{/unless}}
 {{/each}}
             ){{/inline}}
 
@@ -118,23 +124,23 @@ The field 'type' is not found in the schema
 {{{yaml schema}}}
 ------------THIS:--------------------
 {{{yaml .}}}
-{{/inline}}`
+{{/inline}}
+
+`
     },
     {
         templateName: "gherkin-scenario",
         fileNameTemplate: "{{scenario.title}}",
         fileExtension: "features",
-        contentTemplate: `Scenario Outline: {{spaceCase scenario.title}}
+        contentTemplate: `Scenario Outline: {{sentenceCase scenario.title}}
 Given {{#each given as |step index|}}{{spaceCase step.title}} {{>table object=step.schema}}
-{{#unless @last}} And {{/unless}}{{/each}}
-When {{#with when as |step|}} {{spaceCase step.title}} {{>table object=step.schema}}
+{{#unless @last}} And {{/unless}}{{/each}}When {{#with when as |step|}} {{spaceCase step.title}} {{>table object=step.schema}}
 {{/with}}
 Then {{#each then as |step|}} {{spaceCase step.title}} {{>table object=step.schema}}
 {{#unless @last}} And {{/unless}}{{/each}}
 
-
-{{#*inline 'table' object}}{{#each object as |value title|}}
-        {{>row title=title  value=value}}{{/each}}{{/inline}}
+{{#*inline 'table' object}}{{#each object.properties as |property title|}}
+        {{>row title=title  value=property.example}}{{/each}}{{/inline}}
 
 {{#*inline 'row' title value}}
 | {{>column (spaceCase title)}} | {{>column value}} |{{/inline}}
@@ -143,7 +149,8 @@ Then {{#each then as |step|}} {{spaceCase step.title}} {{>table object=step.sche
 {{.}} {{>fill_rest}}{{/inline}}
 
 {{#*inline 'fill_rest'}}
-{{repeat ' ' (subtract 20 (lookup (lowerCase . ) 'length'))}}{{/inline}}`
+{{repeat ' ' (subtract 15 (lookup (lowerCase .) 'length'))}}{{/inline}}
+`
     },
 ]
 

@@ -25,6 +25,9 @@ converage/
 # Dependency directories
 node_modules/
 
+# Coverage directory
+coverage/
+
 # Distribution directories
 dist/
 

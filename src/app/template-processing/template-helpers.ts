@@ -1,6 +1,7 @@
+import { stringCaseHelpers } from '../../libs/string-case-helpers'
 import { stringify } from 'yaml'
 
-export const helpers = {
+const helpers = {
     json(o: any): string {
         return JSON.stringify(o, null, 4)
     },
@@ -18,7 +19,10 @@ export const helpers = {
     subtract() {
         return (arguments[0] - arguments[1]).toString()
     },
-    repeat(text:string) {
+    repeat(text: string) {
         return text.repeat(arguments[1])
     }
 }
+export const customHelpers = Object.entries(stringCaseHelpers)
+    .map((h: [string, ((str: string) => string)]) => [h[0], (x: string) => h[1](!x ? '' : x)])
+    .concat(Object.entries(helpers))

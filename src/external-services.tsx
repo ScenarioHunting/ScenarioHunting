@@ -48,7 +48,7 @@ const createMiroDependencies = (): IExternalServices => {
 }
 
 const createMockedDependencies = (): IExternalServices => {
-    return {
+    return {        
         boardService: MockBoard(),
         boardUi: UIComponent,
         templateRepository: decorateRepositoryWithTemplates(new localStorageTemplateRepository(), defaultTemplates),

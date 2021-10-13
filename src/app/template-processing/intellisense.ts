@@ -150,15 +150,17 @@ const propertySuggestions: EditorSuggestion[] = [
 
 const stepSchemaSuggestions: EditorSuggestion[] = [
     {
+        label: "title",
+        insertText: "title",
+        detail: "Step title (type of the step in it's context)"
+    },
+    {
+
         label: "schema",
         insertText: "schema",
         detail: "The schema that describes the type of this step",
         children: [
-            {
-                label: "title",
-                insertText: "title",
-                detail: "Step title (type of the step in it's context)"
-            },
+
             {
                 label: "type",
                 insertText: "type",
@@ -207,7 +209,14 @@ const specSuggestions: EditorSuggestion[] = [
     {
         label: "scenario",
         insertText: "scenario",
-        detail: "The name of the scenario"
+        detail: "The name of the scenario",
+        children: [
+            {
+                label: "title",
+                insertText: "title",
+                detail: "The title of the scenario"
+            }
+        ]
     },
     {
         label: "when",
