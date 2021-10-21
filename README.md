@@ -1,7 +1,7 @@
 # Scenario Hunting
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-A process of switching from modeling artifacts to test code.
+Switching from modeling space to implementation space.
 
 ## Demo 
 
