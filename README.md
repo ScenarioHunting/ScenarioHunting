@@ -2,10 +2,12 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 
-Scenario Hunting is about how to switch from modeling space into implementation. It asks to verify the causality between design elements before starting to code, then it helps to automatically forge the abstract artefacts into concrete test code, to get instant feedback from the design decisions, and streamline collaboration and training.
+# Scenario Hunting 
+A process of switching from modeling artifacts to test code.
 
+See this 5 minuets demo:
 
-![Demo](Demo.png "Demo image")
+<iframe style="width:100%" height="524" src="https://www.youtube.com/embed/mZI3s-hTQVo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ### How to install
 Simply click [here](https://miro.com/oauth/authorize/?response_type=code&client_id=3074457356753256770&redirect_uri=%2Fconfirm-app-install%2F) to install the [Miro](https://miro.com) addon. 
@@ -17,13 +19,8 @@ The application is hosted by github pages, runs on your browser, and stores the 
 No backend, no data collection, no worries. 
 
 ### Documentation
-[See](https://github.com/ScenarioHunting/Documentation/blob/main/README.md) the documentation.
+[See](https://docs.scenariohunting.com) the documentation.
 
-## License
-
-
-
-
-
+### License
 
 Licensed under the [apache](LICENSE) license version 2.0. 
