@@ -55,7 +55,7 @@ new {{pascalCase title}}({{#each schema.properties}}"{{this.example}}"{{#unless 
     },
     {
         templateName: "cs-aggregate",
-        fileNameTemplate: "{{scenario.title}}",
+        fileNameTemplate: "{{pascalCase scenario.title}}",
         fileExtension: "cs",
         contentTemplate: `{{> main}}
 {{#*inline 'main'}}
@@ -130,8 +130,8 @@ The field 'type' is not found in the schema
     },
     {
         templateName: "gherkin-scenario",
-        fileNameTemplate: "{{scenario.title}}",
-        fileExtension: "features",
+        fileNameTemplate: "{{kebabCase scenario.title}}",
+        fileExtension: "feature",
         contentTemplate: `Scenario Outline: {{sentenceCase scenario.title}}
 Given {{#each given as |step index|}}{{spaceCase step.title}} {{>table object=step.schema}}
 {{#unless @last}} And {{/unless}}{{/each}}When {{#with when as |step|}} {{spaceCase step.title}} {{>table object=step.schema}}
