@@ -1,11 +1,11 @@
 /* eslint-disable no-unused-vars */
 import { ITemplateRepository } from "../ports/itemplate-repository"
 import { textTemplate } from "../ports/text-template"
-import { defaultTemplates } from "./default-templates";
+import { builtinTemplates } from "./builtin-templates";
 
 class DefaultTemplateRepositoryDecorator implements ITemplateRepository {
-    constructor(private innerRepository: ITemplateRepository
-        , private readonlyTemplates: textTemplate[]) {
+    constructor(private customTemplateRepository: ITemplateRepository
+        , private builtinTemplateRepository: textTemplate[]) {
         // defaultTemplates.forEach(async template => {
         //     try{
         //     await innerRepository.getTemplateByName(template.templateName)
@@ -20,6 +20,7 @@ class DefaultTemplateRepositoryDecorator implements ITemplateRepository {
     }
 
     async createOrReplaceTemplate(template: textTemplate): Promise<void> {
+        // if(this.builtinTemplateRepository.find())
         if (template.templateName.trim() == "")
             throw Error('Template name is required!');
         if (template.contentTemplate.trim() == "")
@@ -28,24 +29,29 @@ class DefaultTemplateRepositoryDecorator implements ITemplateRepository {
             throw Error(`Template's target file extension template is required!`);
         if (template.fileNameTemplate.trim() == "")
             throw Error(`Template's target file name template is required!`);
-        return this.innerRepository.createOrReplaceTemplate(template)
+        return this.customTemplateRepository.createOrReplaceTemplate(template)
     }
-    
+
     async getAllTemplateNames(): Promise<string[]> {
-        const userTemplateNames = await this.innerRepository.getAllTemplateNames()
-        const defaultTemplateNames = this.readonlyTemplates.map(t => t.templateName)
-        return Promise.resolve(userTemplateNames.concat(defaultTemplateNames))
+        const userCustomTemplateNames = await this.customTemplateRepository.getAllTemplateNames()
+        const builtinTemplateNames = this.builtinTemplateRepository.map(t => t.templateName)
+        return Promise.resolve(
+            userCustomTemplateNames
+                .concat(builtinTemplateNames)
+                .filter((template, index, all) =>//unique (last occurance)
+                    all.indexOf(template) === index
+                ));
     }
     removeTemplate(templateName: string) {
-        return this.innerRepository.removeTemplate(templateName)
+        return this.customTemplateRepository.removeTemplate(templateName)
     }
 
     async getTemplateByName(templateName: string): Promise<textTemplate> {
         try {
-            return await this.innerRepository.getTemplateByName(templateName)
+            return await this.customTemplateRepository.getTemplateByName(templateName)
         }
         catch {
-            const template = defaultTemplates.find(t => t.templateName == templateName)
+            const template = builtinTemplates.find(t => t.templateName == templateName)
             if (!template)
                 throw new Error("Widget not found for template:" + templateName);
             return template

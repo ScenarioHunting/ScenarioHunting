@@ -1,4 +1,4 @@
-export const defaultTemplates = [
+export const builtinTemplates = [
     {
         templateName: 'new',
         contentTemplate: '{{{yaml .}}}',
