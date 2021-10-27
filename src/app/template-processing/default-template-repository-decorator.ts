@@ -35,12 +35,12 @@ class DefaultTemplateRepositoryDecorator implements ITemplateRepository {
     async getAllTemplateNames(): Promise<string[]> {
         const userCustomTemplateNames = await this.customTemplateRepository.getAllTemplateNames()
         const builtinTemplateNames = this.builtinTemplateRepository.map(t => t.templateName)
-        return Promise.resolve(
-            userCustomTemplateNames
-                .concat(builtinTemplateNames)
-                .filter((template, index, all) =>//unique (last occurance)
-                    all.indexOf(template) === index
-                ));
+
+        return userCustomTemplateNames
+            .concat(builtinTemplateNames)
+            .filter((template, index, all) =>//unique (last occurance)
+                all.indexOf(template) === index
+            );
     }
     removeTemplate(templateName: string) {
         return this.customTemplateRepository.removeTemplate(templateName)

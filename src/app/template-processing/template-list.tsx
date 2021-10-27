@@ -17,7 +17,9 @@ export function TemplateList(props): JSX.Element {
         templateRepository.getAllTemplateNames().then(templateNames => {
             log.log('Templates loaded from repository:', templateNames)
             setAvailableTemplateNames(templateNames
-                .filter((value,index,self)=>self.indexOf(value)===index))//distinct
+                // .filter((value,index,all)=>all.indexOf(value)===index)
+                
+                )//distinct
             log.log('Templates set to the component:', templateNames)
         }).catch(e => { throw e })
     }
