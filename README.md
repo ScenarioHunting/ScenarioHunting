@@ -1,7 +1,8 @@
 # Scenario Hunting
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-A process of switching from modeling artifacts to test code.
+A method of translating modeling artifacts to test code. 
+
 
 ## 5 Minute Demo: Hunting Scenarios from an Event Model
 
