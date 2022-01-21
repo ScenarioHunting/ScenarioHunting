@@ -1,5 +1,5 @@
 # Scenario Hunting
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0 | width=150)
 
 A method of translating modeling artifacts to test code. 
 
