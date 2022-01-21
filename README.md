@@ -3,6 +3,7 @@
 
 A method of translating modeling artifacts to test code. 
 
+![The flow](Demo(10).jpg)
 
 ## 5 Minute Demo: Hunting Scenarios from an Event Model
 
