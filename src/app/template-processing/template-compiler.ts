@@ -41,6 +41,7 @@ export class TemplateCompiler {
             //TODO: validate: the test must have When and Then at least.
             return compiledTemplate(model)
         } catch (err) {
+            log.log("Template compilation error : ", err)
             let wrappedError = {
                 startLineNumber: err.lineNumber,
                 endLineNumber: err.endLineNumber,
@@ -49,11 +50,16 @@ export class TemplateCompiler {
                 message: err.message
             }
             if (!wrappedError.startLineNumber) {
+                //Parse error
+
                 const lineNumberMatch = String(err).match(/error on line (\d+)/)
                 if (lineNumberMatch && lineNumberMatch.length > 1) {
                     wrappedError.startLineNumber = parseInt(lineNumberMatch[1])
                     wrappedError.endLineNumber = wrappedError.startLineNumber + 1
                 }
+            }
+            if (!wrappedError.endLineNumber) {
+                wrappedError.startLineNumber = null
             }
             throw wrappedError
         }

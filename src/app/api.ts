@@ -1,5 +1,12 @@
 // npx typedoc src/app/api.ts --theme minimal --highlightTheme dark-plus --sort static-first --hideGenerator
 export type Api = {
+    /**
+    * The version of the API
+    */
+    version: "1.0.0",
+    /**
+     * The scenario
+     */
     scenario: Scenario
     /**
      * Information required by the given step of the test
@@ -36,10 +43,14 @@ export type Api = {
         [subScenario: string]: {
             [parameterName: string]: AbstractProperty
         }
-    }
+    },
+
 }
 /**Information about the scenario */
 export type Scenario = {
+    /**
+     * The title of the scenario
+     */
     title: string
 }
 /**
