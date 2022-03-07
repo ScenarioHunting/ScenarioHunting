@@ -1,7 +1,7 @@
 # Scenario Hunting
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-A method for translating modeling artifacts to test code. 
+The miro adon for Scenario Hunting method. 
 
 ![header-image](header-image.png)
 
