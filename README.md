@@ -11,12 +11,19 @@ By [installing](https://miro.com/oauth/authorize/?response_type=code&client_id=3
 
 ![Hunting for scenarios from event storming artifacts](header-image.png)
 
-## 5 Minute Demo: Hunting Scenarios from an Event Model
+## Features
+* **Template Studio:** The builtin code editor for repl driving test templates
+* **Scenario Builder:** Helps scenario hunters build abstract visual scenarios by clicking on widgets on the whiteboard.
+* **Scenario Compiler:** The backend component that compiles the abstract scenario to concrete test code based on template of choice.
 
+
+
+##  How it works
+
+5 Minute Demo: Hunting Scenarios from an Event Model
 [![Scenario Hunting quick demo](https://img.youtube.com/vi/mZI3s-hTQVo/0.jpg)](https://www.youtube.com/embed/mZI3s-hTQVo)
 
-## 5 Minute Demo: Hunting scenatrios from Event Storming artifacts
-
+5 Minute Demo: Hunting scenatrios from Event Storming artifacts
 [![Scenario Hunting quick demo](https://img.youtube.com/vi/Ou_TkeMsfXs/0.jpg)](https://www.youtube.com/embed/Ou_TkeMsfXs)
 
 
