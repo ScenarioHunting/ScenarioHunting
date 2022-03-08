@@ -20,11 +20,13 @@ By [installing](https://miro.com/oauth/authorize/?response_type=code&client_id=3
 
 ##  How it works
 
-5 Minute Demo: Hunting Scenarios from an Event Model
-[![Scenario Hunting quick demo](https://img.youtube.com/vi/mZI3s-hTQVo/0.jpg)](https://www.youtube.com/embed/mZI3s-hTQVo)
+The following 5 Minute demo explains hunting scenarios from Event Storming artifacts.
 
-5 Minute Demo: Hunting scenatrios from Event Storming artifacts
 [![Scenario Hunting quick demo](https://img.youtube.com/vi/Ou_TkeMsfXs/0.jpg)](https://www.youtube.com/embed/Ou_TkeMsfXs)
+
+The following 5 Minute demo explains hunting scenarios from an Event Model.
+
+[![Scenario Hunting quick demo](https://img.youtube.com/vi/mZI3s-hTQVo/0.jpg)](https://www.youtube.com/embed/mZI3s-hTQVo)
 
 
 ## How to install
