@@ -3,10 +3,10 @@
 
 ### An implementation of [Scenario Hunting](https://www.scenariohunting.com) framework as an extension to Miro whiteboard.
 
-Scenario Hunting method comprises a set of steps to derive high-quality automated tests by visual collaborative modeling artifacts (such as Event Storming and Event Modeling artifacts). 
-Following the steps protects the design from distortion during implementation.
+Scenario Hunting is a set of steps to implement high-quality automated tests based on visual modeling artifacts (such as Event Storming and Event Modeling sticky notes). 
+Following the steps keeps implementation on track and protects the design from distortion while coding.
 
-By [installing](https://miro.com/oauth/authorize/?response_type=code&client_id=3074457356753256770&redirect_uri=%2Fconfirm-app-install%2F) this extension to your Miro board you can hunt for scenarios from visual models on Miro board.
+By [installing](https://miro.com/oauth/authorize/?response_type=code&client_id=3074457356753256770&redirect_uri=%2Fconfirm-app-install%2F) this extension to your Miro board, you can hunt for scenarios from visual models on the board.
 
 
 ![Hunting for scenarios from event storming artifacts](header-image.png)
@@ -14,7 +14,7 @@ By [installing](https://miro.com/oauth/authorize/?response_type=code&client_id=3
 ## Features
 * **Template Studio:** The builtin code editor for repl driving test templates
 * **Scenario Builder:** Helps scenario hunters build abstract visual scenarios by clicking on widgets on the whiteboard.
-* **Scenario Compiler:** The backend component that compiles the abstract scenario to concrete test code based on template of choice.
+* **Scenario Compiler:** The backend component that translates the abstract scenario to concrete test code based on the template of choice.
 
 
 
