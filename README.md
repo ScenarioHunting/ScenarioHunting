@@ -6,7 +6,7 @@
 Scenario Hunting is a set of steps to implement high-quality automated tests based on visual modeling artifacts (such as Event Storming and Event Modeling sticky notes). 
 Following the steps keeps implementation on track and protects the design from distortion while coding.
 
-By [installing](https://miro.com/oauth/authorize/?response_type=code&client_id=3074457356753256770&redirect_uri=%2Fconfirm-app-install%2F) this extension to your Miro board, you can hunt for scenarios from visual models on your Miro boards.
+By [installing](https://miro.com/oauth/authorize/?response_type=code&client_id=3074457356753256770&redirect_uri=%2Fconfirm-app-install%2F) this extension to your Miro board, you can hunt for test scenarios from visual models on your Miro boards.
 
 
 ![Hunting for scenarios from event storming artifacts](header-image.png)
