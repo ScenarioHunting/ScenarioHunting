@@ -12,8 +12,11 @@ export type SelectedStep = {
     step: Step
 }
 export interface IBoard {
-    getWidgetText(widgetId: string): Promise<string>
-    onNextSingleSelection(succeed: (selected: SelectedStep) => void)
+    /**
+    The callback is called only once the next time that a user selects a widget
+    If the user does 
+    */
+    onNextOneSelection(callback: (selected: SelectedStep) => void)
     unselectAll: () => Promise<void>
     showNotification: (message: string) => Promise<void>
     openModal(iframeURL: string): Promise<any>

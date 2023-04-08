@@ -9,10 +9,10 @@ class BoardMock implements IBoard {
         this.showStatus('Returning widget text for widget id:\n' + widgetId)
         return Promise.resolve('Widget Id')
     }
-    public select: (selected: SelectedStep) => void;
+    public select: (selected: SelectedStep) => void=()=>{}
     public showStatus: (message: string) => void = () => { }
 
-    onNextSingleSelection = function (callback: (selected: SelectedStep) => void) {
+    onNextOneSelection = function (callback: (selected: SelectedStep) => void) {
         this.select = callback
     }
     

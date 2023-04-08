@@ -7,7 +7,7 @@ const templateCompiler = ExternalServices.templateCompiler
 function downloadAs(fileName: string, data: string) {
     log.log(`Saving as: file Name: ${fileName} content: ${JSON.stringify(data)}`)
     var blob = new Blob([data], { type: "text/plain;charset=utf-8" });
-    if (isNullOrUndefined(window.navigator.msSaveOrOpenBlob)) {
+    if (isNullOrUndefined((<any> window.navigator).msSaveOrOpenBlob)) {
         var elem = window.document.createElement('a');
         elem.href = window.URL.createObjectURL(blob);
         elem.download = fileName;
@@ -16,7 +16,7 @@ function downloadAs(fileName: string, data: string) {
         document.body.removeChild(elem);
     }
     else {
-        window.navigator.msSaveBlob(blob, fileName);
+        (<any>window.navigator).msSaveBlob(blob, fileName);
     }
 }
 export class ScenarioBuilderService {

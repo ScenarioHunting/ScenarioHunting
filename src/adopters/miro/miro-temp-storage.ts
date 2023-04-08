@@ -71,7 +71,7 @@ export class MiroTempStorage implements ITempStorage {
     }
 
     async setItem(key: string, value: object): Promise<void> {
-        if (this.getItem(key))
+        if (await this.getItem(key))
             await this.removeItem(key)
         return await this.addItem(key, value)
     }
