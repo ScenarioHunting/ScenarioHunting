@@ -59,17 +59,20 @@ window.setupEditor = async () => {
     }
 
     //Preview:
-    function showError(err, position, editorModel) {
-
-        const newMarker = {
-            startLineNumber: err.startLineNumber ?? position.lineNumber,
-            endLineNumber: err.endLineNumber ?? position.lineNumber + 1,
+    function createErrorMarker(err, currentLineNumber) {
+        return {
+            startLineNumber: err.startLineNumber ?? currentLineNumber,
+            endLineNumber: err.endLineNumber ?? currentLineNumber + 1,
             startColumn: err.startColumn,
             endColumn: err.endColumn,
             message: err.message,
             severity: monaco.MarkerSeverity.Error
         }
-        monaco.editor.setModelMarkers(editorModel, null, [newMarker]);
+    }
+
+    function showError(err, position, editorModel) {
+        monaco.editor.setModelMarkers(
+            editorModel, null, [createErrorMarker(err, position.LineNumber)]);
     }
     function clearErrors(editorModel) {
         monaco.editor.setModelMarkers(editorModel, null, [])
@@ -236,7 +239,7 @@ window.setupEditor = async () => {
             document.getElementById("target-file-extension").value = template.fileExtension
             templateContent = template.contentTemplate
             languageSelect.value = getLanguageForExtension(template.fileExtension)
-            
+
             // lang = monacoLanguages.filter(l => l.extensions.includes(template.fileExtension))[0].aliases[0];// 
             //  getLanguageForExtension(template.fileExtension)
             // log.log(`Language: found for ext:`, template.fileExtension)

@@ -57,6 +57,7 @@ export function specFormatterService(language: string) {
     return {
         formatSpec(spec: Api): Api {
             return {
+                version: "1.0.0",
                 context: { title: formatText(spec.context.title) },
                 subject: { title: formatText(spec.subject.title) },
                 scenario: formatText(spec.scenario),
@@ -64,7 +65,6 @@ export function specFormatterService(language: string) {
                 when: formatStep(spec.when),
                 then: spec.then.map(formatStep),
                 // data: spec.data,
-
             };
         }
     };

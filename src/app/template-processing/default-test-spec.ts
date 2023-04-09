@@ -1,6 +1,7 @@
 import { Api, ObjectProperty } from "../api";
 
 export const defaultTestSpec: Api = {
+    version: "1.0.0",
     subject: {
         title: 'Your-subject-under-test',
     },
@@ -27,7 +28,7 @@ export const defaultTestSpec: Api = {
                 },
             }
         },
-        example:{}
+        example: {}
     }],
     when: {
         title: "When_step_title",
@@ -50,7 +51,7 @@ export const defaultTestSpec: Api = {
                 },
             }
         },
-        example:{}
+        example: {}
     },
     then: [{
         title: "Then_step_title",
@@ -76,7 +77,7 @@ export const defaultTestSpec: Api = {
             },
             description: "",
         } as ObjectProperty,
-        example:{}
+        example: {}
     }],
     // data: [
     //     {

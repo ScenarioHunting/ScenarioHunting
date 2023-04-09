@@ -114,15 +114,16 @@ export const createTestBuilder = (board = ExternalServices.boardService): React.
         }
         return true
     }
-    function getSpec() {
+    function getSpec():Api {
         //TODO: validate the data against schema
         //Only the scenario required fields should exist
         //Add a generate data button
         return {
+            version: "1.0.0",
             scenario: { title: scenario },
             given: givenSteps.map(given => given.step.step),
-            when: when?.step,
-            then: [then?.step],
+            when: when?.step!,
+            then: [then?.step!],
             // data: [{//TODO: It may be generated (based on the schema), added to, removed from, after hunting the scenario & before saving it
             //     given: givenSteps.map(g => { return g.step.example }),
             //     when: when?.example,
@@ -130,7 +131,7 @@ export const createTestBuilder = (board = ExternalServices.boardService): React.
             // }],
             subject: { title: subject },
             context: { title: context },
-        } as Api
+        }
     }
     const forceUpdate = React.useReducer((bool) => !bool, true)[1];
     const save = async () => {

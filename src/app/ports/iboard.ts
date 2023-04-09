@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { CSSProperties } from "react"
-import { ObjectProperty, Step } from "../api"
+import { Step } from "../api"
 
 
 export type WidgetSnapshot = {
@@ -12,10 +12,11 @@ export type SelectedStep = {
     step: Step
 }
 export interface IBoard {
-    updateWidgetText(widgetId: string, newWidgetText: string): Promise<void>;
-    getWidgetText(widgetId: string): Promise<string>
-    onNextSingleSelection(succeed: (selected: SelectedStep) => void)
-    interceptPossibleTextEdit(updateText: (widgetId: string, updatedWidget: string) => Promise<string>)
+    /**
+    The callback is called only once the next time that a user selects a widget
+    If the user does 
+    */
+    onNextOneSelection(callback: (selected: SelectedStep) => void)
     unselectAll: () => Promise<void>
     showNotification: (message: string) => Promise<void>
     openModal(iframeURL: string): Promise<any>

@@ -35,12 +35,11 @@ class InMemoryTemplateRepository implements ITemplateRepository {
     getAllTemplateNames(): Promise<string[]> {
         return Promise.resolve(this.templates.map(t => t.templateName))
     }
-    createOrReplaceTemplate(template: textTemplate) {
-        if (this.getTemplateByName(template.templateName)) {
+    async createOrReplaceTemplate(template: textTemplate) {
+        if (await this.getTemplateByName(template.templateName)) {
             this.removeTemplate(template.templateName)
         }
         this.templates = this.templates.concat([template])
-        return Promise.resolve()
     }
     removeTemplate(templateName: string): Promise<void> {
         this.templates = this.templates.filter(t => t.templateName != templateName)
