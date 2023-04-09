@@ -1,10 +1,11 @@
 import styles from "./sidebar.style.css"
 import * as React from 'react';
 import { TestRecorder } from '../scenario-builder/scenario-builder.component';
-import { Routes,Route, Link, BrowserRouter } from "react-router-dom"
 import { TemplateList } from '../template-processing/template-list';
+import { Routes,Route, Link, BrowserRouter,Navigate } from "react-router-dom"
 
 export const Sidebar = function () {
+
     return <BrowserRouter>
         <div style={{ width: '340`px' }}>
             <nav className={styles["sidebar-nav"]}>
@@ -27,8 +28,9 @@ export const Sidebar = function () {
                 <rect width="292" height="1" fill="#E1E0E7" />
             </svg>
             <Routes>
-                <Route element={<TestRecorder/>} path="/" />
+                <Route index element={<TestRecorder/>}  />
                 <Route element={<TemplateList/>} path="template-list" />
+                <Route path="*" element={<Navigate to ="/" />}/>
             </Routes>
 
         </div>
