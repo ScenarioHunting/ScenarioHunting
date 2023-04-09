@@ -29,6 +29,7 @@ configDeployment(){
 # && npm run build
 # && npm run test &&
 
+ORIGINAL_BRANCH=$(git rev-parse --abbrev-ref HEAD) &&
 git checkout -b stage-build && 
 
 configDeployment && 
@@ -48,7 +49,7 @@ echo Deployment completed successfully ||
 echo Deployment failed!
 
 #Finally:
-git checkout develop
+git checkout $ORIGINAL_BRANCH
 git branch -D stage-build
 
 cd -
