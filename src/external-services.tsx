@@ -1,7 +1,6 @@
 import { IBoard } from "./app/ports/iboard";
 // eslint-disable-next-line no-unused-vars
 import { iLog, noLog } from "./libs/logging/log";
-import { ITestResultReports, TestResultReports } from "./test-result-reports";
 
 import { MockBoard } from "./adopters/mocks/board-mock";
 
@@ -21,7 +20,6 @@ import { builtinTemplates } from "./app/template-processing/builtin-templates";
 
 
 
-export let testResultReports: ITestResultReports = new TestResultReports()
 // export let singletonBoard: IBoard = new MiroBoard()
 export let log: iLog = console
 
@@ -57,7 +55,8 @@ const createMockedDependencies = (): IExternalServices => {
     } as const
 }
 
-const ExternalServices = createMockedDependencies()
+
+const ExternalServices = createMiroDependencies()
 
 
 export { ExternalServices }

@@ -28,40 +28,9 @@ export class MiroBoard implements IBoard {
     }
 
     // eslint-disable-next-line no-unused-vars
-    interceptPossibleTextEdit(updateText: (widgetId: string, updatedWidget: string) => Promise<string>) {
-        const select = async (selections) => {
-            var widgets = selections.data;
-            if (!this.previouslySelectedWidgets) {
-                this.previouslySelectedWidgets = widgets
-            }
-            this.previouslySelectedWidgets.forEach(async item => {
-                let widget = (await miro.board.widgets.get({ id: item.id }))[0];
-                const originalWidgetText = await extractWidgetText(widget)
-                const newText = await updateText(widget.id, originalWidgetText)
-                widget = await setWidgetText(widget, newText)
-                if (newText != originalWidgetText)
-                    await miro.board.widgets.update([widget])
-            });
-            this.previouslySelectedWidgets = widgets
-        }
-
-        miro.addListener("SELECTION_UPDATED", select)
-    }
-    // eslint-disable-next-line no-unused-vars
-    async getWidgetText(widgetId: string): Promise<string> {
-        log.log("Finding widget by id:" + widgetId)
-        var widget = (await miro.board.widgets.get({ id: widgetId }))[0];
-        return await extractWidgetText(widget)
-    }
-    async updateWidgetText(widgetId: string, newWidgetText: string): Promise<void> {
-        let widget = (await miro.board.widgets.get({ id: widgetId }))[0];
-        widget = await setWidgetText(widget, newWidgetText)
-        await miro.board.widgets.update([widget])
-    }
-    // eslint-disable-next-line no-unused-vars
     private previousListener: (selections: any) => Promise<void>
     // eslint-disable-next-line no-unused-vars
-    onNextSingleSelection(succeed: (selected: SelectedStep) => void) {
+    onNextOneSelection(succeed: (selected: SelectedStep) => void) {
         //TODO: Guard 
         log.log("Waiting for the next single selection!")
         const select = async (selections) => {
@@ -208,10 +177,10 @@ function extractWidgetText(widget: SDK.IWidget): Promise<string> {
         return Promise.reject("Cannot get the widget text. The widget is undefined.")
 
     if ("text" in widget)
-        return widget["text"];
+        return <Promise<string>> widget["text"];
 
     if ("title" in widget)
-        return widget["title"]
+        return <Promise<string>> widget["title"]
 
     if ("captions" in widget
         && widget["captions"]

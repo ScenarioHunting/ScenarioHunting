@@ -5,22 +5,17 @@ import * as React from 'react';
 import { Step } from "../../app/api";
 
 class BoardMock implements IBoard {
-    updateWidgetText = (widgetId: string, newWidgetText: string): Promise<void> =>
-        Promise.resolve(alert('The widget with Id: ' + widgetId + ' updated with text: ' + newWidgetText))
-
     getWidgetText = function (widgetId: string): Promise<string> {
         this.showStatus('Returning widget text for widget id:\n' + widgetId)
         return Promise.resolve('Widget Id')
     }
-    public select: (selected: SelectedStep) => void;
+    public select: (selected: SelectedStep) => void=()=>{}
     public showStatus: (message: string) => void = () => { }
 
-    onNextSingleSelection = function (callback: (selected: SelectedStep) => void) {
+    onNextOneSelection = function (callback: (selected: SelectedStep) => void) {
         this.select = callback
     }
-    interceptPossibleTextEdit = function (updateText: (widgetId: string, updatedWidget: string) => Promise<string>) {
-        this.showStatus('Text edit interception registered')
-    }
+    
     unselectAll: () => Promise<void> = () =>
         Promise.resolve(this.showStatus('All widgets are unselected.'))
 

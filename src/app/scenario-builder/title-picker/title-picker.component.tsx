@@ -35,7 +35,7 @@ export function SelectableText(props: {
         setIsWaitingForSelection(true)
         log.log('Waiting...')
         boardService.unselectAll()
-        boardService.onNextSingleSelection((selectedWidget: SelectedStep) => {
+        boardService.onNextOneSelection((selectedWidget: SelectedStep) => {
             log.log(props.turn, 'Selected...')
             onChange(selectedWidget.step.title)
             log.log(props.value + ' selected')
