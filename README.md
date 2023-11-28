@@ -24,10 +24,6 @@ The following 5 Minute demo explains hunting scenarios from Event Storming artif
 
 [![Scenario Hunting quick demo](https://img.youtube.com/vi/Ou_TkeMsfXs/0.jpg)](https://www.youtube.com/embed/Ou_TkeMsfXs)
 
-The following 5 Minute demo explains hunting scenarios from an Event Model.
-
-[![Scenario Hunting quick demo](https://img.youtube.com/vi/mZI3s-hTQVo/0.jpg)](https://www.youtube.com/embed/mZI3s-hTQVo)
-
 
 ## How to install
 Simply click [here](https://miro.com/oauth/authorize/?response_type=code&client_id=3074457356753256770&redirect_uri=%2Fconfirm-app-install%2F) to install the [Miro](https://miro.com) addon. 
