@@ -21,12 +21,19 @@
   },
   "include": [
     "src/**/*",
-    "@types/miro.d.ts",
     "@types/monaco.d.ts",
     "app.config.ts"
+        ,"node_modules/@types",
+         "node_modules/@mirohq"
   ],
   "files": [
-    "@types/miro.d.ts",
-    "@types/monaco.d.ts"
-  ]
+
+         "node_modules/@mirohq/websdk-types/index.d.ts",
+    "@types/monaco.d.ts",
+    
+  ],
+  "typeRoots": [
+        "./node_modules/@types",
+         "./node_modules/@mirohq"
+       ]
 }

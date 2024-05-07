@@ -3,168 +3,128 @@ import { extractStepFromText } from "../../app/scenario-builder/board-text-schem
 import { CSSProperties } from "react";
 import { IBoard, SelectedStep, WidgetSnapshot } from "../../app/ports/iboard";
 import { log } from "../../external-services";
-import { Connector, Item, NotificationType } from "@mirohq/websdk-types";
-
-
+import type { Connector, Item } from "@mirohq/websdk-types";
+const ON_SELECTION = "selection:update"
 export class MiroBoard implements IBoard {
 
     openModal(iframeURL: string): Promise<any> {
         return miro.board.ui.openModal({ url: iframeURL, fullscreen: true })
     }
-    closeModal() { miro.board.ui.closeModal() }
+    closeModal() { return miro.board.ui.closeModal() }
 
-    private previouslySelectedWidgets: Item[]
-
-    // eslint-disable-next-line no-unused-vars
-    onWidgetLeft(updateText: (widgetId: string) => Promise<void>) {
-        const select = async (selections) => {
-            var widgets = selections.data;
-            if (!this.previouslySelectedWidgets)
-                this.previouslySelectedWidgets = widgets
-
-            this.previouslySelectedWidgets.forEach(item => updateText(item.id))
-            this.previouslySelectedWidgets = widgets
-        }
-        miro.board.events.on("SELECTION_UPDATED", select)
-    }
-
-    // eslint-disable-next-line no-unused-vars
-    private previousListener: (selections: any) => Promise<void>
-    // eslint-disable-next-line no-unused-vars
+    private previousHandler: (selections: Item[]) => Promise<void>
     onNextOneSelection(succeed: (selected: SelectedStep) => void) {
-        //TODO: Guard 
-        log.log("Waiting for the next single selection!")
-        const select = async (selections) => {
-            var widgets = selections.data;
+        const handle = async (selected) => {
+            var widgets = selected.items as Item[];
 
-            if (widgets.length == 0)
-                return;
-
-            log.log("Selected.")
+            if (widgets.length == 0) return;
 
             if (widgets.length > 1) {
                 log.log(`${widgets.length} items are selected. Only a single one can be selected.`)
                 return
             }
 
-            log.log("Getting the widget.")
-            var widget = (await miro.board.get({ id: widgets[0].id }))[0];
-            log.log("Converting the widget")
-
-            extractStepFrom(widget)
-                .then(selected => {
-                    // if (typeof dto == 'string')
-                    //     logger.log(dto)
-                    // else {
-                    log.log("Selected:", selected)
-                    succeed(selected)
-                    miro.board.events.on("SELECTION_UPDATED", select)
-                    // }
-                })
-                .catch(log.log)
+            try {
+                await miro.board.events.off(ON_SELECTION, handle)
+                const selectedStep = await extractStepFrom(widgets[0])
+                console.log({ selectedStep, widget: widgets[0] })
+                succeed(selectedStep)
+            }
+            catch (e) { log.log(e) }
         }
-        if (this.previousListener)
-            miro.board.events.off("SELECTION_UPDATED", this.previousListener)
-        this.previousListener = select
-        return miro.board.events.on("SELECTION_UPDATED", select)
+
+        if (this.previousHandler) miro.board.ui.off(ON_SELECTION, this.previousHandler)
+        this.previousHandler = handle
+
+        return miro.board.ui.on(ON_SELECTION, handle)
     }
 
     unselectAll = async () => {
-        if (!miro || !miro.board)
-            await new Promise(resolve => setTimeout(resolve, 200))
+
+
         await miro.board.deselect()
     }
 
     showNotification = (message: string) =>
-        miro.board.notifications.show({ type: NotificationType.Info, message})
+        miro.board.notifications.showInfo(message)
 
     zoomTo = async (widget: WidgetSnapshot) =>
-        miro.board.viewport.zoomTo(await miro.board.get({id: widget.id}))
+        miro.board.viewport.zoomTo(await miro.board.get({ id: widget.id }))
+
+
+    // private constructor() { }
+
+    // static async create() {
+    //     if (!miro?.board) MiroBoard.waitFor(200)
+    //     return new MiroBoard()
+    // }
+
+    // private static async waitFor(milliseconds:number) {
+    //     await new Promise(resolve => setTimeout(resolve, milliseconds))
+    // }
 
 }
 
 
-async function getTheStartingWidget(arrow: Connector): Promise<Item> {
-    const all = await miro.board.get({ id: arrow.start?.item??"" })
-    if (all.length == 0)
-        await miro.board.notifications.show({ type: NotificationType.Info, message: "Examples should be connected to a fact they belong to."})
-    return all[0]
-}
-async function getIncomingArrows(exampleWidget: Item): Promise<Connector[]> {
-    return (await (await miro.board.get({ type: "LINE", endWidgetId: exampleWidget.id }))
-        .map(line => line as Connector))
-        .filter(line => line.captions?.map(caption => caption.content?.toLowerCase()).includes("example")
-            && line.style.endStrokeCap != 'none')
-}
-async function getAbstractionWidgetFor(exampleWidget: Item): Promise<Item> {
-    const incomingArrows = await getIncomingArrows(exampleWidget)
-    if (incomingArrows.length === 0)
-        return Promise.resolve(exampleWidget)
-
-    const widgetsPointingToThis = await Promise.all(incomingArrows.map(getTheStartingWidget))
-
-    if (widgetsPointingToThis.length > 1) {
-        const errorMessage = "Examples can not belong to more than one abstraction (only one incoming line)."
-        await miro.board.notifications.show({type:NotificationType.Error,message:errorMessage})
-        return Promise.reject(errorMessage)
-    }
-
-    return Promise.resolve(widgetsPointingToThis[0])
-
-}
-function getWidgetStyle(widget: Item): CSSProperties {
+function getWidgetStyle(widget: Item) {
     const style = {} as CSSProperties
-    if (widget["style"] && widget["style"]["backgroundColor"]) {
-        log.log('Setting style:', widget["style"]["backgroundColor"])
-        style.backgroundColor = widget["style"]["backgroundColor"]
-    } else if (widget["style"] && widget["style"]["stickerBackgroundColor"]) {
-        log.log('Setting style:', widget["style"]["stickerBackgroundColor"])
-        style.backgroundColor = widget["style"]["stickerBackgroundColor"]
-    }
+
+    if (("style" in widget || "fillColor" in widget["style"]) == false)
+        return style
+
+    style.backgroundColor = mapColor(widget["style"]["fillColor"])
+    
+    if (widget["style"]["fillColor"] == 'back')
+        style.color = mapColor('gray')
+
     return style
 }
-async function extractStepFrom(exampleWidget: Item):Promise<SelectedStep> {
-    var snapshot = {
-        id: exampleWidget.id,
-        // type: widget.type,
-    } as WidgetSnapshot
 
-    const schemaWidget = await getAbstractionWidgetFor(exampleWidget)
-    //
-    log.log('Selection dto initiated.', snapshot)
+const mapColor = (fillColor: string): string =>
+({
+    'gray': 'rgb(245, 246, 248)',
+    'light_yellow': 'rgb(255, 249, 177)',
+    'yellow': 'rgb(245, 209, 40)',
+    'orange': 'rgb(255, 157, 72)',
 
-    snapshot.style = getWidgetStyle(schemaWidget)
-    let exampleText: string
-    let schemaText: string
+    'light_green': 'rgb(213, 246, 146)',
+    'green': 'rgb(201, 223, 86)',
+    'dark_green': 'rgb(147, 210, 117)',
+    'cyan': 'rgb(103, 198, 192)',
+
+    'light_pink': 'rgb(255, 206, 224)',
+    'pink': 'rgb(234, 148, 187)',
+    'violet': 'rgb(198, 162, 210)',
+    'red': 'rgb(240, 147, 157)',
+
+    'light_blue': 'rgb(166, 204, 245)',
+    'blue': 'rgb(108, 216, 250)',
+    'dark_blue': 'rgb(158, 169, 255)',
+    'black': 'rgb(0, 0, 0)',
+}[fillColor] ?? fillColor);
+
+
+const getPlainText = (originalText: string): string =>
+    originalText.split('</p><p>').join('\n')
+        .replace('&#43;', '+')
+        .replace(/(<([^>]+)>)/ig, '')
+
+
+async function extractStepFrom(widget: Item): Promise<SelectedStep> {
 
     try {
-        const getPlainText = (originalText: string): string =>
-            originalText.split('</p><p>').join('\n')
-                .replace('&#43;', '+')
-                .replace(/(<([^>]+)>)/ig, '')
+        let text = getPlainText(await extractWidgetText(widget))
 
-        exampleText = getPlainText(await extractWidgetText(exampleWidget))
-        schemaText = getPlainText(await extractWidgetText(schemaWidget))
-
-    }
-    catch (e) {
-        return Promise.reject('The widget ' + JSON.stringify(exampleWidget) + ' does not have any text.')
-    }
-
-
-    log.log('Widget text converted by board:', exampleText)
-
-    try {
-        const s = await extractStepFromText({
-            schemaText: schemaText,
-            exampleText: exampleText
-        });
-        log.log('The step extracted from text:', s)
         const step: SelectedStep = {
-            widgetSnapshot: snapshot
-            , step: s
+            widgetSnapshot: {
+                id: widget.id,
+                style: getWidgetStyle(widget)
+            }
+            , step: await extractStepFromText({
+                schemaText: text,
+                exampleText: text
+            })
         }
-
         return step
     }
     catch (e) {
@@ -177,29 +137,8 @@ function extractWidgetText(widget: Item): Promise<string> {
     if (!widget)
         return Promise.reject("Cannot get the widget text. The widget is undefined.")
 
-    if ("text" in widget)
-        return Promise.resolve(widget["text"] as string);
+    if ("content" in widget)
+        return Promise.resolve(widget.content as string);
 
-    if ("title" in widget)
-        return Promise.resolve(widget["title"])
-
-    if ("captions" in widget
-        && widget["captions"]
-        && widget["captions"][0]
-        && widget["captions"][0]["text"])
-        return Promise.resolve(widget["captions"][0]["text"])
-
-    return Promise.reject("Cannot get the widget text. The widget has no text fields.")
-}
-function setWidgetText(widget: Item, text: string): Promise<Item> {
-    const anyWidget = widget as any
-    if ("text" in widget)
-        anyWidget["text"] = text;
-    else if ("title" in widget)
-        anyWidget["title"] = text
-    else if ("captions" in widget)
-        anyWidget["captions"][0]["text"] = text
-    else
-        return Promise.reject("Cannot set the widget text. The widget has no text fields.")
-    return Promise.resolve(anyWidget as Item)
+    return Promise.reject(`The widget ${JSON.stringify(widget)} does not have any text`)
 }

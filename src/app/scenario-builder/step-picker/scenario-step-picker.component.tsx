@@ -37,7 +37,6 @@ export function createTestStepRecorder({ stepType
             board.unselectAll()
             board.showNotification(selectionWaitingMessage);
             board.onNextOneSelection((selectedWidget: SelectedStep) => {
-                log.log(turn, 'Selected...')
                 setIsWaitingForSelection(false)
                 props.onStepSelection(selectedWidget)
                 stepNavigator.done(turn)
