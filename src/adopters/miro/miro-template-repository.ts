@@ -1,26 +1,13 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
+import { BaseItem } from '@mirohq/websdk-types';
 import { ITemplateRepository } from '../../app/ports/itemplate-repository'
 import { textTemplate } from "../../app/ports/text-template";
 import { log } from "../../external-services";
 export class miroTemplateRepository implements ITemplateRepository {
-    // constructor() {
-    //     miro.board.widgets.get({
-    //         metadata: {
-    //             [miro.   getClientId()]: {
-    //                 "role": role,
-    //             }
-    //         }
-    //     }).then(widgets =>
-    //         widgets.forEach(w => {
-    //             logger.log(`Template :${w.metadata} is found.`)
-    //             w.clientVisible = false
-    //             miro.board.widgets.update(w).then(() => logger.log("The template widgets are hidden."))
-    //         }))
-    // }
     private async getAllTemplates() {
         var widgets = await this.findAllTemplateWidgets()
-        return widgets.map(w => w.metadata[miro.getClientId()])
+        return widgets.map(w => w.getMetadata("template") as unknown as textTemplate)
     }
 
     public async getAllTemplateNames(): Promise<string[]> {
@@ -30,7 +17,7 @@ export class miroTemplateRepository implements ITemplateRepository {
     public async removeTemplate(templateName: string): Promise<void> {
         var widgets = await this.findWidgetByTemplateName(templateName)
         for (const widget of widgets)
-            await miro.board.widgets.deleteById(widget.id)
+            await miro.board.remove(widget)
     }
     public async createOrReplaceTemplate(template: textTemplate) {
         log.log('createOrReplaceTemplate:')
@@ -55,32 +42,30 @@ export class miroTemplateRepository implements ITemplateRepository {
 
         if (widgets.length == 0) {
             log.log("Creating template:", template)
-            await miro.board.widgets.create({
-                type: "TEXT",
-                text: template.contentTemplate,
-                metadata: {
-                    [miro.getClientId()]: template
-                },
-                capabilities: {
-                    editable: false
-                },
+            const text= await miro.board.createText({
+                content: template.contentTemplate,
+                
+                // capabilities: {
+                //     editable: false
+                // },
                 style: {
-                    textAlign: "l"
+                    textAlign: "left"
                 },
                 x: x,
                 y: y,
                 // clientVisible: false
             });
+            text.setMetadata("template",template)
             log.log(`template: ${template.templateName} is created successfully.`)
         }
         else {
             log.log("Updating template:", template)
 
             var dbWidget = widgets[0];
-            dbWidget.metadata[miro.getClientId()] = template;
+            dbWidget.setMetadata("template",template);
             // dbWidget.metadata[miro.getClientId()].clientVisible = false;
-
-            await miro.board.widgets.update(dbWidget);
+            await dbWidget.sync()
+            // await miro.board.widgets.update(dbWidget);
             log.log(`template:${template.templateName} is updated successfully.`)
 
         }
@@ -98,20 +83,18 @@ export class miroTemplateRepository implements ITemplateRepository {
         })
     }
 
-    private async findAllTemplateWidgets(): Promise<SDK.ITextWidget[]> {
+    private async findAllTemplateWidgets(): Promise<BaseItem[]> {
         await this.waitUntil(() => miro.board)
-        var widgets = await miro.board.widgets.get()
+        var widgets = await miro.board.get({type:"text"})
 
         return widgets
-            .filter(i => i.type == 'TEXT'
-                && i.metadata && i.metadata[miro.getClientId()]
-                && i.metadata[miro.getClientId()]
-                && i.metadata[miro.getClientId()]["templateName"]) as SDK.ITextWidget[]
+            .filter(i => i.getMetadata("template")??["templateName"])
+            .map(i=> i as BaseItem)
     }
-    private filterWidgetsByTemplateName(widgets: SDK.ITextWidget[], templateName): SDK.ITextWidget[] {
-        return widgets.filter(w => w.metadata[miro.getClientId()]["templateName"] == templateName)
+    private filterWidgetsByTemplateName(widgets: BaseItem[], templateName): BaseItem[] {
+        return widgets.filter(async w => await w.getMetadata("templateName") == templateName)
     }
-    private async findWidgetByTemplateName(templateName: string): Promise<SDK.IWidget[]> {
+    private async findWidgetByTemplateName(templateName: string): Promise<BaseItem[]> {
         const widgets = await this.findAllTemplateWidgets()
         return this.filterWidgetsByTemplateName(widgets, templateName)
     }
@@ -120,9 +103,9 @@ export class miroTemplateRepository implements ITemplateRepository {
         if (widgets.length == 0)
             throw new Error("Widget not found for template:" + templateName);
         log.log("Widgets found:", widgets)
-        var template = widgets[0].metadata[miro.getClientId()];
-        log.log("Corresponding metadata:", widgets[0].metadata[miro.getClientId()])
+        var template = widgets[0].getMetadata("template");
+        log.log("Corresponding metadata:", widgets[0].getMetadata("template"))
         log.log("Corresponding template:", template)
-        return template
+        return template as unknown as textTemplate
     }
 }

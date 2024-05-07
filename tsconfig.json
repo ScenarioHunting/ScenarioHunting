@@ -27,6 +27,8 @@
   ],
   "files": [
     "@types/miro.d.ts",
+    "./node_modules/@types",
+    "./node_modules/@mirohq",
     "@types/monaco.d.ts",
   ]
 }
