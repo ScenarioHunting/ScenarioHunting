@@ -8,9 +8,9 @@ import { getLanguageForExtension } from './monaco-languages'
 window.setupEditor = async () => {
     let proxy = URL.createObjectURL(new Blob([`
     self.MonacoEnvironment = {
-        baseUrl: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min'
+        baseUrl: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.48.0/min'
     };
-    importScripts('https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/base/worker/workerMain.min.js');
+    importScripts('https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.48.0/min/vs/base/worker/workerMain.min.js');
     `], { type: 'text/javascript' }));
     window.MonacoEnvironment = { getWorkerUrl: () => proxy };
 
@@ -22,7 +22,7 @@ window.setupEditor = async () => {
     let editor
     let previewEditor
 
-    window.closeModal =()=>{}
+    window.closeModal = () => { }
 
     window.save = async function () {
         try {
@@ -75,7 +75,6 @@ window.setupEditor = async () => {
             showError(err, editor.getPosition(), editorModel)
         }
         //</On editor text change(not preview)
-        console.log({ compiledCode })
         const actualCodeModel = monaco.editor.createModel(compiledCode, language);
 
         const previousExpectedCode = previewEditor.getModifiedEditor().getValue();
@@ -199,22 +198,18 @@ window.setupEditor = async () => {
 
     //On editor ready:
     window.onEditorReady = async function () {
-        // let { template, data } = await ExternalServices.boardService.getModalParameters()
-        // log.log("Initializing template studio.", { template, data })
-
         let languageSelect = document.getElementById("language-select");
-        const monacoLanguages = monaco.languages.getLanguages()
-        monacoLanguages.forEach(l => languageSelect.add(new Option(l.aliases[0], l.id)))
+        
+        (await monaco.languages.getLanguages())
+            .filter(l=>!!l.aliases)
+            .forEach(l => languageSelect.add(new Option(l.aliases[0], l.id)))
 
         let templateContent = template.contentTemplate;
         document.getElementById('fileNameTemplate').value = template.fileNameTemplate
         document.getElementById("target-file-extension").value = template.fileExtension
         languageSelect.value = getLanguageForExtension(template.fileExtension)
 
-        // lang = monacoLanguages.filter(l => l.extensions.includes(template.fileExtension))[0].aliases[0];// 
-        //  getLanguageForExtension(template.fileExtension)
-        // log.log(`Language: found for ext:`, template.fileExtension)
-        // languageSelect.value = lang
+
         editor = editorFactory.createEditor(document.getElementById('monaco-editor'), templateContent)
         previewEditor = editorFactory.createPreviewEditor(document.getElementById('preview-editor'))
 
