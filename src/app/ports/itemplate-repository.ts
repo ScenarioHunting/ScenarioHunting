@@ -5,5 +5,5 @@ export interface ITemplateRepository {
     createOrReplaceTemplate(template: textTemplate): Promise<void>
     getAllTemplateNames(): Promise<string[]>
     removeTemplate(templateName: string): Promise<void>
-    getTemplateByName(templateName: string): Promise<textTemplate>
+    getTemplateByName(templateName: string): Promise<textTemplate|undefined>
 }

@@ -1,14 +1,17 @@
 /* eslint-disable no-undef */
 import { extractStepFromText } from "../../app/scenario-builder/board-text-schema-extractor";
 import { CSSProperties } from "react";
-import { IBoard, SelectedStep, WidgetSnapshot } from "../../app/ports/iboard";
+import { IBoard, ModalOptions, ModalResult, SelectedStep, WidgetSnapshot } from "../../app/ports/iboard";
 import { log } from "../../external-services";
-import type { Connector, Item } from "@mirohq/websdk-types";
+import type { Item, OpenModalOptions } from "@mirohq/websdk-types";
 const ON_SELECTION = "selection:update"
 export class MiroBoard implements IBoard {
+    getModalParameters<T>(): Promise<T | undefined> {
+        return miro.board.ui.getModalData<T>()
+    }
 
-    openModal(iframeURL: string): Promise<any> {
-        return miro.board.ui.openModal({ url: iframeURL, fullscreen: true })
+    openModal<Data, Result>(options: ModalOptions<Data>): Promise<ModalResult<Result>> {
+        return miro.board.ui.openModal<Data, Result>(<OpenModalOptions<Data>>{ fullscreen: true, data: options.parameters, url: options.url })
     }
     closeModal() { return miro.board.ui.closeModal() }
 
@@ -73,7 +76,7 @@ function getWidgetStyle(widget: Item) {
         return style
 
     style.backgroundColor = mapColor(widget["style"]["fillColor"])
-    
+
     if (widget["style"]["fillColor"] == 'back')
         style.color = mapColor('gray')
 

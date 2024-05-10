@@ -1,6 +1,6 @@
 import { Api, ObjectProperty } from "../api";
 
-export const defaultTestSpec: Api = {
+export const scenarioExample: Api = {
     version: "1.0.0",
     subject: {
         title: 'Your-subject-under-test',

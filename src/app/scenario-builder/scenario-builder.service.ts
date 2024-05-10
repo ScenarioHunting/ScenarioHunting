@@ -7,7 +7,7 @@ const templateCompiler = ExternalServices.templateCompiler
 function downloadAs(fileName: string, data: string) {
     log.log(`Saving as: file Name: ${fileName} content: ${JSON.stringify(data)}`)
     var blob = new Blob([data], { type: "text/plain;charset=utf-8" });
-    if (isNullOrUndefined((<any> window.navigator).msSaveOrOpenBlob)) {
+    if (isNullOrUndefined((<any>window.navigator).msSaveOrOpenBlob)) {
         var elem = window.document.createElement('a');
         elem.href = window.URL.createObjectURL(blob);
         elem.download = fileName;
@@ -26,8 +26,14 @@ export class ScenarioBuilderService {
 
         try {
             var template = await templateRepository.getTemplateByName(templateName)
+            if (!template) {
+                const message = `The template named ${templateName} does not exist.`
+                log.error(message)
+                return message
+            }
             log.log("template loaded:", templateName)
         }
+
         catch (e) {
             log.warn("An error occurred while loading the template:", e)
             return e.toString()
