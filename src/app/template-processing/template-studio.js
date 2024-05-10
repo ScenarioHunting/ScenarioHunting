@@ -62,9 +62,6 @@ window.setupEditor = async () => {
     }
 
 
-    // let preview
-    // (async function () {
-   
     let preview = async function (language, editorModel) {
         //<On editor text change(not preview)
         const template = editor.getValue()
@@ -88,7 +85,6 @@ window.setupEditor = async () => {
 
         previewEditor.setModel({ original: actualCodeModel, modified: expectedCodeModel });
     }
-    // })()
 
     //Preview pane visibility:
     var isPreviewOpen = true;
