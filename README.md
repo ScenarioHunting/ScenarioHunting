@@ -1,7 +1,7 @@
 # Miro extension for Scenario Hunting
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-### An implementation of [Scenario Hunting](https://www.scenariohunting.com) framework as an extension to Miro whiteboard.
+### An implementation of [Scenario Hunting](https://scenariohunting.com) framework as an extension to Miro whiteboard.
 
 Scenario Hunting is a set of steps to implement high-quality automated tests based on visual modeling artifacts (such as Event Storming and Event Modeling sticky notes). 
 Following the steps keeps implementation on track and protects the design from distortion while coding.
