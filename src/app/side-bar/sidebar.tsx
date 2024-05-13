@@ -1,4 +1,4 @@
-import styles from "./sidebar.style.css"
+import * as styles from './sidebar.style.css';
 import * as React from 'react';
 import { TestRecorder } from '../scenario-builder/scenario-builder.component';
 import { TemplateList } from '../template-processing/template-list';

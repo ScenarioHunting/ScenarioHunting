@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
-import styles from './template-list.css'
+import * as styles from './template-list.css'
 import * as React from 'react';
 import { useState, useEffect } from "react";
 import { ExternalServices, log } from '../../external-services';

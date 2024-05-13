@@ -1,4 +1,4 @@
-import styles from './scenario-builder.style.css'
+import * as styles from './scenario-builder.style.css'
 import * as React from 'react';
 import { Givens, OrderedSelectedStep } from './given-collection.component';
 import { WhenStep as When } from './when-step';
