@@ -1,5 +1,5 @@
-import sharedStyles from './scenario-step-shared.styles.css'
-import styles from './scenario-step-picker.style.css';
+import * as sharedStyles from './scenario-step-shared.styles.css'
+import * as styles from './scenario-step-picker.style.css';
 import * as React from 'react';
 import { IBoard, SelectedStep } from '../../ports/iboard';
 import { IQueuingMachine } from "../../../libs/queuing-machine/iqueuing-machine";
@@ -37,7 +37,6 @@ export function createTestStepRecorder({ stepType
             board.unselectAll()
             board.showNotification(selectionWaitingMessage);
             board.onNextOneSelection((selectedWidget: SelectedStep) => {
-                log.log(turn, 'Selected...')
                 setIsWaitingForSelection(false)
                 props.onStepSelection(selectedWidget)
                 stepNavigator.done(turn)

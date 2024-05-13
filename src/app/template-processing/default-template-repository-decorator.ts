@@ -5,19 +5,7 @@ import { builtinTemplates } from "./builtin-templates";
 
 class DefaultTemplateRepositoryDecorator implements ITemplateRepository {
     constructor(private customTemplateRepository: ITemplateRepository
-        , private builtinTemplateRepository: textTemplate[]) {
-        // defaultTemplates.forEach(async template => {
-        //     try{
-        //     await innerRepository.getTemplateByName(template.templateName)
-        //     }
-        //     catch{
-        //         await innerRepository.createOrReplaceTemplate(template)
-        //     }
-        // })
-        // for (const template of defaultTemplates)
-        //     innerRepository.getTemplateByName(template.templateName)
-        //         .catch(_ => innerRepository.createOrReplaceTemplate(template).then(() => { }))
-    }
+        , private builtinTemplateRepository: textTemplate[]) { }
 
     async createOrReplaceTemplate(template: textTemplate): Promise<void> {
         // if(this.builtinTemplateRepository.find())
@@ -47,15 +35,12 @@ class DefaultTemplateRepositoryDecorator implements ITemplateRepository {
     }
 
     async getTemplateByName(templateName: string): Promise<textTemplate> {
-        try {
-            return await this.customTemplateRepository.getTemplateByName(templateName)
-        }
-        catch {
-            const template = builtinTemplates.find(t => t.templateName == templateName)
-            if (!template)
-                throw new Error("Widget not found for template:" + templateName);
-            return template
-        }
+        let template = await this.customTemplateRepository.getTemplateByName(templateName)
+        if (!template)
+            template = builtinTemplates.find(t => t.templateName == templateName)
+        if (!template)
+            throw new Error("Widget not found for template:" + templateName);
+        return template
     }
 
 }

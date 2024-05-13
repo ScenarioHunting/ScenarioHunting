@@ -1,5 +1,7 @@
 const path = require('path')
 const HtmlWebPackPlugin = require("html-webpack-plugin");
+const CopyPlugin = require('copy-webpack-plugin');
+
 // const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 
 // const externalServicesPath = './src/external-services.tsx'
@@ -98,6 +100,11 @@ function appConfig(options) {
 				filename: "./app.html",
 				excludeChunks: ['index']
 			}),
+			new CopyPlugin({
+				patterns: [
+				  { from: 'src/adopters/miro/miro-styles-v1.css', to: 'miro-styles-v1.css', force: true , noErrorOnMissing:false}
+				]
+			  }),
 		]
 	}
 }

@@ -16,9 +16,9 @@ export class localStorageTemplateRepository implements ITemplateRepository {
     removeTemplate(templateName: string) {
         return Promise.resolve(localStorage.removeItem(KeyPrefix + templateName))
     }
-    getTemplateByName(templateName: string): Promise<textTemplate> {
+    getTemplateByName(templateName: string): Promise<textTemplate | undefined> {
         const item = localStorage.getItem(KeyPrefix + templateName)
-        if (!item) return Promise.reject("Template not found!")
+        if (!item) return Promise.resolve(undefined)
         return Promise.resolve((<textTemplate>JSON.parse(item)))
     }
     private dumpAll = async () =>

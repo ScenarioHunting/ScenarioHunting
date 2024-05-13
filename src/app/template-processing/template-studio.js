@@ -1,48 +1,32 @@
 /* eslint-disable no-undef */
 import { ExternalServices, log } from '../../external-services'
-import { defaultTestSpec } from './default-test-spec'
 import { applyIntellisense } from './intellisense'
-import { URLParameters } from './url-parameters'
 import { editorFactory } from './template-studio-factory'
 import { domElementClasses } from './dom-element-classes'
 import { getLanguageForExtension } from './monaco-languages'
-// import svg from './template-studio.images/show-preview.svg'
-// console.log("SVG:", svg)
-// import { validTextTemplate } from "../ports/text-template"
 
 window.setupEditor = async () => {
     let proxy = URL.createObjectURL(new Blob([`
     self.MonacoEnvironment = {
-        baseUrl: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min'
+        baseUrl: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.48.0/min'
     };
-    importScripts('https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/base/worker/workerMain.min.js');
+    importScripts('https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.48.0/min/vs/base/worker/workerMain.min.js');
     `], { type: 'text/javascript' }));
     window.MonacoEnvironment = { getWorkerUrl: () => proxy };
 
-    window.closeModal = ExternalServices.boardService.closeModal
-
 
     const showNotification = ExternalServices.boardService.showNotification
+    let { template, data } = await ExternalServices.boardService.getModalParameters()
+    log.log("Loading template studio", { template, data })
 
-
-
-    // let templateContent = ""
-    let editor//: monaco.editor.IStandaloneCodeEditor
+    let editor
     let previewEditor
-    var originalTemplateName = URLParameters.getByName("templateName", window.location.href) ?? ""
-    originalTemplateName = originalTemplateName.trim()
-    // const isInEditMode = URLParameters.getByName("mode", window.location.href) == "edit"
-    const isInEditMode = originalTemplateName
-        && originalTemplateName != ""
-        && originalTemplateName != "new"
-    if (isInEditMode) {
-        document.getElementById("templateName").value = originalTemplateName
-        document.getElementById('templateName').disabled = true
-    }
+
+    window.closeModal = () => { }
 
     window.save = async function () {
         try {
-            const template = {
+            template = {
                 templateName: document.getElementById("templateName").value,
                 contentTemplate: editor.getValue(),
                 fileNameTemplate: document.getElementById('fileNameTemplate').value,
@@ -52,7 +36,6 @@ window.setupEditor = async () => {
             await ExternalServices.templateRepository
                 .createOrReplaceTemplate(template)
             await showNotification(`${template.templateName} saved.`)
-            window.closeModal()
         } catch (e) {
             alert(e)
         }
@@ -79,40 +62,32 @@ window.setupEditor = async () => {
     }
 
 
-    // let preview
-    // (async function () {
-    let sampleTestSpec = await ExternalServices.tempSharedStorage.getItem('sample-test-spec')
-    await ExternalServices.tempSharedStorage.removeItem('sample-test-spec')
-    if (!sampleTestSpec)
-        sampleTestSpec = defaultTestSpec
     let preview = async function (language, editorModel) {
         //<On editor text change(not preview)
         const template = editor.getValue()
         let compiledCode = ""
 
         try {
-            compiledCode = ExternalServices.templateCompiler.compileTemplate(template, sampleTestSpec)
+            compiledCode = ExternalServices.templateCompiler.compileTemplate(template, data)
             clearErrors(editorModel)
         }
         catch (err) {
             showError(err, editor.getPosition(), editorModel)
         }
         //</On editor text change(not preview)
-
         const actualCodeModel = monaco.editor.createModel(compiledCode, language);
 
         const previousExpectedCode = previewEditor.getModifiedEditor().getValue();
-        let expectedCodeModel = isInEditMode && previousExpectedCode == ""
+        let expectedCodeModel = previousExpectedCode == ""
             ? actualCodeModel
             : monaco.editor.createModel(previousExpectedCode, language);
 
         previewEditor.setModel({ original: actualCodeModel, modified: expectedCodeModel });
     }
-    // })()
 
     //Preview pane visibility:
     var isPreviewOpen = true;
-    function showPreview() {
+    function showPreviewPane() {
         isPreviewOpen = true
         const previewButton = document.getElementById('preview-button')
         previewButton.innerHTML = `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g id="View"><path d="M61.5059,48.1372,53.6472,43.53a36.5883,36.5883,0,0,0,8.2747-11.1422,1.005,1.005,0,0,0,0-.7764C61.8389,31.416,53.416,12,32,12a31.08,31.08,0,0,0-20.0536,7.0851l-8.44-4.9479a1,1,0,0,0-1.0118,1.7256L10.3528,20.47A36.5883,36.5883,0,0,0,2.0781,31.6118a1.005,1.005,0,0,0,0,.7764C2.1611,32.584,10.584,52,32,52a31.08,31.08,0,0,0,20.0536-7.0851l8.4405,4.9479a1,1,0,0,0,1.0118-1.7256ZM32,14c18.4189,0,26.6172,15.3408,27.8984,18a35.1472,35.1472,0,0,1-8.0557,10.4725l-9.0336-5.2954a11.9843,11.9843,0,0,0-20.608-12.0806l-8.4029-4.9258A29.1222,29.1222,0,0,1,32,14ZM22.92,27.8364,40.0654,37.8873A9.9849,9.9849,0,0,1,22.92,27.8364Zm1.015-1.7237A9.9849,9.9849,0,0,1,41.08,36.1636ZM32,50C13.5811,50,5.3828,34.6592,4.1016,32a35.1472,35.1472,0,0,1,8.0557-10.4725l9.0336,5.2954a11.9843,11.9843,0,0,0,20.608,12.0806l8.4029,4.9258A29.1222,29.1222,0,0,1,32,50Z" /></g></svg>`
@@ -120,7 +95,7 @@ window.setupEditor = async () => {
         document.getElementById('preview-editor').style.display = 'block'
         document.getElementById('monaco-editor').style.width = '555px'
     }
-    function hidePreview() {
+    function hidePreviewPane() {
         isPreviewOpen = false
         const previewButton = document.getElementById('preview-button')
         previewButton.innerHTML = '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><g data-name="View" id="View-2"><path d="M61.9219,31.6118C61.8389,31.416,53.416,12,32,12S2.1611,31.416,2.0781,31.6118a1.005,1.005,0,0,0,0,.7764C2.1611,32.584,10.584,52,32,52S61.8389,32.584,61.9219,32.3882A1.005,1.005,0,0,0,61.9219,31.6118ZM32,50C13.5811,50,5.3828,34.6592,4.1016,32,5.3828,29.3408,13.5811,14,32,14S58.6172,29.3408,59.8984,32C58.6172,34.6592,50.4189,50,32,50Z"/><path d="M32,20A12,12,0,1,0,44,32,12.0137,12.0137,0,0,0,32,20Zm0,22A10,10,0,1,1,42,32,10.0111,10.0111,0,0,1,32,42Z"/></g></svg>'
@@ -131,12 +106,12 @@ window.setupEditor = async () => {
     }
     window.togglePreview = function () {
         if (isPreviewOpen) {
-            hidePreview()
+            hidePreviewPane()
         } else {
-            showPreview()
+            showPreviewPane()
         }
     }
-    showPreview()
+    showPreviewPane()
     //eof preview
 
     //Language:
@@ -222,41 +197,26 @@ window.setupEditor = async () => {
 
 
     //On editor ready:
-
     window.onEditorReady = async function () {
-
         let languageSelect = document.getElementById("language-select");
-        const monacoLanguages = monaco.languages.getLanguages()
-        monacoLanguages.forEach(l => languageSelect.add(new Option(l.aliases[0], l.id)))
+        
+        (await monaco.languages.getLanguages())
+            .filter(l=>!!l.aliases)
+            .forEach(l => languageSelect.add(new Option(l.aliases[0], l.id)))
 
-        // select_elem.value = 'yaml'
-        let templateContent = undefined;
-        try {
-            const template = await ExternalServices.templateRepository
-                .getTemplateByName(isInEditMode ? originalTemplateName : "new")//.textTemplate
-            log.log(`Template ${originalTemplateName} is being loaded to the editor:`, template)
-            document.getElementById('fileNameTemplate').value = template.fileNameTemplate
-            document.getElementById("target-file-extension").value = template.fileExtension
-            templateContent = template.contentTemplate
-            languageSelect.value = getLanguageForExtension(template.fileExtension)
+        let templateContent = template.contentTemplate;
+        document.getElementById('fileNameTemplate').value = template.fileNameTemplate
+        document.getElementById("target-file-extension").value = template.fileExtension
+        languageSelect.value = getLanguageForExtension(template.fileExtension)
 
-            // lang = monacoLanguages.filter(l => l.extensions.includes(template.fileExtension))[0].aliases[0];// 
-            //  getLanguageForExtension(template.fileExtension)
-            // log.log(`Language: found for ext:`, template.fileExtension)
-            // languageSelect.value = lang
-        } catch {
-            log.warn("The template 'new' does not exists in the repository")
-        }
+
         editor = editorFactory.createEditor(document.getElementById('monaco-editor'), templateContent)
         previewEditor = editorFactory.createPreviewEditor(document.getElementById('preview-editor'))
 
-        // await detectLanguageForExtension()
-        // const languageSelect = document.getElementById("language-select")
         switchEditorLanguage(editor, 'handlebars')
         await preview(languageSelect.value, editorModel)
         editor.onDidChangeModelContent(async () => {
             await preview(languageSelect.value, editorModel)
-            // switchEditorLanguage(editor, 'Handlebars')
         })
 
         toggleTheme()

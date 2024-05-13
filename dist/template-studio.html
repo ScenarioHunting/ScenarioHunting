@@ -10,10 +10,11 @@
 <head>
     <meta charset="utf-8">
     <title>Template Studio</title>
-    <script src="https://miro.com/app/static/sdk.1.1.js"></script>
+    <!-- <script src="https://miro.com/app/static/sdk.1.1.js"></script> -->
+    <script src="https://miro.com/app/static/sdk/v2/miro.js"></script>
 
     <link rel="stylesheet" data-name="vs/editor/editor.main"
-        href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/editor/editor.main.min.css">
+        href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.48.0/min/vs/editor/editor.main.min.css">
     <style type="text/css" media="screen">
         #monaco-editor {
             margin: 0px;
@@ -96,10 +97,6 @@
             padding-left: 10px;
         }
 
-        button {
-            /* height: 27px;
-            padding: 6px; */
-        }
 
         body {
             height: 100%;
@@ -203,7 +200,9 @@
             stroke: none;
             vertical-align: middle;
         }
-
+        #save-template-button{
+            margin-bottom: 10px;
+        }
 
 
         .light-div svg {
@@ -246,16 +245,6 @@
             /* Full height */
             overflow: auto;
 
-            /* Enable scroll if needed */
-            /* background-color: rgb(0, 0, 0); */
-            /* Fallback color */
-            /* background-color: rgba(0, 0, 0, 0.4); */
-            /* Black w/ opacity */
-
-            /* -webkit-animation-name: modal-background-animation;
-            -webkit-animation-duration: 0.4s;
-            animation-name: modal-content-background-animation;
-            animation-duration: 0.4s */
         }
 
 
@@ -467,12 +456,12 @@
         </div>
         <div class="file-name-options-panel dark-div">
             <button id="close-button" class="image-button" onclick="closeModal()">
-                <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                <!-- <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
                     <g id="cross">
                         <line x1="7" x2="25" y1="7" y2="25" />
                         <line x1="7" x2="25" y1="25" y2="7" />
                     </g>
-                </svg>
+                </svg> -->
             </button>
 
             <button title="Toggle Preview" id="preview-button" class="image-button" onclick="togglePreview()">
@@ -538,7 +527,7 @@
 
     <!-- <div id="example-editor" style="background-color: chartreuse;"></div> -->
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/loader.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.48.0/min/vs/loader.min.js"></script>
 
 <script src="ExternalServices.js"></script><script src="monacoLanguage.js"></script><script src="editor.js"></script></body>
 <script>
@@ -547,7 +536,7 @@
     window.setupEditor().then(saveOut => {
         require.config({
             paths: {
-                'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs'
+                'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.48.0/min/vs'
             }
         });
 
@@ -584,37 +573,3 @@
 </script>
 
 </html>
-<!-- Render glyphs in the margin:
-https://microsoft.github.io/monaco-editor/playground.html#interacting-with-the-editor-rendering-glyphs-in-the-margin -->
-<!-- Custom Intellisense:
-https://mono.software/2017/04/11/custom-intellisense-with-monaco-editor/ -->
-<!-- Detect Language:
-https://stackoverflow.com/questions/56681345/how-to-dynamically-set-language-according-to-file-extension-in-monaco-editor -->
-<!-- Json schema editor:
-https://jsoneditoronline.org/#right=local.juyaqi&left=local.toheka -->
-
-<!-- Json Intellisense
-https://www.npmjs.com/package/monaco-json -->
-
-<!-- File saver:
-https://github.com/eligrey/FileSaver.js -->
-
-<!-- go multi-language template engine
-https://github.com/kataras/go-template -->
-
-<!-- handlebars for go
-https://github.com/aymerick/raymond#quick-start -->
-
-<!-- https://github.com/microsoft/monaco-editor/issues/833 -->
-
-<!-- Custom language 
-    https://microsoft.github.io/monaco-editor/monarch.html -->
-
-<!-- Custom suggestions (based on json schema...) 
-    https://microsoft.github.io/monaco-editor/playground.html#extending-language-services-completion-provider-example 
-https://github.com/Microsoft/monaco-editor/issues/38-->
-<!-- Handlebars json suggestions:
-     https://github.com/microsoft/monaco-editor/issues/1731 -->
-
-<!--Event storming example
-     https://medium.com/capital-one-tech/event-storming-decomposing-the-monolith-to-kick-start-your-microservice-architecture-acb8695a6e61 -->

@@ -1,21 +1,24 @@
 /* eslint-disable no-unused-vars */
-import { IBoard, SelectedStep, WidgetSnapshot } from "../../app/ports/iboard";
+import { IBoard, ModalOptions, ModalResult, SelectedStep, WidgetSnapshot } from "../../app/ports/iboard";
 
 import * as React from 'react';
 import { Step } from "../../app/api";
 
 class BoardMock implements IBoard {
+    getModalParameters<T>(): Promise<T | undefined> {
+        throw new Error("Method not implemented.");
+    }
     getWidgetText = function (widgetId: string): Promise<string> {
         this.showStatus('Returning widget text for widget id:\n' + widgetId)
         return Promise.resolve('Widget Id')
     }
-    public select: (selected: SelectedStep) => void=()=>{}
+    public select: (selected: SelectedStep) => void = () => { }
     public showStatus: (message: string) => void = () => { }
 
     onNextOneSelection = function (callback: (selected: SelectedStep) => void) {
         this.select = callback
     }
-    
+
     unselectAll: () => Promise<void> = () =>
         Promise.resolve(this.showStatus('All widgets are unselected.'))
 
@@ -23,13 +26,13 @@ class BoardMock implements IBoard {
     showNotification: (message: string) => Promise<void> = (message) =>
         Promise.resolve(this.showStatus('Notification message:\n' + message))
 
-    openModal(iframeURL: string): Promise<any> {
+    openModal<Data, Result>({ url, parameters: data }: ModalOptions<Data>): Promise<ModalResult<Result>> {
         const modal = document!.getElementById("modal")
         const modalDarkBackground = document.getElementById("modal-dark-background")
 
         modalDarkBackground!.style.display = "block";
         modal!.style.display = "block";
-        (document!.getElementById('modal-iframe')! as HTMLIFrameElement).src = iframeURL;
+        (document!.getElementById('modal-iframe')! as HTMLIFrameElement).src = url;
 
         modalDarkBackground!.onclick = function () {
             modal!.style.display = "none";
@@ -49,7 +52,8 @@ class BoardMock implements IBoard {
                 return;
             }
         }
-        return Promise.resolve()
+        const x: ModalResult<Result> = { waitForClose: () => { return Promise.reject() } }
+        return Promise.resolve(x)
     }
     closeModal() {
         if (document && document!.getElementById("modal")) {

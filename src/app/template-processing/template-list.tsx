@@ -1,10 +1,10 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
-import styles from './template-list.css'
+import * as styles from './template-list.css'
 import * as React from 'react';
 import { useState, useEffect } from "react";
 import { ExternalServices, log } from '../../external-services';
-const boardService = ExternalServices.boardService
+import { openTemplateStudio } from '../template-studio-gateway';
 const templateRepository = ExternalServices.templateRepository
 
 export function TemplateList(props): JSX.Element {
@@ -18,22 +18,18 @@ export function TemplateList(props): JSX.Element {
             log.log('Templates loaded from repository:', templateNames)
             setAvailableTemplateNames(templateNames
                 // .filter((value,index,all)=>all.indexOf(value)===index)
-                
-                )//distinct
+
+            )//distinct
             log.log('Templates set to the component:', templateNames)
         }).catch(e => { throw e })
     }
     useEffect(loadTemplateNames, []);
-    function openModal(iframeURL: string): Promise<void> {
-        return boardService.openModal(iframeURL)
-            .then(loadTemplateNames)
-    }
+
     function addTemplate() {
-        openModal(`./template-studio.html`)
+        return openTemplateStudio({}).then(loadTemplateNames)
     }
     function editTemplate(templateName: string) {
-        const queryString = `?templateName=${templateName}`
-        openModal(`./template-studio.html${queryString}`)
+        return openTemplateStudio({ templateName }).then(loadTemplateNames)
     }
     async function deleteTemplate(templateName: string) {
         if (!confirm(`You are about deleting the template: ${templateName}.\n Are you sure?`))
@@ -41,7 +37,7 @@ export function TemplateList(props): JSX.Element {
         await templateRepository.removeTemplate(templateName)
         setAvailableTemplateNames(templateNames
             .filter(t => t != templateName)
-            .filter((value,index,self)=>self.indexOf(value)===index))//distinct
+            .filter((value, index, self) => self.indexOf(value) === index))//distinct
         log.log("Template: " + templateName + " deleted.")
     }
     return <>

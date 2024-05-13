@@ -1,4 +1,4 @@
-import styles from "./sidebar.style.css"
+import * as styles from './sidebar.style.css';
 import * as React from 'react';
 import { TestRecorder } from '../scenario-builder/scenario-builder.component';
 import { TemplateList } from '../template-processing/template-list';
@@ -7,7 +7,7 @@ import { Routes,Route, Link, BrowserRouter,Navigate } from "react-router-dom"
 export const Sidebar = function () {
 
     return <BrowserRouter>
-        <div style={{ width: '340`px' }}>
+        <div style={{ width: '100%' }}>
             <nav className={styles["sidebar-nav"]}>
                 <Link title="Build scenario" to="/">
                     <svg viewBox="0 0 512 512">
@@ -24,7 +24,7 @@ export const Sidebar = function () {
                     </svg>
                 </Link>
             </nav>
-            <svg style={{ paddingLeft: "13px" }} width="292" height="1" viewBox="0 0 292 1" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg style={{ paddingLeft: "13px", paddingBottom:"13px" }} width="320" height="1" viewBox="0 0 292 1" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect width="292" height="1" fill="#E1E0E7" />
             </svg>
             <Routes>

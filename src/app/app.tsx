@@ -2,10 +2,13 @@ import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { ExternalServices } from '../external-services'
 import { Sidebar } from "./side-bar/sidebar"
+import { createRoot } from 'react-dom/client';
 
-const app = <div style={{ display: 'flex' }}>
+
+
+const App =()=> <div style={{ display: 'flex' }}>
     <Sidebar />
     <ExternalServices.boardUi />
 </div>
-
-ReactDOM.render(app, document.getElementById('react-app'))
+const root = createRoot(document.getElementById('react-app')!)
+root.render(<App/>)
