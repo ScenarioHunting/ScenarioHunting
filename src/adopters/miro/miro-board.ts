@@ -30,7 +30,6 @@ export class MiroBoard implements IBoard {
             try {
                 await miro.board.events.off(ON_SELECTION, handle)
                 const selectedStep = await extractStepFrom(widgets[0])
-                console.log({ selectedStep, widget: widgets[0] })
                 succeed(selectedStep)
             }
             catch (e) { log.log(e) }

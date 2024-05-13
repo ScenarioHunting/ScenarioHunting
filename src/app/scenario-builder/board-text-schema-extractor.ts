@@ -69,7 +69,6 @@ export async function extractStepFromText({
                 if (!items) (<AbstractProperty>items) = s
                 else if (Array.isArray(items)) (<AbstractProperty[]>items).push(s)
                 else if (items != s) items = [items, s];
-                console.log(`items: ${JSON.stringify(items)} \n == \n ${JSON.stringify(s)}`);
 
                 (<ArrayProperty>result.schema.properties[parentArrayPropertyName]).items = items
                 log.log(propertyName + " The property: " + parentArrayPropertyName + " schema set to: "
