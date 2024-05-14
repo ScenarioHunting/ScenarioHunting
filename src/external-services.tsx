@@ -11,10 +11,7 @@ import { ITemplateRepository as ITemplateRepository } from "./app/ports/itemplat
 import { miroTemplateRepository } from "./adopters/miro/miro-template-repository";
 import { localStorageTemplateRepository } from "./adopters/mocks/local-storage-template-repository";
 import { decorateRepositoryWithTemplates } from "./app/template-processing/default-template-repository-decorator";
-import { ITempStorage } from "./app/ports/itemp-storage";
-import { LocalTempStorage } from "./adopters/mocks/local-temp-storage";
 import { TemplateCompiler } from "./app/template-processing/template-compiler";
-import { MiroTempStorage } from "./adopters/miro/miro-temp-storage";
 import { builtinTemplates } from "./app/template-processing/builtin-templates";
 
 
@@ -29,7 +26,6 @@ export interface IExternalServices {
     boardUi(): JSX.Element
 
     readonly templateRepository: ITemplateRepository
-    readonly tempSharedStorage: ITempStorage
     readonly templateCompiler: TemplateCompiler
 }
 
@@ -40,7 +36,6 @@ const createMiroDependencies = (): IExternalServices => {
         boardService: new MiroBoard(),
         boardUi: emptyComponent,
         templateRepository: decorateRepositoryWithTemplates(new miroTemplateRepository(), builtinTemplates),
-        tempSharedStorage: new MiroTempStorage(),
         templateCompiler: new TemplateCompiler(),
     } as const
 }
@@ -50,7 +45,6 @@ const createMockedDependencies = (): IExternalServices => {
         boardService: MockBoard(),
         boardUi: UIComponent,
         templateRepository: decorateRepositoryWithTemplates(new localStorageTemplateRepository(), builtinTemplates),
-        tempSharedStorage: new LocalTempStorage(),
         templateCompiler: new TemplateCompiler(),
     } as const
 }

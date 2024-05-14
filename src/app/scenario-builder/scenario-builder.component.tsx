@@ -11,12 +11,9 @@ import { SelectableText } from './title-picker/title-picker.component';
 import { TestStepTurn } from './step-picker/scenario-step-turn';
 import { Api } from '../api';
 import { ExternalServices, log } from '../../external-services';
-import { scenarioExample } from './scenario-example';
 import { openTemplateStudio } from '../template-studio-gateway';
 
 const templateRepository = ExternalServices.templateRepository
-const tempSharedStorage = ExternalServices.tempSharedStorage
-const boardService = ExternalServices.boardService
 
 export const createTestBuilder = (board = ExternalServices.boardService): React.FC<any> => () => {
     if (!board) {
