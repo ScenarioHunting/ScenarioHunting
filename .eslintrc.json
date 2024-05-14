@@ -5,6 +5,7 @@
     "node": true
   },
   "extends": [
+    "prettier",
     "plugin:react/recommended",
     "eslint:recommended",
     "plugin:react-hooks/recommended"
@@ -23,8 +24,29 @@
   ],
   "rules": {
     "no-use-before-define": "off",
-    "react/display-name":[0],
-    "@typescript-eslint/no-use-before-define": [1]
+    "react/display-name": [
+      0
+    ],
+    "@typescript-eslint/no-use-before-define": [
+      1
+    ],
+    "indent": [
+      "error",
+      2
+    ],
+    "linebreak-style": [
+      "error",
+      "unix"
+    ],
+    "quotes": [
+      "error",
+      "single"
+    ],
+    "semi": [
+      "error",
+      "always"
+    ],
+    "react/jsx-uses-react": "error",
+    "react/jsx-uses-vars": "error"
   }
-  
 }
