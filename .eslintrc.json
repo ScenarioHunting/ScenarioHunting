@@ -23,6 +23,8 @@
     "@typescript-eslint"
   ],
   "rules": {
+    "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    
     "no-use-before-define": "off",
     "react/display-name": [
       0
@@ -47,6 +49,15 @@
       "always"
     ],
     "react/jsx-uses-react": "error",
-    "react/jsx-uses-vars": "error"
-  }
+    "react/jsx-uses-vars": "error",
+    "no-console": "error"
+  },
+  "globals": {
+    "miro": "readonly",
+    "JSX": "readonly"
+  },
+  "ignorePatterns": [
+    "@types/monaco.d.ts",
+    "dist/**/*.*"
+  ]
 }

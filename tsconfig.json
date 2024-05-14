@@ -30,6 +30,9 @@
 
          "node_modules/@mirohq/websdk-types/index.d.ts",
     "@types/monaco.d.ts",
+    "src/app/scenario-builder/step-picker/array-property-component.tsx",
+    "src/app/scenario-builder/step-picker/singular-property-component.tsx",
+    "src/app/scenario-builder/step-picker/property-component.tsx",
     
   ],
   "typeRoots": [
