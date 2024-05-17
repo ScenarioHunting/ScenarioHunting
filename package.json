@@ -29,8 +29,8 @@
   },
   "keywords": [],
   "engines": {
-    "node": ">=22.1.0",
-    "npm": ">=9.6.7"
+    "node": ">=20.13.1",
+    "npm": ">=10.5.2"
   },
   "engineStrict": true,
   "author": "",
@@ -45,7 +45,7 @@
     "@types/react-dom": "^18.3.0",
     "@typescript-eslint/eslint-plugin": "^7.8.0",
     "@typescript-eslint/parser": "^7.8.0",
-    "chai": "^5.1.1",
+    "chai": "^4.0.0",
     "chai-as-promised": "^7.1.2",
     "copy-webpack-plugin": "^12.0.2",
     "css-loader": "^7.1.1",
@@ -87,9 +87,11 @@
     "@mirohq/websdk-types": "^2.14.3",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
+    "cross-env": "^7.0.3",
     "css-modules-typescript-loader": "^4.0.1",
     "handlebars": "^4.7.8",
     "mirotone": "^5.1.1",
+    "mocha-suppress-logs": "^0.5.1",
     "npm": "^10.7.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

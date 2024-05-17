@@ -1,5 +1,3 @@
-/* eslint-disable no-undef */
-/* eslint-disable no-unused-vars */
 import * as styles from './template-list.css';
 import * as React from 'react';
 import { useState, useEffect } from 'react';
@@ -7,7 +5,7 @@ import { ExternalServices, log } from '../../external-services';
 import { openTemplateStudio } from '../template-studio-gateway';
 const templateRepository = ExternalServices.templateRepository;
 
-export function TemplateList(props): JSX.Element {
+export function TemplateList(): JSX.Element {
 
 
   const [templateNames, setAvailableTemplateNames] = useState<string[]>([]);

@@ -1,6 +1,3 @@
-/* eslint-disable no-undef */
-// eslint-disable-next-line no-unused-vars
-const should = require('chai').should();
 import { stringCaseHelpers } from './string-case-helpers';
 
 describe('string case helpers', function () {

@@ -1,15 +1,15 @@
 export const builtinTemplates = [
-    {
-        templateName: 'new',
-        contentTemplate: '{{{yaml .}}}',
-        fileExtension: 'yml',
-        fileNameTemplate: '{{snakeCase scenario.title}}',
-    },
-    {
-        templateName: "cs-aggregate-gwt",
-        fileNameTemplate: "{{pascalCase scenario.title}}",
-        fileExtension: "cs",
-        contentTemplate: `using {{pascalCase context.title}};
+  {
+    templateName: 'new',
+    contentTemplate: '{{{yaml .}}}',
+    fileExtension: 'yml',
+    fileNameTemplate: '{{snakeCase scenario.title}}',
+  },
+  {
+    templateName: 'cs-aggregate-gwt',
+    fileNameTemplate: '{{pascalCase scenario.title}}',
+    fileExtension: 'cs',
+    contentTemplate: `using {{pascalCase context.title}};
 using Xunit;
 
 namespace {{pascalCase context.title}}.Tests
@@ -52,12 +52,12 @@ new {{pascalCase title}}({{#each schema.properties}}"{{this.example}}"{{#unless 
 }
 
 `
-    },
-    {
-        templateName: "cs-aggregate",
-        fileNameTemplate: "{{pascalCase scenario.title}}",
-        fileExtension: "cs",
-        contentTemplate: `{{> main}}
+  },
+  {
+    templateName: 'cs-aggregate',
+    fileNameTemplate: '{{pascalCase scenario.title}}',
+    fileExtension: 'cs',
+    contentTemplate: `{{> main}}
 {{#*inline 'main'}}
 using Xunit;
 using FluentAssertions;
@@ -127,12 +127,12 @@ The field 'type' is not found in the schema
 {{/inline}}
 
 `
-    },
-    {
-        templateName: "gherkin-scenario",
-        fileNameTemplate: "{{kebabCase scenario.title}}",
-        fileExtension: "feature",
-        contentTemplate: `Scenario Outline: {{sentenceCase scenario.title}}
+  },
+  {
+    templateName: 'gherkin-scenario',
+    fileNameTemplate: '{{kebabCase scenario.title}}',
+    fileExtension: 'feature',
+    contentTemplate: `Scenario Outline: {{sentenceCase scenario.title}}
 Given {{#each given as |step index|}}{{spaceCase step.title}} {{>table object=step.schema}}
 {{#unless @last}} And {{/unless}}{{/each}}When {{#with when as |step|}} {{spaceCase step.title}} {{>table object=step.schema}}
 {{/with}}
@@ -151,7 +151,7 @@ Then {{#each then as |step|}} {{spaceCase step.title}} {{>table object=step.sche
 {{#*inline 'fill_rest'}}
 {{repeat ' ' (subtract 15 (lookup (lowerCase .) 'length'))}}{{/inline}}
 `
-    },
-]
+  },
+];
 
 

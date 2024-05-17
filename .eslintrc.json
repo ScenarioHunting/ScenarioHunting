@@ -18,46 +18,64 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": [
-    "react",
-    "@typescript-eslint"
-  ],
+  "plugins": ["react", "@typescript-eslint"],
   "rules": {
-    "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
-    
+    "no-unused-vars": ["off", { "argsIgnorePattern": "^_|^private|^public" }],
+
     "no-use-before-define": "off",
-    "react/display-name": [
-      0
-    ],
-    "@typescript-eslint/no-use-before-define": [
-      1
-    ],
-    "indent": [
-      "error",
-      2
-    ],
-    "linebreak-style": [
-      "error",
-      "unix"
-    ],
-    "quotes": [
-      "error",
-      "single"
-    ],
-    "semi": [
-      "error",
-      "always"
-    ],
+    "react/display-name": [0],
+    "@typescript-eslint/no-use-before-define": [1],
+    "indent": ["error", 2],
+    "linebreak-style": ["error", "unix"],
+    "quotes": ["error", "single"],
+    "semi": ["error", "always"],
     "react/jsx-uses-react": "error",
     "react/jsx-uses-vars": "error",
     "no-console": "error"
   },
   "globals": {
     "miro": "readonly",
-    "JSX": "readonly"
+    "JSX": "readonly",
+    "describe": "readonly",
+    "it": "readonly",
+    "xit": "readonly",
+    "monaco": "readonly"
   },
-  "ignorePatterns": [
-    "@types/monaco.d.ts",
-    "dist/**/*.*"
-  ]
+  "ignorePatterns": ["@types/monaco.d.ts", "dist/**/*.*"],
+  "settings": {
+    "react": {
+      "createClass": "createReactClass",
+      "pragma": "React",
+      "fragment": "Fragment",
+      "version": "detect",
+      "flowVersion": "0.53"
+    },
+    "propWrapperFunctions": [
+      // The names of any function used to wrap propTypes, e.g. `forbidExtraProps`. If this isn't set, any propTypes wrapped in a function will be skipped.
+      "forbidExtraProps",
+      { "property": "freeze", "object": "Object" },
+      { "property": "myFavoriteWrapper" },
+      // for rules that check exact prop wrappers
+      { "property": "forbidExtraProps", "exact": true }
+    ],
+    "componentWrapperFunctions": [
+      // The name of any function used to wrap components, e.g. Mobx `observer` function. If this isn't set, components wrapped by these functions will be skipped.
+      "observer", // `property`
+      { "property": "styled" }, // `object` is optional
+      { "property": "observer", "object": "Mobx" },
+      { "property": "observer", "object": "<pragma>" } // sets `object` to whatever value `settings.react.pragma` is set to
+    ],
+    "formComponents": [
+      // Components used as alternatives to <form> for forms, eg. <Form endpoint={ url } />
+      "CustomForm",
+      { "name": "SimpleForm", "formAttribute": "endpoint" },
+      { "name": "Form", "formAttribute": ["registerEndpoint", "loginEndpoint"] } // allows specifying multiple properties if necessary
+    ],
+    "linkComponents": [
+      // Components used as alternatives to <a> for linking, eg. <Link to={ url } />
+      "Hyperlink",
+      { "name": "MyLink", "linkAttribute": "to" },
+      { "name": "Link", "linkAttribute": ["to", "href"] } // allows specifying multiple properties if necessary
+    ]
+  }
 }

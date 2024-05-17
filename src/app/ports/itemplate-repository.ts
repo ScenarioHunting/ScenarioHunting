@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { textTemplate } from "./text-template"
+import { textTemplate } from './text-template';
 
 export interface ITemplateRepository {
     createOrReplaceTemplate(template: textTemplate): Promise<void>

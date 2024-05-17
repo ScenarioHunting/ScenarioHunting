@@ -1,6 +1,5 @@
-/* eslint-disable no-unused-vars */
 export interface IQueuingMachine<T> {
-    onTurn(_: T, whatToDo: () => void)
+    onTurn(_: T, _whatToDo: () => void)
     start(): void
     done(_: T): void
 }

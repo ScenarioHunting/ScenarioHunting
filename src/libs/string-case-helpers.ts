@@ -14,6 +14,7 @@ const snakeToSpaceCase = (str: string): string =>
   str.toString().replace(/_/g, ' ');
 
 const snakeToSentenceCase = (str: string): string =>
+  // eslint-disable-next-line @typescript-eslint/no-use-before-define
   stringCaseHelpers.capitalize(snakeToSpaceCase(str.toString()));
 const pascalToSpaceCase = (str: string) =>
   str

@@ -1,19 +1,27 @@
 {
   "compilerOptions": {
+    "module": "commonjs",
     "baseUrl": "./src",
     "outDir": "dist2",
     "strictNullChecks": true,
     "allowUnreachableCode": true,
     "experimentalDecorators": true,
-    "module": "esnext",
-    "target": "es2017",
+    "target": "ES2022",
     "moduleResolution": "node",
     "jsx": "react",
     "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": false,
     "lib": [
-      "es2019",
-      "dom",
-      "esnext"
+      "ES2022",
+      "dom"
     ],
     "paths":{
       "*":["src/@types"]
@@ -24,7 +32,10 @@
     "@types/monaco.d.ts",
     "app.config.ts"
         ,"node_modules/@types",
-         "node_modules/@mirohq"
+
+         "node_modules/@mirohq",
+         "src/**/*.spec.ts"
+
   ],
   "files": [
 
@@ -38,5 +49,10 @@
   "typeRoots": [
         "./node_modules/@types",
          "./node_modules/@mirohq"
-       ]
+       ],
+       "ts-node": {
+        "esm": true,
+        "experimentalSpecifierResolution": "node",
+    }
+    
 }
