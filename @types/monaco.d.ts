@@ -33,10 +33,10 @@ declare namespace monaco {
      * A helper that allows to emit and listen to typed events
      */
     export class Emitter<T> {
-        constructor();
-        readonly event: IEvent<T>;
-        fire(event: T): void;
-        dispose(): void;
+      constructor();
+      readonly event: IEvent<T>;
+      fire(event: T): void;
+      dispose(): void;
     }
 
 
@@ -53,10 +53,10 @@ declare namespace monaco {
     }
 
     export class CancellationTokenSource {
-        constructor(parent?: CancellationToken);
-        get token(): CancellationToken;
-        cancel(): void;
-        dispose(cancel?: boolean): void;
+      constructor(parent?: CancellationToken);
+      get token(): CancellationToken;
+      cancel(): void;
+      dispose(cancel?: boolean): void;
     }
 
     export interface CancellationToken {
@@ -91,30 +91,30 @@ declare namespace monaco {
      * ```
      */
     export class Uri implements UriComponents {
-        static isUri(thing: any): thing is Uri;
-        /**
+      static isUri(thing: any): thing is Uri;
+      /**
          * scheme is the 'http' part of 'http://www.msft.com/some/path?query#fragment'.
          * The part before the first colon.
          */
-        readonly scheme: string;
-        /**
+      readonly scheme: string;
+      /**
          * authority is the 'www.msft.com' part of 'http://www.msft.com/some/path?query#fragment'.
          * The part between the first double slashes and the next slash.
          */
-        readonly authority: string;
-        /**
+      readonly authority: string;
+      /**
          * path is the '/some/path' part of 'http://www.msft.com/some/path?query#fragment'.
          */
-        readonly path: string;
-        /**
+      readonly path: string;
+      /**
          * query is the 'query' part of 'http://www.msft.com/some/path?query#fragment'.
          */
-        readonly query: string;
-        /**
+      readonly query: string;
+      /**
          * fragment is the 'fragment' part of 'http://www.msft.com/some/path?query#fragment'.
          */
-        readonly fragment: string;
-        /**
+      readonly fragment: string;
+      /**
          * Returns a string representing the corresponding file system path of this Uri.
          * Will handle UNC paths, normalizes windows drive letters to lower-case, and uses the
          * platform specific path separator.
@@ -138,8 +138,8 @@ declare namespace monaco {
          * namely the server name, would be missing. Therefore `Uri#fsPath` exists - it's sugar to ease working
          * with URIs that represent files on disk (`file` scheme).
          */
-        get fsPath(): string;
-        with(change: {
+      get fsPath(): string;
+      with(change: {
             scheme?: string;
             authority?: string | null;
             path?: string | null;
@@ -152,8 +152,8 @@ declare namespace monaco {
          *
          * @param value A string which represents an Uri (see `Uri#toString`).
          */
-        static parse(value: string, _strict?: boolean): Uri;
-        /**
+      static parse(value: string, _strict?: boolean): Uri;
+      /**
          * Creates a new Uri from a file system path, e.g. `c:\my\files`,
          * `/usr/home`, or `\\server\share\some\path`.
          *
@@ -174,8 +174,8 @@ declare namespace monaco {
          *
          * @param path A file system path (see `Uri#fsPath`)
          */
-        static file(path: string): Uri;
-        static from(components: {
+      static file(path: string): Uri;
+      static from(components: {
             scheme: string;
             authority?: string;
             path?: string;
@@ -189,8 +189,8 @@ declare namespace monaco {
          * @param pathFragment The path fragment to add to the Uri path.
          * @returns The resulting Uri.
          */
-        static joinPath(uri: Uri, ...pathFragment: string[]): Uri;
-        /**
+      static joinPath(uri: Uri, ...pathFragment: string[]): Uri;
+      /**
          * Creates a string representation for this Uri. It's guaranteed that calling
          * `Uri.parse` with the result of this function creates an Uri which is equal
          * to this Uri.
@@ -201,12 +201,12 @@ declare namespace monaco {
          *
          * @param skipEncoding Do not encode the result, default is `false`
          */
-        toString(skipEncoding?: boolean): string;
-        toJSON(): UriComponents;
-        static revive(data: UriComponents | Uri): Uri;
-        static revive(data: UriComponents | Uri | undefined): Uri | undefined;
-        static revive(data: UriComponents | Uri | null): Uri | null;
-        static revive(data: UriComponents | Uri | undefined | null): Uri | undefined | null;
+      toString(skipEncoding?: boolean): string;
+      toJSON(): UriComponents;
+      static revive(data: UriComponents | Uri): Uri;
+      static revive(data: UriComponents | Uri | undefined): Uri | undefined;
+      static revive(data: UriComponents | Uri | null): Uri | null;
+      static revive(data: UriComponents | Uri | undefined | null): Uri | undefined | null;
     }
 
     export interface UriComponents {
@@ -398,11 +398,11 @@ declare namespace monaco {
         MAX_VALUE = 112
     }
     export class KeyMod {
-        static readonly CtrlCmd: number;
-        static readonly Shift: number;
-        static readonly Alt: number;
-        static readonly WinCtrl: number;
-        static chord(firstPart: number, secondPart: number): number;
+      static readonly CtrlCmd: number;
+      static readonly Shift: number;
+      static readonly Alt: number;
+      static readonly WinCtrl: number;
+      static chord(firstPart: number, secondPart: number): number;
     }
 
     export interface IMarkdownString {
@@ -475,77 +475,77 @@ declare namespace monaco {
      * A position in the editor.
      */
     export class Position {
-        /**
+      /**
          * line number (starts at 1)
          */
-        readonly lineNumber: number;
-        /**
+      readonly lineNumber: number;
+      /**
          * column (the first character in a line is between column 1 and column 2)
          */
-        readonly column: number;
-        constructor(lineNumber: number, column: number);
-        /**
+      readonly column: number;
+      constructor(lineNumber: number, column: number);
+      /**
          * Create a new position from this position.
          *
          * @param newLineNumber new line number
          * @param newColumn new column
          */
-        with(newLineNumber?: number, newColumn?: number): Position;
-        /**
+      with(newLineNumber?: number, newColumn?: number): Position;
+      /**
          * Derive a new position from this position.
          *
          * @param deltaLineNumber line number delta
          * @param deltaColumn column delta
          */
-        delta(deltaLineNumber?: number, deltaColumn?: number): Position;
-        /**
+      delta(deltaLineNumber?: number, deltaColumn?: number): Position;
+      /**
          * Test if this position equals other position
          */
-        equals(other: IPosition): boolean;
-        /**
+      equals(other: IPosition): boolean;
+      /**
          * Test if position `a` equals position `b`
          */
-        static equals(a: IPosition | null, b: IPosition | null): boolean;
-        /**
+      static equals(a: IPosition | null, b: IPosition | null): boolean;
+      /**
          * Test if this position is before other position.
          * If the two positions are equal, the result will be false.
          */
-        isBefore(other: IPosition): boolean;
-        /**
+      isBefore(other: IPosition): boolean;
+      /**
          * Test if position `a` is before position `b`.
          * If the two positions are equal, the result will be false.
          */
-        static isBefore(a: IPosition, b: IPosition): boolean;
-        /**
+      static isBefore(a: IPosition, b: IPosition): boolean;
+      /**
          * Test if this position is before other position.
          * If the two positions are equal, the result will be true.
          */
-        isBeforeOrEqual(other: IPosition): boolean;
-        /**
+      isBeforeOrEqual(other: IPosition): boolean;
+      /**
          * Test if position `a` is before position `b`.
          * If the two positions are equal, the result will be true.
          */
-        static isBeforeOrEqual(a: IPosition, b: IPosition): boolean;
-        /**
+      static isBeforeOrEqual(a: IPosition, b: IPosition): boolean;
+      /**
          * A function that compares positions, useful for sorting
          */
-        static compare(a: IPosition, b: IPosition): number;
-        /**
+      static compare(a: IPosition, b: IPosition): number;
+      /**
          * Clone this position.
          */
-        clone(): Position;
-        /**
+      clone(): Position;
+      /**
          * Convert to a human-readable representation.
          */
-        toString(): string;
-        /**
+      toString(): string;
+      /**
          * Create a `Position` from an `IPosition`.
          */
-        static lift(pos: IPosition): Position;
-        /**
+      static lift(pos: IPosition): Position;
+      /**
          * Test if `obj` is an `IPosition`.
          */
-        static isIPosition(obj: any): obj is IPosition;
+      static isIPosition(obj: any): obj is IPosition;
     }
 
     /**
@@ -574,149 +574,149 @@ declare namespace monaco {
      * A range in the editor. (startLineNumber,startColumn) is <= (endLineNumber,endColumn)
      */
     export class Range {
-        /**
+      /**
          * Line number on which the range starts (starts at 1).
          */
-        readonly startLineNumber: number;
-        /**
+      readonly startLineNumber: number;
+      /**
          * Column on which the range starts in line `startLineNumber` (starts at 1).
          */
-        readonly startColumn: number;
-        /**
+      readonly startColumn: number;
+      /**
          * Line number on which the range ends.
          */
-        readonly endLineNumber: number;
-        /**
+      readonly endLineNumber: number;
+      /**
          * Column on which the range ends in line `endLineNumber`.
          */
-        readonly endColumn: number;
-        constructor(startLineNumber: number, startColumn: number, endLineNumber: number, endColumn: number);
-        /**
+      readonly endColumn: number;
+      constructor(startLineNumber: number, startColumn: number, endLineNumber: number, endColumn: number);
+      /**
          * Test if this range is empty.
          */
-        isEmpty(): boolean;
-        /**
+      isEmpty(): boolean;
+      /**
          * Test if `range` is empty.
          */
-        static isEmpty(range: IRange): boolean;
-        /**
+      static isEmpty(range: IRange): boolean;
+      /**
          * Test if position is in this range. If the position is at the edges, will return true.
          */
-        containsPosition(position: IPosition): boolean;
-        /**
+      containsPosition(position: IPosition): boolean;
+      /**
          * Test if `position` is in `range`. If the position is at the edges, will return true.
          */
-        static containsPosition(range: IRange, position: IPosition): boolean;
-        /**
+      static containsPosition(range: IRange, position: IPosition): boolean;
+      /**
          * Test if range is in this range. If the range is equal to this range, will return true.
          */
-        containsRange(range: IRange): boolean;
-        /**
+      containsRange(range: IRange): boolean;
+      /**
          * Test if `otherRange` is in `range`. If the ranges are equal, will return true.
          */
-        static containsRange(range: IRange, otherRange: IRange): boolean;
-        /**
+      static containsRange(range: IRange, otherRange: IRange): boolean;
+      /**
          * Test if `range` is strictly in this range. `range` must start after and end before this range for the result to be true.
          */
-        strictContainsRange(range: IRange): boolean;
-        /**
+      strictContainsRange(range: IRange): boolean;
+      /**
          * Test if `otherRange` is strinctly in `range` (must start after, and end before). If the ranges are equal, will return false.
          */
-        static strictContainsRange(range: IRange, otherRange: IRange): boolean;
-        /**
+      static strictContainsRange(range: IRange, otherRange: IRange): boolean;
+      /**
          * A reunion of the two ranges.
          * The smallest position will be used as the start point, and the largest one as the end point.
          */
-        plusRange(range: IRange): Range;
-        /**
+      plusRange(range: IRange): Range;
+      /**
          * A reunion of the two ranges.
          * The smallest position will be used as the start point, and the largest one as the end point.
          */
-        static plusRange(a: IRange, b: IRange): Range;
-        /**
+      static plusRange(a: IRange, b: IRange): Range;
+      /**
          * A intersection of the two ranges.
          */
-        intersectRanges(range: IRange): Range | null;
-        /**
+      intersectRanges(range: IRange): Range | null;
+      /**
          * A intersection of the two ranges.
          */
-        static intersectRanges(a: IRange, b: IRange): Range | null;
-        /**
+      static intersectRanges(a: IRange, b: IRange): Range | null;
+      /**
          * Test if this range equals other.
          */
-        equalsRange(other: IRange | null): boolean;
-        /**
+      equalsRange(other: IRange | null): boolean;
+      /**
          * Test if range `a` equals `b`.
          */
-        static equalsRange(a: IRange | null, b: IRange | null): boolean;
-        /**
+      static equalsRange(a: IRange | null, b: IRange | null): boolean;
+      /**
          * Return the end position (which will be after or equal to the start position)
          */
-        getEndPosition(): Position;
-        /**
+      getEndPosition(): Position;
+      /**
          * Return the end position (which will be after or equal to the start position)
          */
-        static getEndPosition(range: IRange): Position;
-        /**
+      static getEndPosition(range: IRange): Position;
+      /**
          * Return the start position (which will be before or equal to the end position)
          */
-        getStartPosition(): Position;
-        /**
+      getStartPosition(): Position;
+      /**
          * Return the start position (which will be before or equal to the end position)
          */
-        static getStartPosition(range: IRange): Position;
-        /**
+      static getStartPosition(range: IRange): Position;
+      /**
          * Transform to a user presentable string representation.
          */
-        toString(): string;
-        /**
+      toString(): string;
+      /**
          * Create a new range using this range's start position, and using endLineNumber and endColumn as the end position.
          */
-        setEndPosition(endLineNumber: number, endColumn: number): Range;
-        /**
+      setEndPosition(endLineNumber: number, endColumn: number): Range;
+      /**
          * Create a new range using this range's end position, and using startLineNumber and startColumn as the start position.
          */
-        setStartPosition(startLineNumber: number, startColumn: number): Range;
-        /**
+      setStartPosition(startLineNumber: number, startColumn: number): Range;
+      /**
          * Create a new empty range using this range's start position.
          */
-        collapseToStart(): Range;
-        /**
+      collapseToStart(): Range;
+      /**
          * Create a new empty range using this range's start position.
          */
-        static collapseToStart(range: IRange): Range;
-        static fromPositions(start: IPosition, end?: IPosition): Range;
-        /**
+      static collapseToStart(range: IRange): Range;
+      static fromPositions(start: IPosition, end?: IPosition): Range;
+      /**
          * Create a `Range` from an `IRange`.
          */
-        static lift(range: undefined | null): null;
-        static lift(range: IRange): Range;
-        /**
+      static lift(range: undefined | null): null;
+      static lift(range: IRange): Range;
+      /**
          * Test if `obj` is an `IRange`.
          */
-        static isIRange(obj: any): obj is IRange;
-        /**
+      static isIRange(obj: any): obj is IRange;
+      /**
          * Test if the two ranges are touching in any way.
          */
-        static areIntersectingOrTouching(a: IRange, b: IRange): boolean;
-        /**
+      static areIntersectingOrTouching(a: IRange, b: IRange): boolean;
+      /**
          * Test if the two ranges are intersecting. If the ranges are touching it returns true.
          */
-        static areIntersecting(a: IRange, b: IRange): boolean;
-        /**
+      static areIntersecting(a: IRange, b: IRange): boolean;
+      /**
          * A function that compares ranges, useful for sorting ranges
          * It will first compare ranges on the startPosition and then on the endPosition
          */
-        static compareRangesUsingStarts(a: IRange | null | undefined, b: IRange | null | undefined): number;
-        /**
+      static compareRangesUsingStarts(a: IRange | null | undefined, b: IRange | null | undefined): number;
+      /**
          * A function that compares ranges, useful for sorting ranges
          * It will first compare ranges on the endPosition and then on the startPosition
          */
-        static compareRangesUsingEnds(a: IRange, b: IRange): number;
-        /**
+      static compareRangesUsingEnds(a: IRange, b: IRange): number;
+      /**
          * Test if the range spans multiple lines.
          */
-        static spansMultipleLines(range: IRange): boolean;
+      static spansMultipleLines(range: IRange): boolean;
     }
 
     /**
@@ -747,71 +747,71 @@ declare namespace monaco {
      * The selection is a range that has an orientation.
      */
     export class Selection extends Range {
-        /**
+      /**
          * The line number on which the selection has started.
          */
-        readonly selectionStartLineNumber: number;
-        /**
+      readonly selectionStartLineNumber: number;
+      /**
          * The column on `selectionStartLineNumber` where the selection has started.
          */
-        readonly selectionStartColumn: number;
-        /**
+      readonly selectionStartColumn: number;
+      /**
          * The line number on which the selection has ended.
          */
-        readonly positionLineNumber: number;
-        /**
+      readonly positionLineNumber: number;
+      /**
          * The column on `positionLineNumber` where the selection has ended.
          */
-        readonly positionColumn: number;
-        constructor(selectionStartLineNumber: number, selectionStartColumn: number, positionLineNumber: number, positionColumn: number);
-        /**
+      readonly positionColumn: number;
+      constructor(selectionStartLineNumber: number, selectionStartColumn: number, positionLineNumber: number, positionColumn: number);
+      /**
          * Transform to a human-readable representation.
          */
-        toString(): string;
-        /**
+      toString(): string;
+      /**
          * Test if equals other selection.
          */
-        equalsSelection(other: ISelection): boolean;
-        /**
+      equalsSelection(other: ISelection): boolean;
+      /**
          * Test if the two selections are equal.
          */
-        static selectionsEqual(a: ISelection, b: ISelection): boolean;
-        /**
+      static selectionsEqual(a: ISelection, b: ISelection): boolean;
+      /**
          * Get directions (LTR or RTL).
          */
-        getDirection(): SelectionDirection;
-        /**
+      getDirection(): SelectionDirection;
+      /**
          * Create a new selection with a different `positionLineNumber` and `positionColumn`.
          */
-        setEndPosition(endLineNumber: number, endColumn: number): Selection;
-        /**
+      setEndPosition(endLineNumber: number, endColumn: number): Selection;
+      /**
          * Get the position at `positionLineNumber` and `positionColumn`.
          */
-        getPosition(): Position;
-        /**
+      getPosition(): Position;
+      /**
          * Create a new selection with a different `selectionStartLineNumber` and `selectionStartColumn`.
          */
-        setStartPosition(startLineNumber: number, startColumn: number): Selection;
-        /**
+      setStartPosition(startLineNumber: number, startColumn: number): Selection;
+      /**
          * Create a `Selection` from one or two positions
          */
-        static fromPositions(start: IPosition, end?: IPosition): Selection;
-        /**
+      static fromPositions(start: IPosition, end?: IPosition): Selection;
+      /**
          * Create a `Selection` from an `ISelection`.
          */
-        static liftSelection(sel: ISelection): Selection;
-        /**
+      static liftSelection(sel: ISelection): Selection;
+      /**
          * `a` equals `b`.
          */
-        static selectionsArrEqual(a: ISelection[], b: ISelection[]): boolean;
-        /**
+      static selectionsArrEqual(a: ISelection[], b: ISelection[]): boolean;
+      /**
          * Test if `obj` is an `ISelection`.
          */
-        static isISelection(obj: any): obj is ISelection;
-        /**
+      static isISelection(obj: any): obj is ISelection;
+      /**
          * Create with a direction.
          */
-        static createWithDirection(startLineNumber: number, startColumn: number, endLineNumber: number, endColumn: number, direction: SelectionDirection): Selection;
+      static createWithDirection(startLineNumber: number, startColumn: number, endLineNumber: number, endColumn: number, direction: SelectionDirection): Selection;
     }
 
     /**
@@ -829,12 +829,12 @@ declare namespace monaco {
     }
 
     export class Token {
-        _tokenBrand: void;
-        readonly offset: number;
-        readonly type: string;
-        readonly language: string;
-        constructor(offset: number, type: string, language: string);
-        toString(): string;
+      _tokenBrand: void;
+      readonly offset: number;
+      readonly type: string;
+      readonly language: string;
+      constructor(offset: number, type: string, language: string);
+      toString(): string;
     }
 }
 
@@ -1610,12 +1610,12 @@ declare namespace monaco.editor {
     }
 
     export class TextModelResolvedOptions {
-        _textModelResolvedOptionsBrand: void;
-        readonly tabSize: number;
-        readonly indentSize: number;
-        readonly insertSpaces: boolean;
-        readonly defaultEOL: DefaultEndOfLine;
-        readonly trimAutoWhitespace: boolean;
+      _textModelResolvedOptionsBrand: void;
+      readonly tabSize: number;
+      readonly indentSize: number;
+      readonly insertSpaces: boolean;
+      readonly defaultEOL: DefaultEndOfLine;
+      readonly trimAutoWhitespace: boolean;
     }
 
     export interface ITextModelUpdateOptions {
@@ -1626,9 +1626,9 @@ declare namespace monaco.editor {
     }
 
     export class FindMatch {
-        _findMatchBrand: void;
-        readonly range: Range;
-        readonly matches: string[] | null;
+      _findMatchBrand: void;
+      readonly range: Range;
+      readonly matches: string[] | null;
     }
 
     /**
@@ -3284,7 +3284,7 @@ declare namespace monaco.editor {
      * An event describing that the configuration of the editor has changed.
      */
     export class ConfigurationChangedEvent {
-        hasChanged(id: EditorOption): boolean;
+      hasChanged(id: EditorOption): boolean;
     }
 
     /**
@@ -5015,29 +5015,29 @@ declare namespace monaco.editor {
     }
 
     export class FontInfo extends BareFontInfo {
-        readonly _editorStylingBrand: void;
-        readonly version: number;
-        readonly isTrusted: boolean;
-        readonly isMonospace: boolean;
-        readonly typicalHalfwidthCharacterWidth: number;
-        readonly typicalFullwidthCharacterWidth: number;
-        readonly canUseHalfwidthRightwardsArrow: boolean;
-        readonly spaceWidth: number;
-        readonly middotWidth: number;
-        readonly wsmiddotWidth: number;
-        readonly maxDigitWidth: number;
+      readonly _editorStylingBrand: void;
+      readonly version: number;
+      readonly isTrusted: boolean;
+      readonly isMonospace: boolean;
+      readonly typicalHalfwidthCharacterWidth: number;
+      readonly typicalFullwidthCharacterWidth: number;
+      readonly canUseHalfwidthRightwardsArrow: boolean;
+      readonly spaceWidth: number;
+      readonly middotWidth: number;
+      readonly wsmiddotWidth: number;
+      readonly maxDigitWidth: number;
     }
 
     export class BareFontInfo {
-        readonly _bareFontInfoBrand: void;
-        readonly zoomLevel: number;
-        readonly pixelRatio: number;
-        readonly fontFamily: string;
-        readonly fontWeight: string;
-        readonly fontSize: number;
-        readonly fontFeatureSettings: string;
-        readonly lineHeight: number;
-        readonly letterSpacing: number;
+      readonly _bareFontInfoBrand: void;
+      readonly zoomLevel: number;
+      readonly pixelRatio: number;
+      readonly fontFamily: string;
+      readonly fontWeight: string;
+      readonly fontSize: number;
+      readonly fontFeatureSettings: string;
+      readonly lineHeight: number;
+      readonly letterSpacing: number;
     }
 
     //compatibility:
@@ -6346,26 +6346,26 @@ declare namespace monaco.languages {
     }
 
     export class FoldingRangeKind {
-        value: string;
-        /**
+      value: string;
+      /**
          * Kind for folding range representing a comment. The value of the kind is 'comment'.
          */
-        static readonly Comment: FoldingRangeKind;
-        /**
+      static readonly Comment: FoldingRangeKind;
+      /**
          * Kind for folding range representing a import. The value of the kind is 'imports'.
          */
-        static readonly Imports: FoldingRangeKind;
-        /**
+      static readonly Imports: FoldingRangeKind;
+      /**
          * Kind for folding range representing regions (for example marked by `#region`, `#endregion`).
          * The value of the kind is 'region'.
          */
-        static readonly Region: FoldingRangeKind;
-        /**
+      static readonly Region: FoldingRangeKind;
+      /**
          * Creates a new [FoldingRangeKind](#FoldingRangeKind).
          *
          * @param value of the kind.
          */
-        constructor(value: string);
+      constructor(value: string);
     }
 
     export interface WorkspaceEditMetadata {

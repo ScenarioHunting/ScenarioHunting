@@ -13,12 +13,24 @@
     "test": "mocha --config .mocharc.json",
     "coverage": "nyc -r lcov -e .ts -x \"*.test.ts\" npm run test",
     "deploy": "./ci/deploy.sh",
-    "stage": "./ci/stage.sh"
+    "stage": "./ci/stage.sh",
+    "lint": "npx eslint -c .eslintrc.json --ext .tsx src",
+    "lintfix": "npm run lint -- --fix",
+    "pretty": "npx prettier --write ./src"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,md,html,css}": "prettier --write",
+    "*.{js,jsx,ts,tsx}": "eslint --fix"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   },
   "keywords": [],
-  "engines":{
-    "node": ">=22.1.0",
-    "npm": ">=9.6.7"
+  "engines": {
+    "node": ">=20.13.1",
+    "npm": ">=10.5.2"
   },
   "engineStrict": true,
   "author": "",
@@ -33,11 +45,12 @@
     "@types/react-dom": "^18.3.0",
     "@typescript-eslint/eslint-plugin": "^7.8.0",
     "@typescript-eslint/parser": "^7.8.0",
-    "chai": "^5.1.1",
+    "chai": "^4.0.0",
     "chai-as-promised": "^7.1.2",
     "copy-webpack-plugin": "^12.0.2",
     "css-loader": "^7.1.1",
-    "eslint": "^8.56.0",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
     "eslint-config-standard": "^17.1.0",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-node": "^11.1.0",
@@ -49,11 +62,14 @@
     "file-loader": "^6.2.0",
     "gh-pages": "^6.1.1",
     "html-webpack-plugin": "^5.6.0",
+    "husky": "^9.0.11",
     "less": "^4.2.0",
     "less-loader": "^12.2.0",
+    "lint-staged": "^15.2.2",
     "mocha": "^10.4.0",
     "npm-watch": "^0.13.0",
     "nyc": "^15.1.0",
+    "prettier": "^3.2.5",
     "semantic-release": "^23.1.1",
     "style-loader": "^4.0.0",
     "ts-loader": "^9.5.1",
@@ -71,9 +87,11 @@
     "@mirohq/websdk-types": "^2.14.3",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
+    "cross-env": "^7.0.3",
     "css-modules-typescript-loader": "^4.0.1",
     "handlebars": "^4.7.8",
     "mirotone": "^5.1.1",
+    "mocha-suppress-logs": "^0.5.1",
     "npm": "^10.7.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

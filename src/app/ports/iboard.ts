@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
-import { CSSProperties } from "react"
-import { Step } from "../api"
+import { CSSProperties } from 'react';
+import { Step } from '../api';
 
 
 export type WidgetSnapshot = {

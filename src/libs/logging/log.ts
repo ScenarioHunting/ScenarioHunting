@@ -1,16 +1,15 @@
-/* eslint-disable no-unused-vars */
 export interface iLog {
-    log(message?: any, ...optionalParams: any[]): void;
-    info(message?: any, ...optionalParams: any[]): void;
-    warn(message?: any, ...optionalParams: any[]): void;
-    error(message?: any, ...optionalParams: any[]): void;
+    log(_message?: any, ..._optionalParams: any[]): void;
+    info(_message?: any, ..._optionalParams: any[]): void;
+    warn(_message?: any, ..._optionalParams: any[]): void;
+    error(_message?: any, ..._optionalParams: any[]): void;
 }
 
 export const noLog: iLog = {
-    log: () => { },
-    info: () => { },
-    warn: () => { },
-    error: () => { }
-}
+  log: () => { },
+  info: () => { },
+  warn: () => { },
+  error: () => { }
+};
 
-export const consoleLog: iLog = console
+export const consoleLog: iLog = console;

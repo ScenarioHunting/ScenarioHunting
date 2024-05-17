@@ -3,7 +3,7 @@ export type Api = {
     /**
     * The version of the API
     */
-    version: "1.0.0",
+    version: '1.0.0',
     /**
      * The scenario
      */
@@ -80,23 +80,23 @@ type Property<TExample extends SingularType | SingularType[]> = {
 }
 
 export interface IntegerProperty extends Property<number> {
-    type: "integer"
+    type: 'integer'
 }
 export interface NumberProperty extends Property<number> {
-    type: "number"
+    type: 'number'
 }
 export interface BooleanProperty extends Property<boolean> {
-    type: "boolean"
+    type: 'boolean'
 }
 export interface StringProperty extends Property<string> {
-    type: "string"
+    type: 'string'
 }
 export interface NullProperty extends Property<null> {
-    type: "null"
+    type: 'null'
     example: null
 }
 export interface ArrayProperty extends Property<SingularType[]> {
-    type: "array"
+    type: 'array'
     items: AbstractProperty | AbstractProperty[]// Depending on whether all items are of the same type or not.
 
 }
@@ -105,7 +105,7 @@ export type Properties = {
     [title: string]: AbstractProperty
 }
 export interface ObjectProperty extends Property<object> {
-    type: "object",
+    type: 'object',
     properties: Properties
 }
 
