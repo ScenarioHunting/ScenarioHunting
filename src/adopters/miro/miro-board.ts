@@ -141,6 +141,8 @@ function extractWidgetText(widget: Item): Promise<string> {
 
   if ('content' in widget)
     return Promise.resolve(widget.content as string);
+  if('title' in widget)
+    return Promise.resolve(widget.title as string);
 
   return Promise.reject(`The widget ${JSON.stringify(widget)} does not have any text`);
 }
