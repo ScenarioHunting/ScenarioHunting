@@ -170,7 +170,7 @@ export const createTestBuilder = (board = ExternalServices.boardService): React.
         turn={TestStepTurn.Subject}
         title="Subject"
 
-        value={scenario}
+        value={subject}
         className={styles['subject-input']}
         onChange={x => changeSubject(x)}
         validate={validateSubject}

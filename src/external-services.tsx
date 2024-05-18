@@ -18,7 +18,7 @@ import { builtinTemplates } from './app/template-processing/builtin-templates';
 
 
 // export let singletonBoard: IBoard = new MiroBoard()
-export let log: iLog = console;
+export let log: iLog = noLog;
 
 export interface IExternalServices {
     readonly boardService: IBoard
