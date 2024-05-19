@@ -3,13 +3,21 @@
 
 ### An implementation of [Scenario Hunting](https://scenariohunting.com) framework as an extension to Miro whiteboard.
 
+## Project Evolution
+
+This project began as a *prototypical proof of concept*, with the initial codebase laying the groundwork for what has become a continually evolving open-source endeavor. Over time, we've refined the architecture, enhanced functionality, and improved performance. We're committed to further development, and we welcome new ideas and improvements as we advance.
+
+![Code health status](images/2024-05-19-CodeScene-Health.png)
+![Code health monthly trends](images/2024-05-19-CodeScene-MonthlyTrends.png)
+
+
 Scenario Hunting is a set of steps to implement high-quality automated tests based on visual modeling artifacts (such as Event Storming and Event Modeling sticky notes). 
 Following the steps keeps implementation on track and protects the design from distortion while coding.
 
 By [installing](https://miro.com/oauth/authorize/?response_type=code&client_id=3074457356753256770&redirect_uri=%2Fconfirm-app-install%2F) this extension to your Miro board, you can hunt for test scenarios from visual models on your Miro boards.
 
 
-![Hunting for scenarios from event storming artifacts](header-image.png)
+![Hunting for scenarios from event storming artifacts](images/header-image.png)
 
 ## Features
 * **Template Studio:** The builtin code editor for repl driving test templates
@@ -20,9 +28,9 @@ By [installing](https://miro.com/oauth/authorize/?response_type=code&client_id=3
 
 ##  How it works
 
-The following 5 Minute demo explains hunting scenarios from Event Storming artifacts.
+The following 4 Minute demo explains hunting scenarios from Event Storming artifacts.
 
-[![Scenario Hunting quick demo](https://img.youtube.com/vi/Ou_TkeMsfXs/0.jpg)](https://www.youtube.com/embed/Ou_TkeMsfXs)
+[![Scenario Hunting quick demo](images/YouTube.png)](https://www.youtube.com/embed/RsAK90h-pRY)
 
 
 ## How to install
@@ -34,10 +42,12 @@ Simply click [here](https://miro.com/oauth/authorize/?response_type=code&client_
 * Pass the test
 * Refactor
 * Update the model
-* Repeate
+* Repeat
 
 ## Documentation
 [See](https://docs.scenariohunting.com) the documentation.
+
+
 
 ## License
 
