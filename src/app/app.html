@@ -1,38 +1,63 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
 
-<head>
-    <meta charset="UTF-8">
-</head>
+  <script src="https://miro.com/app/static/sdk/v2/miro.js"></script>
+  <link type="text/css" href="https://miro.com/app/static/miro.uikit.css" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+  />
+  <!-- <link rel="stylesheet" type="text/css" href="https://miro.com/app/static/styles.1.0.css" /> -->
+  <link rel="stylesheet" href="miro-styles-v1.css" />
 
-    <script src="https://miro.com/app/static/sdk/v2/miro.js"></script>
-<link type="text/css" href="https://miro.com/app/static/miro.uikit.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<!-- <link rel="stylesheet" type="text/css" href="https://miro.com/app/static/styles.1.0.css" /> -->
-<link rel="stylesheet" href="miro-styles-v1.css" />
-
-<style>
-
+  <style>
     html,
     body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
+      height: 100%;
+      margin: 0;
+      padding: 0;
     }
-    
+
     .scrollable-container {
-        height: 100%;
-        overflow-y: auto;
-        padding-top: 0px;
-        padding-left: 10px;
-        padding-right: 10px;
-        padding-bottom: 20px;
-        box-sizing: border-box;
+      height: calc(100% - 24px);
+      overflow-y: auto;
+      padding-top: 0px;
+      padding-left: 10px;
+      padding-right: 10px;
+      padding-bottom: 20px;
+      box-sizing: border-box;
     }
-</style>
+    .links {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 5.5px 19px 0px;
+      box-shadow: 0 -4px 8px -4px rgba(102, 106, 106, 0.3);
+      font-size: small;
+    }
+    .links a:link,
+    .links a:visited,
+    .links a:hover,
+    .links a:active {
+      text-decoration: none;
+      color: rgb(102, 106, 106);
+    }
+  </style>
 
-<body>
+  <body>
     <div id="react-app" class="scrollable-container">Loading ...</div>
-</body>
-
+    <nav class="links">
+      <a href="https://docs.scenariohunting.com/#/content/Quick-Start/Hunting-a-scenario/article"
+      target="_blank"
+        >Quick Start</a
+      >
+      <a href="https://github.com/ScenarioHunting/ScenarioHunting/issues"
+      target="_blank"
+        >Report an Issue</a
+      >
+    </nav>
+  </body>
 </html>
