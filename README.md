@@ -1,7 +1,7 @@
 # Miro extension for Scenario Hunting
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-### An implementation of [Scenario Hunting](https://scenariohunting.com) framework as an extension to Miro whiteboard.
+### An implementation of [Scenario Hunting](https://scenariohunting.github.io/website/) framework as an extension to Miro whiteboard.
 
 ## Project Evolution
 
