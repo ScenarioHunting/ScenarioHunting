@@ -45,7 +45,7 @@ Simply click [here](https://miro.com/oauth/authorize/?response_type=code&client_
 * Repeat
 
 ## Documentation
-[See](https://docs.scenariohunting.com) the documentation.
+[See](https://github.com/ScenarioHunting/docs-scenario-hunting) the documentation.
 
 
 
